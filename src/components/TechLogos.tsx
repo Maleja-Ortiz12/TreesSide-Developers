@@ -99,6 +99,12 @@ export function TechLogo({ name }: { name: string }) {
         </svg>
       );
     default:
-      return null;
+      return (
+        <span aria-hidden="true" style={{
+          width: 36, height: 36, display: 'grid', placeItems: 'center',
+          border: '1px solid var(--border-cyan)', borderRadius: 8,
+          fontSize: 11, fontWeight: 700, color: 'var(--primary-cyan)'
+        }}>{name.replace(/[^a-zA-Z0-9]/g, '').slice(0, 3).toUpperCase()}</span>
+      );
   }
 }
