@@ -82,7 +82,7 @@ export function Hero() {
               marginBottom: '36px',
               maxWidth: '560px'
             }}>
-              En <strong style={{ color: '#ffffff', fontWeight: 600 }}>SoftZenkodoDevs</strong> desarrollamos software a medida,
+              En <strong style={{ color: '#ffffff', fontWeight: 600 }}>TreesSide Developers</strong> desarrollamos software a medida,
               combinando creatividad, tecnología y buenas prácticas para llevar tus proyectos al siguiente nivel.
             </p>
 
@@ -159,8 +159,8 @@ export function Hero() {
                 height: '320px'
               }}>
                 <Image
-                  src="/images/logo.jpg"
-                  alt="SoftZenkodoDevs Cyber Tree Logo"
+                  src="/images/treesside-logo.jpg"
+                  alt="TreesSide Developers Cyber Tree Logo"
                   width={320}
                   height={320}
                   priority

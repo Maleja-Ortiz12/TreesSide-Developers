@@ -63,7 +63,7 @@ export function AboutSection() {
               lineHeight: 1.75,
               maxWidth: '560px'
             }}>
-              Somos un equipo de desarrolladores que cree en el poder de la tecnología para crear un impacto real. En <strong style={{ color: '#ffffff' }}>SoftZenkodoDevs</strong> combinamos experiencia, aprendizaje constante y trabajo en equipo para ofrecer soluciones innovadoras y eficientes.
+              Somos un equipo de desarrolladores que cree en el poder de la tecnología para crear un impacto real. En <strong style={{ color: '#ffffff' }}>TreesSide Developers</strong> combinamos experiencia, aprendizaje constante y trabajo en equipo para ofrecer soluciones innovadoras y eficientes.
             </p>
           </div>
 
@@ -92,8 +92,8 @@ export function AboutSection() {
                 position: 'relative'
               }}>
                 <Image
-                  src="/images/logo.jpg"
-                  alt="SoftZenkodoDevs Cyber Tree Logo"
+                  src="/images/treesside-logo.jpg"
+                  alt="TreesSide Developers Cyber Tree Logo"
                   fill
                   style={{ objectFit: 'cover' }}
                 />

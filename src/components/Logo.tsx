@@ -56,8 +56,8 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           border: '1px solid rgba(0, 245, 160, 0.25)'
         }}>
           <Image
-            src="/images/logo.jpg"
-            alt="SoftZenkodoDevs Cyber Tree Logo"
+            src="/images/treesside-logo.jpg"
+            alt="TreesSide Developers Cyber Tree Logo"
             width={width}
             height={height}
             priority
@@ -89,8 +89,8 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
         flexShrink: 0
       }}>
         <Image
-          src="/images/logo.jpg"
-          alt="SoftZenkodoDevs Logo"
+          src="/images/treesside-logo.jpg"
+          alt="TreesSide Developers Logo"
           width={width}
           height={height}
           style={{
@@ -107,12 +107,19 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           letterSpacing: '-0.02em',
           fontSize: size === 'sm' ? '1.1rem' : size === 'lg' ? '1.6rem' : '1.35rem',
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          lineHeight: 1.15,
           userSelect: 'none'
         }}>
-          <span style={{ color: '#ffffff' }}>Soft</span>
-          <span style={{ color: 'var(--primary-green)' }}>Zenko</span>
-          <span style={{ color: 'var(--primary-cyan)' }}>doDevs</span>
+          <span style={{ color: 'var(--primary-green)' }}>TreesSide</span>
+          <span style={{
+            color: 'var(--primary-cyan)',
+            fontSize: size === 'lg' ? '0.75rem' : '0.65rem',
+            fontWeight: 500,
+            letterSpacing: '0.18em',
+            marginTop: '4px'
+          }}>Developers</span>
         </span>
       )}
     </div>

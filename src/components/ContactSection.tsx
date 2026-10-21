@@ -232,7 +232,7 @@ export function ContactSection() {
                   ¡Mensaje Enviado con Éxito!
                 </h3>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', maxWidth: '400px' }}>
-                  Gracias por escribirnos. Nuestro equipo en SoftZenkodoDevs revisará tu requerimiento y te contactará a la brevedad.
+                  Gracias por escribirnos. Nuestro equipo en TreesSide Developers revisará tu requerimiento y te contactará a la brevedad.
                 </p>
               </div>
             ) : (

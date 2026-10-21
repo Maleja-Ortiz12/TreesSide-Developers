@@ -157,8 +157,8 @@ export function TechStackSection() {
               boxShadow: '0 0 25px rgba(0, 245, 160, 0.35)'
             }}>
               <Image
-                src="/images/logo.jpg"
-                alt="Cyber Tree SoftZenkodoDevs"
+                src="/images/treesside-logo.jpg"
+                alt="Cyber Tree TreesSide Developers"
                 width={100}
                 height={100}
                 style={{ objectFit: 'cover', width: '100%', height: '100%' }}
