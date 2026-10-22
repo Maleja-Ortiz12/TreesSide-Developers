@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Logo } from './Logo';
 import { Menu, X, Send } from 'lucide-react';
 
@@ -10,16 +11,21 @@ interface NavbarProps {
 }
 
 export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+  const homeHref = (hash: string) => isHome ? hash : `/${hash}`;
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentSection, setCurrentSection] = useState(activeSection);
+  const selectedSection = isHome ? currentSection : (pathname === '/equipo' ? 'equipo' : '');
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 30);
+      if (!isHome) return;
 
       // Section spy
-      const sections = ['inicio', 'servicios', 'proyectos', 'sobre-nosotros', 'contacto'];
+      const sections = ['inicio', 'servicios', 'proyectos', 'sobre-nosotros', 'equipo', 'contacto'];
       const scrollPos = window.scrollY + 180;
 
       for (const section of sections) {
@@ -35,15 +41,17 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
       }
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isHome]);
 
   const navLinks = [
-    { label: 'Inicio', href: '#inicio', id: 'inicio' },
-    { label: 'Servicios', href: '#servicios', id: 'servicios' },
-    { label: 'Proyectos', href: '#proyectos', id: 'proyectos' },
-    { label: 'Sobre Nosotros', href: '#sobre-nosotros', id: 'sobre-nosotros' },
+    { label: 'Inicio', href: homeHref('#inicio'), id: 'inicio' },
+    { label: 'Servicios', href: homeHref('#servicios'), id: 'servicios' },
+    { label: 'Proyectos', href: homeHref('#proyectos'), id: 'proyectos' },
+    { label: 'Sobre Nosotros', href: homeHref('#sobre-nosotros'), id: 'sobre-nosotros' },
+    { label: 'Equipo', href: '/equipo', id: 'equipo' },
   ];
 
   const handleNavClick = (href: string) => {
@@ -74,7 +82,7 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
         height: '76px'
       }}>
         {/* Brand Logo */}
-        <Link href="#inicio" onClick={() => handleNavClick('#inicio')} style={{ textDecoration: 'none' }}>
+        <Link href={homeHref('#inicio')} onClick={() => { if (isHome) handleNavClick('#inicio'); }} style={{ textDecoration: 'none' }}>
           <Logo size="md" showText={true} />
         </Link>
 
@@ -85,14 +93,19 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
           gap: '32px'
         }} className="desktop-nav">
           {navLinks.map((item) => {
-            const isActive = currentSection === item.id;
+            const isActive = selectedSection === item.id;
             return (
               <a
                 key={item.id}
                 href={item.href}
+                aria-current={isActive ? (isHome ? 'location' : 'page') : undefined}
                 onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(item.href);
+                  if (item.href.startsWith('#')) {
+                    e.preventDefault();
+                    handleNavClick(item.href);
+                  } else {
+                    setMobileMenuOpen(false);
+                  }
                 }}
                 style={{
                   color: isActive ? 'var(--primary-green)' : 'var(--text-muted)',
@@ -132,10 +145,13 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
         {/* Right CTA Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <a
-            href="#contacto"
+            href={homeHref('#contacto')}
             onClick={(e) => {
-              e.preventDefault();
-              handleNavClick('#contacto');
+              setMobileMenuOpen(false);
+              if (isHome) {
+                e.preventDefault();
+                handleNavClick('#contacto');
+              }
             }}
             className="btn-outline-pill desktop-nav-btn"
             style={{
@@ -182,12 +198,17 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
             <a
               key={item.id}
               href={item.href}
+              aria-current={selectedSection === item.id ? (isHome ? 'location' : 'page') : undefined}
               onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(item.href);
+                if (item.href.startsWith('#')) {
+                  e.preventDefault();
+                  handleNavClick(item.href);
+                } else {
+                  setMobileMenuOpen(false);
+                }
               }}
               style={{
-                color: currentSection === item.id ? 'var(--primary-green)' : '#ffffff',
+                color: selectedSection === item.id ? 'var(--primary-green)' : '#ffffff',
                 textDecoration: 'none',
                 fontSize: '1.1rem',
                 fontWeight: 600,
@@ -199,10 +220,13 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
             </a>
           ))}
           <a
-            href="#contacto"
+            href={homeHref('#contacto')}
             onClick={(e) => {
-              e.preventDefault();
-              handleNavClick('#contacto');
+              setMobileMenuOpen(false);
+              if (isHome) {
+                e.preventDefault();
+                handleNavClick('#contacto');
+              }
             }}
             className="btn btn-primary"
             style={{ marginTop: '10px' }}

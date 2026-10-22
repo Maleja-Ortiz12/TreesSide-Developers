@@ -97,7 +97,7 @@ export function ServicesSection() {
             }} className="animate-float">
               <Image
                 src="/images/services-laptop.jpg"
-                alt="Servicios Tecnológicos SoftZenkodoDevs"
+                alt="Servicios Tecnológicos TreesSide Developers"
                 fill
                 style={{ objectFit: 'cover' }}
               />

@@ -7,6 +7,7 @@ import { ProjectsSection } from '@/components/ProjectsSection';
 import { ServicesSection } from '@/components/ServicesSection';
 import { TechStackSection } from '@/components/TechStackSection';
 import { AboutSection } from '@/components/AboutSection';
+import { TeamSection } from '@/components/TeamSection';
 import { ProcessSection } from '@/components/ProcessSection';
 import { ContactSection } from '@/components/ContactSection';
 import { Footer } from '@/components/Footer';
@@ -39,6 +40,7 @@ export default function HomePage() {
         {(viewMode === 'all' || viewMode === 'col3') && (
           <>
             <AboutSection />
+            <TeamSection />
             <ProcessSection />
             <ContactSection />
           </>

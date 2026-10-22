@@ -10,11 +10,11 @@ export function ProjectsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeFilter, setActiveFilter] = useState('Todos');
 
-  const categories = ['Todos', 'Realidad Virtual', 'Web & E-Commerce', 'Business Intelligence'];
+  const categories = [...new Set(['Todos', 'Proyectos del equipo', ...FEATURED_PROJECTS.map(project => project.category)])];
 
   const filteredProjects = activeFilter === 'Todos'
     ? FEATURED_PROJECTS
-    : FEATURED_PROJECTS.filter(p => p.category === activeFilter);
+    : FEATURED_PROJECTS.filter(p => activeFilter === 'Proyectos del equipo' ? Boolean(p.owner) : p.category === activeFilter);
 
   const scrollToContact = () => {
     const el = document.getElementById('contacto');
@@ -41,7 +41,7 @@ export function ProjectsSection() {
               Proyectos <span className="text-gradient">Destacados</span>
             </h2>
             <p className="section-subtitle">
-              Algunos de los proyectos en los que hemos trabajado y seguimos construyendo.
+              Catálogo de TreesSide y proyectos personales de sus integrantes. Cada proyecto del equipo conserva su autoría y su fuente.
             </p>
           </div>
 
@@ -78,6 +78,7 @@ export function ProjectsSection() {
             <button
               key={cat}
               onClick={() => setActiveFilter(cat)}
+              aria-pressed={activeFilter === cat}
               style={{
                 background: activeFilter === cat ? 'rgba(0, 245, 160, 0.15)' : 'rgba(12, 22, 38, 0.6)',
                 border: activeFilter === cat ? '1px solid var(--primary-green)' : '1px solid rgba(255, 255, 255, 0.08)',
@@ -151,6 +152,7 @@ export function ProjectsSection() {
                   {project.tag}
                 </div>
               </div>
+              {project.imageLabel && <p style={{ padding: '8px 16px', fontSize: '.72rem', color: 'var(--text-muted)' }}>{project.imageLabel}</p>}
 
               {/* Card Body */}
               <div style={{
@@ -169,6 +171,7 @@ export function ProjectsSection() {
                   }}>
                     {project.title}
                   </h3>
+                  {project.owner && <p style={{ fontSize: '.8rem', color: 'var(--primary-green)', marginBottom: 10 }}>Proyecto del equipo · {project.owner}</p>}
                   <p style={{
                     fontSize: '0.9rem',
                     color: 'var(--text-muted)',
@@ -180,7 +183,12 @@ export function ProjectsSection() {
                 </div>
 
                 {/* Link trigger */}
-                <div style={{
+                {project.portfolioUrl && <a href={project.portfolioUrl} target="_blank" rel="noopener noreferrer"
+                  aria-label={`Ver portafolio de ${project.owner} (abre en otra pestaña)`}
+                  onClick={event => event.stopPropagation()}
+                  style={{ color: 'var(--primary-cyan)', fontSize: '.85rem', marginBottom: 14 }}>Ver portafolio del autor</a>}
+                <button type="button" aria-label={`Ver proyecto ${project.title}`} style={{
+                  background: 'transparent', border: 0, padding: 0, cursor: 'pointer', textAlign: 'left',
                   color: 'var(--primary-cyan)',
                   fontSize: '0.88rem',
                   fontWeight: 600,
@@ -191,7 +199,7 @@ export function ProjectsSection() {
                 }}>
                   Ver proyecto
                   <ArrowRight size={16} />
-                </div>
+                </button>
               </div>
             </div>
           ))}
@@ -243,8 +251,8 @@ export function ProjectsSection() {
               boxShadow: '0 0 20px rgba(0, 245, 160, 0.3)'
             }}>
               <Image
-                src="/images/logo.jpg"
-                alt="Cyber Tree SoftZenkodoDevs"
+                src="/images/treesside-logo.jpg"
+                alt="Cyber Tree TreesSide Developers"
                 width={84}
                 height={84}
                 style={{ objectFit: 'cover', width: '100%', height: '100%' }}

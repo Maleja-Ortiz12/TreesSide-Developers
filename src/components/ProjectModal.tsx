@@ -121,6 +121,9 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
             {project.detailedDescription || project.description}
           </p>
 
+          {project.imageLabel && <p style={{ color: 'var(--text-muted)', fontSize: '.8rem' }}>{project.imageLabel}</p>}
+          {project.owner && <p style={{ color: 'var(--primary-green)', marginTop: 12 }}>Proyecto personal del equipo · {project.owner}</p>}
+
           {/* Key Features */}
           {project.features && (
             <div style={{ marginTop: '20px' }}>
@@ -150,12 +153,17 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
             border: '1px solid rgba(255, 255, 255, 0.05)'
           }}>
             <div>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Cliente</span>
-              <p style={{ fontSize: '0.95rem', color: '#ffffff', fontWeight: 600 }}>{project.client || 'Confidencial'}</p>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>{project.owner ? 'Autor' : 'Cliente'}</span>
+              <p style={{ fontSize: '0.95rem', color: '#ffffff', fontWeight: 600 }}>{project.owner || project.client || 'Confidencial'}</p>
             </div>
             <div>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Año de Desarrollo</span>
-              <p style={{ fontSize: '0.95rem', color: '#ffffff', fontWeight: 600 }}>{project.year || '2024'}</p>
+              {project.portfolioUrl ? <>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Fuente</span>
+                <p><a href={project.portfolioUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-cyan)' }}>Portafolio del autor <ExternalLink size={14} aria-hidden="true" /></a></p>
+              </> : <>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Año de Desarrollo</span>
+                <p style={{ fontSize: '0.95rem', color: '#ffffff', fontWeight: 600 }}>{project.year || '2024'}</p>
+              </>}
             </div>
           </div>
 
