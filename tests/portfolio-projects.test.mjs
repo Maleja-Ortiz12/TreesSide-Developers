@@ -26,7 +26,7 @@ const WITH_IMAGES = {
   'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'emisoras-latinas',
   'Entre Lanas y Fragancias': 'entre-lanas-y-fragancias',
 };
-const WITHOUT_IMAGES = ['Radio Navidad', 'Calculadora de contenedores', 'Libres en Cristo Jesús', 'Sistema de gestión de inventarios', 'Aplicación de gestión agropecuaria'];
+const WITHOUT_IMAGES = ['Radio Navidad', 'Calculadora de contenedores', 'Libres en Cristo Jesús', 'API de Tienda + Asistente IA', 'Sistema de gestión de inventarios', 'Aplicación de gestión agropecuaria'];
 
 test('every portfolio project is listed with the image its portfolio publishes', async () => {
   const section = await projectsSection();
@@ -69,4 +69,14 @@ test('template demo projects are removed', async () => {
   for (const title of ['Spacerolloph VR', 'Business Analytics', 'Corporación Financiera Andina', 'Arquitectura &amp; Diseño Studio']) {
     assert.ok(!section.includes(title), title);
   }
+});
+
+test('project ids are clean slugs and Jorge store API links to its repository', async () => {
+  const section = await projectsSection();
+  const ids = [...section.matchAll(/data-project="([^"]+)"/g)].map(m => m[1]);
+  for (const id of ids) assert.match(id, /^equipo-[a-z0-9]+(?:-[a-z0-9]+)*$/, id);
+  assert.ok(ids.includes('equipo-libres-en-cristo-jesus'));
+  const { readFile } = await import('node:fs/promises');
+  const team = await readFile('src/data/team.ts', 'utf8');
+  assert.ok(team.includes("link: 'https://github.com/jorge-puentes-b/tienda-api-efcore'"));
 });

@@ -69,7 +69,7 @@ export const QUICK_FEATURES = [
 
 const TEAM_PROJECTS: Project[] = TEAM_MEMBERS.flatMap(member =>
   member.projects.map(project => ({
-    id: `equipo-${project.name.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-')}`,
+    id: `equipo-${project.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`,
     title: project.name,
     tag: project.stack,
     description: project.description,
@@ -99,7 +99,7 @@ export const SERVICES: Service[] = [
     items: [
       'Interfaces con React, Next.js, TypeScript y Tailwind CSS',
       'Backend con NestJS, Laravel y .NET',
-      'Comercio electrónico multivendedor, tiendas en línea y aplicaciones de reservas',
+      'Comercio electrónico multivendedor, tiendas en línea, aplicaciones de reservas y APIs REST',
       'Sitios y gestores de contenido con WordPress'
     ]
   },
@@ -203,7 +203,13 @@ export const TECHNOLOGIES: Technology[] = [
   { name: 'Pandas', category: 'Análisis de datos', color: '#e70488' },
   { name: 'Expo', category: 'Móvil', color: '#e2e8f0' },
   { name: 'GitHub Actions', category: 'DevOps', color: '#2088ff' },
-  { name: 'Power Automate', category: 'Automatización', color: '#0066ff' }
+  { name: 'Power Automate', category: 'Automatización', color: '#0066ff' },
+  { name: 'HTML y CSS', category: 'Frontend', color: '#e34f26' },
+  { name: 'Vite', category: 'Frontend', color: '#bd34fe' },
+  { name: 'Framer Motion', category: 'Animación', color: '#e2e8f0' },
+  { name: 'Medusa', category: 'Comercio electrónico', color: '#e2e8f0' },
+  { name: 'Firebase', category: 'Notificaciones', color: '#ffca28' },
+  { name: 'Excel', category: 'Analítica', color: '#217346' }
 ];
 
 export const PURPOSE_PILLARS: ValuePillar[] = [

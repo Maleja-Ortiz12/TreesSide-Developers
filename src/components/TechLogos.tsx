@@ -290,6 +290,52 @@ export function TechLogo({ name }: { name: string }) {
           <path fill="#4da3ff" d="M48 20h64L80 64z" opacity="0.85" />
         </svg>
       );
+    case 'HTML y CSS':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#e34f26" d="M8 6h56v116L18 108z" />
+          <path fill="#1572b6" d="M64 6h56l-10 102-46 14z" />
+          <text x="64" y="76" fill="#ffffff" fontSize="40" fontWeight="800" textAnchor="middle" fontFamily="sans-serif">5|3</text>
+        </svg>
+      );
+    case 'Vite':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#41d1ff" d="M8 20l56 102 56-102-56 10z" opacity="0.9" />
+          <path fill="#bd34fe" d="M76 8L44 16l-6 48 14-2-6 34 34-48-16 2z" />
+        </svg>
+      );
+    case 'Framer Motion':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#bb4bff" d="M24 8h80v40H64z" />
+          <path fill="#e2e8f0" d="M24 48h40l40 40H24z" />
+          <path fill="#0099ff" d="M24 88h40v40z" />
+        </svg>
+      );
+    case 'Medusa':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#e2e8f0" d="M64 6l52 30v56l-52 30-52-30V36z" />
+          <circle cx="64" cy="64" r="22" fill="#0f172a" />
+        </svg>
+      );
+    case 'Firebase':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#ffa000" d="M20 104L36 8l22 40z" />
+          <path fill="#f57c00" d="M58 48L70 24l38 80z" />
+          <path fill="#ffca28" d="M20 104l88 0-44 22z" />
+        </svg>
+      );
+    case 'Excel':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <rect x="34" y="12" width="84" height="104" rx="8" fill="#21a366" />
+          <rect x="10" y="30" width="62" height="68" rx="6" fill="#107c41" />
+          <path d="M24 46l24 36M48 46L24 82" stroke="#ffffff" strokeWidth="8" strokeLinecap="round" />
+        </svg>
+      );
     default:
       return (
         <span aria-hidden="true" data-tech-fallback="true" style={{
