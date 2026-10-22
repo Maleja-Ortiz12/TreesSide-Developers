@@ -21,6 +21,8 @@ export interface TeamMember {
   portfolio: string;
   contributions: string[];
   education: string;
+  /** What the member is passionate about, summarized from their portfolio. */
+  passion: string;
   projects: MemberProject[];
 }
 
@@ -37,6 +39,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       'Despliegues en Microsoft Azure e integración de asistentes con Azure OpenAI.',
     ],
     education: 'Ingeniero de Sistemas, Universidad de Cundinamarca. Formación complementaria en desarrollo Full Stack y Unity 3D.',
+    passion: 'Le apasiona partir de una necesidad concreta y convertirla en una solución completa que conecta interfaces, APIs, datos e inteligencia artificial aplicada.',
     projects: [
       { name: 'Ocho80', description: 'Proyecto propio de rifas y bingo digital con NestJS, React, Flutter y comunicación en tiempo real.', category: 'Tiempo real', stack: 'NestJS · React · Flutter', image: '/images/projects/ocho80.webp' },
       { name: 'Radio Navidad', description: 'Proyecto propio de radio web con reproducción en vivo y administración de contenido visual.', category: 'Radio web', stack: 'Next.js · TypeScript' },
@@ -60,6 +63,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       'Optimización de procesos mediante flujos de automatización con n8n.',
     ],
     education: 'Ingeniería en Sistemas y Computación, Universidad de Cundinamarca — Extensión Chía. Según su portafolio, formación entre enero de 2022 y septiembre de 2026.',
+    passion: 'Le apasionan los datos y la automatización: analizar información para tomar mejores decisiones y crear flujos que eliminan el trabajo manual.',
     projects: [
       { name: 'Floraltech E-Commerce', description: 'Tienda en línea con carrito, pasarela de pagos simulada y panel administrativo, presentada en su portafolio.', category: 'Web & E-Commerce', stack: 'PHP · MySQL · Bootstrap', image: '/images/projects/floraltech.webp', link: 'https://floraltech.rf.gd/Original-Floraltech/' },
       { name: 'Atherium 3D Game', description: 'Videojuego de ambientación medieval desarrollado en Unity con mecánicas interactivas y 3D.', category: 'Videojuegos', stack: 'Unity · C#', image: '/images/projects/atherium.webp', link: 'https://jorgepb.itch.io/atherium' },
@@ -82,6 +86,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       'Experiencia práctica en monitoreo de alertas de seguridad, documentación y automatización de reportes.',
     ],
     education: 'Formación en Tecnología en Análisis y Desarrollo de Software, SENA. Según su portafolio, certificación en trámite. Formación complementaria en backend con NestJS.',
+    passion: 'Le apasiona crear software seguro, desde aplicaciones web y móviles hasta videojuegos, y apoyar las ideas de emprendedores con innovación y automatización.',
     projects: [
       { name: 'Dimension Shift', description: 'Videojuego de peleas 3D con escenarios aleatorios y dos niveles, desarrollado con Unity y C#.', category: 'Videojuegos', stack: 'Unity · C#', image: '/images/projects/dimension-shift.webp' },
       { name: 'UptownHair', description: 'Aplicación de reservas para salones de belleza con React, NestJS, TypeScript y MySQL.', category: 'Aplicaciones de reservas', stack: 'React · NestJS · MySQL', image: '/images/projects/uptownhair.webp' },

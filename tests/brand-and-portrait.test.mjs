@@ -10,6 +10,7 @@ async function get(path) {
 }
 
 for (const path of ['/nosotros', '/equipo']) {
+  const hasTeam = path === '/equipo';
   test(`${path} shows TreesSide with Developers as its own subtitle`, async () => {
     const html = await (await get(path)).text();
     const header = html.match(/<header\b[\s\S]*?<\/header>/)?.[0];
@@ -22,6 +23,7 @@ for (const path of ['/nosotros', '/equipo']) {
     assert.match(html, /<title>[^<]*TreesSide Developers/);
     assert.ok(!html.includes('SoftZenkodoDevs'));
     assert.ok(html.includes('href="/equipo"'));
+    if (!hasTeam) return;
     const jorge = [...html.matchAll(/<article\b[\s\S]*?<\/article>/g)]
       .map(([article]) => article).find(article => article.includes('Jorge Luis Puentes Brochero'));
     const portrait = jorge?.match(/<img\b[^>]*>/)?.[0];

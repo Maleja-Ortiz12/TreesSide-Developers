@@ -28,10 +28,8 @@ test('dedicated team route has expanded profiles, large photos and return links'
   assert.ok(html.includes('href="/contacto"'));
 });
 
-test('about page links to the team page and keeps the team summary photos', async () => {
+test('about page links to the team page', async () => {
   const html = await page('/nosotros');
   assert.ok(html.includes('href="/equipo"'));
   assert.ok(html.includes('id="sobre-nosotros"'));
-  assert.ok(html.includes('id="equipo"'));
-  assert.ok(html.includes('width="112"'));
 });

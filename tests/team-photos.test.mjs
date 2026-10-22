@@ -13,7 +13,7 @@ async function get(path) {
 }
 
 test('team renders all three local portraits alongside existing portfolio links', async () => {
-  const response = await get('/nosotros');
+  const response = await get('/equipo');
   assert.equal(response.status, 200);
   const html = await response.text();
   const section = html.match(/<section id="equipo"[\s\S]*?<\/section>/)?.[0];
@@ -22,8 +22,8 @@ test('team renders all three local portraits alongside existing portfolio links'
     const image = section.match(new RegExp(`<img[^>]*src="/images/team/${slug}\\.webp"[^>]*>`))?.[0];
     assert.ok(image, `Missing portrait: ${name}`);
     assert.ok(image.includes(`alt="${name}"`));
-    assert.ok(image.includes('width="112"'));
-    assert.ok(image.includes('height="112"'));
+    assert.ok(image.includes('width="384"'));
+    assert.ok(image.includes('height="384"'));
     assert.ok(image.includes('loading="lazy"'));
   }
   for (const url of [

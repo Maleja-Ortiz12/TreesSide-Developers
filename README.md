@@ -20,7 +20,7 @@ Plataforma frontend oficial para **TreesSide Developers**, desarrollada con **Ne
   | `/` | Hero principal |
   | `/servicios` | Servicios y tecnologías que usamos |
   | `/proyectos` | Proyectos destacados y del equipo |
-  | `/nosotros` | Sobre nosotros, resumen del equipo y proceso |
+  | `/nosotros` | Objetivo del equipo, lo que nos apasiona y proceso |
   | `/equipo` | Perfiles ampliados del equipo |
   | `/contacto` | Datos de contacto y formulario |
 
@@ -33,7 +33,7 @@ Plataforma frontend oficial para **TreesSide Developers**, desarrollada con **Ne
      - 9 tarjetas con ejemplos de lo que el equipo puede construir, basados en sus portafolios: *Desarrollo Web* (tiendas, aplicaciones de reservas, APIs), *Bases de Datos*, *Cloud & DevOps* (Azure, GitHub Actions), *Aplicaciones Móviles* (Flutter, React Native), *Business Intelligence*, *Seguridad & Mantenimiento*, *Videojuegos con Unity*, *Automatización con n8n* y *Plataformas conectadas* (radio web, tiempo real, asistentes con Azure OpenAI).
   5. **Tecnologías que usamos (`/servicios`)**: Cuadrícula con las tecnologías declaradas en los portafolios del equipo: lenguajes (*JavaScript, TypeScript, PHP, Dart, SQL, C#, C++, Python*), frameworks (*Next.js, NestJS, React, Laravel, .NET, Node.js, Flutter, React Native, Expo, Unity, Tailwind CSS, Bootstrap, WordPress, Socket.IO*), datos (*PostgreSQL, MySQL, SQL Server, Prisma, Pandas, Power BI*) y herramientas (*n8n, Power Automate, Azure, Docker, GitHub Actions, Git, Linux*). Cada una tiene su logo SVG en `TechLogos.tsx` y una animación 3D (flotación continua, inclinación según el cursor y giro al pasar el mouse) que se desactiva con *prefers-reduced-motion*. Para agregar una, edítala en `TECHNOLOGIES` de `src/data/content.ts` y agrega su logo en `TechLogos.tsx`; sin logo se muestra una insignia con su abreviatura.
   6. **Banners CTA Intermedios**: Banners estilizados con el árbol cibernético resplandeciente invitando a iniciar proyectos.
-  7. **Sobre Nosotros (`/nosotros`)**: Descripción de misión y 4 pilares: *Innovación Constante*, *Trabajo en Equipo*, *Calidad en el Código*, *Enfoque en el Cliente*.
+  7. **Sobre Nosotros (`/nosotros`)**: Nuestro objetivo en 4 pilares (`PURPOSE_PILLARS` en `src/data/content.ts`): *Software al alcance de todos*, *Automatizar lo repetitivo*, *Innovar con propósito* y *Para empresas de todo tamaño* (de microempresas y pequeños emprendimientos a grandes empresas); la convicción de que la tecnología y la innovación son herramientas para que Colombia crezca; y **Lo que nos apasiona**, con la pasión de cada integrante (campo `passion` en `src/data/team.ts`, resumido de su portafolio) y un enlace a `/equipo`. No repite la sección del equipo.
   8. **Nuestro Proceso (`/nosotros`)**: Línea de tiempo de 4 pasos con conectores animados (*Analizamos*, *Diseñamos*, *Desarrollamos*, *Entregamos*).
   9. **Contáctanos (`/contacto`)**: Tarjetas con datos directos de contacto (correo con función para copiar con un clic, ubicación en Colombia, WhatsApp directo) y formulario interactivo con validación y confirmación en tiempo real.
   10. **Pie de Página (`Footer`)**: Logotipo de marca, enlaces rápidos a cada página, redes sociales (GitHub, LinkedIn, YouTube, X) y lema *"Código que construye futuro"*.
@@ -58,11 +58,11 @@ TreesSide Developers/
 │   │   ├── page.tsx               # Inicio (hero)
 │   │   ├── servicios/page.tsx     # Servicios y tecnologías
 │   │   ├── proyectos/page.tsx     # Proyectos
-│   │   ├── nosotros/page.tsx      # Sobre nosotros, equipo y proceso
+│   │   ├── nosotros/page.tsx      # Sobre nosotros (objetivo y pasiones) y proceso
 │   │   ├── equipo/page.tsx        # Perfiles ampliados del equipo
 │   │   └── contacto/page.tsx      # Contacto
 │   ├── components/
-│   │   ├── AboutSection.tsx       # Sección Sobre Nosotros y pilares de valor
+│   │   ├── AboutSection.tsx       # Objetivo, convicción y lo que apasiona a cada integrante
 │   │   ├── ContactSection.tsx     # Sección de contacto y formulario interactivo
 │   │   ├── Footer.tsx             # Pie de página y enlaces sociales
 │   │   ├── Hero.tsx               # Portada principal y tarjetas de características
@@ -104,7 +104,7 @@ npm run dev
 ```
 La aplicación estará disponible de inmediato en [http://localhost:3000](http://localhost:3000).
 
-La página **Nuestro equipo** está en `/equipo`, accesible desde el menú principal y desde el resumen en `/#equipo` (también visible en la tercera columna). Presenta fotos grandes, áreas de aporte, formación y proyectos personales publicados en los portafolios; no atribuye esos proyectos a TreesSide Developers. Comparte el header del inicio (logo, menú de escritorio y móvil): desde `/equipo` los enlaces a Inicio, Servicios, Proyectos, Sobre Nosotros y Contacto vuelven a la sección correspondiente en el home. El enlace Equipo permanece activo en la página del equipo. Los perfiles, enlaces y datos ampliados se editan en `src/data/team.ts`; el resumen del inicio está en `src/components/TeamSection.tsx` y sus estilos en `src/components/TeamSection.module.css`. La galería de la página propia está en `src/components/TeamGallery.tsx` y `src/components/TeamGallery.module.css`. La ruta y sus metadatos están en `src/app/equipo/page.tsx`. Incluye fotos extraídas de los tres portafolios y optimizadas localmente a WebP de hasta 384px en `public/images/team/`, tecnologías declaradas en los portafolios. El perfil de Jorge incluye desarrollo de software, datos y automatización; su información se extrajo del código JavaScript público de su portafolio, porque el HTML inicial no contiene el contenido renderizado. Las fotos se muestran con carga diferida y dimensiones reservadas, sin depender de servidores externos. No se generan porcentajes de habilidades.
+La página **Nuestro equipo** está en `/equipo`, accesible desde el menú principal, el pie de página y el enlace de **Lo que nos apasiona** en `/nosotros`. Presenta fotos grandes, áreas de aporte, formación y proyectos personales publicados en los portafolios; no atribuye esos proyectos a TreesSide Developers y marca como *Experiencia laboral* los productos de otras empresas. Comparte el header de todas las páginas (logo, menú de escritorio y móvil), que enlaza a cada página de sección. El enlace Equipo permanece activo en la página del equipo. Los perfiles, enlaces y datos ampliados se editan en `src/data/team.ts`; La galería de la página propia está en `src/components/TeamGallery.tsx` y `src/components/TeamGallery.module.css`. La ruta y sus metadatos están en `src/app/equipo/page.tsx`. Incluye fotos extraídas de los tres portafolios y optimizadas localmente a WebP de hasta 384px en `public/images/team/`, tecnologías declaradas en los portafolios. El perfil de Jorge incluye desarrollo de software, datos y automatización; su información se extrajo del código JavaScript público de su portafolio, porque el HTML inicial no contiene el contenido renderizado. Las fotos se muestran con carga diferida y dimensiones reservadas, sin depender de servidores externos. No se generan porcentajes de habilidades.
 
 En `/equipo`, los integrantes aparecen en una cuadrícula adaptable, con foto grande y descripción breve debajo. El título **Talento que crece** no fija una cantidad: se agregan perfiles en `src/data/team.ts`, sin añadir selectores CSS por integrante. **Ver perfil** cambia a una vista donde solo aparece la tarjeta seleccionada, centrada y ocupando todo el ancho del contenedor; no desplaza la fila ni utiliza desplazamiento horizontal. La foto y descripción quedan a la izquierda y la información a la derecha, en el flujo normal de la página. **Volver al equipo** restaura la cuadrícula y devuelve el foco al botón del integrante seleccionado. Hasta 760px, foto e información se apilan para mantener la lectura. Los botones tienen `aria-expanded` y `aria-controls`; los perfiles no seleccionados y su contenido están ocultos. Los controles funcionan con clic, toque y teclado (Enter/Espacio).
 

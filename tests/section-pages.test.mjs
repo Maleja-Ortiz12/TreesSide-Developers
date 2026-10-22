@@ -12,7 +12,7 @@ const ROUTES = [
   { path: '/', title: /<title>TreesSide Developers/, sections: ['inicio'] },
   { path: '/servicios', title: /<title>Servicios \| TreesSide Developers/, sections: ['servicios', 'tecnologias'] },
   { path: '/proyectos', title: /<title>Proyectos \| TreesSide Developers/, sections: ['proyectos'] },
-  { path: '/nosotros', title: /<title>Sobre nosotros \| TreesSide Developers/, sections: ['sobre-nosotros', 'equipo', 'proceso'] },
+  { path: '/nosotros', title: /<title>Sobre nosotros \| TreesSide Developers/, sections: ['sobre-nosotros', 'proceso'] },
   { path: '/contacto', title: /<title>Contacto \| TreesSide Developers/, sections: ['contacto'] },
 ];
 const ALL_SECTIONS = ['inicio', 'servicios', 'tecnologias', 'proyectos', 'sobre-nosotros', 'equipo', 'proceso', 'contacto'];

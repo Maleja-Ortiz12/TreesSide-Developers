@@ -206,26 +206,26 @@ export const TECHNOLOGIES: Technology[] = [
   { name: 'Power Automate', category: 'Automatización', color: '#0066ff' }
 ];
 
-export const VALUE_PILLARS: ValuePillar[] = [
+export const PURPOSE_PILLARS: ValuePillar[] = [
   {
-    title: 'Innovación Constante',
-    description: 'Exploramos nuevas tecnologías para construir productos de vanguardia.',
-    iconName: 'sparkles'
+    title: 'Software al alcance de todos',
+    description: 'Creamos software accesible y a la medida de cada necesidad, para que la tecnología no sea un privilegio de pocos.',
+    iconName: 'globe'
   },
   {
-    title: 'Trabajo en Equipo',
-    description: 'Colaboración cercana contigo y entre nosotros para asegurar el éxito.',
-    iconName: 'users'
+    title: 'Automatizar lo repetitivo',
+    description: 'Automatizamos tareas para quitar los procesos manuales repetitivos y liberar tiempo para lo que realmente aporta valor.',
+    iconName: 'workflow'
   },
   {
-    title: 'Calidad en el Código',
-    description: 'Arquitecturas limpias, escalables y con las mejores prácticas del sector.',
-    iconName: 'check-circle'
+    title: 'Innovar con propósito',
+    description: 'Queremos innovar: buscamos nuevas formas de resolver problemas reales con tecnología moderna.',
+    iconName: 'lightbulb'
   },
   {
-    title: 'Enfoque en el Cliente',
-    description: 'Tus objetivos y el valor para tus usuarios son el norte de cada entrega.',
-    iconName: 'target'
+    title: 'Para empresas de todo tamaño',
+    description: 'Acompañamos desde microempresas y pequeños emprendimientos hasta grandes empresas.',
+    iconName: 'building'
   }
 ];
 
