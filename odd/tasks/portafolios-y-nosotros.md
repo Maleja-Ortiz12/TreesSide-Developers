@@ -17,10 +17,11 @@ Branch: `feat/portafolios-y-nosotros` (from `feat/paginas-por-seccion`, commit 0
 
 - T1 [S1] Services and technologies from portfolios — inline — commit: a70675e (done)
 - T2 [S2, S3, S4] Projects with local images, member experience, demo projects removed — inline — commit: 3bbbe26 (done)
-- T3 [S5, S6] /nosotros purpose and passions, team section removed — inline — commit: see L4 (done)
+- T3 [S5, S6] /nosotros purpose and passions, team section removed — inline — commit: a15b248 (done)
 
 ## Log
 
 - L1 (user, verbatim): "en los servicios y tecnologias verifica que no falten acorde a los portafolios que tenemos, igual en los proyectos, falta traer proyectos e imagenes de los proyectos y en sobre nosotros quita la parte de nuestro equipo ya que este ya existe en la seccion de equipo, y trae mas bien la informacion de lo que aa acad uno en general nos apsiona y nuestro objetivo, como crear softwares que esten al alcance de todos, que ayuden a automaizar cosas para quitar los procesos manuales repetitivos, que queremos innovar, ayudar a microempresas y pequeños empreendimientos hasta grandes empresas para que Colombia sea un pais mas tecnologico y productivo y creemos que la tecnologiA e inovacion es una herramienta para crecer como pais"
 - L2 (user decisions): Luhos/Gudfy/Tanku → "Sí, como experiencia del integrante"; Spacerolloph VR and Business Analytics → "Quitarlos".
 - L3 (evidence): portfolio sources fetched to `.atl/portfolios/` (gitignored). Ronaldo and María render server-side HTML; Jorge's content lives in `/assets/index-D_W1cOep.js`. María's in-development items (AgroSoft, Sinergia) and personal portfolio sites are excluded as not delivered projects.
+- L4 (evidence): T1 a70675e, T2 3bbbe26, T3 a15b248. 47/47 tests pass, tsc and next build pass. Member passions are summarized from each portfolio and need the team's confirmation. Fixed leftover SoftZenkodoDevs brand on the about card. TeamSection component removed (no longer used).
