@@ -2,6 +2,130 @@ import React from 'react';
 
 export function TechLogo({ name }: { name: string }) {
   switch (name) {
+    case 'JavaScript':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <rect width="128" height="128" rx="14" fill="#f7df1e" />
+          <text x="112" y="110" fill="#1a1a1a" fontSize="54" fontWeight="800" textAnchor="end" fontFamily="sans-serif">JS</text>
+        </svg>
+      );
+    case 'TypeScript':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <rect width="128" height="128" rx="14" fill="#3178c6" />
+          <text x="112" y="110" fill="#ffffff" fontSize="54" fontWeight="800" textAnchor="end" fontFamily="sans-serif">TS</text>
+        </svg>
+      );
+    case 'PHP':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <ellipse cx="64" cy="64" rx="62" ry="34" fill="#777bb3" />
+          <text x="64" y="77" fill="#ffffff" fontSize="38" fontWeight="800" fontStyle="italic" textAnchor="middle" fontFamily="sans-serif">php</text>
+        </svg>
+      );
+    case 'Dart':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#01579b" d="M32 96L12 76c-3-3-4-6-4-10V38l44 44z" />
+          <path fill="#40c4ff" d="M8 38L38 8h26l52 52v34L94 116z" />
+          <path fill="#0175c2" d="M38 8l78 78v30H86z" opacity="0.55" />
+          <path fill="#01579b" d="M32 96h54l30 20H52z" />
+        </svg>
+      );
+    case 'SQL':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#0e7490" d="M20 30v68c0 10 20 18 44 18s44-8 44-18V30z" />
+          <ellipse cx="64" cy="30" rx="44" ry="18" fill="#38bdf8" />
+          <text x="64" y="88" fill="#ffffff" fontSize="30" fontWeight="800" textAnchor="middle" fontFamily="sans-serif">SQL</text>
+        </svg>
+      );
+    case 'C++':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#00599c" d="M115.4 30.7L67.1 2.9c-1.9-1.1-4.3-1.1-6.2 0L12.6 30.7c-1.9 1.1-3.1 3.2-3.1 5.4v55.8c0 2.2 1.2 4.3 3.1 5.4l48.3 27.9c1.9 1.1 4.3 1.1 6.2 0l48.3-27.9c1.9-1.1 3.1-3.2 3.1-5.4V36.1c0-2.2-1.2-4.3-3.1-5.4z" />
+          <text x="64" y="78" fill="#ffffff" fontSize="40" fontWeight="800" textAnchor="middle" fontFamily="sans-serif">C++</text>
+        </svg>
+      );
+    case 'Next.js':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <circle cx="64" cy="64" r="60" fill="#000000" stroke="#ffffff" strokeWidth="4" />
+          <path d="M46 90V38l44 56" fill="none" stroke="#ffffff" strokeWidth="9" strokeLinejoin="round" />
+          <path d="M84 38v34" stroke="#ffffff" strokeWidth="9" />
+        </svg>
+      );
+    case 'NestJS':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <circle cx="64" cy="64" r="60" fill="#e0234e" />
+          <path fill="#ffffff" d="M34 92V40l10-10 6 14 14-6 14 6 6-14 10 10v52c-8 8-20 12-30 12s-22-4-30-12z" />
+          <circle cx="52" cy="62" r="5" fill="#e0234e" />
+          <circle cx="76" cy="62" r="5" fill="#e0234e" />
+          <path d="M58 80l6 5 6-5" fill="none" stroke="#e0234e" strokeWidth="4" strokeLinecap="round" />
+        </svg>
+      );
+    case 'PostgreSQL':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#336791" d="M64 10C34 10 16 30 16 56c0 18 8 32 20 40 2 10 6 22 14 22 6 0 8-8 8-18 2 0 10 0 12 0 0 10 2 18 8 18 8 0 12-12 14-22 12-8 20-22 20-40 0-26-18-46-48-46z" />
+          <path fill="#ffffff" d="M84 54c8 2 14 10 12 22-2 8-8 10-12 8l2-14z" />
+          <circle cx="50" cy="52" r="7" fill="#ffffff" />
+          <circle cx="50" cy="52" r="3" fill="#1e293b" />
+          <circle cx="76" cy="52" r="7" fill="#ffffff" />
+          <circle cx="76" cy="52" r="3" fill="#1e293b" />
+        </svg>
+      );
+    case 'Flutter':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#54c5f8" d="M78 6L18 66l18 18L114 6z" />
+          <path fill="#54c5f8" d="M78 62H114L66 110 48 92z" />
+          <path fill="#01579b" d="M66 110l12 12h36L84 92z" />
+          <path fill="#29b6f6" d="M48 92l18-18 18 18-18 18z" />
+        </svg>
+      );
+    case 'React Native':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <rect x="30" y="6" width="68" height="116" rx="12" fill="#0f172a" stroke="#61dafb" strokeWidth="5" />
+          <g transform="translate(64 62) scale(2.3)">
+            <circle r="2.4" fill="#61dafb" />
+            <g stroke="#61dafb" strokeWidth="1.3" fill="none">
+              <ellipse rx="11" ry="4.2" />
+              <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+              <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+            </g>
+          </g>
+        </svg>
+      );
+    case 'Unity':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#f8fafc" d="M64 8l48 28-48 28-48-28z" />
+          <path fill="#94a3b8" d="M16 36l48 28v56L16 92z" />
+          <path fill="#cbd5e1" d="M112 36L64 64v56l48-28z" />
+          <path d="M64 8v56M16 36l48 28 48-28" fill="none" stroke="#0f172a" strokeWidth="3" />
+        </svg>
+      );
+    case 'n8n':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path d="M22 64h28l14-24h22M64 64l14 24h22" fill="none" stroke="#ff6d5a" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="18" cy="64" r="12" fill="#ff6d5a" />
+          <circle cx="54" cy="64" r="10" fill="#ff6d5a" />
+          <circle cx="102" cy="40" r="12" fill="#ff6d5a" />
+          <circle cx="102" cy="88" r="12" fill="#ff6d5a" />
+        </svg>
+      );
+    case 'Azure':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#0089d6" d="M56 12h30L42 116H10z" />
+          <path fill="#35c1f1" d="M90 12l32 104H56l28-20-26-30z" />
+          <path fill="#0078d4" d="M58 66l26 30-28 20H10z" />
+        </svg>
+      );
     case 'C#':
       return (
         <svg viewBox="0 0 128 128" width="36" height="36" fill="currentColor">
@@ -100,7 +224,7 @@ export function TechLogo({ name }: { name: string }) {
       );
     default:
       return (
-        <span aria-hidden="true" style={{
+        <span aria-hidden="true" data-tech-fallback="true" style={{
           width: 36, height: 36, display: 'grid', placeItems: 'center',
           border: '1px solid var(--border-cyan)', borderRadius: 8,
           fontSize: 11, fontWeight: 700, color: 'var(--primary-cyan)'

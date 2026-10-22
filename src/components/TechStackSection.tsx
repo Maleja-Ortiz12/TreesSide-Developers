@@ -7,6 +7,20 @@ import { TechLogo } from './TechLogos';
 import { Mail } from 'lucide-react';
 
 export function TechStackSection() {
+  const tilt = (event: React.MouseEvent<HTMLDivElement>) => {
+    const card = event.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    card.style.setProperty('--tilt-x', `${(-y * 18).toFixed(2)}deg`);
+    card.style.setProperty('--tilt-y', `${(x * 18).toFixed(2)}deg`);
+  };
+
+  const resetTilt = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.currentTarget.style.setProperty('--tilt-x', '0deg');
+    event.currentTarget.style.setProperty('--tilt-y', '0deg');
+  };
+
   const scrollToContact = () => {
     const el = document.getElementById('contacto');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -35,11 +49,16 @@ export function TechStackSection() {
           gap: '16px',
           marginBottom: '70px'
         }} className="tech-grid">
-          {TECHNOLOGIES.map((tech) => (
+          {TECHNOLOGIES.map((tech, index) => (
             <div
               key={tech.name}
-              className="glass-card"
+              data-tech={tech.name}
+              className="glass-card tech-card-3d"
+              onMouseMove={tilt}
+              onMouseLeave={resetTilt}
               style={{
+                '--tech-color': tech.color,
+                '--orbit-delay': `${(index % 6) * -0.6}s`,
                 padding: '24px 16px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -48,15 +67,13 @@ export function TechStackSection() {
                 gap: '14px',
                 textAlign: 'center',
                 cursor: 'default'
-              }}
+              } as React.CSSProperties}
             >
-              <div style={{
-                transition: 'transform 0.3s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }} className="tech-icon-wrap">
-                <TechLogo name={tech.name} />
+              <div className="tech-icon-stage" aria-hidden="true">
+                <span className="tech-icon-halo" />
+                <div className="tech-icon-wrap">
+                  <TechLogo name={tech.name} />
+                </div>
               </div>
 
               <div>
@@ -169,8 +186,70 @@ export function TechStackSection() {
       </div>
 
       <style jsx>{`
-        .glass-card:hover .tech-icon-wrap {
-          transform: translateY(-4px) scale(1.1);
+        .tech-card-3d {
+          --tilt-x: 0deg;
+          --tilt-y: 0deg;
+          transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+          transform-style: preserve-3d;
+          transition: transform 0.2s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
+          will-change: transform;
+        }
+        .tech-card-3d:hover {
+          border-color: var(--tech-color);
+          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45), 0 0 22px color-mix(in srgb, var(--tech-color) 35%, transparent);
+        }
+        .tech-icon-stage {
+          position: relative;
+          width: 56px;
+          height: 56px;
+          display: grid;
+          place-items: center;
+          perspective: 400px;
+          transform-style: preserve-3d;
+          transform: translateZ(30px);
+        }
+        .tech-icon-halo {
+          position: absolute;
+          inset: 4px;
+          border-radius: 50%;
+          background: radial-gradient(circle, color-mix(in srgb, var(--tech-color) 45%, transparent) 0%, transparent 70%);
+          filter: blur(8px);
+          transform: translateZ(-20px);
+          opacity: 0.55;
+          transition: opacity 0.3s ease;
+        }
+        .tech-card-3d:hover .tech-icon-halo {
+          opacity: 1;
+        }
+        .tech-icon-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transform-style: preserve-3d;
+          filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.55));
+          animation: tech-orbit 6s ease-in-out infinite;
+          animation-delay: var(--orbit-delay);
+        }
+        .tech-card-3d:hover .tech-icon-wrap {
+          animation: tech-spin 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes tech-orbit {
+          0%, 100% { transform: translateY(0) rotateY(-22deg) rotateX(8deg); }
+          50% { transform: translateY(-6px) rotateY(22deg) rotateX(-8deg); }
+        }
+        @keyframes tech-spin {
+          from { transform: translateZ(10px) rotateY(0deg) scale(1.15); }
+          to { transform: translateZ(10px) rotateY(360deg) scale(1.15); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .tech-card-3d {
+            transform: none;
+            transition: none;
+          }
+          .tech-icon-wrap,
+          .tech-card-3d:hover .tech-icon-wrap {
+            animation: none;
+          }
         }
         @media (max-width: 990px) {
           .tech-grid {
