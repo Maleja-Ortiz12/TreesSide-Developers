@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { FEATURED_PROJECTS, Project } from '@/data/content';
 import { ProjectModal } from './ProjectModal';
 import { ArrowRight, Mail } from 'lucide-react';
@@ -16,10 +18,8 @@ export function ProjectsSection() {
     ? FEATURED_PROJECTS
     : FEATURED_PROJECTS.filter(p => activeFilter === 'Proyectos del equipo' ? Boolean(p.owner) : p.category === activeFilter);
 
-  const scrollToContact = () => {
-    const el = document.getElementById('contacto');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
+  const router = useRouter();
+  const goToContact = () => router.push('/contacto');
 
   return (
     <section id="proyectos" style={{
@@ -276,8 +276,8 @@ export function ProjectsSection() {
 
           {/* Right: Contact Button */}
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <button
-              onClick={scrollToContact}
+            <Link
+              href="/contacto"
               className="btn btn-secondary"
               style={{
                 borderRadius: '10px',
@@ -287,7 +287,7 @@ export function ProjectsSection() {
             >
               <Mail size={18} />
               Contáctanos
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -296,7 +296,7 @@ export function ProjectsSection() {
       <ProjectModal
         project={selectedProject}
         onClose={() => setSelectedProject(null)}
-        onContactClick={scrollToContact}
+        onContactClick={goToContact}
       />
 
       <style jsx>{`

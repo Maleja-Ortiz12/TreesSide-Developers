@@ -25,16 +25,13 @@ test('dedicated team route has expanded profiles, large photos and return links'
   }
   for (const text of ['Áreas de aporte', 'Proyectos del portafolio', 'Formación', 'Ocho80', 'Dimension Shift', 'Floraltech E-Commerce']) assert.ok(html.includes(text), text);
   assert.ok(html.includes('href="/"'));
-  assert.ok(html.includes('href="/#contacto"'));
+  assert.ok(html.includes('href="/contacto"'));
 });
 
-test('home links to the team page and retains existing section navigation and photos', async () => {
-  const html = await page('/');
+test('about page links to the team page and keeps the team summary photos', async () => {
+  const html = await page('/nosotros');
   assert.ok(html.includes('href="/equipo"'));
-  for (const id of ['inicio', 'servicios', 'proyectos', 'sobre-nosotros', 'contacto']) {
-    assert.ok(html.includes(`href="#${id}"`), `Navigation ${id}`);
-    assert.ok(html.includes(`id="${id}"`), `Section ${id}`);
-  }
+  assert.ok(html.includes('id="sobre-nosotros"'));
   assert.ok(html.includes('id="equipo"'));
   assert.ok(html.includes('width="112"'));
 });

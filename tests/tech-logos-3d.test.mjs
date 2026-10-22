@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
 async function home() {
-  const response = await fetch(base, { signal: AbortSignal.timeout(15000) });
+  const response = await fetch(new URL('/servicios', base), { signal: AbortSignal.timeout(15000) });
   assert.equal(response.status, 200);
   return response.text();
 }

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function TeamPage() {
   return (
     <>
-      <Navbar activeSection="equipo" />
+      <Navbar />
       <main className={styles.main}><TeamGallery /></main>
       <footer className={styles.footer}>
         <div className="container">

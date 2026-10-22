@@ -1,22 +1,19 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { Logo } from './Logo';
 import { CONTACT_INFO } from '@/data/content';
 import { Github, Linkedin, Youtube, Twitter } from 'lucide-react';
 
 export function Footer() {
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const navItems = [
-    { label: 'Inicio', id: 'inicio' },
-    { label: 'Servicios', id: 'servicios' },
-    { label: 'Proyectos', id: 'proyectos' },
-    { label: 'Sobre Nosotros', id: 'sobre-nosotros' },
-    { label: 'Contacto', id: 'contacto' }
+    { label: 'Inicio', href: '/' },
+    { label: 'Servicios', href: '/servicios' },
+    { label: 'Proyectos', href: '/proyectos' },
+    { label: 'Sobre Nosotros', href: '/nosotros' },
+    { label: 'Equipo', href: '/equipo' },
+    { label: 'Contacto', href: '/contacto' }
   ];
 
   return (
@@ -64,12 +61,13 @@ export function Footer() {
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {navItems.map((item) => (
-                <li key={item.id}>
-                  <button
-                    onClick={() => scrollTo(item.id)}
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
                     style={{
                       background: 'none',
                       border: 'none',
+                      textDecoration: 'none',
                       color: 'var(--text-muted)',
                       fontSize: '0.9rem',
                       cursor: 'pointer',
@@ -80,7 +78,7 @@ export function Footer() {
                     onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
                   >
                     {item.label}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>

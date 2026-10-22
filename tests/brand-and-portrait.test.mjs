@@ -9,7 +9,7 @@ async function get(path) {
   return response;
 }
 
-for (const path of ['/', '/equipo']) {
+for (const path of ['/nosotros', '/equipo']) {
   test(`${path} shows TreesSide with Developers as its own subtitle`, async () => {
     const html = await (await get(path)).text();
     const header = html.match(/<header\b[\s\S]*?<\/header>/)?.[0];
@@ -40,7 +40,7 @@ test('Jorge portrait keeps the original vertical composition instead of a square
   assert.ok(Math.abs(width / height - 354 / 472) < 0.01, 'Keep original aspect ratio');
 });
 
-test('home keeps the current email contact rather than inventing a replacement', async () => {
-  const html = await (await get('/')).text();
+test('contact page keeps the current email contact rather than inventing a replacement', async () => {
+  const html = await (await get('/contacto')).text();
   assert.ok(html.includes('correo@softzenkododevs.com'));
 });

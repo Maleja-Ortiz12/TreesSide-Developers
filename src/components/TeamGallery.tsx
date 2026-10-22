@@ -140,7 +140,7 @@ export function TeamGallery() {
 
         <div className={styles.bottom}>
           <p>Experiencia, formación y proyectos personales según los portafolios de cada integrante. Estos trabajos no se presentan como proyectos de TreesSide Developers.</p>
-          <Link href="/#contacto" className="btn btn-secondary">Construyamos tu próxima idea <ArrowUpRight size={18} aria-hidden="true" /></Link>
+          <Link href="/contacto" className="btn btn-secondary">Construyamos tu próxima idea <ArrowUpRight size={18} aria-hidden="true" /></Link>
         </div>
       </div>
     </section>

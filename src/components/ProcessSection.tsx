@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
 
 export function ProcessSection() {
   return (
-    <section style={{
+    <section id="proceso" style={{
       padding: '70px 0 90px',
       position: 'relative'
     }}>

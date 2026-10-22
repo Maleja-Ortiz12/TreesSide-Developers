@@ -8,7 +8,7 @@ async function html(path) {
   return response.text();
 }
 
-for (const path of ['/', '/equipo']) {
+for (const path of ['/nosotros', '/equipo']) {
   test(`${path} uses neutral Latin American Spanish`, async () => {
     const page = await html(path);
     assert.match(page, /<html[^>]*lang="es-419"/);

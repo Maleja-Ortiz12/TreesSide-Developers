@@ -51,7 +51,7 @@ export function TeamSection({ detailed = false }: { detailed?: boolean }) {
           <Heading id="team-title" className="section-title">Personas reales.<br /><span className="text-gradient">Talento que construye.</span></Heading>
           <p className="section-subtitle">Detrás de cada solución hay personas con distintas fortalezas. Conoce nuestro equipo y explora el trabajo de cada integrante.</p>
           {detailed ? (
-            <Link className={styles.jumpLink} href="/#contacto">Hablemos de tu próximo proyecto <ArrowUpRight size={18} aria-hidden="true" /></Link>
+            <Link className={styles.jumpLink} href="/contacto">Hablemos de tu próximo proyecto <ArrowUpRight size={18} aria-hidden="true" /></Link>
           ) : (
             <Link className={styles.jumpLink} href="/equipo">Conoce al equipo en detalle <ArrowUpRight size={18} aria-hidden="true" /></Link>
           )}

@@ -6,61 +6,29 @@ import { usePathname } from 'next/navigation';
 import { Logo } from './Logo';
 import { Menu, X, Send } from 'lucide-react';
 
-interface NavbarProps {
-  activeSection?: string;
-}
+export const NAV_LINKS = [
+  { label: 'Inicio', href: '/' },
+  { label: 'Servicios', href: '/servicios' },
+  { label: 'Proyectos', href: '/proyectos' },
+  { label: 'Sobre Nosotros', href: '/nosotros' },
+  { label: 'Equipo', href: '/equipo' },
+];
 
-export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
+export function Navbar() {
   const pathname = usePathname();
-  const isHome = pathname === '/';
-  const homeHref = (hash: string) => isHome ? hash : `/${hash}`;
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentSection, setCurrentSection] = useState(activeSection);
-  const selectedSection = isHome ? currentSection : (pathname === '/equipo' ? 'equipo' : '');
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
-      if (!isHome) return;
-
-      // Section spy
-      const sections = ['inicio', 'servicios', 'proyectos', 'sobre-nosotros', 'equipo', 'contacto'];
-      const scrollPos = window.scrollY + 180;
-
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setCurrentSection(section);
-            break;
-          }
-        }
-      }
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 30);
     handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isHome]);
+  }, []);
 
-  const navLinks = [
-    { label: 'Inicio', href: homeHref('#inicio'), id: 'inicio' },
-    { label: 'Servicios', href: homeHref('#servicios'), id: 'servicios' },
-    { label: 'Proyectos', href: homeHref('#proyectos'), id: 'proyectos' },
-    { label: 'Sobre Nosotros', href: homeHref('#sobre-nosotros'), id: 'sobre-nosotros' },
-    { label: 'Equipo', href: '/equipo', id: 'equipo' },
-  ];
+  useEffect(() => setMobileMenuOpen(false), [pathname]);
 
-  const handleNavClick = (href: string) => {
-    setMobileMenuOpen(false);
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const isCurrent = (href: string) => pathname === href;
 
   return (
     <header style={{
@@ -82,7 +50,7 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
         height: '76px'
       }}>
         {/* Brand Logo */}
-        <Link href={homeHref('#inicio')} onClick={() => { if (isHome) handleNavClick('#inicio'); }} style={{ textDecoration: 'none' }}>
+        <Link href="/" aria-label="TreesSide Developers, ir al inicio" style={{ textDecoration: 'none' }}>
           <Logo size="md" showText={true} />
         </Link>
 
@@ -92,21 +60,13 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
           alignItems: 'center',
           gap: '32px'
         }} className="desktop-nav">
-          {navLinks.map((item) => {
-            const isActive = selectedSection === item.id;
+          {NAV_LINKS.map((item) => {
+            const isActive = isCurrent(item.href);
             return (
-              <a
-                key={item.id}
+              <Link
+                key={item.href}
                 href={item.href}
-                aria-current={isActive ? (isHome ? 'location' : 'page') : undefined}
-                onClick={(e) => {
-                  if (item.href.startsWith('#')) {
-                    e.preventDefault();
-                    handleNavClick(item.href);
-                  } else {
-                    setMobileMenuOpen(false);
-                  }
-                }}
+                aria-current={isActive ? 'page' : undefined}
                 style={{
                   color: isActive ? 'var(--primary-green)' : 'var(--text-muted)',
                   textDecoration: 'none',
@@ -137,22 +97,16 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
                     boxShadow: '0 0 10px var(--primary-green)'
                   }} />
                 )}
-              </a>
+              </Link>
             );
           })}
         </nav>
 
         {/* Right CTA Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <a
-            href={homeHref('#contacto')}
-            onClick={(e) => {
-              setMobileMenuOpen(false);
-              if (isHome) {
-                e.preventDefault();
-                handleNavClick('#contacto');
-              }
-            }}
+          <Link
+            href="/contacto"
+            aria-current={isCurrent('/contacto') ? 'page' : undefined}
             className="btn-outline-pill desktop-nav-btn"
             style={{
               textDecoration: 'none',
@@ -163,7 +117,7 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
             }}
           >
             Contacto
-          </a>
+          </Link>
 
           {/* Mobile hamburger menu toggle */}
           <button
@@ -194,21 +148,13 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
           flexDirection: 'column',
           gap: '16px'
         }}>
-          {navLinks.map((item) => (
-            <a
-              key={item.id}
+          {NAV_LINKS.map((item) => (
+            <Link
+              key={item.href}
               href={item.href}
-              aria-current={selectedSection === item.id ? (isHome ? 'location' : 'page') : undefined}
-              onClick={(e) => {
-                if (item.href.startsWith('#')) {
-                  e.preventDefault();
-                  handleNavClick(item.href);
-                } else {
-                  setMobileMenuOpen(false);
-                }
-              }}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
               style={{
-                color: selectedSection === item.id ? 'var(--primary-green)' : '#ffffff',
+                color: isCurrent(item.href) ? 'var(--primary-green)' : '#ffffff',
                 textDecoration: 'none',
                 fontSize: '1.1rem',
                 fontWeight: 600,
@@ -217,23 +163,16 @@ export function Navbar({ activeSection = 'inicio' }: NavbarProps) {
               }}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href={homeHref('#contacto')}
-            onClick={(e) => {
-              setMobileMenuOpen(false);
-              if (isHome) {
-                e.preventDefault();
-                handleNavClick('#contacto');
-              }
-            }}
+          <Link
+            href="/contacto"
             className="btn btn-primary"
             style={{ marginTop: '10px' }}
           >
             <Send size={18} />
             Contacto
-          </a>
+          </Link>
         </div>
       )}
 

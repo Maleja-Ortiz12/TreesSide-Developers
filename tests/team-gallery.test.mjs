@@ -51,8 +51,8 @@ test('gallery uses a scalable grid and a full-width centered profile', async () 
   assert.ok(css.includes('prefers-reduced-motion: reduce'));
 });
 
-test('home keeps its existing static summary rather than adopting the detail accordion', async () => {
-  const page = await html('/');
+test('about page keeps the static team summary rather than adopting the detail accordion', async () => {
+  const page = await html('/nosotros');
   const section = page.match(/<section id="equipo"[\s\S]*?<\/section>/)?.[0];
   assert.ok(section);
   assert.ok(!section.includes('<details'));

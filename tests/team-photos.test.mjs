@@ -13,7 +13,7 @@ async function get(path) {
 }
 
 test('team renders all three local portraits alongside existing portfolio links', async () => {
-  const response = await get('/');
+  const response = await get('/nosotros');
   assert.equal(response.status, 200);
   const html = await response.text();
   const section = html.match(/<section id="equipo"[\s\S]*?<\/section>/)?.[0];

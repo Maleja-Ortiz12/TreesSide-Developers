@@ -13,22 +13,32 @@ Plataforma frontend oficial para **TreesSide Developers**, desarrollada con **Ne
   - Tipografía moderna: **Outfit** y **JetBrains Mono**
 - **Logo Oficial Integrado**:
   - Uso del logo oficial del árbol tecnológico en la cabecera, hero, banners, sección "Sobre Nosotros" y pie de página.
-- **Vistas y Secciones**:
-  1. **Navegación Sticky**: Cabecera de cristal con scrollspy activo, enlaces de anclaje suave y menú móvil responsivo.
-  2. **Hero Principal (`#inicio`)**: Kicker `IDEAS > CÓDIGO > SOLUCIONES`, titular con degradado neón, botones de llamada a la acción (*Ver nuestros proyectos*, *Contáctanos*), árbol cyber interactivo y 4 tarjetas de aspectos destacados (*Desarrollo Web*, *Bases de Datos*, *Soluciones Cloud*, *Apps a Medida*).
-  3. **Proyectos Destacados (`#proyectos`)**: Tarjetas de proyectos con imágenes fotorrealistas de alta resolución, filtros por categoría y modal interactivo para ver detalles completos:
+- **Páginas**: cada sección tiene su propia ruta para que el inicio no concentre todo el contenido:
+
+  | Ruta | Contenido |
+  | --- | --- |
+  | `/` | Hero principal |
+  | `/servicios` | Servicios y tecnologías que usamos |
+  | `/proyectos` | Proyectos destacados y del equipo |
+  | `/nosotros` | Sobre nosotros, resumen del equipo y proceso |
+  | `/equipo` | Perfiles ampliados del equipo |
+  | `/contacto` | Datos de contacto y formulario |
+
+- **Secciones**:
+  1. **Navegación Sticky**: Cabecera de cristal compartida por todas las páginas; resalta la página actual y tiene menú móvil responsivo.
+  2. **Hero Principal (`/`)**: Kicker `IDEAS > CÓDIGO > SOLUCIONES`, titular con degradado neón, botones de llamada a la acción (*Ver nuestros proyectos* lleva a `/proyectos`, *Contáctanos* a `/contacto`), árbol cyber interactivo y 4 tarjetas de aspectos destacados (*Desarrollo Web*, *Bases de Datos*, *Soluciones Cloud*, *Apps a Medida*).
+  3. **Proyectos Destacados (`/proyectos`)**: Tarjetas de proyectos con imágenes fotorrealistas de alta resolución, filtros por categoría y modal interactivo para ver detalles completos:
      - **Spacerolloph VR** (`Unity + C#`) y **Business Analytics** (`SQL Server + Power BI`), del catálogo original.
      - **Proyectos del equipo**, generados desde `src/data/team.ts`: Ocho80 y Radio Navidad (Ronaldo), Floraltech E-Commerce (Jorge), Dimension Shift y UptownHair (María Alejandra). Cada tarjeta muestra su autor y un enlace a su portafolio; el modal reemplaza cliente/año por autor/fuente. Son proyectos personales publicados en sus portafolios, no encargos de clientes de la empresa. Floraltech aparece una sola vez, con la descripción de su portafolio (pasarela de pagos simulada). Como no hay capturas propias, usan la imagen de marca con una nota visible. Los filtros se generan a partir de las categorías, sin duplicados, e incluyen **Proyectos del equipo**; un proyecto nuevo sin categoría asignada en `PROJECT_CATEGORIES` aparece en **Otros proyectos**.
-  4. **Servicios Tecnológicos (`#servicios`)**:
+  4. **Servicios Tecnológicos (`/servicios`)**:
      - Ilustración 3D de laptop futurista con código resplandeciente y nube flotante.
      - 9 tarjetas con ejemplos de lo que el equipo puede construir, basados en sus portafolios: *Desarrollo Web* (tiendas, aplicaciones de reservas, APIs), *Bases de Datos*, *Cloud & DevOps* (Azure, GitHub Actions), *Aplicaciones Móviles* (Flutter, React Native), *Business Intelligence*, *Seguridad & Mantenimiento*, *Videojuegos con Unity*, *Automatización con n8n* y *Plataformas conectadas* (radio web, tiempo real, asistentes con Azure OpenAI).
-  5. **Tecnologías que usamos**: Cuadrícula con las tecnologías declaradas en los portafolios del equipo: lenguajes (*JavaScript, TypeScript, PHP, Dart, SQL, C#, C++, Python*), frameworks (*Next.js, NestJS, React, Laravel, .NET, Node.js, Flutter, React Native, Unity*), datos (*PostgreSQL, MySQL, SQL Server, Power BI*) y herramientas (*n8n, Azure, Docker, Git, Linux*). Las 12 originales tienen logo SVG; las demás muestran una insignia con su abreviatura (`TechLogos.tsx`). Para agregar una, edítala en `TECHNOLOGIES` de `src/data/content.ts`.
+  5. **Tecnologías que usamos (`/servicios`)**: Cuadrícula con las tecnologías declaradas en los portafolios del equipo: lenguajes (*JavaScript, TypeScript, PHP, Dart, SQL, C#, C++, Python*), frameworks (*Next.js, NestJS, React, Laravel, .NET, Node.js, Flutter, React Native, Unity*), datos (*PostgreSQL, MySQL, SQL Server, Power BI*) y herramientas (*n8n, Azure, Docker, Git, Linux*). Cada una tiene su logo SVG en `TechLogos.tsx` y una animación 3D (flotación continua, inclinación según el cursor y giro al pasar el mouse) que se desactiva con *prefers-reduced-motion*. Para agregar una, edítala en `TECHNOLOGIES` de `src/data/content.ts` y agrega su logo en `TechLogos.tsx`; sin logo se muestra una insignia con su abreviatura.
   6. **Banners CTA Intermedios**: Banners estilizados con el árbol cibernético resplandeciente invitando a iniciar proyectos.
-  7. **Sobre Nosotros (`#sobre-nosotros`)**: Descripción de misión y 4 pilares: *Innovación Constante*, *Trabajo en Equipo*, *Calidad en el Código*, *Enfoque en el Cliente*.
-  8. **Nuestro Proceso**: Línea de tiempo de 4 pasos con conectores animados (*Analizamos*, *Diseñamos*, *Desarrollamos*, *Entregamos*).
-  9. **Contáctanos (`#contacto`)**: Tarjetas con datos directos de contacto (correo con función para copiar con un clic, ubicación en Colombia, WhatsApp directo) y formulario interactivo con validación y confirmación en tiempo real.
-  10. **Pie de Página (`Footer`)**: Logotipo de marca, enlaces rápidos, redes sociales (GitHub, LinkedIn, YouTube, X) y lema *"Código que construye futuro"*.
-  11. **Selector de Vistas Flotante**: Barra inferior que permite alternar entre la página completa unificada o aislar cada una de las 3 columnas del mockup de diseño.
+  7. **Sobre Nosotros (`/nosotros`)**: Descripción de misión y 4 pilares: *Innovación Constante*, *Trabajo en Equipo*, *Calidad en el Código*, *Enfoque en el Cliente*.
+  8. **Nuestro Proceso (`/nosotros`)**: Línea de tiempo de 4 pasos con conectores animados (*Analizamos*, *Diseñamos*, *Desarrollamos*, *Entregamos*).
+  9. **Contáctanos (`/contacto`)**: Tarjetas con datos directos de contacto (correo con función para copiar con un clic, ubicación en Colombia, WhatsApp directo) y formulario interactivo con validación y confirmación en tiempo real.
+  10. **Pie de Página (`Footer`)**: Logotipo de marca, enlaces rápidos a cada página, redes sociales (GitHub, LinkedIn, YouTube, X) y lema *"Código que construye futuro"*.
 
 ---
 
@@ -48,21 +58,26 @@ TreesSide Developers/
 │   ├── app/
 │   │   ├── globals.css            # Sistema de diseño, tokens de color, sombras y animaciones
 │   │   ├── layout.tsx             # Metadatos SEO, OpenGraph y configuración HTML
-│   │   └── page.tsx               # Ensamblado principal de la aplicación y lógica de vistas
+│   │   ├── page.tsx               # Inicio (hero)
+│   │   ├── servicios/page.tsx     # Servicios y tecnologías
+│   │   ├── proyectos/page.tsx     # Proyectos
+│   │   ├── nosotros/page.tsx      # Sobre nosotros, equipo y proceso
+│   │   ├── equipo/page.tsx        # Perfiles ampliados del equipo
+│   │   └── contacto/page.tsx      # Contacto
 │   ├── components/
 │   │   ├── AboutSection.tsx       # Sección Sobre Nosotros y pilares de valor
 │   │   ├── ContactSection.tsx     # Sección de contacto y formulario interactivo
 │   │   ├── Footer.tsx             # Pie de página y enlaces sociales
 │   │   ├── Hero.tsx               # Portada principal y tarjetas de características
 │   │   ├── Logo.tsx               # Componente de marca y logotipo reactivo
-│   │   ├── Navbar.tsx             # Barra de navegación con scrollspy y responsive drawer
+│   │   ├── Navbar.tsx             # Barra de navegación entre páginas y menú móvil
 │   │   ├── ProcessSection.tsx     # Flujo de proceso en 4 pasos
 │   │   ├── ProjectModal.tsx       # Ventana modal de detalle para proyectos
 │   │   ├── ProjectsSection.tsx    # Cuadrícula de proyectos con filtros
 │   │   ├── ServicesSection.tsx    # 6 tarjetas de servicios y visual de laptop 3D
-│   │   ├── TechLogos.tsx          # Iconos SVG nítidos para las 12 tecnologías
-│   │   ├── TechStackSection.tsx   # Cuadrícula de tecnologías y banner CTA
-│   │   └── ViewSwitcher.tsx       # Selector flotante de columnas del mockup
+│   │   ├── SitePage.tsx           # Estructura común: cabecera, contenido y pie
+│   │   ├── TechLogos.tsx          # Logos SVG de cada tecnología
+│   │   └── TechStackSection.tsx   # Cuadrícula de tecnologías 3D y banner CTA
 │   └── data/
 │       └── content.ts             # Datos estructurados y tipados de la aplicación
 ├── next.config.mjs

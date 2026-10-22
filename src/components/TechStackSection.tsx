@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { TECHNOLOGIES } from '@/data/content';
 import { TechLogo } from './TechLogos';
 import { Mail } from 'lucide-react';
@@ -21,13 +22,8 @@ export function TechStackSection() {
     event.currentTarget.style.setProperty('--tilt-y', '0deg');
   };
 
-  const scrollToContact = () => {
-    const el = document.getElementById('contacto');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <section style={{
+    <section id="tecnologias" style={{
       padding: '40px 0 90px',
       position: 'relative'
     }}>
@@ -144,8 +140,8 @@ export function TechStackSection() {
               Tu idea, nuestro código. Hagamos algo grande.
             </p>
 
-            <button
-              onClick={scrollToContact}
+            <Link
+              href="/contacto"
               className="btn btn-primary"
               style={{
                 borderRadius: '8px',
@@ -155,7 +151,7 @@ export function TechStackSection() {
             >
               <Mail size={18} />
               Contáctanos
-            </button>
+            </Link>
           </div>
 
           {/* Right: Cyber Tree Logo Graphic */}

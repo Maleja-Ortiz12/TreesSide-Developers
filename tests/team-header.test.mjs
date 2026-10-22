@@ -15,13 +15,11 @@ for (const path of ['/', '/equipo']) {
     assert.ok(header);
     assert.ok(header.includes('TreesSide') && header.includes('Developers'), 'Brand is present');
     assert.ok(header.includes('Abrir menú'), 'Mobile menu is available');
-    for (const id of ['inicio', 'servicios', 'proyectos', 'sobre-nosotros', 'contacto']) {
-      const href = `${path === '/' ? '' : '/'}#${id}`;
+    for (const href of ['/', '/servicios', '/proyectos', '/nosotros', '/equipo', '/contacto']) {
       assert.ok(header.includes(`href="${href}"`), href);
     }
-    assert.ok(header.includes('href="/equipo"'));
     if (path === '/equipo') {
-      assert.match(header, /<a[^>]*href="\/equipo"[^>]*aria-current="page"/);
+      assert.match(header, /<a[^>]*aria-current="page"[^>]*href="\/equipo"/);
     }
   });
 }

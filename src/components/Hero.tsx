@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { QUICK_FEATURES } from '@/data/content';
 import { Eye, Mail, Code, Database, Cloud, Cpu, ArrowRight } from 'lucide-react';
 
@@ -19,11 +20,6 @@ export function Hero() {
       default:
         return <Code size={24} color="var(--primary-cyan)" />;
     }
-  };
-
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -93,8 +89,8 @@ export function Hero() {
               gap: '16px',
               alignItems: 'center'
             }}>
-              <button
-                onClick={() => scrollTo('proyectos')}
+              <Link
+                href="/proyectos"
                 className="btn btn-primary"
                 style={{
                   fontSize: '1rem',
@@ -104,10 +100,10 @@ export function Hero() {
               >
                 <Eye size={20} />
                 Ver nuestros proyectos
-              </button>
+              </Link>
 
-              <button
-                onClick={() => scrollTo('contacto')}
+              <Link
+                href="/contacto"
                 className="btn btn-secondary"
                 style={{
                   fontSize: '1rem',
@@ -117,7 +113,7 @@ export function Hero() {
               >
                 <Mail size={19} />
                 Contáctanos
-              </button>
+              </Link>
             </div>
           </div>
 
