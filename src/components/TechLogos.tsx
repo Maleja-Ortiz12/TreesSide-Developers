@@ -222,6 +222,74 @@ export function TechLogo({ name }: { name: string }) {
           <ellipse cx="84" cy="112" rx="14" ry="6" fill="#f59e0b" />
         </svg>
       );
+    case 'Tailwind CSS':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#38bdf8" d="M64 28c-15 0-24 7.5-28 22.5 5.6-7.5 12.2-10.3 19.6-8.4 4.3 1.1 7.3 4.2 10.7 7.6C71.8 55.3 78 61.6 92 61.6c15 0 24-7.5 28-22.5-5.6 7.5-12.2 10.3-19.6 8.4-4.3-1.1-7.3-4.2-10.7-7.6C84.2 34.3 78 28 64 28zM36 61.6c-15 0-24 7.5-28 22.5 5.6-7.5 12.2-10.3 19.6-8.4 4.3 1.1 7.3 4.2 10.7 7.6 5.5 5.6 11.7 11.9 25.7 11.9 15 0 24-7.5 28-22.5-5.6 7.5-12.2 10.3-19.6 8.4-4.3-1.1-7.3-4.2-10.7-7.6-5.5-5.6-11.7-11.9-25.7-11.9z" />
+        </svg>
+      );
+    case 'Bootstrap':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <rect x="8" y="8" width="112" height="112" rx="24" fill="#7952b3" />
+          <text x="64" y="90" fill="#ffffff" fontSize="72" fontWeight="800" textAnchor="middle" fontFamily="sans-serif">B</text>
+        </svg>
+      );
+    case 'WordPress':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <circle cx="64" cy="64" r="58" fill="#21759b" />
+          <circle cx="64" cy="64" r="50" fill="none" stroke="#ffffff" strokeWidth="5" />
+          <text x="64" y="86" fill="#ffffff" fontSize="64" fontWeight="700" textAnchor="middle" fontFamily="Georgia, serif">W</text>
+        </svg>
+      );
+    case 'Socket.IO':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <circle cx="64" cy="64" r="56" fill="none" stroke="#e2e8f0" strokeWidth="8" />
+          <path fill="#e2e8f0" d="M52 60l30-28-14 34zM76 68L46 96l14-34z" />
+        </svg>
+      );
+    case 'Prisma':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#5a67d8" d="M70 6l48 96-66 20L10 92z" />
+          <path fill="#c3dafe" d="M70 6L52 122l66-20z" opacity="0.45" />
+        </svg>
+      );
+    case 'Pandas':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <rect x="34" y="8" width="14" height="34" fill="#150458" stroke="#e2e8f0" strokeWidth="2" />
+          <rect x="34" y="54" width="14" height="66" fill="#150458" stroke="#e2e8f0" strokeWidth="2" />
+          <rect x="80" y="8" width="14" height="66" fill="#150458" stroke="#e2e8f0" strokeWidth="2" />
+          <rect x="80" y="86" width="14" height="34" fill="#150458" stroke="#e2e8f0" strokeWidth="2" />
+          <rect x="57" y="46" width="14" height="14" fill="#ffca00" />
+          <rect x="57" y="68" width="14" height="14" fill="#e70488" />
+        </svg>
+      );
+    case 'Expo':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#e2e8f0" d="M58 24c3-5 9-5 12 0l52 88c2 4-1 8-6 6-14-6-28-46-40-64-4-6-8-6-12 0-12 18-26 58-40 64-5 2-8-2-6-6z" />
+        </svg>
+      );
+    case 'GitHub Actions':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <circle cx="28" cy="64" r="16" fill="none" stroke="#2088ff" strokeWidth="8" />
+          <path d="M44 64h28M72 64l20-28M72 64l20 28" fill="none" stroke="#2088ff" strokeWidth="8" strokeLinecap="round" />
+          <circle cx="100" cy="28" r="12" fill="#2088ff" />
+          <circle cx="100" cy="100" r="12" fill="#2088ff" />
+        </svg>
+      );
+    case 'Power Automate':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#0066ff" d="M8 20h64l40 44-40 44H8l40-44z" />
+          <path fill="#4da3ff" d="M48 20h64L80 64z" opacity="0.85" />
+        </svg>
+      );
     default:
       return (
         <span aria-hidden="true" data-tech-fallback="true" style={{

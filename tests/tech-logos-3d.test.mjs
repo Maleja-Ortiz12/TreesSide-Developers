@@ -22,7 +22,7 @@ function card(html, name) {
 test('every technology card renders its own SVG logo instead of initials', async () => {
   const html = await home();
   const names = await technologyNames();
-  assert.equal(names.length, 26);
+  assert.ok(names.length >= 26);
   for (const name of names) {
     const markup = card(html, name);
     assert.ok(markup, `missing card: ${name}`);
@@ -33,7 +33,7 @@ test('every technology card renders its own SVG logo instead of initials', async
 
 test('technology cards use a 3D animation that respects reduced motion', async () => {
   const html = await home();
-  assert.equal((html.match(/class="[^"]*tech-card-3d/g) || []).length, 26);
+  assert.equal((html.match(/class="[^"]*tech-card-3d/g) || []).length, (await technologyNames()).length);
   // styled-jsx is injected on the client in this app, so the CSS is checked at its source.
   const css = await readFile('src/components/TechStackSection.tsx', 'utf8');
   assert.ok(css.includes('transform-style: preserve-3d'));

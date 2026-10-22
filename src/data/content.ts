@@ -161,9 +161,10 @@ export const SERVICES: Service[] = [
     title: 'Desarrollo Web',
     iconName: 'code',
     items: [
-      'Interfaces con React, Next.js y TypeScript',
+      'Interfaces con React, Next.js, TypeScript y Tailwind CSS',
       'Backend con NestJS, Laravel y .NET',
-      'Tiendas en línea, aplicaciones de reservas y APIs REST'
+      'Comercio electrónico multivendedor, tiendas en línea y aplicaciones de reservas',
+      'Sitios y gestores de contenido con WordPress'
     ]
   },
   {
@@ -171,9 +172,10 @@ export const SERVICES: Service[] = [
     title: 'Bases de Datos',
     iconName: 'database',
     items: [
-      'Modelado relacional en PostgreSQL y MySQL',
+      'Modelado relacional en PostgreSQL, MySQL y SQL Server',
       'Consultas SQL y optimización',
-      'Inventarios y sistemas de gestión'
+      'Prisma, TypeORM y Entity Framework Core',
+      'Sistemas de gestión: inventarios, operaciones por rol y asistencia con QR'
     ]
   },
   {
@@ -181,7 +183,7 @@ export const SERVICES: Service[] = [
     title: 'Cloud & DevOps',
     iconName: 'cloud',
     items: [
-      'Despliegues en Microsoft Azure',
+      'Despliegues en Microsoft Azure: App Service, Static Web Apps y Blob Storage',
       'Docker y contenedores',
       'CI/CD con GitHub Actions'
     ]
@@ -201,8 +203,8 @@ export const SERVICES: Service[] = [
     title: 'Business Intelligence',
     iconName: 'bar-chart',
     items: [
-      'Reportes con SQL y Power BI',
-      'ETL y modelado de datos',
+      'Dashboards en Power BI con DAX y Power Query',
+      'Análisis exploratorio de datos con Python y Pandas',
       'Paneles de indicadores para decisiones de negocio'
     ]
   },
@@ -211,9 +213,9 @@ export const SERVICES: Service[] = [
     title: 'Seguridad & Mantenimiento',
     iconName: 'shield',
     items: [
-      'Apoyo en monitoreo de alertas',
-      'Documentación y seguimiento de incidencias',
-      'Mantenimiento y actualizaciones'
+      'Autenticación JWT y control por roles',
+      'Monitoreo con SIEM y WAF; apoyo en controles NIST e ISO 27001',
+      'Documentación, seguimiento de incidencias y mantenimiento'
     ]
   },
   {
@@ -222,11 +224,11 @@ export const SERVICES: Service[] = [
   },
   {
     id: 'automatizacion', title: 'Automatización con n8n', iconName: 'code',
-    items: ['Flujos de trabajo e integraciones', 'Automatización de reportes', 'Conexión entre APIs y herramientas de negocio']
+    items: ['Flujos con n8n y Power Automate', 'Automatización de reportes', 'Conexión entre APIs y herramientas de negocio']
   },
   {
     id: 'plataformas-conectadas', title: 'Plataformas conectadas', iconName: 'cloud',
-    items: ['Radio web y administración de contenido', 'Sistemas de eventos con comunicación en tiempo real', 'Asistentes internos con Azure OpenAI y conocimiento aprobado']
+    items: ['Radio web y administración de contenido', 'Chat y eventos en tiempo real con Socket.IO', 'Asistentes internos con Azure OpenAI y conocimiento aprobado']
   }
 ];
 
@@ -256,7 +258,16 @@ export const TECHNOLOGIES: Technology[] = [
   { name: 'Power BI', category: 'Analítica', color: '#f2c811' },
   { name: 'Docker', category: 'DevOps', color: '#2496ed' },
   { name: 'Git', category: 'Herramientas', color: '#f05032' },
-  { name: 'Linux', category: 'Sistema operativo', color: '#fcc624' }
+  { name: 'Linux', category: 'Sistema operativo', color: '#fcc624' },
+  { name: 'Tailwind CSS', category: 'Frontend', color: '#38bdf8' },
+  { name: 'Bootstrap', category: 'Frontend', color: '#7952b3' },
+  { name: 'WordPress', category: 'Gestor de contenido', color: '#21759b' },
+  { name: 'Socket.IO', category: 'Tiempo real', color: '#e2e8f0' },
+  { name: 'Prisma', category: 'Base de datos', color: '#5a67d8' },
+  { name: 'Pandas', category: 'Análisis de datos', color: '#e70488' },
+  { name: 'Expo', category: 'Móvil', color: '#e2e8f0' },
+  { name: 'GitHub Actions', category: 'DevOps', color: '#2088ff' },
+  { name: 'Power Automate', category: 'Automatización', color: '#0066ff' }
 ];
 
 export const VALUE_PILLARS: ValuePillar[] = [
