@@ -13,7 +13,10 @@ export interface Project {
   year?: string;
   owner?: string;
   portfolioUrl?: string;
+  projectUrl?: string;
   imageLabel?: string;
+  imageFit?: 'cover' | 'contain';
+  experience?: boolean;
 }
 
 export interface Service {
@@ -64,95 +67,28 @@ export const QUICK_FEATURES = [
   }
 ];
 
-const ORIGINAL_PROJECTS: Project[] = [
-  {
-    id: 'spacerolloph-vr',
-    title: 'Spacerolloph VR',
-    tag: 'Unity + C#',
-    description: 'Plataforma de remodelación de hogares en realidad virtual.',
-    image: '/images/spacerolloph-vr.jpg',
-    category: 'Realidad Virtual',
-    detailedDescription: 'Spacerolloph VR permite a arquitectos, diseñadores de interiores y propietarios visualizar remodelaciones espaciales en tiempo real a escala 1:1 antes de iniciar obras físicas.',
-    features: [
-      'Renderizado fotorrealista en tiempo real',
-      'Configurador de materiales y mobiliario interactivo',
-      'Soporte para visores Meta Quest y PCVR',
-      'Cálculo de presupuestos dinámicos según selección'
-    ],
-    client: 'Arquitectura & Diseño Studio',
-    year: '2024'
-  },
-  {
-    id: 'floraltech',
-    title: 'FloralTech',
-    tag: 'PHP + MySQL',
-    description: 'Sistema de gestión para floristería (e-commerce, inventario, reportes).',
-    image: '/images/floraltech.jpg',
-    category: 'Web & E-Commerce',
-    detailedDescription: 'Una solución integral de punto de venta (POS) y tienda online para floristerías de alta gama con control de pedidos perecederos, entregas programadas y reportes financieros.',
-    features: [
-      'Catálogo de flores y arreglos con control de caducidad',
-      'E-commerce integrado con pasarela de pagos seguros',
-      'Módulo de logística y rutas de entrega en tiempo real',
-      'Facturación electrónica y reportes de ventas automáticos'
-    ],
-    client: 'Red Floral Colombia',
-    year: '2024'
-  },
-  {
-    id: 'business-analytics',
-    title: 'Business Analytics',
-    tag: 'SQL Server + Power BI',
-    description: 'Análisis de datos y visualización interactiva para toma de decisiones.',
-    image: '/images/business-analytics.jpg',
-    category: 'Business Intelligence',
-    detailedDescription: 'Ecosistema de inteligencia de negocios para empresas corporativas, centralizando millones de transacciones en dashboards intuitivos con analítica predictiva de KPIs.',
-    features: [
-      'Pipelines ETL automatizados para ingesta multi-fuente',
-      'Dashboards ejecutivos con métricas de ventas y rentabilidad',
-      'Modelado de datos en SQL Server con optimización de índices',
-      'Alertas tempranas automatizadas ante desviaciones de metas'
-    ],
-    client: 'Corporación Financiera Andina',
-    year: '2024'
-  }
-];
-
-const PROJECT_CATEGORIES: Record<string, string> = {
-  Ocho80: 'Tiempo real',
-  'Radio Navidad': 'Radio web',
-  'Floraltech E-Commerce': 'Web & E-Commerce',
-  'Dimension Shift': 'Videojuegos',
-  UptownHair: 'Aplicaciones de reservas',
-};
-
-const PROJECT_STACKS: Record<string, string> = {
-  Ocho80: 'NestJS · React · Flutter',
-  'Radio Navidad': 'Next.js · TypeScript',
-  'Floraltech E-Commerce': 'PHP · MySQL',
-  'Dimension Shift': 'Unity · C#',
-  UptownHair: 'React · NestJS · MySQL',
-};
-
-const PERSONAL_PROJECTS: Project[] = TEAM_MEMBERS.flatMap(member =>
+const TEAM_PROJECTS: Project[] = TEAM_MEMBERS.flatMap(member =>
   member.projects.map(project => ({
-    id: `equipo-${project.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+    id: `equipo-${project.name.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-')}`,
     title: project.name,
-    tag: PROJECT_STACKS[project.name] ?? 'Proyecto del equipo',
+    tag: project.stack,
     description: project.description,
     detailedDescription: project.description,
-    image: '/images/treesside-logo.jpg',
-    imageLabel: 'Imagen de marca · consulta el proyecto en el portafolio',
-    category: PROJECT_CATEGORIES[project.name] ?? 'Otros proyectos',
+    image: project.image ?? '/images/treesside-logo.jpg',
+    imageFit: project.imageFit,
+    imageLabel: project.image ? undefined : 'Imagen de marca · consulta el proyecto en el portafolio',
+    category: project.category,
     owner: member.name,
     portfolioUrl: member.portfolio,
+    projectUrl: project.link,
+    experience: project.experience,
   }))
 );
 
-// Floraltech is the same portfolio project, not a separate company commission.
+// Own projects first; employer work follows as the member's experience.
 export const FEATURED_PROJECTS: Project[] = [
-  ...ORIGINAL_PROJECTS.filter(project => project.id !== 'floraltech'),
-  ...PERSONAL_PROJECTS,
+  ...TEAM_PROJECTS.filter(project => !project.experience),
+  ...TEAM_PROJECTS.filter(project => project.experience),
 ];
 
 export const SERVICES: Service[] = [

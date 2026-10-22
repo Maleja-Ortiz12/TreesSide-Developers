@@ -12,11 +12,16 @@ export function ProjectsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeFilter, setActiveFilter] = useState('Todos');
 
-  const categories = [...new Set(['Todos', 'Proyectos del equipo', ...FEATURED_PROJECTS.map(project => project.category)])];
+  const TEAM_FILTER = 'Proyectos del equipo';
+  const EXPERIENCE_FILTER = 'Experiencia laboral';
+  const categories = [...new Set(['Todos', TEAM_FILTER, EXPERIENCE_FILTER, ...FEATURED_PROJECTS.map(project => project.category)])];
 
-  const filteredProjects = activeFilter === 'Todos'
-    ? FEATURED_PROJECTS
-    : FEATURED_PROJECTS.filter(p => activeFilter === 'Proyectos del equipo' ? Boolean(p.owner) : p.category === activeFilter);
+  const filteredProjects = FEATURED_PROJECTS.filter(p => {
+    if (activeFilter === 'Todos') return true;
+    if (activeFilter === TEAM_FILTER) return !p.experience;
+    if (activeFilter === EXPERIENCE_FILTER) return Boolean(p.experience);
+    return p.category === activeFilter;
+  });
 
   const router = useRouter();
   const goToContact = () => router.push('/contacto');
@@ -107,6 +112,7 @@ export function ProjectsSection() {
           {filteredProjects.map((project) => (
             <div
               key={project.id}
+              data-project={project.id}
               className="glass-card"
               style={{
                 display: 'flex',
@@ -127,8 +133,10 @@ export function ProjectsSection() {
                   src={project.image}
                   alt={project.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   style={{
-                    objectFit: 'cover',
+                    objectFit: project.imageFit ?? 'cover',
+                    background: '#0b1220',
                     transition: 'transform 0.5s ease'
                   }}
                   className="project-thumb"
@@ -171,7 +179,9 @@ export function ProjectsSection() {
                   }}>
                     {project.title}
                   </h3>
-                  {project.owner && <p style={{ fontSize: '.8rem', color: 'var(--primary-green)', marginBottom: 10 }}>Proyecto del equipo · {project.owner}</p>}
+                  {project.owner && <p style={{ fontSize: '.8rem', color: project.experience ? 'var(--primary-cyan)' : 'var(--primary-green)', marginBottom: 10 }}>
+                    {`${project.experience ? 'Experiencia laboral' : 'Proyecto del equipo'} · ${project.owner}`}
+                  </p>}
                   <p style={{
                     fontSize: '0.9rem',
                     color: 'var(--text-muted)',

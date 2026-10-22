@@ -15,7 +15,7 @@ Branch: `feat/portafolios-y-nosotros` (from `feat/paginas-por-seccion`, commit 0
 
 ## Tasks
 
-- T1 [S1] Services and technologies from portfolios — inline — commit: pending
+- T1 [S1] Services and technologies from portfolios — inline — commit: a70675e (done)
 - T2 [S2, S3, S4] Projects with local images, member experience, demo projects removed — inline — commit: pending
 - T3 [S5, S6] /nosotros purpose and passions, team section removed — inline — commit: pending
 

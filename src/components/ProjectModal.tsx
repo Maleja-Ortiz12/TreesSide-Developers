@@ -73,7 +73,7 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
             src={project.image}
             alt={project.title}
             fill
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: project.imageFit ?? 'cover', background: '#0b1220' }}
           />
           <div style={{
             position: 'absolute',
@@ -122,7 +122,16 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
           </p>
 
           {project.imageLabel && <p style={{ color: 'var(--text-muted)', fontSize: '.8rem' }}>{project.imageLabel}</p>}
-          {project.owner && <p style={{ color: 'var(--primary-green)', marginTop: 12 }}>Proyecto personal del equipo · {project.owner}</p>}
+          {project.owner && <p style={{ color: project.experience ? 'var(--primary-cyan)' : 'var(--primary-green)', marginTop: 12 }}>
+            {project.experience
+              ? `Experiencia laboral · ${project.owner}. Producto de otra empresa en el que participó como empleado.`
+              : `Proyecto personal del equipo · ${project.owner}`}
+          </p>}
+          {project.projectUrl && <p style={{ marginTop: 10 }}>
+            <a href={project.projectUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-cyan)' }}>
+              Ver proyecto en línea <ExternalLink size={14} aria-hidden="true" />
+            </a>
+          </p>}
 
           {/* Key Features */}
           {project.features && (

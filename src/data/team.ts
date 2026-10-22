@@ -1,4 +1,30 @@
-export const TEAM_MEMBERS = [
+export interface MemberProject {
+  name: string;
+  description: string;
+  category: string;
+  stack: string;
+  /** Local image taken from the member's portfolio; omitted when the portfolio publishes none. */
+  image?: string;
+  imageFit?: 'cover' | 'contain';
+  /** Work done as an employee of another company, shown as the member's experience. */
+  experience?: boolean;
+  link?: string;
+}
+
+export interface TeamMember {
+  name: string;
+  photo: string;
+  photoFit?: 'contain';
+  role: string;
+  description: string;
+  skills: string[];
+  portfolio: string;
+  contributions: string[];
+  education: string;
+  projects: MemberProject[];
+}
+
+export const TEAM_MEMBERS: TeamMember[] = [
   {
     name: 'Ronaldo Delgado Correa', photo: '/images/team/ronaldo-delgado.webp',
     role: 'Full Stack · Mobile · IA aplicada',
@@ -12,8 +38,13 @@ export const TEAM_MEMBERS = [
     ],
     education: 'Ingeniero de Sistemas, Universidad de Cundinamarca. Formación complementaria en desarrollo Full Stack y Unity 3D.',
     projects: [
-      { name: 'Ocho80', description: 'Proyecto propio de rifas y bingo digital con NestJS, React, Flutter y comunicación en tiempo real.' },
-      { name: 'Radio Navidad', description: 'Proyecto propio de radio web con reproducción en vivo y administración de contenido visual.' },
+      { name: 'Ocho80', description: 'Proyecto propio de rifas y bingo digital con NestJS, React, Flutter y comunicación en tiempo real.', category: 'Tiempo real', stack: 'NestJS · React · Flutter', image: '/images/projects/ocho80.webp' },
+      { name: 'Radio Navidad', description: 'Proyecto propio de radio web con reproducción en vivo y administración de contenido visual.', category: 'Radio web', stack: 'Next.js · TypeScript' },
+      { name: 'Calculadora de contenedores', description: 'Aplicación móvil que calcula orientación de cajas, capas, palés, capacidad y peso, con vistas SVG de la distribución de carga.', category: 'Aplicaciones móviles', stack: 'Expo · React Native' },
+      { name: 'Libres en Cristo Jesús', description: 'Sistema de gestión congregacional con registro de personas y roles, asistencia mediante QR y exportaciones a Excel y PDF.', category: 'Sistemas de gestión', stack: 'NestJS · Next.js · PostgreSQL' },
+      { name: 'Luhos', description: 'Plataforma que centraliza la administración de servicios de hotelería y propiedades: limpieza, mantenimiento y gestión de scooters.', category: 'Sistemas de gestión', stack: '.NET 8 · React · Flutter · Azure', image: '/images/projects/luhos.webp', experience: true },
+      { name: 'Gudfy', description: 'Comercio electrónico multivendedor de productos digitales con compra y acceso a códigos desde la cuenta del comprador.', category: 'Web & E-Commerce', stack: 'Medusa · Next.js · PostgreSQL', image: '/images/projects/gudfy.webp', experience: true },
+      { name: 'Tanku', description: 'Plataforma multivendedor que combina comercio electrónico, comunicación en tiempo real y funciones sociales.', category: 'Web & E-Commerce', stack: 'Medusa · Next.js · Socket.IO', image: '/images/projects/tanku.webp', experience: true },
     ],
   },
   {
@@ -30,7 +61,13 @@ export const TEAM_MEMBERS = [
     ],
     education: 'Ingeniería en Sistemas y Computación, Universidad de Cundinamarca — Extensión Chía. Según su portafolio, formación entre enero de 2022 y septiembre de 2026.',
     projects: [
-      { name: 'Floraltech E-Commerce', description: 'Tienda en línea con carrito, pasarela de pagos simulada y panel administrativo, presentada en su portafolio.' },
+      { name: 'Floraltech E-Commerce', description: 'Tienda en línea con carrito, pasarela de pagos simulada y panel administrativo, presentada en su portafolio.', category: 'Web & E-Commerce', stack: 'PHP · MySQL · Bootstrap', image: '/images/projects/floraltech.webp', link: 'https://floraltech.rf.gd/Original-Floraltech/' },
+      { name: 'Atherium 3D Game', description: 'Videojuego de ambientación medieval desarrollado en Unity con mecánicas interactivas y 3D.', category: 'Videojuegos', stack: 'Unity · C#', image: '/images/projects/atherium.webp', link: 'https://jorgepb.itch.io/atherium' },
+      { name: 'Otaku Portal', description: 'Página web sobre tendencias, noticias y análisis de videojuegos.', category: 'Sitios web', stack: 'WordPress · PHP · MySQL', image: '/images/projects/otaku-portal.webp', link: 'http://elportaldelotaku.infinityfree.me/' },
+      { name: 'Portfolio CMS', description: 'Sistema dinámico de gestión de contenidos para portafolios con editor visual modular.', category: 'Sitios web', stack: 'PHP · JavaScript · Bootstrap', image: '/images/projects/portfolio-cms.webp' },
+      { name: 'Dashboard BI · Superstore', description: 'Dashboard interactivo para analizar ventas, ganancias, clientes y pedidos, con vistas por región, categoría y ubicación.', category: 'Análisis de datos', stack: 'Power BI · DAX · Power Query', image: '/images/projects/dashboard-superstore.webp' },
+      { name: 'EDA · Renta Ciudadana', description: 'Exploración de datos públicos sobre familias focalizadas en Colombia: calidad de datos y distribución por departamento y municipio.', category: 'Análisis de datos', stack: 'Python · Pandas · Seaborn', image: '/images/projects/eda-renta-ciudadana.webp' },
+      { name: 'Análisis de Ventas de Cafetería', description: 'Limpieza y análisis de transacciones para explorar productos, categorías y tendencias diarias, con visualizaciones de ingresos y ventas.', category: 'Análisis de datos', stack: 'Python · Pandas · NumPy', image: '/images/projects/ventas-cafeteria.webp' },
     ],
   },
   {
@@ -46,8 +83,12 @@ export const TEAM_MEMBERS = [
     ],
     education: 'Formación en Tecnología en Análisis y Desarrollo de Software, SENA. Según su portafolio, certificación en trámite. Formación complementaria en backend con NestJS.',
     projects: [
-      { name: 'Dimension Shift', description: 'Videojuego de peleas 3D desarrollado con Unity y C#.' },
-      { name: 'UptownHair', description: 'Aplicación de reservas para salones de belleza con React, NestJS, TypeScript y MySQL.' },
+      { name: 'Dimension Shift', description: 'Videojuego de peleas 3D con escenarios aleatorios y dos niveles, desarrollado con Unity y C#.', category: 'Videojuegos', stack: 'Unity · C#', image: '/images/projects/dimension-shift.webp' },
+      { name: 'UptownHair', description: 'Aplicación de reservas para salones de belleza con React, NestJS, TypeScript y MySQL.', category: 'Aplicaciones de reservas', stack: 'React · NestJS · MySQL', image: '/images/projects/uptownhair.webp' },
+      { name: 'Emisoras Latinas', description: 'Plataforma de streaming con más de 15.000 emisoras latinas en vivo, directorio completo y reproductor optimizado.', category: 'Radio web', stack: 'Next.js · Web Audio API', image: '/images/projects/emisoras-latinas.webp', imageFit: 'contain' },
+      { name: 'Entre Lanas y Fragancias', description: 'Sistema de gestión para tiendas textiles: comercio electrónico y panel administrativo.', category: 'Web & E-Commerce', stack: 'Next.js · Laravel · PostgreSQL', image: '/images/projects/entre-lanas-y-fragancias.webp' },
+      { name: 'Sistema de gestión de inventarios', description: 'Aplicación web para el control de inventario orientada a pequeños negocios.', category: 'Sistemas de gestión', stack: 'PHP · Laravel' },
+      { name: 'Aplicación de gestión agropecuaria', description: 'Aplicación móvil para agrónomos y ganaderos: ganadería, cultivos, gastos y finanzas agrícolas.', category: 'Aplicaciones móviles', stack: 'Flutter · Dart' },
     ],
   },
 ];

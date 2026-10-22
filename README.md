@@ -27,9 +27,7 @@ Plataforma frontend oficial para **TreesSide Developers**, desarrollada con **Ne
 - **Secciones**:
   1. **Navegación Sticky**: Cabecera de cristal compartida por todas las páginas; resalta la página actual y tiene menú móvil responsivo.
   2. **Hero Principal (`/`)**: Kicker `IDEAS > CÓDIGO > SOLUCIONES`, titular con degradado neón, botones de llamada a la acción (*Ver nuestros proyectos* lleva a `/proyectos`, *Contáctanos* a `/contacto`), árbol cyber interactivo y 4 tarjetas de aspectos destacados (*Desarrollo Web*, *Bases de Datos*, *Soluciones Cloud*, *Apps a Medida*).
-  3. **Proyectos Destacados (`/proyectos`)**: Tarjetas de proyectos con imágenes fotorrealistas de alta resolución, filtros por categoría y modal interactivo para ver detalles completos:
-     - **Spacerolloph VR** (`Unity + C#`) y **Business Analytics** (`SQL Server + Power BI`), del catálogo original.
-     - **Proyectos del equipo**, generados desde `src/data/team.ts`: Ocho80 y Radio Navidad (Ronaldo), Floraltech E-Commerce (Jorge), Dimension Shift y UptownHair (María Alejandra). Cada tarjeta muestra su autor y un enlace a su portafolio; el modal reemplaza cliente/año por autor/fuente. Son proyectos personales publicados en sus portafolios, no encargos de clientes de la empresa. Floraltech aparece una sola vez, con la descripción de su portafolio (pasarela de pagos simulada). Como no hay capturas propias, usan la imagen de marca con una nota visible. Los filtros se generan a partir de las categorías, sin duplicados, e incluyen **Proyectos del equipo**; un proyecto nuevo sin categoría asignada en `PROJECT_CATEGORIES` aparece en **Otros proyectos**.
+  3. **Proyectos (`/proyectos`)**: Catálogo generado desde `src/data/team.ts` con los proyectos publicados en los portafolios del equipo: Ronaldo (Ocho80, Radio Navidad, Calculadora de contenedores, Libres en Cristo Jesús), Jorge (Floraltech E-Commerce, Atherium 3D Game, Otaku Portal, Portfolio CMS, Dashboard BI · Superstore, EDA · Renta Ciudadana, Análisis de Ventas de Cafetería) y María Alejandra (Dimension Shift, UptownHair, Emisoras Latinas, Entre Lanas y Fragancias, Sistema de gestión de inventarios, Aplicación de gestión agropecuaria). Luhos, Gudfy y Tanku se muestran como **Experiencia laboral** de Ronaldo: son productos de otras empresas en los que participó como empleado, no proyectos de TreesSide. Las imágenes se tomaron de cada portafolio y se guardan en `public/images/projects/` (WebP, 960 px); los proyectos cuyo portafolio no publica imagen usan la imagen de marca con una nota visible. Los filtros incluyen **Proyectos del equipo**, **Experiencia laboral** y cada categoría, y el detalle enlaza al portafolio del autor y, cuando existe, al proyecto en línea.
   4. **Servicios Tecnológicos (`/servicios`)**:
      - Ilustración 3D de laptop futurista con código resplandeciente y nube flotante.
      - 9 tarjetas con ejemplos de lo que el equipo puede construir, basados en sus portafolios: *Desarrollo Web* (tiendas, aplicaciones de reservas, APIs), *Bases de Datos*, *Cloud & DevOps* (Azure, GitHub Actions), *Aplicaciones Móviles* (Flutter, React Native), *Business Intelligence*, *Seguridad & Mantenimiento*, *Videojuegos con Unity*, *Automatización con n8n* y *Plataformas conectadas* (radio web, tiempo real, asistentes con Azure OpenAI).
@@ -50,9 +48,8 @@ TreesSide Developers/
 │   └── images/
 │       ├── treesside-logo.jpg     # Logo actual con TreesSide y subtítulo Developers
 │       ├── logo.jpg               # Archivo original conservado; no se usa en la interfaz
-│       ├── spacerolloph-vr.jpg    # Render para proyecto Spacerolloph VR
-│       ├── floraltech.jpg         # Fotografía para proyecto FloralTech
-│       ├── business-analytics.jpg # Dashboard de Business Analytics
+│       ├── projects/              # Imágenes de proyectos tomadas de los portafolios (WebP)
+│       ├── team/                  # Retratos del equipo (WebP)
 │       └── services-laptop.jpg    # Ilustración 3D de laptop para Servicios
 ├── src/
 │   ├── app/

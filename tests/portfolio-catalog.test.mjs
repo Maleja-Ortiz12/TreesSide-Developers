@@ -21,7 +21,6 @@ test('catalog integrates team projects with attribution and portfolio sources wi
   for (const url of ['https://ronaldo-delgado.vercel.app/', 'https://portafolio-xi-liart-92.vercel.app/', 'https://portafolio-bay-tau.vercel.app/']) {
     assert.ok(section.includes(`href="${url}"`));
   }
-  for (const title of ['Spacerolloph VR', 'Business Analytics']) assert.ok(section.includes(title), `Existing project: ${title}`);
 });
 
 test('languages include every portfolio-declared language with Spanish categories', async () => {

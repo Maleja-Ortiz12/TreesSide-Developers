@@ -129,7 +129,7 @@ export function TeamGallery() {
                   <div><h3>Formación</h3><p>{member.education}</p></div>
                   <div><h3>Proyectos del portafolio</h3>
                     <ul className={styles.projects}>{member.projects.map(project => (
-                      <li key={project.name}><strong>{project.name}</strong><p>{project.description}</p></li>
+                      <li key={project.name}><strong>{project.experience ? `${project.name} · Experiencia laboral` : project.name}</strong><p>{project.description}</p></li>
                     ))}</ul>
                   </div>
                 </div>
