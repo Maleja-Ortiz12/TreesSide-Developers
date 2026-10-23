@@ -3,7 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { QUICK_FEATURES } from '@/data/content';
+import { QUICK_FEATURES, FEATURED_PROJECTS, TECHNOLOGIES } from '@/data/content';
+import { TEAM_MEMBERS } from '@/data/team';
 import { Eye, Mail, Code, Database, Cloud, Cpu, ArrowRight } from 'lucide-react';
 
 export function Hero() {
@@ -21,6 +22,26 @@ export function Hero() {
         return <Code size={24} color="var(--primary-cyan)" />;
     }
   };
+
+  const tilt = (event: React.MouseEvent<HTMLDivElement>) => {
+    const card = event.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    card.style.setProperty('--tilt-x', `${(-y * 12).toFixed(2)}deg`);
+    card.style.setProperty('--tilt-y', `${(x * 12).toFixed(2)}deg`);
+  };
+
+  const resetTilt = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.currentTarget.style.setProperty('--tilt-x', '0deg');
+    event.currentTarget.style.setProperty('--tilt-y', '0deg');
+  };
+
+  const stats = [
+    { value: FEATURED_PROJECTS.length, label: 'proyectos' },
+    { value: TECHNOLOGIES.length, label: 'tecnologías' },
+    { value: TEAM_MEMBERS.length, label: 'desarrolladores' },
+  ];
 
   return (
     <section id="inicio" style={{
@@ -137,16 +158,22 @@ export function Hero() {
               animation: 'pulseGlow 6s ease-in-out infinite'
             }} />
 
-            {/* Logo Card with subtle neon border */}
-            <div style={{
-              position: 'relative',
-              zIndex: 1,
-              borderRadius: '24px',
-              padding: '12px',
-              background: 'linear-gradient(145deg, rgba(12, 22, 38, 0.95), rgba(7, 13, 23, 0.9))',
-              border: '1px solid rgba(0, 245, 160, 0.25)',
-              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 245, 160, 0.2)'
-            }} className="animate-float">
+            {/* Brand card with neon border and 3D tilt */}
+            <div className="animate-float" style={{ position: 'relative', zIndex: 1 }}>
+            <div
+              data-brand-card
+              className="brand-card"
+              onMouseMove={tilt}
+              onMouseLeave={resetTilt}
+              style={{
+                position: 'relative',
+                borderRadius: '24px',
+                padding: '12px',
+                background: 'linear-gradient(145deg, rgba(12, 22, 38, 0.95), rgba(7, 13, 23, 0.9))',
+                border: '1px solid rgba(0, 245, 160, 0.25)',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 245, 160, 0.2)'
+              } as React.CSSProperties}
+            >
               <div style={{
                 borderRadius: '16px',
                 overflow: 'hidden',
@@ -168,25 +195,47 @@ export function Hero() {
                 />
               </div>
 
-              {/* Subtitle tag beneath the hero tree */}
-              <div style={{
-                marginTop: '14px',
-                textAlign: 'center',
-                paddingBottom: '4px'
-              }}>
+              {/* Brand name, subtitle and tagline */}
+              <div style={{ marginTop: '16px', textAlign: 'center', transform: 'translateZ(30px)' }}>
                 <span style={{
-                  fontSize: '1.4rem',
-                  fontWeight: 800,
-                  letterSpacing: '-0.02em',
-                  display: 'inline-flex',
+                  display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '2px'
+                  lineHeight: 1.1
                 }}>
-                  <span style={{ color: '#ffffff' }}>Soft</span>
-                  <span style={{ color: 'var(--primary-green)' }}>Zenko</span>
-                  <span style={{ color: 'var(--primary-cyan)' }}>doDevs</span>
+                  <span style={{ fontSize: '1.7rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--primary-green)', textShadow: '0 0 18px rgba(0, 245, 160, 0.35)' }}>TreesSide</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.32em', color: 'var(--primary-cyan)', marginTop: '6px', textTransform: 'uppercase' }}>Developers</span>
                 </span>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '10px', fontStyle: 'italic' }}>
+                  Código que construye futuro
+                </p>
               </div>
+
+              {/* Real catalog figures */}
+              <ul style={{
+                listStyle: 'none',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '8px',
+                margin: '14px 4px 4px',
+                transform: 'translateZ(20px)'
+              }}>
+                {stats.map(stat => (
+                  <li key={stat.label} style={{
+                    padding: '8px 4px',
+                    borderRadius: '10px',
+                    background: 'rgba(0, 210, 255, 0.06)',
+                    border: '1px solid rgba(0, 210, 255, 0.2)',
+                    textAlign: 'center'
+                  }}>
+                    <strong aria-hidden="true" style={{ display: 'block', fontSize: '1.15rem', color: '#ffffff' }}>{stat.value}</strong>
+                    <span aria-hidden="true" style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>{stat.label}</span>
+                    <span className="sr-stat">{`${stat.value} ${stat.label}`}</span>
+                  </li>
+                ))}
+              </ul>
+              <span data-brand-card-end hidden />
+            </div>
             </div>
           </div>
         </div>
@@ -247,7 +296,7 @@ export function Hero() {
       <style jsx>{`
         @media (max-width: 960px) {
           .hero-grid {
-            grid-templateColumns: 1fr !important;
+            grid-template-columns: 1fr !important;
             text-align: center;
             gap: 40px !important;
           }
@@ -263,6 +312,30 @@ export function Hero() {
           }
           .quick-features-grid {
             grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        .brand-card {
+          --tilt-x: 0deg;
+          --tilt-y: 0deg;
+          transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+          transform-style: preserve-3d;
+          transition: transform 0.2s ease-out, box-shadow 0.3s ease;
+        }
+        .brand-card:hover {
+          box-shadow: 0 26px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(0, 245, 160, 0.35) !important;
+        }
+        .sr-stat {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+          clip: rect(0 0 0 0);
+          white-space: nowrap;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .brand-card {
+            transform: none;
+            transition: none;
           }
         }
         @media (max-width: 600px) {
