@@ -336,6 +336,48 @@ export function TechLogo({ name }: { name: string }) {
           <path d="M24 46l24 36M48 46L24 82" stroke="#ffffff" strokeWidth="8" strokeLinecap="round" />
         </svg>
       );
+    case 'UiPath':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <rect x="8" y="8" width="112" height="112" rx="14" fill="none" stroke="#fa4616" strokeWidth="8" />
+          <path d="M34 40v30c0 12 8 20 20 20s20-8 20-20V40" fill="none" stroke="#fa4616" strokeWidth="10" strokeLinecap="round" />
+          <rect x="86" y="58" width="10" height="32" rx="3" fill="#fa4616" />
+          <circle cx="91" cy="44" r="6" fill="#fa4616" />
+        </svg>
+      );
+    case 'Bizagi':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <circle cx="24" cy="64" r="14" fill="none" stroke="#1fa7e0" strokeWidth="6" />
+          <rect x="50" y="48" width="32" height="32" rx="6" fill="#1fa7e0" />
+          <path d="M96 64l14-14 14 14-14 14z" fill="none" stroke="#1fa7e0" strokeWidth="6" />
+          <path d="M38 64h12M82 64h14" stroke="#1fa7e0" strokeWidth="6" />
+        </svg>
+      );
+    case 'SAP':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#0faaff" d="M8 30h112L64 98H8z" />
+          <text x="44" y="74" fill="#ffffff" fontSize="30" fontWeight="800" textAnchor="middle" fontFamily="sans-serif">SAP</text>
+        </svg>
+      );
+    case 'NumPy':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <path fill="#4dabcf" d="M64 10l46 24-46 24-46-24z" />
+          <path fill="#4d77cf" d="M18 44l40 21v53l-40-21z" />
+          <path fill="#4dabcf" d="M110 44L70 65v53l40-21z" opacity="0.8" />
+        </svg>
+      );
+    case 'OpenAI':
+      return (
+        <svg viewBox="0 0 128 128" width="36" height="36">
+          <g fill="none" stroke="#e2e8f0" strokeWidth="8" strokeLinejoin="round">
+            <path d="M64 14l40 23v46l-40 23-40-23V37z" />
+            <path d="M64 14v46l40 23M24 37l40 23v46M104 37L64 60 24 83" opacity="0.7" />
+          </g>
+        </svg>
+      );
     default:
       return (
         <span aria-hidden="true" data-tech-fallback="true" style={{

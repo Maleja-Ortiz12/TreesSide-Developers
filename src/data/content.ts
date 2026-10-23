@@ -111,7 +111,8 @@ export const SERVICES: Service[] = [
       'Interfaces con React, Next.js, TypeScript y Tailwind CSS',
       'Backend con NestJS, Laravel y .NET',
       'Comercio electrónico multivendedor, tiendas en línea, aplicaciones de reservas y APIs REST',
-      'Sitios y gestores de contenido con WordPress'
+      'Sitios y gestores de contenido con WordPress',
+      'SEO técnico, AEO y GEO para buscadores y motores de IA'
     ]
   },
   {
@@ -171,7 +172,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: 'automatizacion', title: 'Automatización con n8n', iconName: 'code',
-    items: ['Flujos con n8n y Power Automate', 'Automatización de reportes', 'Conexión entre APIs y herramientas de negocio']
+    items: ['RPA con UiPath: robots desatendidos y Orchestrator', 'Flujos con n8n y Power Automate', 'Modelado de procesos con Bizagi', 'Automatización de reportes e integración con SAP y APIs']
   },
   {
     id: 'plataformas-conectadas', title: 'Plataformas conectadas', iconName: 'cloud',
@@ -220,7 +221,12 @@ export const TECHNOLOGIES: Technology[] = [
   { name: 'Framer Motion', category: 'Animación', color: '#e2e8f0' },
   { name: 'Medusa', category: 'Comercio electrónico', color: '#e2e8f0' },
   { name: 'Firebase', category: 'Notificaciones', color: '#ffca28' },
-  { name: 'Excel', category: 'Analítica', color: '#217346' }
+  { name: 'Excel', category: 'Analítica', color: '#217346' },
+  { name: 'UiPath', category: 'Automatización RPA', color: '#fa4616' },
+  { name: 'Bizagi', category: 'Procesos de negocio', color: '#1fa7e0' },
+  { name: 'SAP', category: 'ERP', color: '#0faaff' },
+  { name: 'NumPy', category: 'Análisis de datos', color: '#4dabcf' },
+  { name: 'OpenAI', category: 'Inteligencia artificial', color: '#e2e8f0' }
 ];
 
 export const PURPOSE_PILLARS: ValuePillar[] = [

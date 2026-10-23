@@ -14,8 +14,8 @@ Branch: `feat/portafolios-y-nosotros` (after a567f27). Source: https://www.jorge
 
 ## Tasks
 
-- T1 [S1, S6] Member profile, portrait and passion — inline — commit: pending
-- T2 [S2, S3, S4] Projects with images, shared authorship, experience — inline — commit: pending
+- T1 [S1, S6] Member profile, portrait and passion — inline — commit: 52c54f5 (done)
+- T2 [S2, S3, S4] Projects with images, shared authorship, experience — inline — commit: 52c54f5 (done)
 - T3 [S5] Technologies and services — inline — commit: pending
 
 ## Log
