@@ -16,10 +16,11 @@ Branch: `feat/portafolios-y-nosotros` (after a567f27). Source: https://www.jorge
 
 - T1 [S1, S6] Member profile, portrait and passion — inline — commit: 52c54f5 (done)
 - T2 [S2, S3, S4] Projects with images, shared authorship, experience — inline — commit: 52c54f5 (done)
-- T3 [S5] Technologies and services — inline — commit: pending
+- T3 [S5] Technologies and services — inline — commit: 703e83a (done)
 
 ## Log
 
 - L1 (user, verbatim): "agrega a esta persona al equipo porfa, trae sus proyectos y tecnologgias como parte de la empresa porfa" / "Jorge Luis Ramirez \nhttps://www.jorgeramirez.site/"
 - L2 (user decisions): shared projects → "Una tarjeta con ambos autores"; employer work → "Sí, como experiencia laboral".
 - L3 (evidence): The Pega migration cover (`/projects/migracion-pega-uipath/cover.webp`) returned an error, so it keeps the brand image. Christmas Radio Navidad cover shows the same Radio Navidad site as Ronaldo's project. Testimonials in his portfolio are not copied (not verifiable).
+- L4 (evidence): T1+T2 52c54f5, T3 703e83a. 58/58 tests, tsc and next build pass. His passion line and profile summary are written from his portfolio and need his confirmation. Old Emisoras Latinas logo image replaced by the portfolio cover.
