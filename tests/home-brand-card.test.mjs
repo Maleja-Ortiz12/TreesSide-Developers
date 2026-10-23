@@ -27,12 +27,14 @@ test('home brand card stats come from the real catalog data', async () => {
   const card = html.match(/<div[^>]*data-brand-card[\s\S]*?data-brand-card-end/)?.[0];
   const content = text(card);
   const team = await readFile('src/data/team.ts', 'utf8');
-  const projects = (team.match(/\{ name: '[^']+', description:/g) || []).length;
+  // Entries marked sameAs are merged into another member's card.
+  const projects = team.split('\n').filter(line => /\{ name: '[^']+', description:/.test(line) && !line.includes('sameAs')).length;
   const content_ts = await readFile('src/data/content.ts', 'utf8');
   const techs = (content_ts.match(/export const TECHNOLOGIES[\s\S]*?\];/)[0].match(/name: '/g) || []).length;
   assert.ok(content.includes(`${projects} proyectos`), `${projects} proyectos`);
   assert.ok(content.includes(`${techs} tecnologías`), `${techs} tecnologías`);
-  assert.ok(content.includes('3 desarrolladores'));
+  const members = (team.match(/photo: '\/images\/team\//g) || []).length;
+  assert.ok(content.includes(`${members} desarrolladores`), `${members} desarrolladores`);
 });
 
 test('hero responsive grid uses a valid CSS property', async () => {

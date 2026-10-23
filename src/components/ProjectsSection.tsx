@@ -193,10 +193,16 @@ export function ProjectsSection() {
                 </div>
 
                 {/* Link trigger */}
-                {project.portfolioUrl && <a href={project.portfolioUrl} target="_blank" rel="noopener noreferrer"
-                  aria-label={`Ver portafolio de ${project.owner} (abre en otra pestaña)`}
-                  onClick={event => event.stopPropagation()}
-                  style={{ color: 'var(--primary-cyan)', fontSize: '.85rem', marginBottom: 14 }}>Ver portafolio del autor</a>}
+                {project.authors && <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 14 }}>
+                  {project.authors.map(author => (
+                    <a key={author.portfolio} href={author.portfolio} target="_blank" rel="noopener noreferrer"
+                      aria-label={`Ver portafolio de ${author.name} (abre en otra pestaña)`}
+                      onClick={event => event.stopPropagation()}
+                      style={{ color: 'var(--primary-cyan)', fontSize: '.85rem' }}>
+                      {project.authors!.length > 1 ? `Portafolio de ${author.name}` : 'Ver portafolio del autor'}
+                    </a>
+                  ))}
+                </div>}
                 <button type="button" aria-label={`Ver proyecto ${project.title}`} style={{
                   background: 'transparent', border: 0, padding: 0, cursor: 'pointer', textAlign: 'left',
                   color: 'var(--primary-cyan)',

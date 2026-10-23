@@ -36,10 +36,10 @@ test('about page shares what each member is passionate about', async () => {
   assert.ok(block, 'passions block');
   const content = text(block);
   assert.ok(content.includes('Lo que nos apasiona'));
-  for (const name of ['Ronaldo Delgado Correa', 'Jorge Luis Puentes Brochero', 'María Alejandra Ortiz Páez']) {
+  for (const name of ['Ronaldo Delgado Correa', 'Jorge Luis Puentes Brochero', 'María Alejandra Ortiz Páez', 'Jorge Luis Ramírez Trochez']) {
     assert.ok(content.includes(name), name);
   }
-  assert.equal((block.match(/<li\b/g) || []).length, 3);
+  assert.equal((block.match(/<li\b/g) || []).length, 4);
 });
 
 test('about page shows the current brand only', async () => {

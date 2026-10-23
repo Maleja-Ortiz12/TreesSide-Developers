@@ -19,14 +19,15 @@ function cardFor(section, title) {
 }
 
 const WITH_IMAGES = {
-  Ocho80: 'ocho80', Luhos: 'luhos', Gudfy: 'gudfy', Tanku: 'tanku',
+  Ocho80: 'ocho80', 'Radio Navidad': 'radio-navidad', Luhos: 'luhos', Gudfy: 'gudfy', Tanku: 'tanku',
   'Floraltech E-Commerce': 'floraltech', 'Atherium 3D Game': 'atherium', 'Otaku Portal': 'otaku-portal',
   'Portfolio CMS': 'portfolio-cms', 'Dashboard BI · Superstore': 'dashboard-superstore',
   'EDA · Renta Ciudadana': 'eda-renta-ciudadana', 'Análisis de Ventas de Cafetería': 'ventas-cafeteria',
-  'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'emisoras-latinas',
+  'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'emisoras-latinas-cover',
   'Entre Lanas y Fragancias': 'entre-lanas-y-fragancias',
+  TengoYa: 'tengoya', CarWeb: 'carweb', Histech: 'histech', 'Robot Alejo 2.0': 'robot-alejo',
 };
-const WITHOUT_IMAGES = ['Radio Navidad', 'Calculadora de contenedores', 'Libres en Cristo Jesús', 'API de Tienda + Asistente IA', 'Sistema de gestión de inventarios', 'Aplicación de gestión agropecuaria'];
+const WITHOUT_IMAGES = ['Calculadora de contenedores', 'Libres en Cristo Jesús', 'API de Tienda + Asistente IA', 'Sistema de gestión de inventarios', 'Aplicación de gestión agropecuaria', 'Migración Pega → UiPath'];
 
 test('every portfolio project is listed with the image its portfolio publishes', async () => {
   const section = await projectsSection();

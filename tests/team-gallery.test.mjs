@@ -14,7 +14,7 @@ test('team gallery preserves profile content behind accessible selection buttons
   assert.ok(heading?.includes('Talento que crece'));
   assert.ok(!heading.includes('Tres miradas'));
   const articles = [...page.matchAll(/<article\b[\s\S]*?<\/article>/g)].map(([article]) => article);
-  assert.equal(articles.length, 3);
+  assert.equal(articles.length, 4);
   const ids = [];
   for (const article of articles) {
     const button = article.match(/<button\b[^>]*aria-expanded="false"[^>]*>[\s\S]*?<\/button>/)?.[0];
@@ -31,7 +31,7 @@ test('team gallery preserves profile content behind accessible selection buttons
     assert.ok(article.includes('Formación'));
     assert.ok(article.includes('Proyectos del portafolio'));
   }
-  assert.equal(new Set(ids).size, 3);
+  assert.equal(new Set(ids).size, 4);
 });
 
 test('gallery uses a scalable grid and a full-width centered profile', async () => {

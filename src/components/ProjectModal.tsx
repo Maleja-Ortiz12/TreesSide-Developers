@@ -162,13 +162,17 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
             border: '1px solid rgba(255, 255, 255, 0.05)'
           }}>
             <div>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>{project.owner ? 'Autor' : 'Cliente'}</span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>{project.owner ? ((project.authors?.length ?? 1) > 1 ? 'Autores' : 'Autor') : 'Cliente'}</span>
               <p style={{ fontSize: '0.95rem', color: '#ffffff', fontWeight: 600 }}>{project.owner || project.client || 'Confidencial'}</p>
             </div>
             <div>
-              {project.portfolioUrl ? <>
+              {project.authors ? <>
                 <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Fuente</span>
-                <p><a href={project.portfolioUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-cyan)' }}>Portafolio del autor <ExternalLink size={14} aria-hidden="true" /></a></p>
+                {project.authors.map(author => (
+                  <p key={author.portfolio}><a href={author.portfolio} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-cyan)' }}>
+                    {project.authors!.length > 1 ? `Portafolio de ${author.name}` : 'Portafolio del autor'} <ExternalLink size={14} aria-hidden="true" />
+                  </a></p>
+                ))}
               </> : <>
                 <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>Año de Desarrollo</span>
                 <p style={{ fontSize: '0.95rem', color: '#ffffff', fontWeight: 600 }}>{project.year || '2024'}</p>

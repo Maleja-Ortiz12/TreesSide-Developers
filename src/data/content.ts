@@ -13,6 +13,7 @@ export interface Project {
   year?: string;
   owner?: string;
   portfolioUrl?: string;
+  authors?: { name: string; portfolio: string }[];
   projectUrl?: string;
   imageLabel?: string;
   imageFit?: 'cover' | 'contain';
@@ -67,22 +68,32 @@ export const QUICK_FEATURES = [
   }
 ];
 
+const slug = (name: string) =>
+  name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 const TEAM_PROJECTS: Project[] = TEAM_MEMBERS.flatMap(member =>
-  member.projects.map(project => ({
-    id: `equipo-${project.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`,
-    title: project.name,
-    tag: project.stack,
-    description: project.description,
-    detailedDescription: project.description,
-    image: project.image ?? '/images/treesside-logo.jpg',
-    imageFit: project.imageFit,
-    imageLabel: project.image ? undefined : 'Imagen de marca · consulta el proyecto en el portafolio',
-    category: project.category,
-    owner: member.name,
-    portfolioUrl: member.portfolio,
-    projectUrl: project.link,
-    experience: project.experience,
-  }))
+  member.projects.filter(project => !project.sameAs).map(project => {
+    // Members who list the same project are credited on this single card.
+    const coAuthors = TEAM_MEMBERS.filter(other =>
+      other !== member && other.projects.some(item => item.sameAs === project.name));
+    const authors = [member, ...coAuthors].map(author => ({ name: author.name, portfolio: author.portfolio }));
+    return {
+      id: `equipo-${slug(project.name)}`,
+      title: project.name,
+      tag: project.stack,
+      description: project.description,
+      detailedDescription: project.description,
+      image: project.image ?? '/images/treesside-logo.jpg',
+      imageFit: project.imageFit,
+      imageLabel: project.image ? undefined : 'Imagen de marca · consulta el proyecto en el portafolio',
+      category: project.category,
+      owner: authors.map(author => author.name).join(' y '),
+      authors,
+      portfolioUrl: member.portfolio,
+      projectUrl: project.link,
+      experience: project.experience,
+    };
+  })
 );
 
 // Own projects first; employer work follows as the member's experience.

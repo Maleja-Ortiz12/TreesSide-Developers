@@ -10,7 +10,7 @@ async function html(path) {
 test('team starts as a grid with accessible profile buttons and hidden detail panels', async () => {
   const page = await html('/equipo');
   const cards = [...page.matchAll(/<article\b[\s\S]*?<\/article>/g)].map(([card]) => card);
-  assert.equal(cards.length, 3);
+  assert.equal(cards.length, 4);
   const controls = new Set();
   for (const card of cards) {
     assert.ok(!card.startsWith('<article hidden'));
@@ -24,7 +24,7 @@ test('team starts as a grid with accessible profile buttons and hidden detail pa
     assert.ok(card.includes('Proyectos del portafolio'));
     assert.ok(card.includes('rel="noopener noreferrer"'));
   }
-  assert.equal(controls.size, 3);
+  assert.equal(controls.size, 4);
   assert.ok(!page.includes('<details'));
 });
 
