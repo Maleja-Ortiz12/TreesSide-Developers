@@ -156,6 +156,12 @@ export function Footer() {
         a.contact-link:hover, a.contact-link:focus-visible {
           color: var(--primary-green);
         }
+        /* Room for the floating WhatsApp button so it never covers the last line. */
+        @media (max-width: 600px) {
+          footer {
+            padding-bottom: 96px !important;
+          }
+        }
         @media (max-width: 768px) {
           .footer-grid {
             grid-template-columns: 1fr !important;

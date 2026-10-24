@@ -68,10 +68,15 @@ export default function PrivacyPolicyPage() {
           escribiste y lo que solicitas.
         </p>
         <ul>
-          <li><strong>Consultas:</strong> las respondemos en un plazo máximo de diez (10) días hábiles desde su recibo.</li>
+          <li>
+            <strong>Consultas:</strong> las respondemos en un plazo máximo de diez (10) días hábiles desde su recibo. Si no es
+            posible, te informaremos el motivo y la nueva fecha, que no superará cinco (5) días hábiles adicionales.
+          </li>
           <li>
             <strong>Reclamos</strong> (corrección, actualización, supresión o revocatoria): los atendemos en un plazo máximo de
-            quince (15) días hábiles desde su recibo. Si necesitamos más tiempo, te informaremos el motivo y la fecha de respuesta.
+            quince (15) días hábiles desde su recibo, prorrogable por hasta ocho (8) días hábiles más, informándote el motivo.
+            Si el reclamo está incompleto, te pediremos dentro de los cinco (5) días siguientes que lo completes; si pasan
+            dos (2) meses sin respuesta, se entenderá que desististe del reclamo.
           </li>
         </ul>
 

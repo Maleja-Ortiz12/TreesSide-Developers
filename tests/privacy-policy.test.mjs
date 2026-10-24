@@ -18,7 +18,7 @@ test('S3 the personal data policy page carries the minimum content of Ley 1581 d
     'Ley 1581 de 2012', 'Decreto 1377 de 2013', 'TreesSide Developers',
     'correo@softzenkododevs.com', '+57 305 717 3986',
     'Finalidad', 'conocer, actualizar y rectificar', 'revocar la autorización', 'solicitar la supresión',
-    'diez (10) días hábiles', 'quince (15) días hábiles', 'Superintendencia de Industria y Comercio',
+    'diez (10) días hábiles', 'cinco (5) días hábiles', 'quince (15) días hábiles', 'ocho (8) días hábiles', 'dos (2) meses', 'Superintendencia de Industria y Comercio',
     'Formspree', 'Estados Unidos', 'Fecha de entrada en vigencia: 24 de octubre de 2026',
   ]) {
     assert.ok(text.toLowerCase().includes(required.toLowerCase()), `missing: ${required}`);
@@ -30,4 +30,10 @@ test('S3 every page footer links to the data policy', async () => {
     const footer = (await page(path)).match(/<footer[\s\S]*?<\/footer>/)?.[0] ?? '';
     assert.ok(footer.includes('href="/politica-de-datos"'), path);
   }
+});
+
+test('the floating WhatsApp button never covers the end of the footer on phones', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const footer = await readFile('src/components/Footer.tsx', 'utf8');
+  assert.match(footer, /@media \(max-width: 600px\)[\s\S]*?footer[\s\S]*?padding-bottom:\s*96px/);
 });

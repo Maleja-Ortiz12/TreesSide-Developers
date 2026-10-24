@@ -81,3 +81,28 @@ test('S2 the form shows success only for a sent result, never a simulated one', 
   assert.ok(source.includes("process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID"));
   assert.match(source, /status === 'sent'/);
 });
+
+test('S2 form IDs with whitespace or non-ASCII never reach the URL', async () => {
+  const { sendContact } = await load();
+  for (const id of [' abc ', 'abc\n', 'abcé']) {
+    const { calls, impl } = fakeFetch({ ok: true });
+    assert.equal(await sendContact(DATA, id, impl), 'not-configured');
+    assert.equal(calls.length, 0);
+  }
+});
+
+test('S2 a rejected fetch promise is an error, never success', async () => {
+  const { sendContact } = await load();
+  assert.equal(await sendContact(DATA, 'abc123', () => Promise.reject(new Error('x'))), 'error');
+});
+
+test('S2 the payload uses Formspree reply-to and subject fields and leaves out the honeypot', async () => {
+  const { sendContact } = await load();
+  const { calls, impl } = fakeFetch({ ok: true });
+  await sendContact(DATA, 'abc123', impl);
+  const body = JSON.parse(calls[0].init.body);
+  assert.equal(body.email, DATA.correo);
+  assert.ok(body._subject);
+  assert.equal('_gotcha' in body, false);
+  assert.equal(calls[0].init.headers.Accept, 'application/json');
+});
