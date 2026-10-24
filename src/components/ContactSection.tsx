@@ -1,31 +1,29 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { CONTACT_INFO } from '@/data/content';
-import { Mail, MapPin, Phone, Send, CheckCircle2, Copy, Check } from 'lucide-react';
+import { sendContact, type ContactResult } from '@/lib/contact';
+import { Mail, MapPin, Phone, Send, CheckCircle2, Copy, Check, AlertCircle } from 'lucide-react';
+
+// Inlined at build time; set it in Netlify once the Formspree form exists.
+const FORMSPREE_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID;
+const EMPTY_FORM = { nombre: '', correo: '', mensaje: '', consent: false, gotcha: '' };
 
 export function ContactSection() {
-  const [formData, setFormData] = useState({
-    nombre: '',
-    correo: '',
-    mensaje: ''
-  });
-  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState(EMPTY_FORM);
+  const [status, setStatus] = useState<'idle' | 'sending' | ContactResult>('idle');
   const [copied, setCopied] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const loading = status === 'sending';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.nombre || !formData.correo || !formData.mensaje) return;
-
-    setLoading(true);
-    // Simulate API submission
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-      setFormData({ nombre: '', correo: '', mensaje: '' });
-      setTimeout(() => setSubmitted(false), 6000);
-    }, 800);
+    if (loading || !formData.nombre || !formData.correo || !formData.mensaje || !formData.consent) return;
+    setStatus('sending');
+    const result = await sendContact(formData, FORMSPREE_FORM_ID);
+    setStatus(result);
+    // Keep what the visitor wrote unless the message really went out.
+    if (result === 'sent') setFormData(EMPTY_FORM);
   };
 
   const copyEmail = () => {
@@ -207,7 +205,7 @@ export function ContactSection() {
 
           {/* Right Column: Interactive Contact Form */}
           <div className="glass-card" style={{ padding: '36px 32px' }}>
-            {submitted ? (
+            {status === 'sent' ? (
               <div style={{
                 padding: '40px 20px',
                 textAlign: 'center',
@@ -351,6 +349,48 @@ export function ContactSection() {
                     }}
                   />
                 </div>
+
+                {/* Honeypot: invisible to people, bots fill it and get dropped. */}
+                <input
+                  type="text"
+                  name="_gotcha"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={formData.gotcha}
+                  onChange={(e) => setFormData({ ...formData, gotcha: e.target.value })}
+                  style={{ position: 'absolute', left: '-10000px', width: '1px', height: '1px', opacity: 0 }}
+                />
+
+                <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5, cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    required
+                    checked={formData.consent}
+                    onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
+                    style={{ marginTop: '3px', width: '16px', height: '16px', accentColor: 'var(--primary-green)', flexShrink: 0 }}
+                  />
+                  <span>
+                    Autorizo a TreesSide Developers a tratar mis datos personales para responder a mi mensaje, según la{' '}
+                    <Link href="/politica-de-datos" style={{ color: 'var(--primary-cyan)', textDecoration: 'underline' }}>
+                      política de tratamiento de datos
+                    </Link>.
+                  </span>
+                </label>
+
+                {(status === 'error' || status === 'not-configured') && (
+                  <div role="alert" style={{ display: 'flex', gap: '10px', padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(251, 191, 36, 0.4)', background: 'rgba(251, 191, 36, 0.08)', color: '#fde68a', fontSize: '0.85rem', lineHeight: 1.5 }}>
+                    <AlertCircle size={18} style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
+                    <span>
+                      {status === 'error'
+                        ? 'No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos directamente a '
+                        : 'El formulario todavía no está conectado. Mientras tanto, escríbenos a '}
+                      <a href={`mailto:${CONTACT_INFO.email}`} style={{ color: '#ffffff', textDecoration: 'underline' }}>{CONTACT_INFO.email}</a>
+                      {' o por '}
+                      <a href={CONTACT_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#ffffff', textDecoration: 'underline' }}>WhatsApp</a>.
+                    </span>
+                  </div>
+                )}
 
                 <button
                   type="submit"
