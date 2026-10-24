@@ -10,6 +10,15 @@ import styles from './ProjectCarousel.module.css';
 
 const PLACEHOLDER = '/images/treesside-logo.jpg';
 const SPEED = 42; // px per second
+// 14 cards of 300px + 20px gap ≈ 4480px per copy, wider than a 4K screen, so the loop never shows a gap.
+const MIN_CARDS_PER_COPY = 14;
+
+/** Repeats the whole list until it has at least `min` items, keeping the same order on every lap. */
+export function repeatToMinimum<T>(list: T[], min: number): T[] {
+  if (list.length === 0) return [];
+  const laps = Math.max(1, Math.ceil(min / list.length));
+  return Array.from({ length: laps }, () => list).flat();
+}
 
 /** Keeps the strip offset inside (-width, 0] so the duplicated half loops without a visible jump. */
 export function wrapOffset(x: number, width: number) {
@@ -19,7 +28,7 @@ export function wrapOffset(x: number, width: number) {
 
 function Item({ project, copy }: { project: Project; copy?: boolean }) {
   return (
-    <Link href="/proyectos" className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined}>
+    <Link href="/proyectos" className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
       <Image src={project.image} alt={copy ? '' : project.title} fill sizes="300px" className={styles.image}
         style={{ objectFit: project.imageFit ?? 'cover' }} />
       <span className={styles.caption}><strong>{project.title}</strong><small>{project.owner}</small></span>
@@ -31,6 +40,8 @@ function Row({ projects, direction, paused }: { projects: Project[]; direction: 
   const track = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const reduce = useReducedMotion();
+  // Only the first lap is announced and focusable; the extra laps just fill very wide screens.
+  const cards = repeatToMinimum(projects, MIN_CARDS_PER_COPY);
   // Starts at rest and eases to full speed, so reduced-motion visitors never see it drift; stops the same way.
   const speed = useSpring(0, { stiffness: 70, damping: 18 });
   useEffect(() => { speed.set(paused || reduce ? 0 : 1); }, [paused, reduce, speed]);
@@ -42,9 +53,11 @@ function Row({ projects, direction, paused }: { projects: Project[]; direction: 
   return (
     <div className={styles.viewport} data-reduced={reduce || undefined}>
       <motion.div ref={track} className={styles.track} style={{ x }}>
-        <div className={styles.set}>{projects.map(project => <Item key={project.id} project={project} />)}</div>
+        <div className={styles.set}>
+          {cards.map((project, index) => <Item key={`${project.id}-${index}`} project={project} copy={index >= projects.length} />)}
+        </div>
         <div className={styles.set} aria-hidden="true" data-carousel-copy="">
-          {projects.map(project => <Item key={project.id} project={project} copy />)}
+          {cards.map((project, index) => <Item key={`${project.id}-${index}`} project={project} copy />)}
         </div>
       </motion.div>
     </div>

@@ -39,12 +39,28 @@ test('S2 home shows a project image carousel inside a scroll reveal', async () =
   assert.ok(!section.includes('treesside-logo'), 'only real project images');
 });
 
-test('S2 the loop copy is hidden from assistive tech and keyboard, and motion can be paused', async () => {
+test('S2 the loop copy and wide-screen fillers are hidden from assistive tech and keyboard, and motion can be paused', async () => {
   const section = carousel(await home());
-  const visible = items(section, false), copies = items(section, true);
-  assert.equal(copies.length, visible.length, 'one hidden copy per item for the seamless loop');
+  const visible = items(section, false);
+  const titles = visible.map(item => item.match(/<strong>([^<]+)<\/strong>/)?.[1]);
+  assert.equal(new Set(titles).size, titles.length, 'each project is announced once');
+  for (const hidden of items(section, true)) assert.ok(hidden.includes('aria-hidden="true"'), 'repeat hidden from screen readers');
   assert.match(section, /<div[^>]*aria-hidden="true"[^>]*data-carousel-copy/);
   assert.ok(section.includes('Pausar carrusel'));
+});
+
+test('S4 every strip copy holds at least 14 cards so very wide screens never see a gap', async () => {
+  const section = carousel(await home());
+  const rows = section.split(/(?=<div[^>]*class="[^"]*viewport)/).slice(1);
+  assert.equal(rows.length, 2);
+  for (const row of rows) {
+    const count = (row.match(/data-carousel-item/g) || []).length;
+    assert.ok(count >= 28, `two copies of at least 14 cards, got ${count}`);
+  }
+  const { repeatToMinimum } = await loadModule();
+  assert.deepEqual(Array.from(repeatToMinimum(['a', 'b', 'c'], 7)), ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c']);
+  assert.deepEqual(Array.from(repeatToMinimum(['a', 'b'], 1)), ['a', 'b']);
+  assert.deepEqual(Array.from(repeatToMinimum([], 14)), []);
 });
 
 test('S2 the strip offset wraps seamlessly in both directions', async () => {
