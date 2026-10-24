@@ -40,6 +40,8 @@ export default function RootLayout({
     <html lang="es-419">
       <head>
         <link rel="icon" href="/images/treesside-logo.jpg" />
+        {/* Scroll reveals start hidden until JavaScript animates them in; without it, show them as they are. */}
+        <noscript><style>{'[data-reveal]{opacity:1 !important;transform:none !important}'}</style></noscript>
       </head>
       <body>{children}</body>
     </html>

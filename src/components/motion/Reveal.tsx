@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
+import styles from './Reveal.module.css';
 
 const DURATION = 0.9;
 
@@ -9,8 +10,12 @@ const DURATION = 0.9;
  * Brings its content in from below with a slight 3D tilt the first time it scrolls into view.
  * Every value ends at its identity so motion writes `transform: none`; a lingering transform would
  * turn this wrapper into the containing block of fixed descendants such as the project modal.
+ *
+ * `first` is for content already on screen when the page opens: a CSS-only entrance that is visible
+ * without JavaScript and does not wait for hydration.
  */
-export function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+export function Reveal({ children, delay = 0, first = false }: { children: ReactNode; delay?: number; first?: boolean }) {
+  if (first) return <div data-reveal="first" className={styles.first}>{children}</div>;
   return (
     <motion.div
       data-reveal=""

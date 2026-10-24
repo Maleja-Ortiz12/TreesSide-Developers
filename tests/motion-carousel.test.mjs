@@ -59,5 +59,7 @@ test('S2 the strip offset wraps seamlessly in both directions', async () => {
 test('S7 the carousel stops moving for reduced motion and while hovered, focused or paused', async () => {
   const source = await readFile('src/components/motion/ProjectCarousel.tsx', 'utf8');
   assert.ok(source.includes('useReducedMotion()'));
+  // Starting from rest means reduced-motion visitors never see the strip drift while the spring settles.
+  assert.match(source, /useSpring\(0,/);
   for (const event of ['onPointerEnter', 'onPointerLeave', 'onFocus', 'onBlur']) assert.ok(source.includes(event), event);
 });

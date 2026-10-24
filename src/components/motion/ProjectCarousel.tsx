@@ -31,8 +31,8 @@ function Row({ projects, direction, paused }: { projects: Project[]; direction: 
   const track = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const reduce = useReducedMotion();
-  // Eases the strip to a stop and back instead of freezing it abruptly.
-  const speed = useSpring(1, { stiffness: 70, damping: 18 });
+  // Starts at rest and eases to full speed, so reduced-motion visitors never see it drift; stops the same way.
+  const speed = useSpring(0, { stiffness: 70, damping: 18 });
   useEffect(() => { speed.set(paused || reduce ? 0 : 1); }, [paused, reduce, speed]);
   useAnimationFrame((_, delta) => {
     const half = (track.current?.scrollWidth ?? 0) / 2;

@@ -10,7 +10,7 @@ export function SitePage({ children, offsetHeader = true }: { children: React.Re
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Navbar />
         <main style={{ flexGrow: 1, paddingTop: offsetHeader ? '76px' : 0 }}>
-          {React.Children.map(children, child => <Reveal>{child}</Reveal>)}
+          {React.Children.map(children, (child, index) => <Reveal first={index === 0}>{child}</Reveal>)}
         </main>
         <Footer />
       </div>

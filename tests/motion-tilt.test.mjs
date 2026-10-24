@@ -11,8 +11,10 @@ async function load({ reduce = false, finePointer = true } = {}) {
   }).outputText;
   const calls = [], listeners = {};
   const exports = {};
+  const windowListeners = {};
   const window = {
     matchMedia: query => ({ matches: query.includes('reduce') ? reduce : finePointer }),
+    addEventListener: (type, fn) => { windowListeners[type] = fn; }, removeEventListener: type => { delete windowListeners[type]; },
   };
   const document = { addEventListener: (type, fn) => { listeners[type] = fn; }, removeEventListener: type => { delete listeners[type]; } };
   vm.runInNewContext(code, {
@@ -22,7 +24,7 @@ async function load({ reduce = false, finePointer = true } = {}) {
       : {},
   });
   exports.TiltEffect();
-  return { exports, calls, listeners };
+  return { exports, calls, listeners, windowListeners };
 }
 const card = (extra = {}) => ({
   style: { transition: 'all .3s ease', transform: '' },
@@ -71,6 +73,22 @@ test('S4 hovering a card springs it toward the mouse and leaving restores it unt
   await new Promise(resolve => setTimeout(resolve, 0));
   assert.equal(el.style.transform, '', 'inline transform cleared');
   assert.equal(el.style.transition, 'all .3s ease', 'original transition restored');
+});
+
+test('S4 a tilted card is released when the page scrolls, the mouse leaves the window or the tab loses focus', async () => {
+  for (const [target, type] of [['window', 'scroll'], ['document', 'pointerleave'], ['window', 'blur']]) {
+    const { calls, listeners, windowListeners } = await load();
+    const el = card();
+    listeners.pointermove({ pointerType: 'mouse', clientX: 300, clientY: 100, ...over(el) });
+    const handler = (target === 'window' ? windowListeners : listeners)[type];
+    assert.ok(handler, `${target} ${type} listener`);
+    handler({});
+    const reset = calls.at(-1);
+    assert.equal(reset.values.rotateX, 0, type);
+    assert.equal(reset.values.rotateY, 0, type);
+    await new Promise(resolve => setTimeout(resolve, 0));
+    assert.equal(el.style.transform, '', `${type} clears transform`);
+  }
 });
 
 test('S4 cards with form fields and touch pointers do not tilt', async () => {

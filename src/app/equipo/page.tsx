@@ -15,7 +15,7 @@ export default function TeamPage() {
   return (
     <MotionShell>
       <Navbar />
-      <main className={styles.main}><Reveal><TeamGallery /></Reveal></main>
+      <main className={styles.main}><Reveal first><TeamGallery /></Reveal></main>
       <footer className={styles.footer}>
         <div className="container">
           <p>TreesSide Developers · Código que construye futuro</p>

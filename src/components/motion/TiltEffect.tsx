@@ -57,8 +57,24 @@ export function TiltEffect() {
       animate(el, { rotateX, rotateY, y: -6, scale: 1.02, transformPerspective: 900 }, SPRING);
     };
 
+    // Without a pointermove (wheel scroll, leaving the window, switching tabs) the card would stay tilted.
+    const releaseActive = () => {
+      if (!active) return;
+      const el = active;
+      active = null;
+      release(el);
+    };
+
     document.addEventListener('pointermove', onMove, { passive: true });
-    return () => document.removeEventListener('pointermove', onMove);
+    document.addEventListener('pointerleave', releaseActive);
+    window.addEventListener('scroll', releaseActive, { passive: true });
+    window.addEventListener('blur', releaseActive);
+    return () => {
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerleave', releaseActive);
+      window.removeEventListener('scroll', releaseActive);
+      window.removeEventListener('blur', releaseActive);
+    };
   }, []);
   return null;
 }
