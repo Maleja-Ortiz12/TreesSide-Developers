@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { ContactSection } from '@/components/ContactSection';
+import { FaqSection } from '@/components/FaqSection';
 
 export const metadata: Metadata = pageMetadata('/contacto', {
   title: 'Contacto | TreesSide Developers',
@@ -12,6 +13,7 @@ export default function ContactPage() {
   return (
     <SitePage>
       <ContactSection />
+      <FaqSection />
     </SitePage>
   );
 }
