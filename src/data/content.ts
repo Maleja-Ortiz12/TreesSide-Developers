@@ -278,12 +278,6 @@ export const PROCESS_STEPS: ProcessStep[] = [
 export const CONTACT_INFO = {
   email: 'correo@softzenkododevs.com',
   location: 'Colombia',
-  phone: '+57 300 123 4567',
-  whatsappUrl: 'https://wa.me/573001234567?text=Hola%20TreesSide%20Developers,%20me%20gustar%C3%ADa%20cotizar%20un%20proyecto',
-  socials: {
-    github: 'https://github.com',
-    linkedin: 'https://linkedin.com',
-    youtube: 'https://youtube.com',
-    x: 'https://x.com'
-  }
+  phone: '+57 305 717 3986',
+  whatsappUrl: 'https://wa.me/573057173986?text=Hola%20TreesSide%20Developers,%20me%20gustar%C3%ADa%20cotizar%20un%20proyecto',
 };

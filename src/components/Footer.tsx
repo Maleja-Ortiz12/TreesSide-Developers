@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Logo } from './Logo';
 import { CONTACT_INFO } from '@/data/content';
-import { Github, Linkedin, Youtube, Twitter } from 'lucide-react';
+import { Mail, MapPin, MessageCircle } from 'lucide-react';
 
 export function Footer() {
   const navItems = [
@@ -84,7 +84,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 3: Síguenos (Social Networks) */}
+          {/* Col 3: Contacto */}
           <div>
             <h4 style={{
               fontSize: '0.95rem',
@@ -94,101 +94,23 @@ export function Footer() {
               textTransform: 'uppercase',
               letterSpacing: '1px'
             }}>
-              Síguenos
+              Contacto
             </h4>
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <a
-                href={CONTACT_INFO.socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="social-btn"
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#ffffff',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <Github size={18} />
-              </a>
-
-              <a
-                href={CONTACT_INFO.socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="social-btn"
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#ffffff',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <Linkedin size={18} />
-              </a>
-
-              <a
-                href={CONTACT_INFO.socials.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube"
-                className="social-btn"
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#ffffff',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <Youtube size={18} />
-              </a>
-
-              <a
-                href={CONTACT_INFO.socials.x}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="X (Twitter)"
-                className="social-btn"
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#ffffff',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <Twitter size={18} />
-              </a>
-            </div>
+            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <li>
+                <a href={`mailto:${CONTACT_INFO.email}`} className="contact-link">
+                  <Mail size={16} aria-hidden="true" />{CONTACT_INFO.email}
+                </a>
+              </li>
+              <li>
+                <a href={CONTACT_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer" className="contact-link">
+                  <MessageCircle size={16} aria-hidden="true" />WhatsApp {CONTACT_INFO.phone}
+                </a>
+              </li>
+              <li>
+                <span className="contact-link"><MapPin size={16} aria-hidden="true" />{CONTACT_INFO.location}</span>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -218,12 +140,18 @@ export function Footer() {
       </div>
 
       <style jsx>{`
-        .social-btn:hover {
-          background: rgba(0, 245, 160, 0.15) !important;
-          border-color: var(--primary-green) !important;
-          color: var(--primary-green) !important;
-          box-shadow: 0 0 12px rgba(0, 245, 160, 0.3) !important;
-          transform: translateY(-2px);
+        .contact-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          color: var(--text-muted);
+          font-size: 0.9rem;
+          text-decoration: none;
+          overflow-wrap: anywhere;
+          transition: color 0.2s ease;
+        }
+        a.contact-link:hover, a.contact-link:focus-visible {
+          color: var(--primary-green);
         }
         @media (max-width: 768px) {
           .footer-grid {
