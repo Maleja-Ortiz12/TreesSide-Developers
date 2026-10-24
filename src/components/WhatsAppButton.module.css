@@ -1,0 +1,13 @@
+/* Below the navbar (100) and the project modal, above page content. */
+.button { position: fixed; right: 22px; bottom: 22px; z-index: 90; display: inline-flex; align-items: center; gap: 0; height: 58px; min-width: 58px; padding: 0 16px; border-radius: 999px; background: #25d366; color: #04140a; text-decoration: none; font-weight: 700; box-shadow: 0 12px 30px -8px rgba(37, 211, 102, .55); animation: whatsapp-pulse 2.8s ease-out infinite; transition: transform 250ms ease, gap 250ms ease; }
+.label { max-width: 0; overflow: hidden; white-space: nowrap; font-size: .9rem; transition: max-width 300ms ease; }
+.button:hover, .button:focus-visible { transform: translateY(-3px); gap: 8px; animation: none; }
+.button:hover .label, .button:focus-visible .label { max-width: 90px; }
+.button:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }
+@keyframes whatsapp-pulse {
+  0% { box-shadow: 0 12px 30px -8px rgba(37, 211, 102, .55), 0 0 0 0 rgba(37, 211, 102, .45); }
+  70% { box-shadow: 0 12px 30px -8px rgba(37, 211, 102, .55), 0 0 0 16px rgba(37, 211, 102, 0); }
+  100% { box-shadow: 0 12px 30px -8px rgba(37, 211, 102, .55), 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+@media (max-width: 600px) { .button { right: 16px; bottom: 16px; height: 54px; min-width: 54px; padding: 0 14px; } }
+@media (prefers-reduced-motion: reduce) { .button { animation: none; transition: none; } .label { transition: none; } }
