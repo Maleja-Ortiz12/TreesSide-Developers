@@ -26,6 +26,7 @@ const WITH_IMAGES = {
   'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'emisoras-latinas-cover',
   'Entre Lanas y Fragancias': 'entre-lanas-y-fragancias',
   TengoYa: 'tengoya', CarWeb: 'carweb', Histech: 'histech', 'Robot Alejo 2.0': 'robot-alejo',
+  'La Lupe': 'la-lupe',
 };
 const WITHOUT_IMAGES = ['Calculadora de contenedores', 'Libres en Cristo Jesús', 'API de Tienda + Asistente IA', 'Sistema de gestión de inventarios', 'Aplicación de gestión agropecuaria', 'Migración Pega → UiPath'];
 
@@ -43,6 +44,14 @@ test('every portfolio project is listed with the image its portfolio publishes',
     assert.ok(card.includes('Imagen de marca'), `placeholder note: ${title}`);
   }
   assert.equal((section.match(/data-project=/g) || []).length, Object.keys(WITH_IMAGES).length + WITHOUT_IMAGES.length);
+});
+
+test('La Lupe is a single card crediting both authors', async () => {
+  const section = await projectsSection();
+  const card = cardFor(section, 'La Lupe');
+  assert.ok(card, 'missing project: La Lupe');
+  assert.equal(section.split(/(?=<div[^>]*data-project=)/).filter(item => item.includes('>La Lupe</h3>')).length, 1);
+  assert.ok(card.replace(/<[^>]+>/g, ' ').includes('María Alejandra Ortiz Páez y Ronaldo Delgado Correa'));
 });
 
 test('project images are served locally as nonempty WebP files', async () => {
