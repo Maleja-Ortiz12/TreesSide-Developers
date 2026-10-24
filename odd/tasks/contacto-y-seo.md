@@ -13,12 +13,12 @@ Branch: `feat/contacto-y-seo` (from `feat/animaciones`, commit 01f3753).
 
 ## Tasks
 
-- T1 [S1] Real phone/WhatsApp, social links removed, footer contact column — inline — commit: pending
-- T2 [S2, S3] Formspree delivery with honest states, consent checkbox, spam honeypot — inline — commit: pending
-- T3 [S3] Personal data policy page linked from the form and footer — inline — commit: pending
-- T4 [S4] sitemap.xml, robots.txt, JSON-LD Organization, Open Graph image — inline — commit: pending
-- T5 [S4] Floating WhatsApp button on every page — inline — commit: pending
-- T6 [S1-S4] Independent verification (personal data sent to a third party) — gentle-ai-verify — commit: n/a
+- T1 [S1] Real phone/WhatsApp, social links removed, footer contact column — inline — commit: 862d7f9 (done)
+- T2 [S2, S3] Formspree delivery with honest states, consent checkbox, spam honeypot — inline — commit: 737a21f (done)
+- T3 [S3] Personal data policy page linked from the form and footer — inline — commit: fe30af6 (done)
+- T4 [S4] sitemap.xml, robots.txt, JSON-LD Organization, Open Graph image — inline — commit: 554edac (done)
+- T5 [S4] Floating WhatsApp button on every page — inline — commit: b071c8d (done)
+- T6 [S1-S4] Independent verification (personal data sent to a third party) — gentle-ai-verify — fixes: afca9ad (done)
 
 ## Log
 
@@ -26,3 +26,5 @@ Branch: `feat/contacto-y-seo` (from `feat/animaciones`, commit 01f3753).
 - L2. "aun no tenemos redes sociales pero si tenemos un correo que es correo@softzenkododevs.com y el telefono pon mientras este 3057173986 el nombre definitivo es TreesSide"
 - L3. Answers: form "Formspree (Recomendado)"; scope "Sí, prioridad 1 y 2".
 - L4. Pending from the team: Formspree form ID (set `NEXT_PUBLIC_FORMSPREE_FORM_ID` in Netlify); legal name/NIT/city for the policy if they have them.
+- L5. Verification (gentle-ai-verify): S1-S4 PASS, no blocker/major. Minors fixed in the T6 fix commit (Ley 1581 arts. 14-15 extension/incomplete-claim terms, footer bottom room on phones) plus its suggested probes. Suite 122/122, tsc clean, `next build` OK; production og:image = https://softzenkododevs.com/opengraph-image.
+- L6. Open: live Formspree submission untested until the form ID is set (form settings like reCAPTCHA can reject AJAX; the form then shows the honest error); policy lacks legal name/NIT/street address (Decreto 1377 art. 13 a); og:url is the home URL on subpages (pre-existing).
