@@ -125,7 +125,10 @@ export function Footer() {
           gap: '12px'
         }}>
           <p style={{ fontSize: '0.88rem', color: 'var(--text-dim)' }}>
-            © 2025 TreesSide Developers. Todos los derechos reservados.
+            © 2025 TreesSide Developers. Todos los derechos reservados. ·{' '}
+            <Link href="/politica-de-datos" style={{ fontSize: 'inherit', color: 'inherit', textDecoration: 'underline' }}>
+              Política de datos
+            </Link>
           </p>
 
           <p style={{
