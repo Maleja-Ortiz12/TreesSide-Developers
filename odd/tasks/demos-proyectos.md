@@ -14,14 +14,15 @@ Branch: `feat/demos-proyectos` (from `feat/portafolios-y-nosotros`, commit f5d22
 
 ## Tasks
 
-- T1 [S2, S3, S5] Six-card shell (source project + "podemos construir" line), UptownHair reservas and Entre Lanas inventario, automation demo removed — inline — commit: pending
-- T2 [S2, S4] La Lupe menú y cotización — inline — commit: pending
-- T3 [S2, S4] Emisoras Latinas radio en vivo — inline — commit: pending
-- T4 [S2, S4] Calculadora de contenedores — inline — commit: pending
-- T5 [S2, S4] Ocho80 bingo digital — inline — commit: pending
+- T1 [S2, S3, S5] Six-card shell (source project + "podemos construir" line), UptownHair reservas and Entre Lanas inventario, automation demo removed — inline — commit: 1458c8b (done)
+- T2 [S2, S4] La Lupe menú y cotización — inline — commit: 7df4e01 (done)
+- T3 [S2, S4] Emisoras Latinas radio en vivo — inline — commit: 4889f10 (done)
+- T4 [S2, S4] Calculadora de contenedores — inline — commit: 28fb943 (done)
+- T5 [S2, S4] Ocho80 bingo digital — inline — commit: 522ef32 (done)
 
 ## Log
 
 - L1. "trabajaremos en meorar los demos trata de que sena de protyecos ya  creados y de lo que ;podemos realizar"
 - L2. Answers: approach "Demos nuevas que imiten proyectos puntuales" (preview: La Lupe menú y cotización, Emisoras Latinas radio, Calculadora de contenedores); quantity "6"; extra project "UptownHair — reservas de salón".
 - L3. Remaining two: "Ocho80 + Inventario" (Bingo digital e inventario de Entre Lanas y Fragancias).
+- L4. Evidence: full suite `node --test "tests/*.test.mjs"` 81/81 pass against `next dev`; `tsc --noEmit` clean. La Lupe catalog entry committed as prerequisite (9222795).
