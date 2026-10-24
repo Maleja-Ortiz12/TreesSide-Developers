@@ -1,0 +1,84 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion, useAnimationFrame, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
+import { Pause, Play } from 'lucide-react';
+import { FEATURED_PROJECTS, type Project } from '@/data/content';
+import styles from './ProjectCarousel.module.css';
+
+const PLACEHOLDER = '/images/treesside-logo.jpg';
+const SPEED = 42; // px per second
+
+/** Keeps the strip offset inside (-width, 0] so the duplicated half loops without a visible jump. */
+export function wrapOffset(x: number, width: number) {
+  if (width <= 0) return 0;
+  return (((x % width) - width) % width) || 0;
+}
+
+function Item({ project, copy }: { project: Project; copy?: boolean }) {
+  return (
+    <Link href="/proyectos" className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined}>
+      <Image src={project.image} alt={copy ? '' : project.title} fill sizes="300px" className={styles.image}
+        style={{ objectFit: project.imageFit ?? 'cover' }} />
+      <span className={styles.caption}><strong>{project.title}</strong><small>{project.owner}</small></span>
+    </Link>
+  );
+}
+
+function Row({ projects, direction, paused }: { projects: Project[]; direction: 1 | -1; paused: boolean }) {
+  const track = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const reduce = useReducedMotion();
+  // Eases the strip to a stop and back instead of freezing it abruptly.
+  const speed = useSpring(1, { stiffness: 70, damping: 18 });
+  useEffect(() => { speed.set(paused || reduce ? 0 : 1); }, [paused, reduce, speed]);
+  useAnimationFrame((_, delta) => {
+    const half = (track.current?.scrollWidth ?? 0) / 2;
+    const step = (SPEED * delta / 1000) * speed.get();
+    if (step) x.set(wrapOffset(x.get() - direction * step, half));
+  });
+  return (
+    <div className={styles.viewport} data-reduced={reduce || undefined}>
+      <motion.div ref={track} className={styles.track} style={{ x }}>
+        <div className={styles.set}>{projects.map(project => <Item key={project.id} project={project} />)}</div>
+        <div className={styles.set} aria-hidden="true" data-carousel-copy="">
+          {projects.map(project => <Item key={project.id} project={project} copy />)}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+export function ProjectCarousel() {
+  const [paused, setPaused] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const projects = FEATURED_PROJECTS.filter(project => !project.experience && project.image !== PLACEHOLDER);
+  const rows = [projects.filter((_, index) => index % 2 === 0), projects.filter((_, index) => index % 2 === 1)];
+  const stopped = paused || hovered || focused;
+  return (
+    <section id="carrusel" className={styles.section} aria-labelledby="carrusel-title">
+      <div className={`container ${styles.heading}`}>
+        <div>
+          <span className="kicker">PORTAFOLIO EN MOVIMIENTO</span>
+          <h2 id="carrusel-title" className="section-title">Proyectos que ya construimos</h2>
+          <p className="section-subtitle">Sitios, plataformas y aplicaciones reales del equipo. Pasa el mouse para detener la cinta.</p>
+        </div>
+        <button type="button" className={styles.toggle} aria-pressed={paused} onClick={() => setPaused(value => !value)}>
+          {paused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
+          {paused ? 'Reanudar carrusel' : 'Pausar carrusel'}
+        </button>
+      </div>
+      <div className={styles.stage}
+        onPointerEnter={() => setHovered(true)} onPointerLeave={() => setHovered(false)}
+        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}>
+        <div className={styles.plane}>
+          <Row projects={rows[0]} direction={1} paused={stopped} />
+          <Row projects={rows[1]} direction={-1} paused={stopped} />
+        </div>
+      </div>
+    </section>
+  );
+}
