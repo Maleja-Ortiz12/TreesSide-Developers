@@ -1,0 +1,74 @@
+import type { ComponentType } from 'react';
+import Link from 'next/link';
+import { Scissors, Package, ArrowRight, type LucideIcon } from 'lucide-react';
+import { FEATURED_PROJECTS } from '@/data/content';
+import { BookingDemo } from './demos/BookingDemo';
+import { InventoryDemo } from './demos/InventoryDemo';
+import styles from './HomeDemos.module.css';
+
+interface DemoCard {
+  /** Title of the catalog project the demo imitates; authors and link come from the catalog. */
+  project: string;
+  title: string;
+  description: string;
+  canBuild: string;
+  icon: LucideIcon;
+  Demo: ComponentType;
+}
+
+const DEMOS: DemoCard[] = [
+  {
+    project: 'UptownHair', title: 'Reservas para tu salón', icon: Scissors, Demo: BookingDemo,
+    description: 'Elige servicio y horario y confirma el turno, como en la app de reservas para salones de belleza.',
+    canBuild: 'agendas para barberías, spas, consultorios, clases o canchas, con recordatorios y panel de turnos.',
+  },
+  {
+    project: 'Entre Lanas y Fragancias', title: 'Inventario que avisa', icon: Package, Demo: InventoryDemo,
+    description: 'Vende y repone productos de la tienda y mira cómo se marcan las existencias bajas.',
+    canBuild: 'control de stock, ventas y alertas para tiendas, bodegas o restaurantes, conectado a tu tienda en línea.',
+  },
+];
+
+const slug = (name: string) =>
+  name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+export function HomeDemos() {
+  return (
+    <section id="demos" className={styles.section} aria-labelledby="demos-title">
+      <div className="container">
+        <div className={styles.heading}>
+          <span className="kicker">PROYECTOS REALES, EN MINIATURA</span>
+          <h2 id="demos-title" className="section-title">Prueba lo que podemos construir</h2>
+          <p className="section-subtitle">Cada demo es una versión pequeña de un proyecto que ya construimos. Haz clic, prueba y vuelve a empezar.</p>
+          <p className={styles.disclaimer}>Simulaciones locales con datos de ejemplo. No se guardan ni se envían datos; no son reservas, ventas ni pedidos reales.</p>
+        </div>
+        <div className={styles.grid}>
+          {DEMOS.map(({ project, title, description, canBuild, icon: Icon, Demo }, index) => {
+            const source = FEATURED_PROJECTS.find(item => item.title === project);
+            const href = source?.projectUrl ?? '/proyectos';
+            return (
+              <article key={project} className={styles.card} data-demo={slug(project)}>
+                <div className={styles.chrome} aria-hidden="true"><span /><span /><span /><small>{`DEMO ${String(index + 1).padStart(2, '0')}`}</small></div>
+                <div className={styles.intro}>
+                  <Icon size={24} aria-hidden="true" />
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                  <p className={styles.source}>
+                    Basado en{' '}
+                    {href.startsWith('http')
+                      ? <a href={href} target="_blank" rel="noopener noreferrer">{project}</a>
+                      : <Link href={href}>{project}</Link>}
+                    {source?.owner && <span> · {source.owner}</span>}
+                  </p>
+                </div>
+                <Demo />
+                <p className={styles.canBuild}><strong>Podemos construir:</strong> {canBuild}</p>
+              </article>
+            );
+          })}
+        </div>
+        <div className={styles.cta}><p>¿Qué proceso de tu negocio te gustaría simplificar?</p><Link className="btn btn-primary" href="/contacto">Construyamos tu solución <ArrowRight size={18} aria-hidden="true" /></Link></div>
+      </div>
+    </section>
+  );
+}
