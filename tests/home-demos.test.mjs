@@ -103,10 +103,31 @@ test('Emisoras Latinas radio filters stations by country, plays, pauses and rese
   assert.ok(station('Vallenato'), 'filter reset');
 });
 
+test('container calculator picks the best box orientation, layers and weight on a 120×100 pallet', () => {
+  const ui = mount('LoadCalculatorDemo', 'LoadCalculatorDemo');
+  const boxes = () => ui.nodes().filter(n => n.type === 'rect' && n.props['data-box']).length;
+  assert.ok(ui.text().includes('9 cajas por capa · 6 capas · 54 cajas · 432 kg'));
+  assert.equal(boxes(), 9);
+  ui.click('Pequeña');
+  assert.ok(ui.text().includes('20 cajas por capa · 7 capas · 140 cajas · 560 kg'));
+  assert.equal(boxes(), 20);
+  for (let i = 0; i < 5; i++) ui.click('Bajar altura');
+  assert.ok(ui.text().includes('Altura máxima: 100 cm'));
+  assert.ok(ui.text().includes('20 cajas por capa · 5 capas · 100 cajas · 400 kg'));
+  for (let i = 0; i < 5; i++) ui.click('Bajar altura');
+  assert.equal(ui.button('Bajar altura').props.disabled, true, 'minimum 50 cm');
+  ui.click('Grande');
+  assert.ok(ui.text().includes('4 cajas por capa · 1 capa · 4 cajas · 60 kg'));
+  ui.click('Reiniciar cálculo');
+  assert.ok(ui.text().includes('Altura máxima: 150 cm'));
+  assert.ok(ui.text().includes('9 cajas por capa · 6 capas · 54 cajas · 432 kg'));
+});
+
 test('home demo cards name the real project, its authors and what we can build', async () => {
   const html = await home();
   for (const [id, project, authors] of [
     ['la-lupe', 'La Lupe', 'María Alejandra Ortiz Páez y Ronaldo Delgado Correa'],
+    ['calculadora-de-contenedores', 'Calculadora de contenedores', 'Ronaldo Delgado Correa'],
     ['emisoras-latinas', 'Emisoras Latinas', 'María Alejandra Ortiz Páez y Jorge Luis Ramírez Trochez'],
     ['uptownhair', 'UptownHair', 'María Alejandra Ortiz Páez'],
     ['entre-lanas-y-fragancias', 'Entre Lanas y Fragancias', 'María Alejandra Ortiz Páez'],

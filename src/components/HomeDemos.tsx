@@ -1,11 +1,12 @@
 import type { ComponentType } from 'react';
 import Link from 'next/link';
-import { Scissors, Package, UtensilsCrossed, Radio, ArrowRight, type LucideIcon } from 'lucide-react';
+import { Scissors, Package, UtensilsCrossed, Radio, Boxes, ArrowRight, type LucideIcon } from 'lucide-react';
 import { FEATURED_PROJECTS } from '@/data/content';
 import { BookingDemo } from './demos/BookingDemo';
 import { InventoryDemo } from './demos/InventoryDemo';
 import { MenuQuoteDemo } from './demos/MenuQuoteDemo';
 import { RadioDemo } from './demos/RadioDemo';
+import { LoadCalculatorDemo } from './demos/LoadCalculatorDemo';
 import styles from './HomeDemos.module.css';
 
 interface DemoCard {
@@ -28,6 +29,11 @@ const DEMOS: DemoCard[] = [
     project: 'Emisoras Latinas', title: 'Radio en vivo', icon: Radio, Demo: RadioDemo,
     description: 'Filtra emisoras por país y controla el reproductor, como en el directorio de radios latinas.',
     canBuild: 'plataformas de streaming, podcasts o emisoras propias, con directorio, reproductor y SEO para crecer en visitas.',
+  },
+  {
+    project: 'Calculadora de contenedores', title: 'Cálculo de carga', icon: Boxes, Demo: LoadCalculatorDemo,
+    description: 'Elige la caja y la altura máxima y mira cuántas caben por capa en el palé, con su peso total.',
+    canBuild: 'calculadoras y cotizadores para logística, construcción o manufactura, en web o en app móvil.',
   },
   {
     project: 'UptownHair', title: 'Reservas para tu salón', icon: Scissors, Demo: BookingDemo,
