@@ -123,6 +123,34 @@ test('container calculator picks the best box orientation, layers and weight on 
   assert.ok(ui.text().includes('9 cajas por capa · 6 capas · 54 cajas · 432 kg'));
 });
 
+test('Ocho80 bingo draws balls, marks the card, calls a line, then bingo, and resets', () => {
+  const ui = mount('BingoDemo', 'BingoDemo');
+  const marked = () => ui.nodes().filter(n => n.props?.['data-marked'] === true).length;
+  assert.ok(ui.text().includes('Balotas: 0 de 30'));
+  assert.ok(ui.text().includes('Saca una balota para empezar.'));
+  for (let i = 0; i < 4; i++) ui.click('Sacar balota');
+  assert.ok(!ui.text().includes('¡Línea!'));
+  ui.click('Sacar balota');
+  assert.ok(ui.text().includes('¡Línea!'));
+  assert.ok(ui.text().includes('Balotas: 5 de 30'));
+  assert.equal(marked(), 3);
+  for (let i = 0; i < 12; i++) ui.click('Sacar balota');
+  assert.ok(ui.text().includes('¡Bingo!'));
+  assert.ok(ui.text().includes('Balotas: 17 de 30'));
+  assert.equal(marked(), 9);
+  assert.equal(ui.button('Sacar balota').props.disabled, true);
+  ui.click('Reiniciar bingo');
+  assert.ok(ui.text().includes('Balotas: 0 de 30'));
+  assert.equal(marked(), 0);
+});
+
+test('home shows the six project demos in order', async () => {
+  const html = await home();
+  const ids = [...html.matchAll(/<article[^>]*data-demo="([^"]+)"/g)].map(match => match[1]);
+  assert.deepEqual(ids, ['la-lupe', 'emisoras-latinas', 'calculadora-de-contenedores', 'uptownhair', 'ocho80', 'entre-lanas-y-fragancias']);
+  assert.ok(html.includes('DEMO 06'));
+});
+
 test('home demo cards name the real project, its authors and what we can build', async () => {
   const html = await home();
   for (const [id, project, authors] of [
@@ -131,6 +159,7 @@ test('home demo cards name the real project, its authors and what we can build',
     ['emisoras-latinas', 'Emisoras Latinas', 'María Alejandra Ortiz Páez y Jorge Luis Ramírez Trochez'],
     ['uptownhair', 'UptownHair', 'María Alejandra Ortiz Páez'],
     ['entre-lanas-y-fragancias', 'Entre Lanas y Fragancias', 'María Alejandra Ortiz Páez'],
+    ['ocho80', 'Ocho80', 'Ronaldo Delgado Correa'],
   ]) {
     const card = demoCard(html, id);
     assert.ok(card, `demo card ${id}`);

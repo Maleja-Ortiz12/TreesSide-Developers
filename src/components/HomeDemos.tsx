@@ -1,12 +1,13 @@
 import type { ComponentType } from 'react';
 import Link from 'next/link';
-import { Scissors, Package, UtensilsCrossed, Radio, Boxes, ArrowRight, type LucideIcon } from 'lucide-react';
+import { Scissors, Package, UtensilsCrossed, Radio, Boxes, Grid3x3, ArrowRight, type LucideIcon } from 'lucide-react';
 import { FEATURED_PROJECTS } from '@/data/content';
 import { BookingDemo } from './demos/BookingDemo';
 import { InventoryDemo } from './demos/InventoryDemo';
 import { MenuQuoteDemo } from './demos/MenuQuoteDemo';
 import { RadioDemo } from './demos/RadioDemo';
 import { LoadCalculatorDemo } from './demos/LoadCalculatorDemo';
+import { BingoDemo } from './demos/BingoDemo';
 import styles from './HomeDemos.module.css';
 
 interface DemoCard {
@@ -39,6 +40,11 @@ const DEMOS: DemoCard[] = [
     project: 'UptownHair', title: 'Reservas para tu salón', icon: Scissors, Demo: BookingDemo,
     description: 'Elige servicio y horario y confirma el turno, como en la app de reservas para salones de belleza.',
     canBuild: 'agendas para barberías, spas, consultorios, clases o canchas, con recordatorios y panel de turnos.',
+  },
+  {
+    project: 'Ocho80', title: 'Bingo digital', icon: Grid3x3, Demo: BingoDemo,
+    description: 'Saca balotas y mira cómo se marca el cartón hasta cantar línea y bingo, como en la plataforma de rifas y bingo.',
+    canBuild: 'juegos, rifas, trivias o sorteos en tiempo real para eventos, comunidades o fundaciones.',
   },
   {
     project: 'Entre Lanas y Fragancias', title: 'Inventario que avisa', icon: Package, Demo: InventoryDemo,
