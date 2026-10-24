@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { CONTACT_INFO } from '@/data/content';
 import styles from './page.module.css';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata('/politica-de-datos', {
   title: 'Política de tratamiento de datos personales | TreesSide Developers',
   description: 'Cómo TreesSide Developers recolecta, usa y protege los datos personales que recibe a través de su sitio web, conforme a la Ley 1581 de 2012.',
-};
+});
 
 const EFFECTIVE_DATE = '24 de octubre de 2026';
 

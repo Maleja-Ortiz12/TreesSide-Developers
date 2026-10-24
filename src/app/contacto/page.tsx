@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { ContactSection } from '@/components/ContactSection';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata('/contacto', {
   title: 'Contacto | TreesSide Developers',
   description: 'Cuéntanos tu idea y construyamos juntos tu próximo proyecto de software.',
-};
+});
 
 export default function ContactPage() {
   return (
