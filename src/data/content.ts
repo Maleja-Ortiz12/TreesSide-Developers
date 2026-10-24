@@ -275,6 +275,8 @@ export const PROCESS_STEPS: ProcessStep[] = [
   }
 ];
 
+export const SITE_URL = 'https://softzenkododevs.com';
+
 export const CONTACT_INFO = {
   email: 'correo@softzenkododevs.com',
   location: 'Colombia',
