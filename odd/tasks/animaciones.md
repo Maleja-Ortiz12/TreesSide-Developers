@@ -16,14 +16,16 @@ Branch: `feat/animaciones` (from `feat/demos-proyectos`, commit f19d460).
 
 ## Tasks
 
-- T1 [S3, S6, S7] `motion` dependency, reduced-motion config and scroll reveal on every page — inline — commit: pending
-- T2 [S4, S7] 3D tilt for demo, service and project cards — inline — commit: pending
-- T3 [S2, S7] Home project image carousel — inline — commit: pending
-- T4 [S5, S7] Parallax background layers — inline — commit: pending
-- T5 [S1-S7] Independent verification (dependency added = high risk) — gentle-ai-verify — commit: n/a
+- T1 [S3, S6, S7] `motion` dependency, reduced-motion config and scroll reveal on every page — inline — commit: 7e77d4b (done)
+- T2 [S4, S7] 3D tilt for demo, service and project cards — inline — commit: a06947d (done)
+- T3 [S2, S7] Home project image carousel — inline — commit: bfa8da8 (done)
+- T4 [S5, S7] Parallax background layers — inline — commit: b51f779 (done)
+- T5 [S1-S7] Independent verification (dependency added = high risk) — gentle-ai-verify — fixes: b642bcb, 6b53f46 (done)
 
 ## Log
 
 - L1. "me gusta prto si quisiera que toda la pagina tuiera mas animacion, mas movimiento, como carruseles de imagenes movimiento D3D"
 - L2. Answers: types "Carrusel de proyectos en la home, Aparecer al hacer scroll, Inclinación 3D en las cards, Fondo con profundidad (parallax)"; technology "Agregar Framer Motion"; intensity "Notorio".
 - L3. Note: files with someone else's uncommitted work (globals.css, ProjectsSection.tsx, AboutSection.tsx, TeamGallery.module.css, nosotros/page.tsx, ProjectSpotlight.*) are not edited; motion is added through new components instead.
+- L4. Verification (gentle-ai-verify): first pass found a blocker — every section served with inline opacity:0 (invisible without JavaScript, blank hero until hydration) — plus minors (carousel spring drift under reduced motion, tilt stuck on wheel scroll/leaving window). Fixed in b642bcb (first section CSS-only entrance, noscript fallback, spring from rest, release on scroll/blur) and 6b53f46 (pointerout instead of document pointerleave). Re-verification: S3, S4, S7 PASS, no new defects. Suite 100/100, tsc clean, `next build` OK (home 192 kB first load).
+- L5. Open advisories: package-lock.json lost `libc` fields on sharp/swc optional packages (npm version difference); carousel copies ~2560 px wide may show a gap on wider screens.
