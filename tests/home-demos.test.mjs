@@ -84,10 +84,30 @@ test('La Lupe menu adds real dishes, totals in pesos and prepares a WhatsApp-sty
   assert.equal(ui.button('Preparar cotización').props.disabled, true);
 });
 
+test('Emisoras Latinas radio filters stations by country, plays, pauses and resets', () => {
+  const ui = mount('RadioDemo', 'RadioDemo');
+  const station = name => ui.nodes().some(n => n.type === 'button' && n.props['aria-label'] === `Escuchar ${name}`);
+  assert.ok(ui.text().includes('Elige una emisora para empezar.'));
+  assert.equal(ui.button('Pausar').props.disabled, true);
+  ui.click('México');
+  assert.ok(station('Rock en Español'));
+  assert.ok(!station('Vallenato'), 'filtered out');
+  ui.click('Escuchar Rock en Español');
+  assert.ok(ui.text().includes('En vivo (simulado): Rock en Español · México'));
+  ui.click('Pausar');
+  assert.ok(ui.text().includes('En pausa: Rock en Español'));
+  ui.click('Reanudar');
+  assert.ok(ui.text().includes('En vivo (simulado): Rock en Español'));
+  ui.click('Reiniciar radio');
+  assert.ok(ui.text().includes('Elige una emisora para empezar.'));
+  assert.ok(station('Vallenato'), 'filter reset');
+});
+
 test('home demo cards name the real project, its authors and what we can build', async () => {
   const html = await home();
   for (const [id, project, authors] of [
     ['la-lupe', 'La Lupe', 'María Alejandra Ortiz Páez y Ronaldo Delgado Correa'],
+    ['emisoras-latinas', 'Emisoras Latinas', 'María Alejandra Ortiz Páez y Jorge Luis Ramírez Trochez'],
     ['uptownhair', 'UptownHair', 'María Alejandra Ortiz Páez'],
     ['entre-lanas-y-fragancias', 'Entre Lanas y Fragancias', 'María Alejandra Ortiz Páez'],
   ]) {

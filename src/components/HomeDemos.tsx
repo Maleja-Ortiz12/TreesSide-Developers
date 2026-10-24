@@ -1,10 +1,11 @@
 import type { ComponentType } from 'react';
 import Link from 'next/link';
-import { Scissors, Package, UtensilsCrossed, ArrowRight, type LucideIcon } from 'lucide-react';
+import { Scissors, Package, UtensilsCrossed, Radio, ArrowRight, type LucideIcon } from 'lucide-react';
 import { FEATURED_PROJECTS } from '@/data/content';
 import { BookingDemo } from './demos/BookingDemo';
 import { InventoryDemo } from './demos/InventoryDemo';
 import { MenuQuoteDemo } from './demos/MenuQuoteDemo';
+import { RadioDemo } from './demos/RadioDemo';
 import styles from './HomeDemos.module.css';
 
 interface DemoCard {
@@ -22,6 +23,11 @@ const DEMOS: DemoCard[] = [
     project: 'La Lupe', title: 'Menú y cotización', icon: UtensilsCrossed, Demo: MenuQuoteDemo,
     description: 'Arma un pedido con platos reales del restaurante y prepara la cotización que llegaría por WhatsApp.',
     canBuild: 'cartas digitales, pedidos y cotizaciones de catering para restaurantes, panaderías o eventos.',
+  },
+  {
+    project: 'Emisoras Latinas', title: 'Radio en vivo', icon: Radio, Demo: RadioDemo,
+    description: 'Filtra emisoras por país y controla el reproductor, como en el directorio de radios latinas.',
+    canBuild: 'plataformas de streaming, podcasts o emisoras propias, con directorio, reproductor y SEO para crecer en visitas.',
   },
   {
     project: 'UptownHair', title: 'Reservas para tu salón', icon: Scissors, Demo: BookingDemo,
