@@ -65,13 +65,16 @@ export function TiltEffect() {
       release(el);
     };
 
+    // `pointerout` with no related target is the pointer leaving the window itself.
+    const onOut = (event: PointerEvent) => { if (!event.relatedTarget) releaseActive(); };
+
     document.addEventListener('pointermove', onMove, { passive: true });
-    document.addEventListener('pointerleave', releaseActive);
+    document.addEventListener('pointerout', onOut);
     window.addEventListener('scroll', releaseActive, { passive: true });
     window.addEventListener('blur', releaseActive);
     return () => {
       document.removeEventListener('pointermove', onMove);
-      document.removeEventListener('pointerleave', releaseActive);
+      document.removeEventListener('pointerout', onOut);
       window.removeEventListener('scroll', releaseActive);
       window.removeEventListener('blur', releaseActive);
     };

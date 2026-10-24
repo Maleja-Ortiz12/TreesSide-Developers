@@ -76,13 +76,17 @@ test('S4 hovering a card springs it toward the mouse and leaving restores it unt
 });
 
 test('S4 a tilted card is released when the page scrolls, the mouse leaves the window or the tab loses focus', async () => {
-  for (const [target, type] of [['window', 'scroll'], ['document', 'pointerleave'], ['window', 'blur']]) {
+  for (const [target, type] of [['window', 'scroll'], ['document', 'pointerout'], ['window', 'blur']]) {
     const { calls, listeners, windowListeners } = await load();
     const el = card();
     listeners.pointermove({ pointerType: 'mouse', clientX: 300, clientY: 100, ...over(el) });
     const handler = (target === 'window' ? windowListeners : listeners)[type];
     assert.ok(handler, `${target} ${type} listener`);
-    handler({});
+    if (type === 'pointerout') {
+      handler({ relatedTarget: {} });
+      assert.equal(calls.length, 1, 'moving between elements inside the page keeps the tilt');
+    }
+    handler({ relatedTarget: null });
     const reset = calls.at(-1);
     assert.equal(reset.values.rotateX, 0, type);
     assert.equal(reset.values.rotateY, 0, type);
