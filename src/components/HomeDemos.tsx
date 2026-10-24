@@ -1,9 +1,10 @@
 import type { ComponentType } from 'react';
 import Link from 'next/link';
-import { Scissors, Package, ArrowRight, type LucideIcon } from 'lucide-react';
+import { Scissors, Package, UtensilsCrossed, ArrowRight, type LucideIcon } from 'lucide-react';
 import { FEATURED_PROJECTS } from '@/data/content';
 import { BookingDemo } from './demos/BookingDemo';
 import { InventoryDemo } from './demos/InventoryDemo';
+import { MenuQuoteDemo } from './demos/MenuQuoteDemo';
 import styles from './HomeDemos.module.css';
 
 interface DemoCard {
@@ -17,6 +18,11 @@ interface DemoCard {
 }
 
 const DEMOS: DemoCard[] = [
+  {
+    project: 'La Lupe', title: 'Menú y cotización', icon: UtensilsCrossed, Demo: MenuQuoteDemo,
+    description: 'Arma un pedido con platos reales del restaurante y prepara la cotización que llegaría por WhatsApp.',
+    canBuild: 'cartas digitales, pedidos y cotizaciones de catering para restaurantes, panaderías o eventos.',
+  },
   {
     project: 'UptownHair', title: 'Reservas para tu salón', icon: Scissors, Demo: BookingDemo,
     description: 'Elige servicio y horario y confirma el turno, como en la app de reservas para salones de belleza.',

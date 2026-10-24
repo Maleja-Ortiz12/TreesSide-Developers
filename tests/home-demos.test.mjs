@@ -66,9 +66,28 @@ test('Entre Lanas inventory tracks each product, flags low stock and never goes 
   assert.ok(!ui.text().includes('Sin existencias'));
 });
 
+test('La Lupe menu adds real dishes, totals in pesos and prepares a WhatsApp-style quote', () => {
+  const ui = mount('MenuQuoteDemo', 'MenuQuoteDemo');
+  assert.equal(ui.button('Preparar cotización').props.disabled, true);
+  assert.equal(ui.button('Quitar Flautas').props.disabled, true);
+  ui.click('Agregar Flautas'); ui.click('Agregar Flautas'); ui.click('Agregar Nachos grandes');
+  assert.ok(ui.text().includes('Total: $110.700'));
+  ui.click('Quitar Nachos grandes');
+  assert.ok(ui.text().includes('Total: $71.800'));
+  assert.equal(ui.button('Quitar Nachos grandes').props.disabled, true);
+  ui.click('Agregar Nachos grandes');
+  ui.click('Preparar cotización');
+  assert.ok(ui.text().includes('Hola La Lupe, quiero cotizar: 1 × Nachos grandes, 2 × Flautas. Total estimado: $110.700'));
+  ui.click('Reiniciar pedido');
+  assert.ok(ui.text().includes('Total: $0'));
+  assert.ok(!ui.text().includes('Hola La Lupe'));
+  assert.equal(ui.button('Preparar cotización').props.disabled, true);
+});
+
 test('home demo cards name the real project, its authors and what we can build', async () => {
   const html = await home();
   for (const [id, project, authors] of [
+    ['la-lupe', 'La Lupe', 'María Alejandra Ortiz Páez y Ronaldo Delgado Correa'],
     ['uptownhair', 'UptownHair', 'María Alejandra Ortiz Páez'],
     ['entre-lanas-y-fragancias', 'Entre Lanas y Fragancias', 'María Alejandra Ortiz Páez'],
   ]) {
@@ -78,6 +97,7 @@ test('home demo cards name the real project, its authors and what we can build',
     assert.ok(plain(card).includes(authors), `authors ${id}`);
     assert.ok(plain(card).includes('Podemos construir'), `can build ${id}`);
   }
+  assert.ok(demoCard(html, 'la-lupe').includes('href="https://lalupe.co/"'), 'La Lupe links its live site');
   assert.ok(!html.includes('Pedido de ejemplo'), 'generic automation demo removed');
 });
 
