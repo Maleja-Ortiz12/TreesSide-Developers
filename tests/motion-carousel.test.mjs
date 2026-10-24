@@ -33,7 +33,8 @@ test('S2 home shows a project image carousel inside a scroll reveal', async () =
     const item = visible.find(entry => entry.includes(title));
     assert.ok(item, `item ${title}`);
     assert.ok(item.includes(`%2Fimages%2Fprojects%2F${slug}.webp`) || item.includes(`/images/projects/${slug}.webp`), `image ${title}`);
-    assert.ok(item.includes('href="/proyectos"'), `link ${title}`);
+    const expected = { 'La Lupe': '/casos/la-lupe', TengoYa: '/casos/tengoya', 'Emisoras Latinas': '/casos/emisoras-latinas' }[title] ?? '/proyectos';
+    assert.ok(item.includes(`href="${expected}"`), `link ${title}`);
   }
   assert.ok(!visible.some(entry => entry.includes('Gudfy') || entry.includes('Luhos')), 'employer work stays out');
   assert.ok(!section.includes('treesside-logo'), 'only real project images');

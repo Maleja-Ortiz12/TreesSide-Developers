@@ -167,7 +167,7 @@ test('home demo cards name the real project, its authors and what we can build',
     assert.ok(plain(card).includes(authors), `authors ${id}`);
     assert.ok(plain(card).includes('Podemos construir'), `can build ${id}`);
   }
-  assert.ok(demoCard(html, 'la-lupe').includes('href="https://lalupe.co/"'), 'La Lupe links its live site');
+  assert.ok(demoCard(html, 'la-lupe').includes('href="/casos/la-lupe"'), 'La Lupe links its case study');
   assert.ok(!html.includes('Pedido de ejemplo'), 'generic automation demo removed');
 });
 

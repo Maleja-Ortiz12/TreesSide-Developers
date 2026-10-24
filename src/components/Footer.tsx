@@ -11,6 +11,7 @@ export function Footer() {
     { label: 'Inicio', href: '/' },
     { label: 'Servicios', href: '/servicios' },
     { label: 'Proyectos', href: '/proyectos' },
+    { label: 'Casos de éxito', href: '/casos' },
     { label: 'Sobre Nosotros', href: '/nosotros' },
     { label: 'Equipo', href: '/equipo' },
     { label: 'Contacto', href: '/contacto' }

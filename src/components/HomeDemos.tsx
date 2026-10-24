@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import Link from 'next/link';
 import { Scissors, Package, UtensilsCrossed, Radio, Boxes, Grid3x3, ArrowRight, type LucideIcon } from 'lucide-react';
 import { FEATURED_PROJECTS } from '@/data/content';
+import { caseHref } from '@/data/cases';
 import { BookingDemo } from './demos/BookingDemo';
 import { InventoryDemo } from './demos/InventoryDemo';
 import { MenuQuoteDemo } from './demos/MenuQuoteDemo';
@@ -69,7 +70,8 @@ export function HomeDemos() {
         <div className={styles.grid}>
           {DEMOS.map(({ project, title, description, canBuild, icon: Icon, Demo }, index) => {
             const source = FEATURED_PROJECTS.find(item => item.title === project);
-            const href = source?.projectUrl ?? '/proyectos';
+            // A case study tells the whole story; otherwise the live project or the catalog.
+            const href = caseHref(project) ?? source?.projectUrl ?? '/proyectos';
             return (
               <article key={project} className={styles.card} data-demo={slug(project)}>
                 <div className={styles.chrome} aria-hidden="true"><span /><span /><span /><small>{`DEMO ${String(index + 1).padStart(2, '0')}`}</small></div>

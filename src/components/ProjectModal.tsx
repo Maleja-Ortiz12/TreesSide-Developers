@@ -3,6 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { Project } from '@/data/content';
+import Link from 'next/link';
+import { caseHref } from '@/data/cases';
 import { X, CheckCircle2, ArrowRight, ExternalLink } from 'lucide-react';
 
 interface ProjectModalProps {
@@ -126,6 +128,11 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
             {project.experience
               ? `Experiencia laboral · ${project.owner}. Producto de otra empresa en el que participó como empleado.`
               : `Proyecto personal del equipo · ${project.owner}`}
+          </p>}
+          {caseHref(project.title) && <p style={{ marginTop: 10 }}>
+            <Link href={caseHref(project.title)!} style={{ color: 'var(--primary-green)', fontWeight: 600 }}>
+              Ver caso de éxito <ArrowRight size={14} aria-hidden="true" />
+            </Link>
           </p>}
           {project.projectUrl && <p style={{ marginTop: 10 }}>
             <a href={project.projectUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-cyan)' }}>

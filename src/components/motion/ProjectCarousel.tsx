@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion, useAnimationFrame, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
 import { Pause, Play } from 'lucide-react';
 import { FEATURED_PROJECTS, type Project } from '@/data/content';
+import { caseHref } from '@/data/cases';
 import styles from './ProjectCarousel.module.css';
 
 const PLACEHOLDER = '/images/treesside-logo.jpg';
@@ -28,7 +29,7 @@ export function wrapOffset(x: number, width: number) {
 
 function Item({ project, copy }: { project: Project; copy?: boolean }) {
   return (
-    <Link href="/proyectos" className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
+    <Link href={caseHref(project.title) ?? '/proyectos'} className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
       <Image src={project.image} alt={copy ? '' : project.title} fill sizes="300px" className={styles.image}
         style={{ objectFit: project.imageFit ?? 'cover' }} />
       <span className={styles.caption}><strong>{project.title}</strong><small>{project.owner}</small></span>
