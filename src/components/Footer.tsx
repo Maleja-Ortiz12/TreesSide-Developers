@@ -10,6 +10,7 @@ export function Footer() {
   const navItems = [
     { label: 'Inicio', href: '/' },
     { label: 'Servicios', href: '/servicios' },
+    { label: 'Planes', href: '/planes' },
     { label: 'Proyectos', href: '/proyectos' },
     { label: 'Casos de éxito', href: '/casos' },
     { label: 'Sobre Nosotros', href: '/nosotros' },

@@ -9,6 +9,7 @@ import { Menu, X, Send } from 'lucide-react';
 export const NAV_LINKS = [
   { label: 'Inicio', href: '/' },
   { label: 'Servicios', href: '/servicios' },
+  { label: 'Planes', href: '/planes' },
   { label: 'Proyectos', href: '/proyectos' },
   { label: 'Sobre Nosotros', href: '/nosotros' },
   { label: 'Equipo', href: '/equipo' },
@@ -177,7 +178,7 @@ export function Navbar() {
       )}
 
       <style jsx>{`
-        @media (max-width: 820px) {
+        @media (max-width: 1060px) {
           .desktop-nav,
           .desktop-nav-btn {
             display: none !important;

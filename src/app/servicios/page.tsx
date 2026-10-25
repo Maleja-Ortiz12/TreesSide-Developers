@@ -3,6 +3,7 @@ import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { ServicesSection } from '@/components/ServicesSection';
 import { TechStackSection } from '@/components/TechStackSection';
+import { PlansPreview } from '@/components/PlansSection';
 
 export const metadata: Metadata = pageMetadata('/servicios', {
   title: 'Servicios | TreesSide Developers',
@@ -13,6 +14,7 @@ export default function ServicesPage() {
   return (
     <SitePage>
       <ServicesSection />
+      <PlansPreview />
       <TechStackSection />
     </SitePage>
   );

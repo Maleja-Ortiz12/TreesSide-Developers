@@ -2,6 +2,7 @@ import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { Hero } from '@/components/Hero';
 import { HomeDemos } from '@/components/HomeDemos';
+import { PlansPreview } from '@/components/PlansSection';
 import { ProjectCarousel } from '@/components/motion/ProjectCarousel';
 
 export const metadata = pageMetadata('/', {
@@ -15,6 +16,7 @@ export default function HomePage() {
       <Hero />
       <ProjectCarousel />
       <HomeDemos />
+      <PlansPreview />
     </SitePage>
   );
 }

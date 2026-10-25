@@ -3,7 +3,7 @@ import { SITE_URL } from '@/data/content';
 import { CASE_STUDIES } from '@/data/cases';
 
 const ROUTES = [
-  '', '/servicios', '/proyectos', '/casos', ...CASE_STUDIES.map(item => `/casos/${item.slug}`),
+  '', '/servicios', '/planes', '/proyectos', '/casos', ...CASE_STUDIES.map(item => `/casos/${item.slug}`),
   '/nosotros', '/equipo', '/contacto', '/politica-de-datos',
 ];
 
