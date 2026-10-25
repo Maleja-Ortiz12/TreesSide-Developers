@@ -23,9 +23,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
-.env
+# environment files may contain secrets; keep only the empty example
+.env*
+!.env.example
 
 # vercel
 .vercel
