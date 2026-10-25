@@ -50,7 +50,9 @@ test('S2 his portfolio projects are listed with local cover images', async () =>
   }
   const [pega] = cardFor(cards, 'Migración Pega → UiPath');
   assert.ok(pega, 'Pega migration');
-  assert.ok(pega.includes('Imagen de marca'));
+  assert.ok(pega.includes('migracion-pega-uipath.webp'));
+  assert.ok(pega.includes('Ilustración conceptual'));
+  assert.ok(pega.includes('No es una captura real'));
 });
 
 test('S3 shared projects are a single card crediting both members', async () => {

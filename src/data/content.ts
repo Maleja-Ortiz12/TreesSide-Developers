@@ -85,7 +85,7 @@ const TEAM_PROJECTS: Project[] = TEAM_MEMBERS.flatMap(member =>
       detailedDescription: project.description,
       image: project.image ?? '/images/treesside-logo.jpg',
       imageFit: project.imageFit,
-      imageLabel: project.image ? undefined : 'Imagen de marca · consulta el proyecto en el portafolio',
+      imageLabel: project.imageLabel ?? (project.image ? undefined : 'Imagen de marca · consulta el proyecto en el portafolio'),
       category: project.category,
       owner: authors.map(author => author.name).join(' y '),
       authors,

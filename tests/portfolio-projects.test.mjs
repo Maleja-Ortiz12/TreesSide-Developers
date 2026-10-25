@@ -27,10 +27,15 @@ const WITH_IMAGES = {
   'Entre Lanas y Fragancias': 'entre-lanas-y-fragancias',
   TengoYa: 'tengoya', CarWeb: 'carweb', Histech: 'histech', 'Robot Alejo 2.0': 'robot-alejo',
   'La Lupe': 'la-lupe',
+  'Calculadora de contenedores': 'calculadora-contenedores',
+  'Libres en Cristo Jesús': 'libres-en-cristo',
+  'API de Tienda + Asistente IA': 'tienda-api',
+  'Sistema de gestión de inventarios': 'gestion-inventarios',
+  'Aplicación de gestión agropecuaria': 'gestion-agropecuaria',
+  'Migración Pega → UiPath': 'migracion-pega-uipath',
 };
-const WITHOUT_IMAGES = ['Calculadora de contenedores', 'Libres en Cristo Jesús', 'API de Tienda + Asistente IA', 'Sistema de gestión de inventarios', 'Aplicación de gestión agropecuaria', 'Migración Pega → UiPath'];
 
-test('every portfolio project is listed with the image its portfolio publishes', async () => {
+test('every portfolio project is listed with its local project image or labeled conceptual cover', async () => {
   const section = await projectsSection();
   for (const [title, slug] of Object.entries(WITH_IMAGES)) {
     const card = cardFor(section, title);
@@ -38,12 +43,7 @@ test('every portfolio project is listed with the image its portfolio publishes',
     assert.ok(card.includes(`%2Fimages%2Fprojects%2F${slug}.webp`) || card.includes(`/images/projects/${slug}.webp`), `image: ${title}`);
     assert.ok(!card.includes('Imagen de marca'), `brand placeholder on ${title}`);
   }
-  for (const title of WITHOUT_IMAGES) {
-    const card = cardFor(section, title);
-    assert.ok(card, `missing project: ${title}`);
-    assert.ok(card.includes('Imagen de marca'), `placeholder note: ${title}`);
-  }
-  assert.equal((section.match(/data-project=/g) || []).length, Object.keys(WITH_IMAGES).length + WITHOUT_IMAGES.length);
+  assert.equal((section.match(/data-project=/g) || []).length, Object.keys(WITH_IMAGES).length);
 });
 
 test('La Lupe is a single card crediting both authors', async () => {
