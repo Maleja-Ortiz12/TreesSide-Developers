@@ -22,5 +22,6 @@ export function pageMetadata(path: string, { title, description }: { title: stri
     description,
     alternates: { canonical: path },
     openGraph: { ...BASE_OPEN_GRAPH, title, description, url: path, images: [SHARE_IMAGE] },
+    twitter: { card: 'summary_large_image', title, description, images: [SHARE_IMAGE.url] },
   };
 }

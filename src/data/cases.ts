@@ -40,7 +40,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'emisoras-latinas',
     project: 'Emisoras Latinas',
     summary: 'Plataforma de radio latina en vivo con un directorio de miles de emisoras y un reproductor optimizado.',
-    context: 'Emisoras Latinas es una plataforma para escuchar radio latina en vivo desde cualquier dispositivo, sin registro.',
+    context: 'Emisoras Latinas es una plataforma para escuchar radio latina en vivo con un directorio de emisoras y un reproductor optimizado.',
     challenge: [
       'Reunir miles de emisoras en un solo lugar y que sea fácil encontrar la indicada.',
       'Reproducir audio en vivo de forma estable.',

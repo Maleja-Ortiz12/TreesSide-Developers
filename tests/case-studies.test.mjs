@@ -67,3 +67,9 @@ test('S2 cases are reachable from the footer, the home carousel and the demo car
   const modal = await readFile('src/components/ProjectModal.tsx', 'utf8');
   assert.ok(modal.includes('Ver caso de éxito'), 'project modal links the case study');
 });
+
+test('S2 case claims borrowed from another project are not published', async () => {
+  const cases = await readFile('src/data/cases.ts', 'utf8');
+  const emisoras = cases.slice(cases.indexOf("slug: 'emisoras-latinas'"), cases.indexOf("slug: 'tengoya'"));
+  assert.doesNotMatch(emisoras, /sin registro|cualquier dispositivo/i, 'only Radio Navidad is published as "sin registro" and "cualquier dispositivo"');
+});

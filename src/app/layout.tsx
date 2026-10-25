@@ -20,12 +20,10 @@ export const metadata: Metadata = {
     'Software a medida'
   ],
   authors: [{ name: 'TreesSide Developers' }],
-  alternates: { canonical: '/' },
   openGraph: {
     ...BASE_OPEN_GRAPH,
     title: 'TreesSide Developers | Transformamos ideas en soluciones digitales',
     description: 'Desarrollo de software a medida, aplicaciones web, soluciones cloud e inteligencia de negocios.',
-    url: '/',
   },
   twitter: {
     card: 'summary_large_image',

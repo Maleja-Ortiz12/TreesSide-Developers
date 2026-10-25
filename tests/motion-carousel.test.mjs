@@ -80,3 +80,12 @@ test('S7 the carousel stops moving for reduced motion and while hovered, focused
   assert.match(source, /useSpring\(0,/);
   for (const event of ['onPointerEnter', 'onPointerLeave', 'onFocus', 'onBlur']) assert.ok(source.includes(event), event);
 });
+
+test('S4 both strip copies hold the same number of cards', async () => {
+  const rows = carousel(await home()).split(/(?=<div[^>]*class="[^"]*viewport)/).slice(1);
+  for (const row of rows) {
+    const sets = row.split(/(?=<div class="[^"]*set)/).slice(1).map(s => (s.match(/data-carousel-item/g) || []).length);
+    assert.equal(sets.length, 2);
+    assert.equal(sets[0], sets[1]);
+  }
+});

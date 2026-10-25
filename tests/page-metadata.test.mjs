@@ -23,3 +23,20 @@ test('S4 every page shares and canonicalizes its own URL, keeping the shared Ope
     assert.ok(meta(html, 'property', 'og:image'), `${path} share image`);
   }
 });
+
+test('S4 not-found pages do not canonicalize to the home page', async () => {
+  const response = await fetch(new URL('/casos/no-existe', base), { signal: AbortSignal.timeout(30000) });
+  assert.equal(response.status, 404);
+  const html = await response.text();
+  assert.doesNotMatch(html, /<link rel="canonical"/);
+  assert.doesNotMatch(html, /<meta property="og:url"/);
+});
+
+test('S4 the X card title and description match each page', async () => {
+  for (const path of ['/', '/servicios', '/casos/la-lupe']) {
+    const html = await page(path);
+    assert.equal(meta(html, 'name', 'twitter:title'), html.match(/<title>([^<]*)<\/title>/)?.[1], `${path} twitter:title`);
+    assert.equal(meta(html, 'name', 'twitter:description'), meta(html, 'name', 'description'), `${path} twitter:description`);
+    assert.equal(meta(html, 'name', 'twitter:card'), 'summary_large_image', `${path} twitter:card`);
+  }
+});
