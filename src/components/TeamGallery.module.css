@@ -6,7 +6,9 @@
 .sculpture span { position: absolute; inset: 0; border-radius: 25px; border: 1px solid #00f5a077; background: #00d2ff06; transform: rotateX(55deg) rotateZ(45deg); box-shadow: 0 0 30px #00d2ff12; }
 .sculpture span:nth-child(2) { top: 20px; bottom: -20px; }
 .sculpture span:nth-child(3) { top: 40px; bottom: -40px; }
-.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 24px; align-items: start; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 24px; align-items: start; }
+/* While no profile is open every row matches the tallest card, so all cards share one size. */
+.gallery[data-focused='false'] { grid-auto-rows: 1fr; align-items: stretch; }
 .card {
   position: relative; min-width: 0; padding: 22px; border: 1px solid #00d2ff33; border-radius: 24px;
   background: linear-gradient(155deg, #15283d, #0a1424 55%, #07101c);
@@ -17,6 +19,12 @@
 .card:hover, .card:focus-within { border-color: #00f5a088; box-shadow: 0 28px 45px -20px #000d, 0 0 26px #00f5a012; }
 .card[data-selected='true'] { grid-column: 1 / -1; width: 100%; display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 42px; margin-inline: auto; padding: 32px; border-color: var(--primary-green); }
 .overview { min-width: 0; }
+/* Closed cards lie horizontally: portrait on the left, text and actions on the right. */
+.card:not([data-selected='true']) .overview { display: grid; grid-template-columns: minmax(0, 180px) minmax(0, 1fr); grid-template-rows: 1fr auto auto; column-gap: 22px; align-items: start; height: 100%; }
+.card:not([data-selected='true']) .photoFrame { grid-row: 1 / -1; align-self: start; }
+.card:not([data-selected='true']) .intro { padding: 4px 6px 14px 0; }
+.card:not([data-selected='true']) .toggle { padding: 14px 0; }
+.card:not([data-selected='true']) .portfolio { margin: 0; }
 .toolbar { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .backButton { display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border: 1px solid #00f5a055; border-radius: 10px; background: #00f5a00c; color: var(--primary-green); font: inherit; cursor: pointer; }
 .backButton:hover { background: #00f5a020; }
@@ -58,6 +66,11 @@
   .photoFloat { animation: portraitFloat 6s ease-in-out infinite; }
   .sculpture { animation: floatSculpture 6s ease-in-out infinite; }
   .detailsBody:not([hidden]) { animation: detailReveal 450ms 100ms ease-out both; }
+}
+@media (max-width: 640px) {
+  .card:not([data-selected='true']) .overview { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+  .card:not([data-selected='true']) .photoFrame { grid-row: auto; width: 100%; max-width: 280px; margin-inline: auto; }
+  .card:not([data-selected='true']) .intro { padding: 22px 6px 14px; }
 }
 @media (max-width: 760px) {
   .section { padding: 45px 0 60px; }

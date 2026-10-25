@@ -6,7 +6,7 @@ import { ProcessSection } from '@/components/ProcessSection';
 
 export const metadata: Metadata = pageMetadata('/nosotros', {
   title: 'Sobre nosotros | TreesSide Developers',
-  description: 'Nuestro objetivo: software al alcance de todos, automatización de procesos e innovación para que Colombia sea un país más tecnológico y productivo.',
+  description: 'Software al alcance de todos, automatización e innovación desde Colombia, con la visión de crecer y llegar a mercados internacionales.',
 });
 
 export default function AboutPage() {

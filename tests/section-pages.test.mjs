@@ -9,13 +9,13 @@ async function page(path) {
 }
 
 const ROUTES = [
-  { path: '/', title: /<title>TreesSide Developers/, sections: ['inicio'] },
+  { path: '/', title: /<title>TreesSide Developers/, sections: ['inicio', 'demos'] },
   { path: '/servicios', title: /<title>Servicios \| TreesSide Developers/, sections: ['servicios', 'tecnologias'] },
   { path: '/proyectos', title: /<title>Proyectos \| TreesSide Developers/, sections: ['proyectos'] },
   { path: '/nosotros', title: /<title>Sobre nosotros \| TreesSide Developers/, sections: ['sobre-nosotros', 'proceso'] },
   { path: '/contacto', title: /<title>Contacto \| TreesSide Developers/, sections: ['contacto'] },
 ];
-const ALL_SECTIONS = ['inicio', 'servicios', 'tecnologias', 'proyectos', 'sobre-nosotros', 'equipo', 'proceso', 'contacto'];
+const ALL_SECTIONS = ['inicio', 'demos', 'servicios', 'tecnologias', 'proyectos', 'sobre-nosotros', 'equipo', 'proceso', 'contacto'];
 
 for (const route of ROUTES) {
   test(`${route.path} renders only its own sections`, async () => {

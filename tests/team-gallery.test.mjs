@@ -44,9 +44,9 @@ test('gallery uses a scalable grid and a full-width centered profile', async () 
   assert.ok(css, 'Gallery styles are served');
   assert.match(css, /repeat\(auto-fit,/);
   assert.match(css, /grid-column:\s*1\s*\/\s*-1/);
-  assert.ok(!/overflow-x:\s*auto/.test(css));
+  assert.doesNotMatch(css, /[^{}]*TeamGallery_[^{}]*\{[^}]*overflow-x:\s*auto/, 'gallery rules must not create a horizontal track; other bundled components may scroll');
   assert.match(css, /@media\s*\(max-width:\s*760px\)/);
   assert.ok(css.includes('preserve-3d'));
   assert.ok(css.includes('translateZ(24px)'));
-  assert.ok(css.includes('prefers-reduced-motion: reduce'));
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
 });

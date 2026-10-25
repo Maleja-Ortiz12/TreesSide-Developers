@@ -56,7 +56,7 @@ export function AboutSection() {
 
             <h2 className="section-title" style={{ marginBottom: '22px' }}>
               Tecnología al alcance de todos,{' '}
-              <span className="text-gradient">para que Colombia crezca</span>
+              <span className="text-gradient">sin fronteras para crecer</span>
             </h2>
 
             <p style={{
@@ -65,7 +65,7 @@ export function AboutSection() {
               lineHeight: 1.75,
               maxWidth: '560px'
             }}>
-              En <strong style={{ color: '#ffffff' }}>TreesSide Developers</strong> creamos software que esté al alcance de todos y que ayude a automatizar los procesos manuales repetitivos. Queremos innovar y acompañar desde microempresas y pequeños emprendimientos hasta grandes empresas, para que Colombia sea un país más tecnológico y productivo.
+              En <strong style={{ color: '#ffffff' }}>TreesSide Developers</strong> creamos software que esté al alcance de todos y que ayude a automatizar los procesos manuales repetitivos. Queremos innovar y acompañar desde microempresas y pequeños emprendimientos hasta grandes empresas, para que Colombia sea un país más tecnológico y productivo. Queremos llegar a mercados extranjeros, conectar con nuevas necesidades y seguir innovando y creciendo junto a empresas de otros países.
             </p>
           </div>
 
@@ -188,7 +188,7 @@ export function AboutSection() {
         }} className="belief-card">
           <Sparkles size={34} color="var(--primary-cyan)" aria-hidden="true" style={{ flexShrink: 0 }} />
           <p style={{ fontSize: '1.08rem', color: '#e2e8f0', lineHeight: 1.65 }}>
-            Creemos que la tecnología y la innovación son herramientas para crecer como país, y trabajamos para que Colombia sea un país más tecnológico y productivo.
+            Desde Colombia, con visión global. Creemos que la tecnología y la innovación son herramientas para crecer como país. Nuestro compromiso empieza aquí y nuestra visión va más allá: crear soluciones que aporten valor tanto en Colombia como en mercados internacionales.
           </p>
         </div>
 

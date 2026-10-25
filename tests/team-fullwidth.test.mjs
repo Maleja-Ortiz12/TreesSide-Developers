@@ -29,9 +29,9 @@ test('selected gallery cards span the grid without a sliding track', async () =>
   const css = (await Promise.all(urls.map(url => html(url))))
     .find(sheet => sheet.includes('TeamGallery_gallery'));
   assert.ok(css);
-  assert.match(css, /data-selected=['"]true['"]\][^{]*\{[^}]*grid-column:\s*1\s*\/\s*-1;[^}]*width:\s*100%/);
+  assert.match(css, /data-selected=['"]?true['"]?\][^{]*\{[^}]*grid-column:\s*1\s*\/\s*-1;[^}]*width:\s*100%/);
   assert.ok(!css.includes('--panel-width'));
-  assert.ok(!/overflow-x:\s*auto/.test(css));
+  assert.doesNotMatch(css, /[^{}]*TeamGallery_[^{}]*\{[^}]*overflow-x:\s*auto/, 'gallery rules must not create a horizontal track; other bundled components may scroll');
   assert.match(css, /@media\s*\(max-width:\s*760px\)/);
   assert.ok(page.includes('data-team-gallery="true"'));
 });

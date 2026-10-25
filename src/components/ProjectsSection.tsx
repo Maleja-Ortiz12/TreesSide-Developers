@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FEATURED_PROJECTS, Project } from '@/data/content';
 import { ProjectModal } from './ProjectModal';
+import { ProjectSpotlight } from './ProjectSpotlight';
 import { ArrowRight, Mail } from 'lucide-react';
 
 export function ProjectsSection() {
@@ -102,19 +103,22 @@ export function ProjectsSection() {
           ))}
         </div>
 
+        <ProjectSpotlight key={`spotlight-${activeFilter}`} projects={filteredProjects} onOpen={setSelectedProject} suspended={selectedProject !== null} />
+
         {/* Project Cards Grid */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '24px',
           marginBottom: '60px'
-        }} className="projects-grid">
-          {filteredProjects.map((project) => (
+        }} className="projects-grid" key={`grid-${activeFilter}`}>
+          {filteredProjects.map((project, index) => (
             <div
               key={project.id}
               data-project={project.id}
-              className="glass-card"
+              className="glass-card project-card"
               style={{
+                animationDelay: `${Math.min(index, 8) * 55}ms`,
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100%',
@@ -316,8 +320,26 @@ export function ProjectsSection() {
       />
 
       <style jsx>{`
+        .project-card {
+          transition: transform 350ms ease, border-color 350ms ease, box-shadow 350ms ease;
+          animation: project-arrive 500ms ease backwards;
+        }
+        .project-card:hover, .project-card:focus-within {
+          transform: translateY(-7px);
+          border-color: var(--primary-cyan);
+          box-shadow: 0 22px 45px -18px rgba(0, 210, 255, 0.3);
+        }
         .glass-card:hover .project-thumb {
           transform: scale(1.05);
+        }
+        @keyframes project-arrive {
+          from { opacity: 0; transform: translateY(18px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .project-card { animation: none; transition: none; }
+          .project-card:hover, .project-card:focus-within, .glass-card:hover .project-thumb { transform: none; }
+          .project-thumb { transition: none !important; }
         }
         @media (max-width: 960px) {
           .projects-grid {

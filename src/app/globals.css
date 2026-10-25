@@ -219,6 +219,48 @@ code, .font-mono {
   box-shadow: 0 0 16px rgba(0, 245, 160, 0.25);
 }
 
+/* Shared interactive feedback */
+/* Individual translate/scale preserve component-specific 3D transforms. */
+:where(button, a.btn, a.btn-outline-pill, nav a) {
+  -webkit-tap-highlight-color: rgba(0, 210, 255, 0.18);
+  transition: filter 180ms ease, translate 180ms ease, scale 140ms ease,
+    background-color 180ms ease, border-color 180ms ease, color 180ms ease,
+    box-shadow 180ms ease, transform 300ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :where(button, a.btn, a.btn-outline-pill, nav a):not(:disabled):not([aria-disabled="true"]):hover {
+    translate: 0 -2px;
+    filter: brightness(1.08) drop-shadow(0 3px 7px rgba(0, 210, 255, 0.22));
+  }
+}
+
+:where(button, a.btn, a.btn-outline-pill, nav a):not(:disabled):not([aria-disabled="true"]):active {
+  translate: 0 0;
+  scale: 0.97;
+  filter: brightness(1.12);
+}
+
+:where(button, a.btn, a.btn-outline-pill, nav a):focus-visible {
+  outline: 2px solid var(--primary-cyan);
+  outline-offset: 4px;
+}
+
+:where(button, a.btn, a.btn-outline-pill, nav a):not(:disabled):not([aria-disabled="true"]):is([aria-pressed="true"], [aria-expanded="true"], [aria-current="page"]) {
+  filter: drop-shadow(0 0 7px rgba(0, 245, 160, 0.28));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(button, a.btn, a.btn-outline-pill, nav a),
+  :where(button, a.btn, a.btn-outline-pill, nav a):hover,
+  :where(button, a.btn, a.btn-outline-pill, nav a):active {
+    translate: none;
+    scale: none;
+    transition: none;
+  }
+  .btn-primary:hover, .btn-secondary:hover { transform: none; }
+}
+
 /* Cyber Glow Accents */
 .ambient-glow {
   position: absolute;

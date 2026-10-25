@@ -34,10 +34,10 @@ test('centered view uses full-width grid placement without a horizontal track', 
     .map(([, url]) => url.replaceAll('&amp;', '&'));
   const css = (await Promise.all(urls.map(html))).find(sheet => sheet.includes('TeamGallery'));
   assert.ok(css);
-  assert.ok(!/overflow-x:\s*auto/.test(css));
+  assert.doesNotMatch(css, /[^{}]*TeamGallery_[^{}]*\{[^}]*overflow-x:\s*auto/, 'gallery rules must not create a horizontal track; other bundled components may scroll');
   assert.match(css, /grid-column:\s*1\s*\/\s*-1/);
   assert.match(css, /card[^{}]*\[hidden\][^{]*\{[^}]*display:\s*none/);
-  assert.ok(css.includes('prefers-reduced-motion: reduce'));
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.ok(css.includes('profileEnter'));
   assert.ok(css.includes('portraitFloat'));
 });
