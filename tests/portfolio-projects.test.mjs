@@ -43,7 +43,14 @@ test('every portfolio project is listed with its local project image or labeled 
     assert.ok(card.includes(`%2Fimages%2Fprojects%2F${slug}.webp`) || card.includes(`/images/projects/${slug}.webp`), `image: ${title}`);
     assert.ok(!card.includes('Imagen de marca'), `brand placeholder on ${title}`);
   }
-  assert.equal((section.match(/data-project=/g) || []).length, Object.keys(WITH_IMAGES).length);
+  const withBrandImage = ['Gametroz', 'Fundación Propósito Posible', 'ALTiora Inmobiliaria', 'CV Automatic'];
+  for (const title of withBrandImage) {
+    const card = cardFor(section, title);
+    assert.ok(card, `missing project: ${title}`);
+    assert.ok(card.includes('treesside-logo.jpg'), `brand image: ${title}`);
+    assert.ok(card.includes('Imagen de marca'), `honest image provenance: ${title}`);
+  }
+  assert.equal((section.match(/data-project=/g) || []).length, Object.keys(WITH_IMAGES).length + withBrandImage.length);
 });
 
 test('La Lupe is a single card crediting both authors', async () => {
