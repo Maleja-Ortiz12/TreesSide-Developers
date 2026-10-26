@@ -1,0 +1,30 @@
+# Rendimiento y diseño responsive en móviles
+
+Make the site fast and correctly laid out on phones without changing the desktop design.
+Branch: `feat/movil-rendimiento` (from `feat/casos-y-faq`, commit 9b3a0e5).
+
+## Specs
+
+- S1. User request (L1): "para moviles esta muy lenta la app" — phones must not do avoidable per-frame work (full-screen repaints while scrolling, endless decorative animations, large blur filters) and must not download oversized images.
+- S2. User request (L1): "no esta bien el diseño responsived" — at 390 px every page shows its mobile layout from the first paint (no desktop layout that later jumps), and no page scrolls sideways (document scroll width equals the viewport width).
+- S3. Desktop (1440 px) keeps its current look and effects (parallax, tilt, reveals).
+
+## Tasks
+
+- T1 [S2] Server-render styled-jsx styles so responsive CSS is in the HTML — inline — commit: ed30061 (done; home CLS 0.844 -> 0.019 at 4x CPU throttle, suite 144/144)
+- T2 [S2] No sideways scroll on phones (flat reveal on small screens, clip horizontal overflow) — inline — commit: a0b90f5 (done; scripts/check-mobile-browser.mjs RED on all 10 routes, then PASS at 360/390; plans browser check 390/1440 PASS; suite 144/144)
+- T3 [S1] Lighter effects on touch/small screens (static parallax, still glows, solid header, no spinning tech icons, off-screen strip paused) — inline — commit: 3a2920b plus uncommitted follow-up (done: expanded browser regression RED exit 1, then GREEN exit 0 on all 10 routes at 360/390; 146/146 suite; build passed)
+- T4 [S1] Lighter images and fonts (services photo to WebP, self-hosted fonts instead of the Google Fonts @import) — inline — verified, uncommitted (146/146 suite; photo 787219 -> 60466 bytes, logo 129200 -> 26188; no font preload observed)
+- T5 [S2, S3] Page-by-page visual review at 390 px and 1440 px; fix what remains — inline — commit: pending
+
+## Log
+
+- L9. User authorized delivery: "subelos  es este repositorio porfa, haz el push https://github.com/Maleja-Ortiz12/TreesSide-Developers". Publish the verified mobile improvements on `feat/movil-rendimiento` to remote `treesside`, without merging into main or claiming T5 complete. Earlier no-commit/no-push restriction is superseded only for this requested delivery. Final visual verification remains blocked as recorded in L8.
+- L8. Corrected active-tab desktop capture completed (job-7, exit 0) for all 10 routes; every reveal measured opacity 1 and transform none after scroll. Final images: `.git/visual-review/probe-*-return.png`; mobile images: `.git/visual-review/390-*.png`. Final delegated visual verdict unavailable: workspace_root was rejected as outside the session clone; after explicit interactive user authorization, repository_root was rejected with `repository_root must select a canonical independent Git repository.` No reviewer ran, no approval claimed. T5 remains blocked on final visual proof. Resume in the nested application repository or have the user inspect the final screenshots. No commits or push performed.
+- L7. Visual verification: initial 20 full-page screenshots were inspected. Mobile pages show their stacked layouts without general sideways overflow. Initial desktop screenshots had blank first sections and are not valid completion evidence. A focused active-tab probe (job-6, exit 0) showed visible content on home/contact/team/cases before and after scrolling, with first reveal opacity 1 and transform none. The probe controls both page focus and explicit load completion; this isolates an initial capture-harness issue without attributing it to a source regression. Complete active-tab desktop captures are being generated for final T5 review. No application source changed in this continuation.
+- L6. Resume verification: production build passed (job-2, exit 0). HTTP suite, mobile browser matrix at 360/390 across all 10 routes, and `git diff --check` passed (job-4, exit 0). The initial suite invocation failed with ECONNREFUSED because the required local server was absent; build was skipped in that first chained invocation. Production server was then started before rerunning. Visual captures at 390/1440 are in progress; T5 is not yet verified. No commits or push performed. Engram is unavailable because its binary is missing.
+- L1. "perfecto, para moviles esta muy lenta la app y no esta bien el diseño responsived, podemos arreglarlo"
+- L5. Final follow-up checks: job-8 exit 0 (production build, mobile browser matrix including all decorative animations and contact-control clipping, suite 146/146). git diff --check exit 0. No extra commits or push authorized in the current continuation. Review scope selection/native review remains unavailable; no approval claimed. Initial desktop full-page captures were taken before entrance animations settled after returning to top; capture timing adjusted before assessing visual results.
+- L3. Independent verifier: S2 met (no-JS mobile first paint at 390, document width correct), S3 desktop effects preserved, T4 asset/font loading verified; S1 not yet met because WhatsApp pulse, floatSlow, project preview and team portrait float still ran. Expanded public browser check observed RED (exit 1). Follow-up disables all decorative infinite CSS animations on phones, wraps the contact email on narrow screens, and narrows the carousel comment (callbacks remain registered).
+- L4. Native assessment unavailable: untracked files require an explicit declaration. No native review approval claimed. Automatic font preload missing on this Windows build even after clean build; functional test checks actual local WOFF2 delivery and no Google Fonts CSS import, not an unsupported preload claim.
+- L2. Baseline audit (390 px, 4x CPU throttle, production build): sideways scroll on / (521 px), /servicios (8451 px, page height 208231 px), /nosotros (441 px), /contacto (578 px); home CLS 0.844 at ~2.7 s. Causes: styled-jsx CSS (9 components) missing from server HTML (no registry), so phones paint the desktop layout until hydration; Reveal's 3D tilt on tall sections projects far outside the viewport; services-laptop.jpg is 787 KB.

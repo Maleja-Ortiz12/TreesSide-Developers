@@ -19,6 +19,7 @@ export function Reveal({ children, delay = 0, first = false }: { children: React
   return (
     <motion.div
       data-reveal=""
+      className={styles.scroll}
       initial={{ opacity: 0, y: 70, rotateX: 14, scale: 0.96, transformPerspective: 1200 }}
       whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1, transformPerspective: 0 }}
       // amount 0 so very tall sections still trigger; the margin waits until they are slightly inside the screen.

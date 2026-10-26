@@ -13,7 +13,7 @@ async function render(file, name, props = {}) {
   const jsx = (type, p) => ({ type, props: p });
   const motion = new Proxy({}, { get: (_, tag) => `motion.${String(tag)}` });
   vm.runInNewContext(code, { exports, require: path => path === 'motion/react' ? { motion, MotionConfig: 'MotionConfig' }
-    : path === 'react/jsx-runtime' ? { jsx, jsxs: jsx } : {} });
+    : path === 'react/jsx-runtime' ? { jsx, jsxs: jsx } : path.endsWith('.css') ? { default: {} } : {} });
   return exports[name](props);
 }
 

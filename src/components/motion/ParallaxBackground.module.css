@@ -19,3 +19,8 @@
   background-position: 0 0, 90px 60px;
 }
 @media (max-width: 700px) { .shapes { opacity: .7; } .particles { opacity: .6; } }
+/* Phones and touch screens: moving full-screen layers repaint on every scroll frame, so they stay still. */
+@media (max-width: 899px), (pointer: coarse) {
+  .layer { transform: none !important; background-position-y: 0 !important; will-change: auto; }
+  .particles { background-position-y: 0, 60px !important; }
+}

@@ -18,7 +18,7 @@ for (const path of ['/nosotros', '/equipo']) {
     assert.match(header, /<span[^>]*>TreesSide<\/span>/);
     assert.match(header, /<span[^>]*>Developers<\/span>/);
     assert.ok(header.includes('flex-direction:column'));
-    assert.ok(header.includes('src="/images/treesside-logo.jpg"'), 'Updated logo artwork');
+    assert.ok(header.includes('src="/images/treesside-logo.webp"'), 'Updated logo artwork');
     assert.ok(!html.includes('src="/images/logo.jpg"'), 'Do not render old logo artwork');
     assert.match(html, /<title>[^<]*TreesSide Developers/);
     assert.ok(!html.includes('SoftZenkodoDevs'));

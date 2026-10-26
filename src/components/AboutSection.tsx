@@ -94,7 +94,7 @@ export function AboutSection() {
                 position: 'relative'
               }}>
                 <Image
-                  src="/images/treesside-logo.jpg"
+                  src="/images/treesside-logo.webp"
                   alt="TreesSide Developers Cyber Tree Logo"
                   fill
                   style={{ objectFit: 'cover' }}

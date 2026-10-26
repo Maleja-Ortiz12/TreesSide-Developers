@@ -84,7 +84,7 @@ export function ContactSection() {
                 gap: '16px'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
                 <div style={{
                   width: '44px',
                   height: '44px',
@@ -97,7 +97,7 @@ export function ContactSection() {
                 }}>
                   <Mail size={22} color="var(--primary-cyan)" />
                 </div>
-                <div>
+                <div style={{ minWidth: 0, overflowWrap: 'anywhere' }}>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)', textTransform: 'uppercase' }}>
                     Correo Directo
                   </span>
@@ -120,6 +120,7 @@ export function ContactSection() {
                 onClick={copyEmail}
                 title="Copiar correo"
                 style={{
+                  flexShrink: 0,
                   background: 'transparent',
                   border: 'none',
                   color: copied ? 'var(--primary-green)' : 'var(--text-dim)',
@@ -416,7 +417,7 @@ export function ContactSection() {
       <style jsx>{`
         @media (max-width: 860px) {
           .contact-grid {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: minmax(0, 1fr) !important;
           }
         }
       `}</style>

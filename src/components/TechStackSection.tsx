@@ -170,7 +170,7 @@ export function TechStackSection() {
               boxShadow: '0 0 25px rgba(0, 245, 160, 0.35)'
             }}>
               <Image
-                src="/images/treesside-logo.jpg"
+                src="/images/treesside-logo.webp"
                 alt="Cyber Tree TreesSide Developers"
                 width={100}
                 height={100}
@@ -244,6 +244,14 @@ export function TechStackSection() {
           }
           .tech-icon-wrap,
           .tech-card-3d:hover .tech-icon-wrap {
+            animation: none;
+          }
+        }
+        @media (max-width: 899px), (pointer: coarse) {
+          .tech-card-3d {
+            will-change: auto;
+          }
+          .tech-icon-wrap {
             animation: none;
           }
         }

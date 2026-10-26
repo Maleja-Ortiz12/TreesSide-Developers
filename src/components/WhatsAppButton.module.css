@@ -10,4 +10,5 @@
   100% { box-shadow: 0 12px 30px -8px rgba(37, 211, 102, .55), 0 0 0 0 rgba(37, 211, 102, 0); }
 }
 @media (max-width: 600px) { .button { right: 16px; bottom: 16px; height: 54px; min-width: 54px; padding: 0 14px; } }
+@media (max-width: 899px), (pointer: coarse) { .button { animation: none; } }
 @media (prefers-reduced-motion: reduce) { .button { animation: none; transition: none; } .label { transition: none; } }

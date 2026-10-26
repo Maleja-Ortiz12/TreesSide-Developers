@@ -36,7 +36,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
         position: 'relative'
       }}>
         {/* Ambient neon backdrop glow */}
-        <div style={{
+        <div className="glow-pulse" style={{
           position: 'absolute',
           width: '320px',
           height: '320px',
@@ -44,7 +44,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           background: 'radial-gradient(circle, rgba(0, 245, 160, 0.28) 0%, rgba(0, 210, 255, 0.18) 45%, transparent 70%)',
           filter: 'blur(40px)',
           zIndex: 0,
-          animation: 'pulseGlow 5s ease-in-out infinite'
+          animationDuration: '5s'
         }} />
 
         <div style={{
@@ -56,7 +56,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           border: '1px solid rgba(0, 245, 160, 0.25)'
         }}>
           <Image
-            src="/images/treesside-logo.jpg"
+            src="/images/treesside-logo.webp"
             alt="TreesSide Developers Cyber Tree Logo"
             width={width}
             height={height}
@@ -89,7 +89,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
         flexShrink: 0
       }}>
         <Image
-          src="/images/treesside-logo.jpg"
+          src="/images/treesside-logo.webp"
           alt="TreesSide Developers Logo"
           width={width}
           height={height}
