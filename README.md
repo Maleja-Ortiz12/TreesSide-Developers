@@ -143,7 +143,7 @@ Para comprobar en un navegador que ninguna página se desplaza hacia los lados e
 ```bash
 node scripts/check-mobile-browser.mjs
 ```
-En celulares y pantallas táctiles, las entradas al hacer scroll solo se desvanecen, sin inclinación 3D.
+En celulares y pantallas táctiles, las entradas al hacer scroll solo se desvanecen, sin inclinación 3D. Para que el scroll sea fluido, allí el fondo parallax queda quieto, los resplandores no laten, los íconos de tecnologías no giran y el encabezado usa un fondo sólido en lugar de desenfocar lo que pasa detrás; el escritorio conserva todos los efectos. La cinta de proyectos del inicio se detiene mientras está fuera de la pantalla. El mismo script comprueba estas reglas.
 
 ### 2. Generar compilación de producción
 ```bash

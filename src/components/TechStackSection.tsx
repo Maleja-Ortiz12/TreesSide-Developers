@@ -247,6 +247,14 @@ export function TechStackSection() {
             animation: none;
           }
         }
+        @media (max-width: 899px), (pointer: coarse) {
+          .tech-card-3d {
+            will-change: auto;
+          }
+          .tech-icon-wrap {
+            animation: none;
+          }
+        }
         @media (max-width: 990px) {
           .tech-grid {
             grid-template-columns: repeat(4, 1fr) !important;

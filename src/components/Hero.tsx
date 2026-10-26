@@ -147,7 +147,7 @@ export function Hero() {
             position: 'relative'
           }}>
             {/* Glowing neon pulse circle */}
-            <div style={{
+            <div className="glow-pulse" style={{
               position: 'absolute',
               width: '360px',
               height: '360px',
@@ -155,7 +155,7 @@ export function Hero() {
               background: 'radial-gradient(circle, rgba(0, 245, 160, 0.22) 0%, rgba(0, 210, 255, 0.14) 40%, transparent 70%)',
               filter: 'blur(50px)',
               zIndex: 0,
-              animation: 'pulseGlow 6s ease-in-out infinite'
+              animationDuration: '6s'
             }} />
 
             {/* Brand card with neon border and 3D tilt */}

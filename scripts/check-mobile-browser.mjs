@@ -77,11 +77,26 @@ try {
       const top = await evaluate(measure);
       await evaluate(`new Promise(resolve => { let y = 0; const step = () => { y += innerHeight; scrollTo(0, y); y < document.documentElement.scrollHeight ? setTimeout(step, 60) : setTimeout(resolve, 1200); }; step(); })`);
       const bottom = await evaluate(measure);
+      // Effects that repaint every frame on a phone: blurred glows that pulse forever, the header's backdrop blur,
+      // spinning 3D tech icons and background layers that move while scrolling.
+      const effects = await evaluate(`(() => ({
+        endless: [...new Set(document.getAnimations().filter(a => a.effect?.getComputedTiming().iterations === Infinity && a.playState === 'running')
+          .map(a => a.animationName).filter(name => /pulseGlow|tech-orbit/.test(name)))],
+        headerBlur: getComputedStyle(document.querySelector('header')).backdropFilter,
+        movingLayers: [...document.querySelectorAll('[data-parallax] > *')].filter(el => { const s = getComputedStyle(el); return s.transform !== 'none' || s.willChange !== 'auto' || !/^0px/.test(s.backgroundPositionY); }).length,
+      }))()`);
+      if (effects.endless.length) failures.push(`${width}px ${route}: endless repaint animations ${effects.endless.join(', ')}`);
+      if (effects.headerBlur !== 'none') failures.push(`${width}px ${route}: header backdrop blur ${effects.headerBlur}`);
+      if (effects.movingLayers) failures.push(`${width}px ${route}: ${effects.movingLayers} background layers move while scrolling`);
       console.log(`MOBILE_${width} ${route} ${JSON.stringify({ top, bottom })}`);
       for (const [phase, metrics] of [['top', top], ['bottom', bottom]]) {
         if (metrics.scroll > metrics.client) failures.push(`${width}px ${route} (${phase}): page is ${metrics.scroll}px wide, screen ${metrics.client}px; ${metrics.culprits.join(', ')}`);
       }
       if (route === '/') {
+        // Scrolled to the bottom, the project strip is off screen and must not keep animating.
+        const offscreen = await evaluate(`new Promise(resolve => { const track = () => [...document.querySelectorAll('#carrusel [data-carousel-copy]')].map(el => getComputedStyle(el.parentElement).transform).join('|');
+          const before = track(); setTimeout(() => resolve({ before, after: track(), visible: document.querySelector('#carrusel').getBoundingClientRect().bottom > 0 }), 1500); })`);
+        if (!offscreen.visible && offscreen.before !== offscreen.after) failures.push(`${width}px /: project strip keeps moving off screen`);
         const shot = await send('Page.captureScreenshot', { format: 'png' }, sessionId);
         await writeFile(path.join(output, `home-${width}.png`), Buffer.from(shot.data, 'base64'));
       }

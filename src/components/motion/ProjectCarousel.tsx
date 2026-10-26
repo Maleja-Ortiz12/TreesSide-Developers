@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, useAnimationFrame, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
+import { motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
 import { Pause, Play } from 'lucide-react';
 import { FEATURED_PROJECTS, type Project } from '@/data/content';
 import { caseHref } from '@/data/cases';
@@ -29,7 +29,8 @@ export function wrapOffset(x: number, width: number) {
 
 function Item({ project, copy }: { project: Project; copy?: boolean }) {
   return (
-    <Link href={caseHref(project.title) ?? '/proyectos'} className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
+    // No viewport prefetch: every moving card would make the browser recheck its visibility on each frame.
+    <Link href={caseHref(project.title) ?? '/proyectos'} prefetch={false} className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
       <Image src={project.image} alt={copy ? '' : project.title} fill sizes="300px" className={styles.image}
         style={{ objectFit: project.imageFit ?? 'cover' }} />
       <span className={styles.caption}><strong>{project.title}</strong><small>{project.owner}</small></span>
@@ -41,15 +42,21 @@ function Row({ projects, direction, paused }: { projects: Project[]; direction: 
   const track = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const reduce = useReducedMotion();
+  // Off screen the strip stops, so it costs nothing while the visitor reads the rest of the page.
+  const visible = useInView(track, { margin: '120px 0px' });
   // Only the first lap is announced and focusable; the extra laps just fill very wide screens.
   const cards = repeatToMinimum(projects, MIN_CARDS_PER_COPY);
   // Starts at rest and eases to full speed, so reduced-motion visitors never see it drift; stops the same way.
   const speed = useSpring(0, { stiffness: 70, damping: 18 });
-  useEffect(() => { speed.set(paused || reduce ? 0 : 1); }, [paused, reduce, speed]);
+  useEffect(() => {
+    // Nobody sees an off-screen strip slow down, so it stops at once instead of easing out.
+    if (!visible) speed.jump(0);
+    else speed.set(paused || reduce ? 0 : 1);
+  }, [paused, reduce, visible, speed]);
   useAnimationFrame((_, delta) => {
-    const half = (track.current?.scrollWidth ?? 0) / 2;
     const step = (SPEED * delta / 1000) * speed.get();
-    if (step) x.set(wrapOffset(x.get() - direction * step, half));
+    if (!step) return;
+    x.set(wrapOffset(x.get() - direction * step, (track.current?.scrollWidth ?? 0) / 2));
   });
   return (
     <div className={styles.viewport} data-reduced={reduce || undefined}>

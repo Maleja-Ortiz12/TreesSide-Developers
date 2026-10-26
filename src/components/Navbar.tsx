@@ -32,7 +32,7 @@ export function Navbar() {
   const isCurrent = (href: string) => pathname === href;
 
   return (
-    <header style={{
+    <header className="site-header" style={{
       position: 'fixed',
       top: 0,
       left: 0,
@@ -40,7 +40,6 @@ export function Navbar() {
       zIndex: 100,
       transition: 'all 0.3s ease',
       background: scrolled ? 'rgba(7, 13, 23, 0.92)' : 'rgba(7, 13, 23, 0.75)',
-      backdropFilter: 'blur(16px)',
       borderBottom: '1px solid rgba(255, 255, 255, 0.07)',
       boxShadow: scrolled ? '0 10px 30px rgba(0, 0, 0, 0.4)' : 'none'
     }}>

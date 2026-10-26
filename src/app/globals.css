@@ -299,6 +299,15 @@ code, .font-mono {
   animation: pulseGlow 4s ease-in-out infinite;
 }
 
+/* Blurred halos that breathe; components set their own `animation-duration`. */
+.glow-pulse {
+  animation: pulseGlow 6s ease-in-out infinite;
+}
+
+.site-header {
+  backdrop-filter: blur(16px);
+}
+
 @keyframes floatSlow {
   0%, 100% {
     transform: translateY(0px);
@@ -316,5 +325,23 @@ code, .font-mono {
 @media (max-width: 900px) {
   .container {
     padding: 0 18px;
+  }
+}
+
+/*
+ * Phones and touch screens: a pulsing blur or a backdrop blur is repainted on every frame, which makes
+ * scrolling stutter. Halos stay lit but still, the header uses a solid background instead of blurring
+ * what scrolls behind it, and cards (already opaque) skip the backdrop blur.
+ */
+@media (max-width: 899px), (pointer: coarse) {
+  .glow-pulse, .animate-pulse-glow {
+    animation: none;
+  }
+  .site-header {
+    backdrop-filter: none;
+    background: rgba(7, 13, 23, 0.96) !important;
+  }
+  .glass-card, .btn-secondary {
+    backdrop-filter: none;
   }
 }
