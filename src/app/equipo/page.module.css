@@ -1,4 +1,4 @@
-.main { padding-top: 76px; }
+.main { padding-top: 76px; overflow-x: clip; }
 .footer { padding: 40px 0; border-top: 1px solid var(--border-cyan); color: var(--text-muted); }
 .footer a { display: inline-block; color: var(--primary-cyan); margin-top: 12px; }
 .footer a:focus-visible { outline: 2px solid var(--primary-cyan); outline-offset: 6px; }

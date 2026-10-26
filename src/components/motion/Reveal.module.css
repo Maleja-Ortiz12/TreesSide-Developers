@@ -4,5 +4,18 @@
   from { opacity: 0; transform: perspective(1200px) translateY(40px) rotateX(10deg) scale(.97); }
   to { opacity: 1; transform: none; }
 }
+@keyframes reveal-first-flat {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
 @keyframes reveal-first-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/*
+ * Phones and touch screens: a tilted section is projected wider than the screen (sideways scroll) and turns
+ * tall sections into huge 3D layers. They keep the fade; the scroll reveal drops the transform motion writes.
+ */
+@media (max-width: 899px), (pointer: coarse) {
+  .first { animation-name: reveal-first-flat; }
+  .scroll { transform: none !important; }
+}
 @media (prefers-reduced-motion: reduce) { .first { animation-name: reveal-first-fade; } }

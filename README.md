@@ -139,6 +139,12 @@ node --test "tests/*.test.mjs"
 ```
 Puedes cambiar el servidor mediante `TEST_BASE_URL`.
 
+Para comprobar en un navegador que ninguna página se desplaza hacia los lados en celulares (360 y 390 px), con el servidor de producción iniciado y Microsoft Edge instalado (o la ruta de otro Chromium en `BROWSER_EXECUTABLE`):
+```bash
+node scripts/check-mobile-browser.mjs
+```
+En celulares y pantallas táctiles, las entradas al hacer scroll solo se desvanecen, sin inclinación 3D.
+
 ### 2. Generar compilación de producción
 ```bash
 npm run build
