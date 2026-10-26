@@ -42,7 +42,7 @@ function Row({ projects, direction, paused }: { projects: Project[]; direction: 
   const track = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const reduce = useReducedMotion();
-  // Off screen the strip stops, so it costs nothing while the visitor reads the rest of the page.
+  // Off screen the strip stops updating transforms and measuring its width.
   const visible = useInView(track, { margin: '120px 0px' });
   // Only the first lap is announced and focusable; the extra laps just fill very wide screens.
   const cards = repeatToMinimum(projects, MIN_CARDS_PER_COPY);

@@ -182,7 +182,7 @@ export function Hero() {
                 height: '320px'
               }}>
                 <Image
-                  src="/images/treesside-logo.jpg"
+                  src="/images/treesside-logo.webp"
                   alt="TreesSide Developers Cyber Tree Logo"
                   width={320}
                   height={320}

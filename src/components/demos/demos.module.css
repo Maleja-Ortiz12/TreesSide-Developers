@@ -35,8 +35,8 @@
 .box { fill: #00d2ff22; stroke: var(--primary-cyan); stroke-width: .6; }
 .bingoCard { display: grid; gap: 6px; }
 .bingoCard > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.bingoCard span { display: grid; place-items: center; height: 38px; border: 1px solid #00d2ff30; border-radius: 8px; color: var(--text-main); font: 600 .9rem 'JetBrains Mono', monospace; transition: background 200ms ease, border-color 200ms ease; }
+.bingoCard span { display: grid; place-items: center; height: 38px; border: 1px solid #00d2ff30; border-radius: 8px; color: var(--text-main); font: 600 .9rem var(--font-mono), monospace; transition: background 200ms ease, border-color 200ms ease; }
 .bingoCard span[data-marked='true'] { background: #00f5a020; border-color: var(--primary-green); color: var(--primary-green); }
 .ballInfo { display: flex; align-items: center; justify-content: space-between; color: var(--text-muted); font-size: .76rem; }
-.ball { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #00d2ff 70%); color: #04101c; font: 700 .85rem 'JetBrains Mono', monospace; }
+.ball { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #00d2ff 70%); color: #04101c; font: 700 .85rem var(--font-mono), monospace; }
 @media (prefers-reduced-motion: reduce) { .bingoCard span { transition: none; } }

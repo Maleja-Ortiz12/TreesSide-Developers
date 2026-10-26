@@ -271,7 +271,7 @@ export function ProjectsSection() {
               boxShadow: '0 0 20px rgba(0, 245, 160, 0.3)'
             }}>
               <Image
-                src="/images/treesside-logo.jpg"
+                src="/images/treesside-logo.webp"
                 alt="Cyber Tree TreesSide Developers"
                 width={84}
                 height={84}

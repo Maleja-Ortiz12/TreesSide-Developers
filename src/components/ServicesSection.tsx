@@ -96,7 +96,7 @@ export function ServicesSection() {
               aspectRatio: '4 / 3'
             }} className="animate-float">
               <Image
-                src="/images/services-laptop.jpg"
+                src="/images/services-laptop.webp"
                 alt="Servicios Tecnológicos TreesSide Developers"
                 fill
                 style={{ objectFit: 'cover' }}

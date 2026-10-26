@@ -8,7 +8,7 @@
 .chrome > span { width: 6px; height: 6px; border-radius: 50%; background: #00d2ff60; }
 .chrome > span:nth-child(2) { background: #00f5a060; }
 .chrome > span:nth-child(3) { background: #ffffff30; }
-.chrome small { margin-left: auto; color: var(--text-dim); font: .62rem 'JetBrains Mono', monospace; letter-spacing: .1em; }
+.chrome small { margin-left: auto; color: var(--text-dim); font: .62rem var(--font-mono), monospace; letter-spacing: .1em; }
 .intro { padding: 24px 22px 18px; color: var(--primary-cyan); }
 .intro h3 { color: var(--text-main); font-size: 1.2rem; margin-top: 12px; }
 .intro p { margin-top: 8px; color: var(--text-muted); font-size: .9rem; line-height: 1.6; }

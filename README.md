@@ -143,7 +143,9 @@ Para comprobar en un navegador que ninguna página se desplaza hacia los lados e
 ```bash
 node scripts/check-mobile-browser.mjs
 ```
-En celulares y pantallas táctiles, las entradas al hacer scroll solo se desvanecen, sin inclinación 3D. Para que el scroll sea fluido, allí el fondo parallax queda quieto, los resplandores no laten, los íconos de tecnologías no giran y el encabezado usa un fondo sólido en lugar de desenfocar lo que pasa detrás; el escritorio conserva todos los efectos. La cinta de proyectos del inicio se detiene mientras está fuera de la pantalla. El mismo script comprueba estas reglas.
+En celulares y pantallas táctiles, las entradas al hacer scroll solo se desvanecen, sin inclinación 3D. Para que el scroll sea fluido, allí el fondo parallax queda quieto, los resplandores no laten, los íconos de tecnologías no giran y el encabezado usa un fondo sólido en lugar de desenfocar lo que pasa detrás; el escritorio conserva todos los efectos. También se detienen las flotaciones decorativas y el pulso del botón de WhatsApp en celulares; sus controles siguen funcionando. La cinta de proyectos del inicio se detiene mientras está fuera de la pantalla. El mismo script comprueba estas reglas y que los controles de contacto no queden recortados.
+
+Las imágenes de servicios y del logo dentro de las páginas usan WebP. Se conserva el JPG del logo para favicon y metadatos. Las fuentes Outfit y JetBrains Mono se descargan durante `npm run build` mediante `next/font/google` y luego se sirven desde el propio sitio: el visitante no hace solicitudes a Google Fonts. La compilación requiere acceso a Google Fonts; no se garantiza precarga automática en todas las plataformas.
 
 ### 2. Generar compilación de producción
 ```bash

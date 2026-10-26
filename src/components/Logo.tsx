@@ -56,7 +56,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           border: '1px solid rgba(0, 245, 160, 0.25)'
         }}>
           <Image
-            src="/images/treesside-logo.jpg"
+            src="/images/treesside-logo.webp"
             alt="TreesSide Developers Cyber Tree Logo"
             width={width}
             height={height}
@@ -89,7 +89,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
         flexShrink: 0
       }}>
         <Image
-          src="/images/treesside-logo.jpg"
+          src="/images/treesside-logo.webp"
           alt="TreesSide Developers Logo"
           width={width}
           height={height}

@@ -81,16 +81,22 @@ try {
       // spinning 3D tech icons and background layers that move while scrolling.
       const effects = await evaluate(`(() => ({
         endless: [...new Set(document.getAnimations().filter(a => a.effect?.getComputedTiming().iterations === Infinity && a.playState === 'running')
-          .map(a => a.animationName).filter(name => /pulseGlow|tech-orbit/.test(name)))],
+          .map(a => a.animationName || '(unnamed)'))],
         headerBlur: getComputedStyle(document.querySelector('header')).backdropFilter,
         movingLayers: [...document.querySelectorAll('[data-parallax] > *')].filter(el => { const s = getComputedStyle(el); return s.transform !== 'none' || s.willChange !== 'auto' || !/^0px/.test(s.backgroundPositionY); }).length,
       }))()`);
-      if (effects.endless.length) failures.push(`${width}px ${route}: endless repaint animations ${effects.endless.join(', ')}`);
+      if (effects.endless.length) failures.push(`${width}px ${route}: endless decorative animations ${effects.endless.join(', ')}`);
       if (effects.headerBlur !== 'none') failures.push(`${width}px ${route}: header backdrop blur ${effects.headerBlur}`);
       if (effects.movingLayers) failures.push(`${width}px ${route}: ${effects.movingLayers} background layers move while scrolling`);
       console.log(`MOBILE_${width} ${route} ${JSON.stringify({ top, bottom })}`);
       for (const [phase, metrics] of [['top', top], ['bottom', bottom]]) {
         if (metrics.scroll > metrics.client) failures.push(`${width}px ${route} (${phase}): page is ${metrics.scroll}px wide, screen ${metrics.client}px; ${metrics.culprits.join(', ')}`);
+      }
+      if (route === '/contacto') {
+        const clipped = await evaluate(`(() => [...document.querySelectorAll('.contact-grid a, .contact-grid button, .contact-grid input:not([aria-hidden="true"]), .contact-grid textarea')].filter(el => {
+          const r = el.getBoundingClientRect(); return r.width && (r.left < 0 || r.right > innerWidth);
+        }).map(el => el.textContent.trim() || el.getAttribute('name') || el.tagName))()`);
+        if (clipped.length) failures.push(`${width}px ${route}: clipped contact controls ${clipped.join(', ')}`);
       }
       if (route === '/') {
         // Scrolled to the bottom, the project strip is off screen and must not keep animating.
