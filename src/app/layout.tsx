@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { CONTACT_INFO, SERVICES, SITE_URL } from '@/data/content';
 import { BASE_OPEN_GRAPH } from '@/lib/metadata';
+import { StyledJsxRegistry } from '@/components/StyledJsxRegistry';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -75,7 +76,7 @@ export default function RootLayout({
           // Escaping "<" keeps the JSON from ever closing the script tag early.
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION).replace(/</g, '\\u003c') }}
         />
-        {children}
+        <StyledJsxRegistry>{children}</StyledJsxRegistry>
       </body>
     </html>
   );
