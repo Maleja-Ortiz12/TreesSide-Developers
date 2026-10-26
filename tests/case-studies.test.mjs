@@ -31,7 +31,7 @@ test('S2 each case study tells context, challenge, solution, technologies and re
     assert.ok(html.includes(`%2Fimages%2Fprojects%2F${item.image}.webp`) || html.includes(`/images/projects/${item.image}.webp`), `${item.slug} image`);
     assert.ok(html.includes('href="/contacto"'), `${item.slug} call to action`);
     if (item.live) assert.ok(html.includes(`href="${item.live}"`), `${item.slug} live site`);
-    assert.match(html, new RegExp(`<link rel="canonical" href="https://softzenkododevs.com/casos/${item.slug}"`), `${item.slug} canonical`);
+    assert.match(html, new RegExp(`<link rel="canonical" href="https://treesside-developers.malejawork12.workers.dev/casos/${item.slug}"`), `${item.slug} canonical`);
   }
 });
 
@@ -48,7 +48,7 @@ test('S2 the case index lists the three cases, unknown slugs are 404, and the si
   assert.equal((await get('/casos/no-existe')).status, 404);
   const sitemap = await page('/sitemap.xml');
   for (const path of ['/casos', ...CASES.map(item => `/casos/${item.slug}`)]) {
-    assert.ok(sitemap.includes(`<loc>https://softzenkododevs.com${path}</loc>`), `sitemap ${path}`);
+    assert.ok(sitemap.includes(`<loc>https://treesside-developers.malejawork12.workers.dev${path}</loc>`), `sitemap ${path}`);
   }
 });
 

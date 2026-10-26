@@ -22,7 +22,7 @@ function planCards(html) {
 test('plans page publishes exactly the four approved starting prices with complete scope', async () => {
   const html = await get('/planes');
   assert.match(html, /<h1[^>]*>[^<]*Planes[^<]*<\/h1>/);
-  assert.match(html, /<link rel="canonical" href="https:\/\/softzenkododevs.com\/planes"/);
+  assert.match(html, /<link rel="canonical" href="https:\/\/treesside-developers\.malejawork12\.workers\.dev\/planes"/);
   const cards = planCards(html);
   assert.deepEqual(cards.map(card => card.id), PLANS.map(plan => plan.id));
   for (const plan of PLANS) {
@@ -97,5 +97,5 @@ test('plans are discoverable in navigation, footer and sitemap without losing ex
   const footer = html.match(/<footer\b[\s\S]*?<\/footer>/)[0];
   assert.ok(footer.includes('href="/planes"'));
   assert.ok(footer.includes('href="/politica-de-datos"'));
-  assert.ok((await get('/sitemap.xml')).includes('<loc>https://softzenkododevs.com/planes</loc>'));
+  assert.ok((await get('/sitemap.xml')).includes('<loc>https://treesside-developers.malejawork12.workers.dev/planes</loc>'));
 });

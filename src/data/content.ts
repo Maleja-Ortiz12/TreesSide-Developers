@@ -275,7 +275,8 @@ export const PROCESS_STEPS: ProcessStep[] = [
   }
 ];
 
-export const SITE_URL = 'https://softzenkododevs.com';
+// Public address of the deployed site; canonical links, share previews, sitemap and robots are built from it.
+export const SITE_URL = 'https://treesside-developers.malejawork12.workers.dev';
 
 export const CONTACT_INFO = {
   email: 'correo@softzenkododevs.com',

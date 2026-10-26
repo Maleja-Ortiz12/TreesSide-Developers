@@ -2,16 +2,20 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
-const SITE = 'https://softzenkododevs.com';
+const SITE = 'https://treesside-developers.malejawork12.workers.dev';
 async function page(path) {
   const response = await fetch(new URL(path, base), { signal: AbortSignal.timeout(30000) });
   assert.equal(response.status, 200, path);
   return response.text();
 }
 const meta = (html, attr, name) => html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`))?.[1];
+const PAGES = [
+  '/', '/servicios', '/planes', '/proyectos', '/casos', '/casos/la-lupe', '/casos/emisoras-latinas', '/casos/tengoya',
+  '/nosotros', '/equipo', '/contacto', '/politica-de-datos',
+];
 
 test('S4 every page shares and canonicalizes its own URL, keeping the shared Open Graph data', async () => {
-  for (const path of ['/', '/servicios', '/proyectos', '/nosotros', '/equipo', '/contacto', '/politica-de-datos']) {
+  for (const path of PAGES) {
     const html = await page(path);
     const url = path === '/' ? SITE : `${SITE}${path}`;
     assert.equal(meta(html, 'property', 'og:url'), url, `${path} og:url`);
@@ -20,7 +24,8 @@ test('S4 every page shares and canonicalizes its own URL, keeping the shared Ope
     assert.equal(meta(html, 'property', 'og:title'), title, `${path} og:title matches the page title`);
     assert.equal(meta(html, 'property', 'og:site_name'), 'TreesSide Developers', `${path} site name`);
     assert.equal(meta(html, 'property', 'og:locale'), 'es_CO', `${path} locale`);
-    assert.ok(meta(html, 'property', 'og:image'), `${path} share image`);
+    assert.ok(meta(html, 'property', 'og:image')?.startsWith(`${SITE}/opengraph-image`), `${path} og:image on the public domain`);
+    assert.ok(meta(html, 'name', 'twitter:image')?.startsWith(`${SITE}/opengraph-image`), `${path} twitter:image on the public domain`);
   }
 });
 

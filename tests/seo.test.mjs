@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
-const SITE = 'https://softzenkododevs.com';
+const SITE = 'https://treesside-developers.malejawork12.workers.dev';
 const ROUTES = ['', '/servicios', '/proyectos', '/nosotros', '/equipo', '/contacto', '/politica-de-datos'];
 async function get(path) {
   const response = await fetch(new URL(path, base), { signal: AbortSignal.timeout(60000) });

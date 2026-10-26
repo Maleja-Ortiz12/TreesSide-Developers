@@ -1,11 +1,21 @@
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
+import { SITE_URL } from '@/data/content';
 
 export const alt = 'TreesSide Developers · Transformamos ideas en soluciones digitales';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
+// tests/social-sharing.test.mjs compares this area of the card with the logo file.
+const LOGO_BOX = { left: 780, top: 145, size: 340 };
+
 /** Share card used by WhatsApp, LinkedIn and other networks when a page link is posted. */
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  // Embedded as a data URI so the card is built at compile time without fetching from the network.
+  const logo = await readFile(join(process.cwd(), 'public/images/treesside-logo.jpg'));
+  const logoSrc = `data:image/jpeg;base64,${logo.toString('base64')}`;
+
   return new ImageResponse(
     (
       <div style={{
@@ -19,14 +29,24 @@ export default function OpengraphImage() {
           <div style={{ width: 18, height: 18, borderRadius: 9, background: '#00f5a0' }} />
           TREESSIDE DEVELOPERS
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
-          <div style={{ fontSize: 76, fontWeight: 800, lineHeight: 1.05, color: '#ffffff' }}>Transformamos ideas</div>
-          <div style={{ fontSize: 76, fontWeight: 800, lineHeight: 1.05, color: '#00d2ff' }}>en soluciones digitales</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, width: 640 }}>
+          <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.05, color: '#ffffff' }}>Transformamos ideas</div>
+          <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.05, color: '#00d2ff' }}>en soluciones digitales</div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 28, color: '#94a3b8' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 24, color: '#94a3b8', width: 660 }}>
           <span>Desarrollo web · Apps · Bases de datos · Cloud</span>
-          <span>softzenkododevs.com</span>
+          <span style={{ color: '#00f5a0' }}>{new URL(SITE_URL).host}</span>
         </div>
+        <img
+          src={logoSrc}
+          alt=""
+          width={LOGO_BOX.size}
+          height={LOGO_BOX.size}
+          style={{
+            position: 'absolute', left: LOGO_BOX.left, top: LOGO_BOX.top, borderRadius: 32,
+            boxShadow: '0 0 60px rgba(0,245,160,.35)',
+          }}
+        />
       </div>
     ),
     size,

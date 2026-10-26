@@ -115,7 +115,14 @@ La interfaz utiliza español latinoamericano neutral (`lang="es-419"`): **Conoce
 
 La marca se presenta como **TreesSide**, con **Developers** debajo como subtítulo. `src/components/Logo.tsx` controla esa composición en el header y footer. El nuevo recurso `public/images/treesside-logo.jpg` conserva el árbol e incorpora el nuevo nombre; `public/images/logo.jpg` se conserva como original, sin usarse en la interfaz. Los metadatos y textos visibles usan TreesSide Developers.
 
-Los correos, dominios y destinos de contacto existentes se mantienen: el cambio de nombre no implica que exista un dominio nuevo. El saludo de WhatsApp usa el nuevo nombre.
+Los correos y destinos de contacto existentes se mantienen (por ejemplo `correo@softzenkododevs.com`). El dominio público del sitio sí cambió: ver **SEO y vista previa al compartir**. El saludo de WhatsApp usa el nuevo nombre.
+
+## SEO y vista previa al compartir
+
+- **Dominio público:** `SITE_URL` en `src/data/content.ts` (hoy `https://treesside-developers.malejawork12.workers.dev`) es la única fuente del dominio. De ahí salen `metadataBase`, los enlaces canónicos, `og:url`, `og:image`, `twitter:image`, el JSON-LD de la organización, `sitemap.xml` y `robots.txt`. Si se cambia de dominio, se edita solo esa constante.
+- **Metadatos por página:** cada ruta usa `pageMetadata()` de `src/lib/metadata.ts`, que define título, descripción, canónico, Open Graph (`es_CO`) y tarjeta de X con la misma imagen. Las páginas 404 no publican canónico.
+- **Imagen al compartir:** `src/app/opengraph-image.tsx` genera un PNG de 1200×630 con el logo `public/images/treesside-logo.jpg`, el lema y el dominio. El logo se lee del disco al compilar, sin depender de servidores externos. Se ve en `/opengraph-image`.
+- **Publicación:** los cambios solo aparecen al volver a desplegar. WhatsApp, Facebook, LinkedIn y X guardan en caché la vista previa de un enlace; para refrescarla se puede usar el [Sharing Debugger de Facebook](https://developers.facebook.com/tools/debug/) o el [Post Inspector de LinkedIn](https://www.linkedin.com/post-inspector/), o compartir la URL con un parámetro nuevo (por ejemplo `?v=2`).
 
 El retrato de Jorge conserva la proporción vertical original (288×384 en la copia optimizada) y se muestra con `photoFit: 'contain'` en `src/data/team.ts`, sin el recorte cuadrado que generaba zoom. Las demás fotos mantienen su encuadre.
 
