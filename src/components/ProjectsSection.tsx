@@ -204,10 +204,10 @@ export function ProjectsSection() {
           object-fit: cover;
           /* Zooms past the wordmark under the tree; the brand name is already in the header. */
           transform: scale(1.3);
-          transform-origin: 50% 22%;
+          transform-origin: 50% 8%;
           /* Fades the square artwork into the page so only the glowing tree remains. */
-          -webkit-mask-image: radial-gradient(circle at 50% 46%, #000 42%, transparent 70%);
-          mask-image: radial-gradient(circle at 50% 46%, #000 42%, transparent 70%);
+          -webkit-mask-image: radial-gradient(circle at 50% 42%, #000 28%, transparent 52%);
+          mask-image: radial-gradient(circle at 50% 42%, #000 28%, transparent 52%);
         }
         .circuit-drop {
           display: block;

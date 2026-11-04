@@ -190,7 +190,13 @@ export function Hero() {
                   style={{
                     objectFit: 'cover',
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
+                    // As in the mockup, the tree glows on the card itself: zoom past the artwork's own
+                    // wordmark (the name is printed below) and fade its square backdrop into the card.
+                    transform: 'scale(1.3)',
+                    transformOrigin: '50% 8%',
+                    WebkitMaskImage: 'radial-gradient(circle at 50% 42%, #000 28%, transparent 52%)',
+                    maskImage: 'radial-gradient(circle at 50% 42%, #000 28%, transparent 52%)'
                   }}
                 />
               </div>
