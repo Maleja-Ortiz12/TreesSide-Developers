@@ -8,24 +8,16 @@ import { FEATURED_PROJECTS, Project } from '@/data/content';
 import { ProjectModal } from './ProjectModal';
 import { ProjectSpotlight } from './ProjectSpotlight';
 import { ArrowRight } from 'lucide-react';
+import { PROJECT_FILTERS, projectGroup, withMockupArt } from '@/lib/projectGroups';
 
-const WEB_CATEGORIES = ['Sitios web', 'Web & E-Commerce', 'Radio web', 'Marketplaces'];
-const DATA_CATEGORIES = ['Análisis de datos'];
+const CATALOG = withMockupArt(FEATURED_PROJECTS);
 
-// The mockup filters by three broad groups; every real category falls in exactly one of them.
-export function projectGroup(project: Project) {
-  if (WEB_CATEGORIES.includes(project.category)) return 'Web';
-  if (DATA_CATEGORIES.includes(project.category)) return 'Datos';
-  return 'Aplicaciones';
-}
-
-const FILTERS = ['Todos', 'Web', 'Aplicaciones', 'Datos'];
 
 export function ProjectsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeFilter, setActiveFilter] = useState('Todos');
 
-  const filteredProjects = FEATURED_PROJECTS.filter(p => activeFilter === 'Todos' || projectGroup(p) === activeFilter);
+  const filteredProjects = CATALOG.filter(p => activeFilter === 'Todos' || projectGroup(p) === activeFilter);
 
   const router = useRouter();
   const goToContact = () => router.push('/contacto');
@@ -44,7 +36,7 @@ export function ProjectsSection() {
             </p>
 
             <div className="filters" role="group" aria-label="Filtrar proyectos">
-              {FILTERS.map((filter) => (
+              {PROJECT_FILTERS.map((filter) => (
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
@@ -59,13 +51,13 @@ export function ProjectsSection() {
 
           <div className="hero-tree" aria-hidden="true">
             <span className="tree-glow" />
-            <Image src="/images/treesside-logo.webp" alt="" width={420} height={420} priority className="tree-image" />
+            <Image src="/images/mockup/tree.webp" alt="" width={946} height={612} priority className="tree-image" />
           </div>
         </header>
 
         <span className="circuit-drop" aria-hidden="true" />
 
-        <ProjectSpotlight key={`spotlight-${activeFilter}`} projects={filteredProjects} onOpen={setSelectedProject} suspended={selectedProject !== null} />
+        <ProjectSpotlight key={`spotlight-${activeFilter}`} projects={filteredProjects} onOpen={setSelectedProject} suspended={selectedProject !== null} groupOf={projectGroup} />
 
         <div className="projects-grid" key={`grid-${activeFilter}`}>
           {filteredProjects.map((project, index) => (
@@ -84,20 +76,8 @@ export function ProjectsSection() {
               <div className="card-copy">
                 <h3 className="card-title">{project.title}</h3>
                 <p className="card-group">{projectGroup(project)} · {project.category}</p>
-                {project.owner && <p className={`card-owner${project.experience ? ' is-experience' : ''}`}>
-                  {`${project.experience ? 'Experiencia laboral' : 'Proyecto del equipo'} · ${project.owner}`}
-                </p>}
+                {project.experience && <span className="card-experience">Experiencia laboral</span>}
                 <p className="card-description">{project.description}</p>
-
-                {project.authors && <div className="card-authors">
-                  {project.authors.map(author => (
-                    <a key={author.portfolio} href={author.portfolio} target="_blank" rel="noopener noreferrer"
-                      aria-label={`Ver portafolio de ${author.name} (abre en otra pestaña)`}
-                      onClick={event => event.stopPropagation()}>
-                      {project.authors!.length > 1 ? `Portafolio de ${author.name}` : 'Ver portafolio del autor'}
-                    </a>
-                  ))}
-                </div>}
                 <button type="button" aria-label={`Ver proyecto ${project.title}`} className="card-action">
                   Ver proyecto
                   <ArrowRight size={18} />
@@ -114,7 +94,6 @@ export function ProjectsSection() {
                     style={{ objectFit: project.imageFit ?? 'cover' }}
                     className="project-thumb"
                   />
-                  <span className="card-stack">{project.tag}</span>
                 </div>
                 {project.imageLabel && <p className="card-note">{project.imageLabel}</p>}
               </div>
@@ -123,6 +102,8 @@ export function ProjectsSection() {
         </div>
 
         <div className="projects-cta">
+          <Image src="/images/mockup/rocks-left.webp" alt="" width={444} height={234} className="cta-rocks cta-rocks-left" aria-hidden="true" />
+          <Image src="/images/mockup/rocks-right.webp" alt="" width={436} height={280} className="cta-rocks cta-rocks-right" aria-hidden="true" />
           <span className="cta-circuit cta-circuit-left" aria-hidden="true" />
           <span className="cta-circuit cta-circuit-right" aria-hidden="true" />
           <h3>
@@ -186,9 +167,10 @@ export function ProjectsSection() {
         .hero-tree {
           position: relative;
           justify-self: end;
-          width: min(100%, 400px);
-          aspect-ratio: 1;
-          overflow: hidden;
+          width: 130%;
+          max-width: 620px;
+          margin: -40px -90px 0 0;
+          aspect-ratio: 946 / 612;
         }
         .tree-glow {
           position: absolute;
@@ -201,13 +183,9 @@ export function ProjectsSection() {
           position: relative;
           width: 100%;
           height: 100%;
-          object-fit: cover;
-          /* Zooms past the wordmark under the tree; the brand name is already in the header. */
-          transform: scale(1.3);
-          transform-origin: 50% 8%;
-          /* Fades the square artwork into the page so only the glowing tree remains. */
-          -webkit-mask-image: radial-gradient(circle at 50% 42%, #000 28%, transparent 52%);
-          mask-image: radial-gradient(circle at 50% 42%, #000 28%, transparent 52%);
+          /* Fades the cropped artwork into the page background on every side. */
+          -webkit-mask-image: radial-gradient(ellipse 62% 68% at 55% 45%, #000 55%, transparent 100%);
+          mask-image: radial-gradient(ellipse 62% 68% at 55% 45%, #000 55%, transparent 100%);
         }
         .circuit-drop {
           display: block;
@@ -290,29 +268,20 @@ export function ProjectsSection() {
           font-size: 0.95rem;
           font-weight: 500;
         }
-        .card-owner {
-          margin-top: 6px;
-          color: #9fe9cd;
-          font-size: 0.78rem;
-        }
-        .card-owner.is-experience {
+        .card-experience {
+          align-self: flex-start;
+          margin-top: 8px;
+          padding: 2px 10px;
+          border-radius: 999px;
+          border: 1px solid rgba(46, 230, 197, 0.45);
           color: var(--primary-cyan);
+          font-size: 0.72rem;
         }
         .card-description {
           margin: 14px 0 16px;
           color: #d3e4de;
           font-size: 0.9rem;
           line-height: 1.55;
-        }
-        .card-authors {
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-          margin-bottom: 16px;
-        }
-        .card-authors a {
-          color: var(--primary-cyan);
-          font-size: 0.84rem;
         }
         .card-action {
           margin-top: auto;
@@ -359,22 +328,6 @@ export function ProjectsSection() {
         .project-card:hover :global(.project-thumb) {
           transform: scale(1.05);
         }
-        .card-stack {
-          position: absolute;
-          left: 10px;
-          bottom: 10px;
-          max-width: calc(100% - 20px);
-          padding: 3px 10px;
-          border-radius: 999px;
-          border: 1px solid rgba(62, 240, 168, 0.45);
-          background: rgba(5, 17, 15, 0.88);
-          color: var(--primary-green);
-          font-size: 0.72rem;
-          font-weight: 600;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
         .card-note {
           margin-top: 8px;
           font-size: 0.72rem;
@@ -383,7 +336,23 @@ export function ProjectsSection() {
         .projects-cta {
           position: relative;
           text-align: center;
-          padding: 40px 20px 20px;
+          padding: 40px 20px 60px;
+        }
+        .projects-cta :global(.cta-rocks) {
+          position: absolute;
+          bottom: -70px;
+          width: 300px;
+          height: auto;
+          pointer-events: none;
+          /* Soft edges on every side so the cropped rocks melt into the page. */
+          -webkit-mask-image: radial-gradient(ellipse 60% 65% at 50% 60%, #000 40%, transparent 100%);
+          mask-image: radial-gradient(ellipse 60% 65% at 50% 60%, #000 40%, transparent 100%);
+        }
+        .projects-cta :global(.cta-rocks-left) {
+          left: -140px;
+        }
+        .projects-cta :global(.cta-rocks-right) {
+          right: -140px;
         }
         .projects-cta h3 {
           font-size: clamp(1.9rem, 4vw, 3rem);
@@ -448,7 +417,7 @@ export function ProjectsSection() {
           .projects-hero {
             grid-template-columns: minmax(0, 1fr);
           }
-          .hero-tree, .cta-circuit {
+          .hero-tree, .cta-circuit, .projects-cta :global(.cta-rocks) {
             display: none;
           }
         }

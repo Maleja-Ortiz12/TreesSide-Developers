@@ -14,13 +14,8 @@ test('catalog integrates team projects with attribution and portfolio sources wi
   const section = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0];
   assert.ok(section);
   for (const title of ['Ocho80', 'Radio Navidad', 'Floraltech E-Commerce', 'Dimension Shift', 'UptownHair']) assert.ok(section.includes(title), title);
-  for (const name of ['Ronaldo Delgado Correa', 'Jorge Luis Puentes Brochero', 'María Alejandra Ortiz Páez']) assert.ok(section.includes(name), name);
   assert.equal((section.match(/<h3[^>]*>Floraltech E-Commerce<\/h3>/g) || []).length, 1);
-  assert.ok(section.includes('Proyecto del equipo · '));
   assert.ok(section.includes('pasarela de pagos simulada'));
-  for (const url of ['https://ronaldo-delgado.vercel.app/', 'https://portafolio-xi-liart-92.vercel.app/', 'https://portafolio-bay-tau.vercel.app/']) {
-    assert.ok(section.includes(`href="${url}"`));
-  }
 });
 
 test('languages include every portfolio-declared language with Spanish categories', async () => {
@@ -36,7 +31,6 @@ test('project filter chips are unique and project actions name their project', a
   // Mockup filters (odd/tasks/rediseno-mockup.md S4): three groups that cover every real category.
   assert.deepEqual(chips, ['Todos', 'Web', 'Aplicaciones', 'Datos']);
   assert.ok(section.includes('aria-label="Ver proyecto Ocho80"'));
-  assert.ok(section.includes('aria-label="Ver portafolio de Ronaldo Delgado Correa (abre en otra pestaña)"'));
   assert.ok(!/Cliente|encargo/.test(section));
 });
 
@@ -62,4 +56,24 @@ test('S4 each card names its mockup group next to its real category', async () =
   assert.ok(text(card('La Lupe')).includes('Web · Sitios web'));
   assert.ok(text(card('Ocho80')).includes('Aplicaciones · Tiempo real'));
   assert.ok(text(card('Dashboard BI · Superstore')).includes('Datos · Análisis de datos'));
+});
+
+test('S8 cards stay compact while the detail modal keeps every author, portfolio and experience note', async () => {
+  const html = await projectsPage();
+  const section = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0] ?? '';
+  const cards = section.split(/(?=<div[^>]*data-project=)/).slice(1);
+  assert.equal(cards.length, 31);
+  for (const card of cards) assert.ok(!card.includes('Ver portafolio de '), 'portfolio links live in the modal');
+  // The modal reads the catalog shipped to the browser, so its data must be in the served bundles.
+  const scripts = [...html.matchAll(/<script[^>]*src="([^"]+)"/g)].map(match => match[1]);
+  const bundles = (await Promise.all(scripts.map(async src => (await fetch(new URL(src.replace(/&amp;/g, '&'), base))).text()))).join('\n');
+  // Minifiers write accented letters as \xNN or \uNNNN escapes.
+  const served = bundles.replace(/\\x([0-9a-f]{2})|\\u([0-9a-f]{4})/gi, (_, x, u) => String.fromCharCode(parseInt(x ?? u, 16)));
+  for (const value of ['Ronaldo Delgado Correa', 'Jorge Luis Puentes Brochero', 'María Alejandra Ortiz Páez', 'Jorge Luis Ramírez Trochez',
+    'https://ronaldo-delgado.vercel.app/', 'https://portafolio-xi-liart-92.vercel.app/', 'https://portafolio-bay-tau.vercel.app/', 'https://www.jorgeramirez.site/']) {
+    assert.ok(served.includes(value), value);
+  }
+  const { readFile } = await import('node:fs/promises');
+  const modal = await readFile('src/components/ProjectModal.tsx', 'utf8');
+  for (const token of ['project.authors.map', 'author.portfolio', 'Experiencia laboral · ${project.owner}']) assert.ok(modal.includes(token), token);
 });

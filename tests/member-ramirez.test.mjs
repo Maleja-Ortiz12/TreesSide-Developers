@@ -46,7 +46,6 @@ test('S2 his portfolio projects are listed with local cover images', async () =>
     const [card] = cardFor(cards, title);
     assert.ok(card, title);
     assert.ok(card.includes(`%2Fimages%2Fprojects%2F${slug}.webp`) || card.includes(`/images/projects/${slug}.webp`), `image ${title}`);
-    assert.ok(text(card).includes(NAME), `author ${title}`);
   }
   const [pega] = cardFor(cards, 'Migración Pega → UiPath');
   assert.ok(pega, 'Pega migration');
@@ -59,25 +58,20 @@ test('S3 shared projects are a single card crediting both members', async () => 
   const cards = await projectCards();
   const emisoras = cardFor(cards, 'Emisoras Latinas');
   assert.equal(emisoras.length, 1);
-  assert.ok(text(emisoras[0]).includes('María Alejandra Ortiz Páez y Jorge Luis Ramírez Trochez'));
-  assert.ok(emisoras[0].includes('emisoras-latinas-cover.webp'));
+  // Compact cards (odd/tasks/rediseno-mockup.md S8): authors and portfolios are shown in the detail modal.
+  assert.ok(emisoras[0].includes('mockup%2Femisoras-latinas.webp') || emisoras[0].includes('/images/mockup/emisoras-latinas.webp'));
   const radio = cardFor(cards, 'Radio Navidad');
   assert.equal(radio.length, 1);
-  assert.ok(text(radio[0]).includes('Ronaldo Delgado Correa y Jorge Luis Ramírez Trochez'));
   assert.ok(radio[0].includes("radio-navidad.webp"));
   assert.ok(!radio[0].includes('Imagen de marca'));
   assert.ok(!cards.some(card => card.includes('>Christmas Radio Navidad</h3>')));
-  for (const card of [emisoras[0], radio[0]]) {
-    assert.equal((card.match(/aria-label="Ver portafolio de /g) || []).length, 2);
-    assert.ok(card.includes(`href="${PORTFOLIO}"`));
-  }
 });
 
 test('S4 his employer work is marked as work experience', async () => {
   const cards = await projectCards();
   for (const title of ['Robot Alejo 2.0', 'Migración Pega → UiPath']) {
     const [card] = cardFor(cards, title);
-    assert.ok(text(card).includes(`Experiencia laboral · ${NAME}`), title);
+    assert.ok(text(card).includes('Experiencia laboral'), title);
   }
 });
 

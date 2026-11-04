@@ -11,7 +11,6 @@ test('projects present a navigable spotlight without replacing the project catal
   for (const label of ['Proyecto anterior', 'Proyecto siguiente', 'Ver detalles del proyecto destacado']) assert.ok(html.includes(`aria-label="${label}"`), label);
   assert.ok(html.includes('data-project="equipo-ocho80"'));
   assert.ok(html.includes('aria-pressed="true"'));
-  assert.ok(html.includes('Ver portafolio del autor'));
 });
 
 test('spotlight handles navigation limits, filter changes and reduced motion', async () => {

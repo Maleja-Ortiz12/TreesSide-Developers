@@ -19,15 +19,15 @@ function cardFor(section, title) {
 }
 
 const WITH_IMAGES = {
-  Ocho80: 'ocho80', 'Radio Navidad': 'radio-navidad', Luhos: 'luhos', Gudfy: 'gudfy', Tanku: 'tanku',
-  'Floraltech E-Commerce': 'floraltech', 'Atherium 3D Game': 'atherium', 'Otaku Portal': 'otaku-portal',
+  Ocho80: 'mockup/ocho80', 'Radio Navidad': 'radio-navidad', Luhos: 'luhos', Gudfy: 'gudfy', Tanku: 'tanku',
+  'Floraltech E-Commerce': 'mockup/floraltech', 'Atherium 3D Game': 'atherium', 'Otaku Portal': 'otaku-portal',
   'Portfolio CMS': 'portfolio-cms', 'Dashboard BI · Superstore': 'dashboard-superstore',
   'EDA · Renta Ciudadana': 'eda-renta-ciudadana', 'Análisis de Ventas de Cafetería': 'ventas-cafeteria',
-  'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'emisoras-latinas-cover',
+  'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'mockup/emisoras-latinas',
   'Entre Lanas y Fragancias': 'entre-lanas-y-fragancias',
   TengoYa: 'tengoya', CarWeb: 'carweb', Histech: 'histech', 'Robot Alejo 2.0': 'robot-alejo',
-  'La Lupe': 'la-lupe',
-  'Calculadora de contenedores': 'calculadora-contenedores',
+  'La Lupe': 'mockup/la-lupe',
+  'Calculadora de contenedores': 'mockup/calculadora-contenedores',
   'Libres en Cristo Jesús': 'libres-en-cristo',
   'API de Tienda + Asistente IA': 'tienda-api',
   'Sistema de gestión de inventarios': 'gestion-inventarios',
@@ -42,24 +42,25 @@ test('every portfolio project is listed with its local project image or labeled 
   for (const [title, slug] of Object.entries(WITH_IMAGES)) {
     const card = cardFor(section, title);
     assert.ok(card, `missing project: ${title}`);
-    assert.ok(card.includes(`%2Fimages%2Fprojects%2F${slug}.webp`) || card.includes(`/images/projects/${slug}.webp`), `image: ${title}`);
+    // The five mockup projects show artwork cropped from the mockup (S6); the rest keep their own image.
+    const image = slug.includes('/') ? slug : `projects/${slug}`;
+    assert.ok(card.includes(`%2Fimages%2F${image.replace('/', '%2F')}.webp`) || card.includes(`/images/${image}.webp`), `image: ${title}`);
     assert.ok(!card.includes('Imagen de marca'), `brand placeholder on ${title}`);
   }
   assert.equal(Object.keys(WITH_IMAGES).length, 31);
   assert.equal((section.match(/data-project=/g) || []).length, Object.keys(WITH_IMAGES).length);
 });
 
-test('La Lupe is a single card crediting both authors', async () => {
+test('La Lupe is a single card', async () => {
   const section = await projectsSection();
   const card = cardFor(section, 'La Lupe');
   assert.ok(card, 'missing project: La Lupe');
   assert.equal(section.split(/(?=<div[^>]*data-project=)/).filter(item => item.includes('>La Lupe</h3>')).length, 1);
-  assert.ok(card.replace(/<[^>]+>/g, ' ').includes('María Alejandra Ortiz Páez y Ronaldo Delgado Correa'));
 });
 
 test('project images are served locally as nonempty WebP files', async () => {
   for (const slug of Object.values(WITH_IMAGES)) {
-    const response = await get(`/images/projects/${slug}.webp`);
+    const response = await get(`/images/${slug.includes('/') ? slug : `projects/${slug}`}.webp`);
     assert.match(response.headers.get('content-type') || '', /image\/webp/);
     assert.ok((await response.arrayBuffer()).byteLength > 1000, slug);
   }
@@ -69,7 +70,7 @@ test('employer projects are shown as member work experience, never as TreesSide 
   const section = await projectsSection();
   for (const title of ['Luhos', 'Gudfy', 'Tanku']) {
     const card = cardFor(section, title);
-    assert.ok(card.includes('Experiencia laboral · Ronaldo Delgado Correa'), title);
+    assert.ok(card.includes('Experiencia laboral'), title);
     assert.ok(!card.includes('Proyecto del equipo'), title);
   }
   assert.ok(!/Cliente|encargo/.test(section));

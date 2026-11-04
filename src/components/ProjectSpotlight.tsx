@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, Maximize2, Pause, Play } from 'lucide-react';
 import type { Project } from '@/data/content';
 import styles from './ProjectSpotlight.module.css';
 
-export function ProjectSpotlight({ projects, onOpen, suspended = false }: { projects: Project[]; onOpen: (project: Project) => void; suspended?: boolean }) {
+export function ProjectSpotlight({ projects, onOpen, suspended = false, groupOf }: { projects: Project[]; onOpen: (project: Project) => void; suspended?: boolean; groupOf?: (project: Project) => string }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -68,13 +68,11 @@ export function ProjectSpotlight({ projects, onOpen, suspended = false }: { proj
           </button>}
         </div>
         <div className={styles.info} aria-live={running ? 'off' : 'polite'} aria-atomic="true">
-          <span className={styles.category}>{project.category}</span>
+          <span className={styles.category}>{groupOf ? `${groupOf(project)} · ${project.category}` : project.category}</span>
           <h2>{project.title}</h2>
-          <p className={styles.author}>{`${project.experience ? 'Experiencia laboral' : 'Proyecto del equipo'} · ${project.owner}`}</p>
           <p className={styles.description}>{project.description}</p>
-          <p className={styles.stack}>{project.tag}</p>
           {project.imageLabel && <p className={styles.note}>{project.imageLabel}</p>}
-          <button className="btn btn-primary" onClick={() => onOpen(project)}>Descubrir proyecto <ArrowRight size={18} aria-hidden="true" /></button>
+          <button className={styles.cta} onClick={() => onOpen(project)}>Ver proyecto <ArrowRight size={20} aria-hidden="true" /></button>
         </div>
       </div>
       <div className={styles.navigation}>

@@ -27,7 +27,6 @@ test('the four supplied projects appear once with Jorge Ramírez attribution and
     const matches = cards.filter(card => card.includes(`>${title}</h3>`));
     assert.equal(matches.length, 1, title);
     const [card] = matches;
-    assert.ok(card.includes('Jorge Luis Ramírez Trochez'), `${title} author`);
     // The catalog is imported by the client-side detail modal.
     assert.ok(bundles.includes(url), `${title} live URL in served catalog bundle`);
     assert.ok(!card.includes('Experiencia laboral'), `${title} portfolio work`);
