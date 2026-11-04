@@ -13,14 +13,17 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 ## Tasks
 
-- T1 [S1, S3] Global theme tokens, cards, buttons, kicker, background — inline — commit: pending
-- T2 [S1, S2] Pill navbar and mockup footer (all links and contact data kept) — inline — commit: pending
-- T3 [S1–S5] Proyectos page: hero, 4 group filters, featured spotlight card, horizontal cards with connectors, CTA — inline — commit: pending
-- T4 [S1, S3] Home hero and section headers with the mockup hero pattern — inline — commit: pending
-- T5 [S1–S5] Verify: build, full test suite, desktop/mobile screenshots, mobile overflow check — inline — commit: n/a
+- T1 [S1, S3] Global theme tokens, cards, buttons, kicker, background — inline — commit: a5c90d5, 773acf1 (done)
+- T2 [S1, S2] Pill navbar and mockup footer (all links and contact data kept) — inline — commit: cdb4239 (done)
+- T3 [S1–S5] Proyectos page: hero, 4 group filters, featured spotlight card, horizontal cards with connectors, CTA — inline — commit: 9048cc4, 6215445 (done)
+- T4 [S1, S3] Home hero and section headers with the mockup hero pattern — inline — commit: 6215445 (done; section headers adopt the pattern through the global kicker/title in a5c90d5)
+- T5 [S1–S5] Verify: build, full test suite, desktop/mobile screenshots, mobile overflow check — inline — commit: n/a (done)
 
 ## Log
 
 - L1 (user, verbatim): "en la raiz del proyecto ssubbi unos mockups para rediseñar la pagina porrfa guiate en estos backups y toma la informaacion que ya tgenemos sin cambiarla e imagaanes solo adapatla al nuevo diseño"
 - L2 (user decisions): scope → "Todo el sitio con este estilo"; filters → "4 grupos del mockup (Recomendado)".
 - L3 (evidence): baseline on 061727f + uncommitted work: `npm run build` OK, 155/155 tests pass.
+- L4 (evidence): slice boundary — branch counter includes 50+ prior commits since origin/main; this feature's own slices are a5c90d5 (~200 lines), 773acf1, cdb4239 (~300 lines). ProjectsSection.tsx carries pre-existing anchor hunks (id, scrollMarginTop, :target) that T3 keeps and commits with the rewrite.
+- L5 (requirement change from L2 "4 grupos del mockup"): the earlier "Proyectos del equipo" / "Experiencia laboral" filter chips are replaced by Todos / Web / Aplicaciones / Datos; team vs. employer attribution stays on every card. Tests updated in 9048cc4 (chips, attribution label) plus a new S4 grouping test. Grouping: Web = Sitios web, Web & E-Commerce, Radio web, Marketplaces; Datos = Análisis de datos; Aplicaciones = everything else (including RPA and Tiempo real).
+- L6 (evidence): final build OK, tsc OK, 156/156 tests on `next start`, `scripts/check-mobile-browser.mjs` PASS (no horizontal scroll at 360/390 on every page). Mockup copy not used per S2 (hero title, CTA copy, "conceptual" labels). /equipo keeps its own minimal footer (earlier design). Tree artwork reuses public/images/treesside-logo.webp (S3).
