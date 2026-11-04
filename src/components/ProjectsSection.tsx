@@ -2,15 +2,25 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FEATURED_PROJECTS, Project } from '@/data/content';
 import { ProjectModal } from './ProjectModal';
 import { ProjectSpotlight } from './ProjectSpotlight';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, UtensilsCrossed, Radio, Boxes, Infinity, Flower2, Monitor, type LucideIcon } from 'lucide-react';
 import { PROJECT_FILTERS, projectGroup, projectGroupLabel, withMockupArt } from '@/lib/projectGroups';
 
 const CATALOG = withMockupArt(FEATURED_PROJECTS);
+const PROJECT_ICONS: Record<string, LucideIcon> = {
+  'equipo-la-lupe': UtensilsCrossed,
+  'equipo-emisoras-latinas': Radio,
+  'equipo-calculadora-de-contenedores': Boxes,
+  'equipo-ocho80': Infinity,
+  'equipo-floraltech-e-commerce': Flower2,
+};
+function ProjectIcon({ project }: { project: Project }) {
+  const Icon = PROJECT_ICONS[project.id] ?? Monitor;
+  return <Icon size={30} strokeWidth={1.6} aria-hidden="true" />;
+}
 
 
 export function ProjectsSection() {
@@ -27,10 +37,9 @@ export function ProjectsSection() {
       <div className="container">
         <header className="projects-hero">
           <div className="hero-copy">
-            <span className="kicker">Proyectos</span>
-            <h2 className="section-title">
-              Proyectos <span className="text-gradient">Destacados</span>
-            </h2>
+            <h1 className="section-title">
+              Ideas que ya están <span className="text-gradient">funcionando.</span>
+            </h1>
             <p className="section-subtitle">
               Catálogo de TreesSide y proyectos personales de sus integrantes. Cada proyecto del equipo conserva su autoría y su fuente.
             </p>
@@ -51,69 +60,62 @@ export function ProjectsSection() {
 
           <div className="hero-tree" aria-hidden="true">
             <span className="tree-glow" />
-            <Image src="/images/mockup/tree.webp" alt="" width={946} height={612} priority className="tree-image" />
+            <Image src="/images/mockup/projects-hero-tree.webp" alt="" width={1036} height={674} priority className="tree-image" />
           </div>
         </header>
 
         <span className="circuit-drop" aria-hidden="true" />
 
-        <ProjectSpotlight key={`spotlight-${activeFilter}`} projects={filteredProjects} onOpen={setSelectedProject} suspended={selectedProject !== null} groupOf={projectGroupLabel} />
+        <div className="catalog-body">
+          <span className="catalog-tree" aria-hidden="true" />
+          <ProjectSpotlight key={`spotlight-${activeFilter}`} projects={filteredProjects} onOpen={setSelectedProject} suspended={selectedProject !== null} groupOf={projectGroupLabel} />
 
-        <div className="projects-grid" key={`grid-${activeFilter}`}>
-          {filteredProjects.map((project, index) => (
-            <div
-              key={project.id}
-              id={project.id}
-              data-project={project.id}
-              className="glass-card project-card"
-              style={{
-                // Home carousel links land here; the margin keeps the card clear of the 76px fixed header.
-                scrollMarginTop: '100px',
-                animationDelay: `${Math.min(index, 8) * 55}ms`,
-              }}
-              onClick={() => setSelectedProject(project)}
-            >
-              <div className="card-copy">
-                <h3 className="card-title">{project.title}</h3>
-                <p className="card-group">{projectGroupLabel(project)}</p>
-                {project.experience && <span className="card-experience">Experiencia laboral</span>}
-                <p className="card-description">{project.description}</p>
-                <button type="button" aria-label={`Ver proyecto ${project.title}`} className="card-action">
-                  Ver proyecto
-                  <ArrowRight size={18} />
-                </button>
-              </div>
-
-              <div className="card-media">
-                <div className="card-screen">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    sizes="(max-width: 900px) 90vw, 280px"
-                    style={{ objectFit: project.imageFit ?? 'cover' }}
-                    className="project-thumb"
-                  />
+          <div className="projects-grid" key={`grid-${activeFilter}`}>
+            {filteredProjects.map((project, index) => (
+              <div
+                key={project.id}
+                id={project.id}
+                data-project={project.id}
+                className="glass-card project-card"
+                style={{
+                  // Home carousel links land here; the margin keeps the card clear of the 76px fixed header.
+                  scrollMarginTop: '100px',
+                  animationDelay: `${Math.min(index, 8) * 55}ms`,
+                }}
+                onClick={() => setSelectedProject(project)}
+              >
+                <div className="card-copy">
+                  <ProjectIcon project={project} />
+                  <h3 className="card-title">{project.title}</h3>
+                  <p className="card-group">{projectGroupLabel(project)}</p>
+                  {project.experience && <span className="card-experience">Experiencia laboral</span>}
+                  <p className="card-description">{project.description}</p>
+                  <button type="button" aria-label={`Ver proyecto ${project.title}`} className="card-action">
+                    Ver proyecto
+                    <ArrowRight size={18} />
+                  </button>
                 </div>
-                {project.imageLabel && <p className="card-note">{project.imageLabel}</p>}
-              </div>
-            </div>
-          ))}
-        </div>
 
-        <div className="projects-cta">
-          <Image src="/images/mockup/rocks-left.webp" alt="" width={444} height={234} className="cta-rocks cta-rocks-left" aria-hidden="true" />
-          <Image src="/images/mockup/rocks-right.webp" alt="" width={436} height={280} className="cta-rocks cta-rocks-right" aria-hidden="true" />
-          <span className="cta-circuit cta-circuit-left" aria-hidden="true" />
-          <span className="cta-circuit cta-circuit-right" aria-hidden="true" />
-          <h3>
-            ¿Tienes un proyecto <span className="text-gradient">en mente?</span>
-          </h3>
-          <p>Hablemos y hagamos que suceda.</p>
-          <Link href="/contacto" className="btn btn-primary cta-button">
-            Contáctanos
-            <ArrowRight size={20} />
-          </Link>
+                <div className="card-media">
+                  <div data-project-laptop="" className="card-laptop">
+                  <div className="card-screen">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      sizes="(max-width: 900px) 90vw, 280px"
+                      style={{ objectFit: project.imageFit ?? 'cover' }}
+                      className="project-thumb"
+                    />
+                  </div>
+                  <span className="card-base" aria-hidden="true" />
+                  </div>
+                  {project.imageLabel && <p className="card-note">{project.imageLabel}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
 
@@ -124,18 +126,30 @@ export function ProjectsSection() {
       />
 
       <style jsx>{`
+        /* A perspective entrance changes native hash coordinates while the catalog loads. */
+        :global([data-reveal="first"]:has(> #proyectos)) {
+          animation: none;
+        }
         .projects-page {
           position: relative;
-          padding: 40px 0 70px;
+          padding: 100px 0 24px;
+          overflow: clip;
         }
         .projects-hero {
-          display: grid;
-          grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
-          align-items: center;
-          gap: 32px;
+          position: relative;
+          display: flex;
+          align-items: flex-start;
+          min-height: 465px;
+          isolation: isolate;
+        }
+        .hero-copy {
+          position: relative;
+          z-index: 1;
+          width: 53%;
+          padding-top: 22px;
         }
         .hero-copy .section-title {
-          font-size: clamp(2.4rem, 5vw, 3.9rem);
+          font-size: clamp(2.5rem, 4.8vw, 4.2rem);
         }
         .filters {
           display: flex;
@@ -165,12 +179,13 @@ export function ProjectsSection() {
           box-shadow: 0 0 18px rgba(62, 240, 168, 0.45);
         }
         .hero-tree {
-          position: relative;
-          justify-self: end;
-          width: 130%;
-          max-width: 620px;
-          margin: -40px -90px 0 0;
-          aspect-ratio: 946 / 612;
+          position: absolute;
+          z-index: -1;
+          top: -40px;
+          right: -75px;
+          width: 70%;
+          max-width: 800px;
+          aspect-ratio: 1036 / 674;
         }
         .tree-glow {
           position: absolute;
@@ -184,8 +199,8 @@ export function ProjectsSection() {
           width: 100%;
           height: 100%;
           /* Fades the cropped artwork into the page background on every side. */
-          -webkit-mask-image: radial-gradient(ellipse 62% 68% at 55% 45%, #000 55%, transparent 100%);
-          mask-image: radial-gradient(ellipse 62% 68% at 55% 45%, #000 55%, transparent 100%);
+          -webkit-mask-image: radial-gradient(ellipse 67% 70% at 57% 46%, #000 55%, transparent 100%);
+          mask-image: radial-gradient(ellipse 67% 70% at 57% 46%, #000 55%, transparent 100%);
         }
         .circuit-drop {
           display: block;
@@ -208,11 +223,27 @@ export function ProjectsSection() {
           background: #b9ffe4;
           box-shadow: 0 0 12px var(--primary-green);
         }
+        .catalog-body {
+          position: relative;
+          isolation: isolate;
+        }
+        .catalog-tree {
+          position: absolute;
+          z-index: -1;
+          top: 80px;
+          bottom: 10px;
+          left: 50%;
+          width: 72px;
+          transform: translateX(-50%);
+          background: url('/images/mockup/projects-trunk.webp') center top / 72px 620px repeat-y;
+          pointer-events: none;
+          mask-image: linear-gradient(transparent, #000 60px, #000 calc(100% - 60px), transparent);
+        }
         .projects-grid {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 56px 28px;
-          margin: 64px 0 90px;
+          gap: 56px 64px;
+          margin: 64px 0 40px;
         }
         .project-card {
           display: grid;
@@ -224,22 +255,26 @@ export function ProjectsSection() {
           transition: transform 350ms ease, border-color 350ms ease, box-shadow 350ms ease;
           animation: project-arrive 500ms ease backwards;
         }
-        /* Circuit trace rising from each card into the gap above, ending in a glowing node. */
+        /* Elbow traces link each laptop card to the tree running between the columns. */
         .project-card::after {
           content: '';
           position: absolute;
-          top: -56px;
-          width: 2px;
-          height: 56px;
-          background: linear-gradient(rgba(62, 240, 168, 0.05), rgba(62, 240, 168, 0.75));
-          box-shadow: 0 0 8px rgba(62, 240, 168, 0.45);
+          top: -28px;
+          width: calc(50% + 32px);
+          height: 28px;
+          border-top: 2px solid #64ffd0;
+          filter: drop-shadow(0 0 6px #3ef0a8);
           pointer-events: none;
         }
         .project-card:nth-child(odd)::after {
-          left: 72%;
+          left: 50%;
+          border-left: 2px solid #64ffd0;
+          border-top-left-radius: 22px;
         }
         .project-card:nth-child(even)::after {
-          left: 28%;
+          right: 50%;
+          border-right: 2px solid #64ffd0;
+          border-top-right-radius: 22px;
         }
         /* The card a carousel link points to is already in place when the browser scrolls to it. */
         .project-card:target {
@@ -254,6 +289,10 @@ export function ProjectsSection() {
           display: flex;
           flex-direction: column;
           min-width: 0;
+        }
+        .card-copy > :global(svg) {
+          color: var(--primary-green);
+          margin-bottom: 10px;
         }
         .card-title {
           font-size: clamp(1.35rem, 2.2vw, 1.75rem);
@@ -313,14 +352,28 @@ export function ProjectsSection() {
           min-width: 0;
           align-self: center;
         }
+        .card-laptop {
+          perspective: 800px;
+          transform: rotate(-4deg);
+          padding-bottom: 8px;
+        }
         .card-screen {
           position: relative;
-          aspect-ratio: 4 / 3.4;
-          border-radius: 16px;
+          aspect-ratio: 16 / 10;
+          border-radius: 12px 12px 3px 3px;
           overflow: hidden;
           background: #071613;
-          border: 1px solid rgba(190, 255, 230, 0.22);
-          box-shadow: 0 18px 40px -18px #000, 0 0 0 4px rgba(10, 28, 25, 0.9), 0 0 24px -6px rgba(62, 240, 168, 0.35);
+          border: 5px solid #071310;
+          box-shadow: 0 0 0 1px #a3e5ce60, 0 0 24px -6px rgba(62, 240, 168, 0.35);
+        }
+        .card-base {
+          display: block;
+          width: 112%;
+          height: 10px;
+          margin-left: -6%;
+          background: linear-gradient(#a1beb8, #2a4540);
+          border-radius: 2px 2px 50% 50%;
+          box-shadow: 0 9px 14px #0008;
         }
         .card-screen :global(.project-thumb) {
           transition: transform 0.5s ease;
@@ -333,75 +386,13 @@ export function ProjectsSection() {
           font-size: 0.72rem;
           color: var(--text-muted);
         }
-        .projects-cta {
-          position: relative;
-          text-align: center;
-          padding: 40px 20px 60px;
-        }
-        .projects-cta :global(.cta-rocks) {
-          position: absolute;
-          bottom: -70px;
-          width: 300px;
-          height: auto;
-          pointer-events: none;
-          /* Soft edges on every side so the cropped rocks melt into the page. */
-          -webkit-mask-image: radial-gradient(ellipse 60% 65% at 50% 60%, #000 40%, transparent 100%);
-          mask-image: radial-gradient(ellipse 60% 65% at 50% 60%, #000 40%, transparent 100%);
-        }
-        .projects-cta :global(.cta-rocks-left) {
-          left: -140px;
-        }
-        .projects-cta :global(.cta-rocks-right) {
-          right: -140px;
-        }
-        .projects-cta h3 {
-          font-size: clamp(1.9rem, 4vw, 3rem);
-          font-weight: 800;
-          letter-spacing: -0.02em;
-          line-height: 1.1;
-          color: #ffffff;
-        }
-        .projects-cta p {
-          margin: 12px 0 26px;
-          color: var(--text-muted);
-          font-size: 1.05rem;
-        }
-        .projects-cta :global(.cta-button) {
-          padding: 15px 34px;
-          font-size: 1.1rem;
-        }
-        .cta-circuit {
-          position: absolute;
-          top: 58%;
-          width: 26%;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, rgba(62, 240, 168, 0.7));
-          box-shadow: 0 0 8px rgba(62, 240, 168, 0.4);
-        }
-        .cta-circuit::after {
-          content: '';
-          position: absolute;
-          top: -4px;
-          right: 0;
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background: #b9ffe4;
-          box-shadow: 0 0 12px var(--primary-green);
-        }
-        .cta-circuit-left {
-          left: 0;
-        }
-        .cta-circuit-right {
-          right: 0;
-          transform: scaleX(-1);
-        }
         @keyframes project-arrive {
           from { opacity: 0; transform: translateY(18px); }
           to { opacity: 1; transform: translateY(0); }
         }
         @media (prefers-reduced-motion: reduce) {
           .project-card { animation: none; transition: none; }
+          .card-laptop { transform: none; }
           .project-card:hover, .project-card:focus-within, .project-card:hover :global(.project-thumb) { transform: none; }
           .card-screen :global(.project-thumb) { transition: none !important; }
         }
@@ -409,16 +400,23 @@ export function ProjectsSection() {
           .projects-grid {
             grid-template-columns: minmax(0, 1fr);
           }
-          .project-card:nth-child(n)::after {
-            left: 50%;
+          .catalog-tree, .project-card::after {
+            display: none;
           }
         }
         @media (max-width: 820px) {
+          .projects-page { padding-top: 95px; }
           .projects-hero {
-            grid-template-columns: minmax(0, 1fr);
+            flex-direction: column;
+            min-height: 0;
           }
-          .hero-tree, .cta-circuit, .projects-cta :global(.cta-rocks) {
-            display: none;
+          .hero-copy { width: 100%; padding-top: 12px; }
+          .hero-tree {
+            position: relative;
+            top: auto;
+            right: auto;
+            width: 118%;
+            margin: 0 -9% -15px;
           }
         }
         @media (max-width: 560px) {

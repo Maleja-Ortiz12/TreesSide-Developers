@@ -27,11 +27,11 @@ export function projectGroupLabel(project: Project) {
 
 const MOCKUP_LABEL = 'Ilustración conceptual · No es una captura real';
 
-// Artwork cropped from Images/Mockups pagina.png. La Lupe and Floraltech keep their real images.
+// Conceptual screens from Images/proyectos mockup.png. La Lupe and Floraltech keep their real images.
 const MOCKUP_ART: Record<string, string> = {
-  'equipo-emisoras-latinas': '/images/mockup/emisoras-latinas.webp',
-  'equipo-calculadora-de-contenedores': '/images/mockup/calculadora-contenedores.webp',
-  'equipo-ocho80': '/images/mockup/ocho80.webp',
+  'equipo-emisoras-latinas': '/images/mockup/projects-emisoras.webp',
+  'equipo-calculadora-de-contenedores': '/images/mockup/projects-calculadora.webp',
+  'equipo-ocho80': '/images/mockup/projects-ocho80.webp',
 };
 
 // The mockup's five projects open the catalog, in the mockup's order.

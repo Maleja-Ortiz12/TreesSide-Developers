@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { ProjectsSection } from '@/components/ProjectsSection';
+import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata: Metadata = pageMetadata('/proyectos', {
   title: 'Proyectos | TreesSide Developers',
@@ -10,7 +11,7 @@ export const metadata: Metadata = pageMetadata('/proyectos', {
 
 export default function ProjectsPage() {
   return (
-    <SitePage>
+    <SitePage offsetHeader={false} footer={<HomeClosing />}>
       <ProjectsSection />
     </SitePage>
   );

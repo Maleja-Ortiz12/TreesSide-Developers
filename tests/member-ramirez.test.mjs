@@ -59,7 +59,7 @@ test('S3 shared projects are a single card crediting both members', async () => 
   const emisoras = cardFor(cards, 'Emisoras Latinas');
   assert.equal(emisoras.length, 1);
   // Compact cards (odd/tasks/rediseno-mockup.md S8): authors and portfolios are shown in the detail modal.
-  assert.ok(emisoras[0].includes('mockup%2Femisoras-latinas.webp') || emisoras[0].includes('/images/mockup/emisoras-latinas.webp'));
+  assert.ok(emisoras[0].includes('mockup%2Fprojects-emisoras.webp') || emisoras[0].includes('/images/mockup/projects-emisoras.webp'));
   const radio = cardFor(cards, 'Radio Navidad');
   assert.equal(radio.length, 1);
   assert.ok(radio[0].includes("radio-navidad.webp"));

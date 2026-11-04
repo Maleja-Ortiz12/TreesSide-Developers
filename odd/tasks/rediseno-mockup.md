@@ -25,6 +25,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - S16. User (L18): "continua con los planes". Adapt Images/mockup planes.png: hero "Elige cómo empieza tu próxima idea.", four illustrated plan cards, comparison of cumulative scope, and integrated closing. Keep COMMERCIAL_PLANS untouched (names, COP prices, inclusions, exclusions, recurrence, requirements, delivery, inherited tiers and WhatsApp messages). Preserve the four existing canonical plan anchors. Expose full original details via "Ver alcance" and preserve written-quote/tax/starting-price disclaimers. No checkout or new payment behavior.
 
+- S17. User (L21): "sigue con la de proyectos". Apply the newly uploaded Images/proyectos mockup.png: heading "Ideas que ya están funcionando.", new tree/scenic art, laptop-framed project cards, connected central trunk and integrated closing. Preserve prior explicit decisions: all31 projects, filters Todos/Restaurantes/Juegos/Datos/E-commerce, rotating spotlight, full author/source details in modal, original images for La Lupe/Floraltech. Use conceptual screen crops from the new mockup only for Emisoras/Calculadora/Ocho80, retaining provenance notes; preserve all descriptions and project anchors. Keep the subtitle honest about personal/team work, rather than adopting mockup copy that attributes everything to the company. Other pages unchanged.
+
 ## Tasks
 
 - T1 [S1, S3] Global theme tokens, cards, buttons, kicker, background — inline — commit: a5c90d5, 773acf1 (done)
@@ -46,6 +48,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - T15 [S15] Services mockup redesign, preserving nine services and technologies — inline — commit: ea1b2f0 (art), a2ff51c (implementation/tests; done)
 
 - T16 [S16] Plans mockup hero/cards/comparison, full original scope and integrated closing — inline — commit: c728787 (art), 9bfde44 (implementation/tests; done)
+
+- T17 [S17] Projects refresh from newer mockup while retaining filters/catalog behavior — inline — commit: pending
 
 ## Log
 
@@ -76,3 +80,5 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - L19 (S16 evidence): c728787 supplies decorative assets and 9bfde44 adds mockup hero, four data-derived price cards, semantic cumulative comparison (derived from includesPlan), original full commercial scopes in native details and integrated closing. COMMERCIAL_PLANS file unchanged. Canonical article anchors retained inside details: browser fragment navigation reveals them natively, no client handlers added. RED: three public tests failed before source changes. Final GREEN: tsc/build exit 0, 164/164 tests; check-plans-browser PASS at390/1440 incl four scope links, previous-plan link, close/reopen and mobile drawer; check-mobile-browser PASS for all routes360/390.
 - L20 (regression found/fixed): initial browser runs failed at665px document width for390px viewport. Absolutely positioned srOnly labels used BODY as offsetParent and escaped table scroller. Isolated browser probe confirmed position:relative on tableScroll restored390/390 immediately; applied and both browser suites passed. The comparison remains horizontally scrollable inside a labeled focusable region on phones. Screenshot ../_scratch_portfolio_tools/plans-final.png reviewed. Native assessment unavailable due undeclared untracked files; self-verification plan. No prices, scope, conditions, stored data or publishing changed.
+
+- L21 (user, verbatim): "sigue con la de proyectos". New file discovered: Images/proyectos mockup.png (distinct from the original Images/Mockups pagina.png used earlier). Prior filters,31 projects,spotlight and real La Lupe/Floraltech images remain the acceptance baseline.
