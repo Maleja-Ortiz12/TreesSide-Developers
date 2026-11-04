@@ -64,14 +64,14 @@ export function ProcessSection() {
                 height: '52px',
                 borderRadius: '50%',
                 border: '2px solid var(--primary-green)',
-                background: 'rgba(0, 245, 160, 0.1)',
+                background: 'rgba(62, 240, 168, 0.1)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '1.25rem',
                 fontWeight: 800,
                 color: 'var(--primary-green)',
-                boxShadow: '0 0 16px rgba(0, 245, 160, 0.3)',
+                boxShadow: '0 0 16px rgba(62, 240, 168, 0.3)',
                 marginBottom: '20px'
               }}>
                 {step.step}

@@ -35,7 +35,7 @@ export function AboutSection() {
         right: '10%',
         width: '450px',
         height: '450px',
-        background: 'radial-gradient(circle, rgba(0, 245, 160, 0.08) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(62, 240, 168, 0.08) 0%, transparent 70%)',
         filter: 'blur(70px)',
         pointerEvents: 'none'
       }} />
@@ -81,9 +81,9 @@ export function AboutSection() {
               position: 'relative',
               borderRadius: '24px',
               padding: '12px',
-              background: 'linear-gradient(145deg, rgba(12, 22, 38, 0.95), rgba(7, 13, 23, 0.9))',
-              border: '1px solid rgba(0, 245, 160, 0.25)',
-              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 245, 160, 0.2)',
+              background: 'linear-gradient(145deg, rgba(10, 28, 25, 0.95), rgba(5, 17, 15, 0.9))',
+              border: '1px solid rgba(62, 240, 168, 0.25)',
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(62, 240, 168, 0.2)',
               maxWidth: '300px',
               width: '100%'
             }} className="animate-float">
@@ -143,12 +143,12 @@ export function AboutSection() {
                 width: '56px',
                 height: '56px',
                 borderRadius: '50%',
-                background: 'rgba(0, 245, 160, 0.08)',
-                border: '1px solid rgba(0, 245, 160, 0.25)',
+                background: 'rgba(62, 240, 168, 0.08)',
+                border: '1px solid rgba(62, 240, 168, 0.25)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 0 16px rgba(0, 245, 160, 0.15)'
+                boxShadow: '0 0 16px rgba(62, 240, 168, 0.15)'
               }}>
                 {getPillarIcon(pillar.iconName)}
               </div>
@@ -180,8 +180,8 @@ export function AboutSection() {
           maxWidth: '820px',
           padding: '26px 30px',
           borderRadius: '18px',
-          border: '1px solid rgba(0, 245, 160, 0.25)',
-          background: 'linear-gradient(135deg, rgba(12, 22, 38, 0.85), rgba(7, 13, 23, 0.95))',
+          border: '1px solid rgba(62, 240, 168, 0.25)',
+          background: 'linear-gradient(135deg, rgba(10, 28, 25, 0.85), rgba(5, 17, 15, 0.95))',
           display: 'flex',
           gap: '18px',
           alignItems: 'center'

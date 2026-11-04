@@ -96,8 +96,8 @@ export function TechStackSection() {
 
         {/* Banner CTA 2: ¿Listo para comenzar? */}
         <div style={{
-          background: 'linear-gradient(135deg, rgba(12, 22, 38, 0.9) 0%, rgba(7, 13, 23, 0.95) 100%)',
-          border: '1px solid rgba(0, 245, 160, 0.25)',
+          background: 'linear-gradient(135deg, rgba(10, 28, 25, 0.9) 0%, rgba(5, 17, 15, 0.95) 100%)',
+          border: '1px solid rgba(62, 240, 168, 0.25)',
           borderRadius: '18px',
           padding: '28px 40px',
           display: 'flex',
@@ -107,7 +107,7 @@ export function TechStackSection() {
           gap: '24px',
           position: 'relative',
           overflow: 'hidden',
-          boxShadow: '0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 245, 160, 0.05)'
+          boxShadow: '0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(62, 240, 168, 0.05)'
         }}>
           {/* Ambient Glow */}
           <div style={{
@@ -117,7 +117,7 @@ export function TechStackSection() {
             transform: 'translateY(-50%)',
             width: '200px',
             height: '200px',
-            background: 'radial-gradient(circle, rgba(0, 245, 160, 0.22) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(62, 240, 168, 0.22) 0%, transparent 70%)',
             filter: 'blur(35px)',
             pointerEvents: 'none'
           }} />
@@ -166,8 +166,8 @@ export function TechStackSection() {
               height: '100px',
               borderRadius: '18px',
               overflow: 'hidden',
-              border: '1px solid rgba(0, 245, 160, 0.35)',
-              boxShadow: '0 0 25px rgba(0, 245, 160, 0.35)'
+              border: '1px solid rgba(62, 240, 168, 0.35)',
+              boxShadow: '0 0 25px rgba(62, 240, 168, 0.35)'
             }}>
               <Image
                 src="/images/treesside-logo.webp"

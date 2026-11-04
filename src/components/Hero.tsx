@@ -57,7 +57,7 @@ export function Hero() {
         right: '5%',
         width: '500px',
         height: '500px',
-        background: 'radial-gradient(circle, rgba(0, 245, 160, 0.12) 0%, rgba(0, 210, 255, 0.08) 50%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(62, 240, 168, 0.12) 0%, rgba(46, 230, 197, 0.08) 50%, transparent 70%)',
         filter: 'blur(70px)',
         pointerEvents: 'none',
         zIndex: 0
@@ -152,7 +152,7 @@ export function Hero() {
               width: '360px',
               height: '360px',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(0, 245, 160, 0.22) 0%, rgba(0, 210, 255, 0.14) 40%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(62, 240, 168, 0.22) 0%, rgba(46, 230, 197, 0.14) 40%, transparent 70%)',
               filter: 'blur(50px)',
               zIndex: 0,
               animationDuration: '6s'
@@ -169,9 +169,9 @@ export function Hero() {
                 position: 'relative',
                 borderRadius: '24px',
                 padding: '12px',
-                background: 'linear-gradient(145deg, rgba(12, 22, 38, 0.95), rgba(7, 13, 23, 0.9))',
-                border: '1px solid rgba(0, 245, 160, 0.25)',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 245, 160, 0.2)'
+                background: 'linear-gradient(145deg, rgba(10, 28, 25, 0.95), rgba(5, 17, 15, 0.9))',
+                border: '1px solid rgba(62, 240, 168, 0.25)',
+                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(62, 240, 168, 0.2)'
               } as React.CSSProperties}
             >
               <div style={{
@@ -203,7 +203,7 @@ export function Hero() {
                   alignItems: 'center',
                   lineHeight: 1.1
                 }}>
-                  <span style={{ fontSize: '1.7rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--primary-green)', textShadow: '0 0 18px rgba(0, 245, 160, 0.35)' }}>TreesSide</span>
+                  <span style={{ fontSize: '1.7rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--primary-green)', textShadow: '0 0 18px rgba(62, 240, 168, 0.35)' }}>TreesSide</span>
                   <span style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.32em', color: 'var(--primary-cyan)', marginTop: '6px', textTransform: 'uppercase' }}>Developers</span>
                 </span>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '10px', fontStyle: 'italic' }}>
@@ -224,8 +224,8 @@ export function Hero() {
                   <li key={stat.label} style={{
                     padding: '8px 4px',
                     borderRadius: '10px',
-                    background: 'rgba(0, 210, 255, 0.06)',
-                    border: '1px solid rgba(0, 210, 255, 0.2)',
+                    background: 'rgba(46, 230, 197, 0.06)',
+                    border: '1px solid rgba(46, 230, 197, 0.2)',
                     textAlign: 'center'
                   }}>
                     <strong aria-hidden="true" style={{ display: 'block', fontSize: '1.15rem', color: '#ffffff' }}>{stat.value}</strong>
@@ -261,12 +261,12 @@ export function Hero() {
                 width: '46px',
                 height: '46px',
                 borderRadius: '12px',
-                background: 'rgba(0, 210, 255, 0.1)',
-                border: '1px solid rgba(0, 210, 255, 0.25)',
+                background: 'rgba(46, 230, 197, 0.1)',
+                border: '1px solid rgba(46, 230, 197, 0.25)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 0 12px rgba(0, 210, 255, 0.2)'
+                boxShadow: '0 0 12px rgba(46, 230, 197, 0.2)'
               }}>
                 {getFeatureIcon(feat.icon)}
               </div>
@@ -322,7 +322,7 @@ export function Hero() {
           transition: transform 0.2s ease-out, box-shadow 0.3s ease;
         }
         .brand-card:hover {
-          box-shadow: 0 26px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(0, 245, 160, 0.35) !important;
+          box-shadow: 0 26px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(62, 240, 168, 0.35) !important;
         }
         .sr-stat {
           position: absolute;

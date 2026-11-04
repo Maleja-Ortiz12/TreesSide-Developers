@@ -45,7 +45,7 @@ export function ServicesSection() {
         left: '-5%',
         width: '500px',
         height: '500px',
-        background: 'radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(46, 230, 197, 0.08) 0%, transparent 70%)',
         filter: 'blur(80px)',
         pointerEvents: 'none'
       }} />
@@ -89,8 +89,8 @@ export function ServicesSection() {
               position: 'relative',
               borderRadius: '20px',
               overflow: 'hidden',
-              border: '1px solid rgba(0, 210, 255, 0.3)',
-              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(0, 210, 255, 0.25)',
+              border: '1px solid rgba(46, 230, 197, 0.3)',
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(46, 230, 197, 0.25)',
               maxWidth: '440px',
               width: '100%',
               aspectRatio: '4 / 3'
@@ -127,12 +127,12 @@ export function ServicesSection() {
                 width: '48px',
                 height: '48px',
                 borderRadius: '12px',
-                background: 'rgba(0, 210, 255, 0.1)',
-                border: '1px solid rgba(0, 210, 255, 0.3)',
+                background: 'rgba(46, 230, 197, 0.1)',
+                border: '1px solid rgba(46, 230, 197, 0.3)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 0 16px rgba(0, 210, 255, 0.2)'
+                boxShadow: '0 0 16px rgba(46, 230, 197, 0.2)'
               }}>
                 {getServiceIcon(srv.iconName)}
               </div>

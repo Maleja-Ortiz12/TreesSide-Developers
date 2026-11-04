@@ -20,7 +20,7 @@ export function Footer() {
 
   return (
     <footer style={{
-      background: 'rgba(4, 8, 16, 0.95)',
+      background: 'rgba(3, 11, 10, 0.95)',
       borderTop: '1px solid rgba(255, 255, 255, 0.08)',
       paddingTop: '60px',
       paddingBottom: '30px',

@@ -41,7 +41,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           width: '320px',
           height: '320px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(0, 245, 160, 0.28) 0%, rgba(0, 210, 255, 0.18) 45%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(62, 240, 168, 0.28) 0%, rgba(46, 230, 197, 0.18) 45%, transparent 70%)',
           filter: 'blur(40px)',
           zIndex: 0,
           animationDuration: '5s'
@@ -52,8 +52,8 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           zIndex: 1,
           borderRadius: '24px',
           overflow: 'hidden',
-          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 245, 160, 0.25)',
-          border: '1px solid rgba(0, 245, 160, 0.25)'
+          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(62, 240, 168, 0.25)',
+          border: '1px solid rgba(62, 240, 168, 0.25)'
         }}>
           <Image
             src="/images/treesside-logo.webp"
@@ -84,8 +84,8 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
         height: `${height}px`,
         borderRadius: '10px',
         overflow: 'hidden',
-        border: '1px solid rgba(0, 245, 160, 0.3)',
-        boxShadow: '0 0 14px rgba(0, 245, 160, 0.3)',
+        border: '1px solid rgba(62, 240, 168, 0.3)',
+        boxShadow: '0 0 14px rgba(62, 240, 168, 0.3)',
         flexShrink: 0
       }}>
         <Image

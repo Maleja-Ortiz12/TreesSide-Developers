@@ -44,7 +44,7 @@ export function ContactSection() {
         left: '20%',
         width: '500px',
         height: '500px',
-        background: 'radial-gradient(circle, rgba(0, 245, 160, 0.07) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(62, 240, 168, 0.07) 0%, transparent 70%)',
         filter: 'blur(90px)',
         pointerEvents: 'none'
       }} />
@@ -89,7 +89,7 @@ export function ContactSection() {
                   width: '44px',
                   height: '44px',
                   borderRadius: '10px',
-                  background: 'rgba(0, 210, 255, 0.1)',
+                  background: 'rgba(46, 230, 197, 0.1)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -149,7 +149,7 @@ export function ContactSection() {
                 width: '44px',
                 height: '44px',
                 borderRadius: '10px',
-                background: 'rgba(0, 245, 160, 0.1)',
+                background: 'rgba(62, 240, 168, 0.1)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -185,7 +185,7 @@ export function ContactSection() {
                 width: '44px',
                 height: '44px',
                 borderRadius: '10px',
-                background: 'rgba(0, 210, 255, 0.1)',
+                background: 'rgba(46, 230, 197, 0.1)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -219,11 +219,11 @@ export function ContactSection() {
                   width: '64px',
                   height: '64px',
                   borderRadius: '50%',
-                  background: 'rgba(0, 245, 160, 0.15)',
+                  background: 'rgba(62, 240, 168, 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 0 25px rgba(0, 245, 160, 0.4)'
+                  boxShadow: '0 0 25px rgba(62, 240, 168, 0.4)'
                 }}>
                   <CheckCircle2 size={36} color="var(--primary-green)" />
                 </div>
@@ -255,7 +255,7 @@ export function ContactSection() {
                     style={{
                       width: '100%',
                       padding: '13px 16px',
-                      background: 'rgba(7, 13, 23, 0.85)',
+                      background: 'rgba(5, 17, 15, 0.85)',
                       border: '1px solid rgba(255, 255, 255, 0.1)',
                       borderRadius: '8px',
                       color: '#ffffff',
@@ -265,7 +265,7 @@ export function ContactSection() {
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = 'var(--primary-cyan)';
-                      e.currentTarget.style.boxShadow = '0 0 12px rgba(0, 210, 255, 0.25)';
+                      e.currentTarget.style.boxShadow = '0 0 12px rgba(46, 230, 197, 0.25)';
                     }}
                     onBlur={(e) => {
                       e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
@@ -293,7 +293,7 @@ export function ContactSection() {
                     style={{
                       width: '100%',
                       padding: '13px 16px',
-                      background: 'rgba(7, 13, 23, 0.85)',
+                      background: 'rgba(5, 17, 15, 0.85)',
                       border: '1px solid rgba(255, 255, 255, 0.1)',
                       borderRadius: '8px',
                       color: '#ffffff',
@@ -303,7 +303,7 @@ export function ContactSection() {
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = 'var(--primary-cyan)';
-                      e.currentTarget.style.boxShadow = '0 0 12px rgba(0, 210, 255, 0.25)';
+                      e.currentTarget.style.boxShadow = '0 0 12px rgba(46, 230, 197, 0.25)';
                     }}
                     onBlur={(e) => {
                       e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
@@ -331,7 +331,7 @@ export function ContactSection() {
                     style={{
                       width: '100%',
                       padding: '13px 16px',
-                      background: 'rgba(7, 13, 23, 0.85)',
+                      background: 'rgba(5, 17, 15, 0.85)',
                       border: '1px solid rgba(255, 255, 255, 0.1)',
                       borderRadius: '8px',
                       color: '#ffffff',
@@ -342,7 +342,7 @@ export function ContactSection() {
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = 'var(--primary-cyan)';
-                      e.currentTarget.style.boxShadow = '0 0 12px rgba(0, 210, 255, 0.25)';
+                      e.currentTarget.style.boxShadow = '0 0 12px rgba(46, 230, 197, 0.25)';
                     }}
                     onBlur={(e) => {
                       e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';

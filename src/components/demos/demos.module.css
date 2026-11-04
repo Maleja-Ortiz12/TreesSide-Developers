@@ -1,8 +1,8 @@
 .simulator { margin: auto 16px 0; padding: 18px 14px; border: 1px solid #ffffff10; border-radius: 14px; background: #040a14bb; min-height: 290px; display: flex; flex-direction: column; gap: 12px; }
 .label { color: var(--text-muted); font-size: .74rem; line-height: 1.5; }
 .choices { display: flex; flex-wrap: wrap; gap: 8px; }
-.choices button { flex: 1; min-width: 64px; padding: 9px 6px; background: #00d2ff08; border: 1px solid #00d2ff40; border-radius: 8px; color: #e2e8f0; font: inherit; font-size: .8rem; cursor: pointer; }
-.choices button[aria-pressed='true'] { background: #00f5a018; border-color: var(--primary-green); color: var(--primary-green); }
+.choices button { flex: 1; min-width: 64px; padding: 9px 6px; background: #2ee6c508; border: 1px solid #2ee6c540; border-radius: 8px; color: #e2e8f0; font: inherit; font-size: .8rem; cursor: pointer; }
+.choices button[aria-pressed='true'] { background: #3ef0a818; border-color: var(--primary-green); color: var(--primary-green); }
 .status { color: var(--primary-green); font-size: .8rem; line-height: 1.5; min-height: 3em; }
 .simulator > :global(.btn) { margin-top: auto; white-space: normal; font-size: .8rem; width: 100%; padding-inline: 8px; }
 .simulator button:disabled { opacity: .5; cursor: not-allowed; }
@@ -13,11 +13,11 @@
 .row small[data-tone='low'] { color: #fbbf24; }
 .row small[data-tone='out'] { color: #f87171; }
 .rowActions { display: flex; gap: 6px; }
-.smallAction { padding: 6px 9px; border: 1px solid #00d2ff30; border-radius: 8px; background: transparent; color: var(--primary-cyan); font: inherit; font-size: .72rem; cursor: pointer; }
-.smallAction[aria-pressed='true'] { border-color: var(--primary-green); color: var(--primary-green); background: #00f5a012; }
+.smallAction { padding: 6px 9px; border: 1px solid #2ee6c530; border-radius: 8px; background: transparent; color: var(--primary-cyan); font: inherit; font-size: .72rem; cursor: pointer; }
+.smallAction[aria-pressed='true'] { border-color: var(--primary-green); color: var(--primary-green); background: #3ef0a812; }
 .station { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid #ffffff0c; border-radius: 10px; background: transparent; color: var(--text-main); font: inherit; font-size: .78rem; text-align: left; cursor: pointer; }
 .station small { color: var(--text-muted); font-size: .68rem; }
-.station[aria-pressed='true'] { border-color: var(--primary-green); background: #00f5a010; }
+.station[aria-pressed='true'] { border-color: var(--primary-green); background: #3ef0a810; }
 .nowPlaying { display: flex; align-items: center; gap: 10px; }
 .nowPlaying .status { min-height: 0; }
 .equalizer { display: inline-flex; align-items: flex-end; gap: 3px; height: 18px; flex-shrink: 0; }
@@ -32,11 +32,11 @@
 .stepper { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--text-main); font-size: .78rem; }
 .layer { width: 100%; max-height: 150px; }
 .pallet { fill: #a0784818; stroke: #a0784880; stroke-width: .8; }
-.box { fill: #00d2ff22; stroke: var(--primary-cyan); stroke-width: .6; }
+.box { fill: #2ee6c522; stroke: var(--primary-cyan); stroke-width: .6; }
 .bingoCard { display: grid; gap: 6px; }
 .bingoCard > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.bingoCard span { display: grid; place-items: center; height: 38px; border: 1px solid #00d2ff30; border-radius: 8px; color: var(--text-main); font: 600 .9rem var(--font-mono), monospace; transition: background 200ms ease, border-color 200ms ease; }
-.bingoCard span[data-marked='true'] { background: #00f5a020; border-color: var(--primary-green); color: var(--primary-green); }
+.bingoCard span { display: grid; place-items: center; height: 38px; border: 1px solid #2ee6c530; border-radius: 8px; color: var(--text-main); font: 600 .9rem var(--font-mono), monospace; transition: background 200ms ease, border-color 200ms ease; }
+.bingoCard span[data-marked='true'] { background: #3ef0a820; border-color: var(--primary-green); color: var(--primary-green); }
 .ballInfo { display: flex; align-items: center; justify-content: space-between; color: var(--text-muted); font-size: .76rem; }
-.ball { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #00d2ff 70%); color: #04101c; font: 700 .85rem var(--font-mono), monospace; }
+.ball { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #2ee6c5 70%); color: #04101c; font: 700 .85rem var(--font-mono), monospace; }
 @media (prefers-reduced-motion: reduce) { .bingoCard span { transition: none; } }

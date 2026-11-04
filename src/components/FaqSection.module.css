@@ -1,7 +1,7 @@
 .section { padding: 10px 0 100px; scroll-margin-top: 96px; }
 .list { display: grid; gap: 12px; max-width: 860px; margin-top: 30px; }
-.item { border: 1px solid #00d2ff25; border-radius: 14px; background: #08111ecc; transition: border-color 250ms ease, background 250ms ease; }
-.item[open] { border-color: #00f5a050; background: #0b1828; }
+.item { border: 1px solid #2ee6c525; border-radius: 14px; background: #08111ecc; transition: border-color 250ms ease, background 250ms ease; }
+.item[open] { border-color: #3ef0a850; background: #0b1828; }
 .item summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; color: var(--text-main); font-weight: 600; cursor: pointer; list-style: none; }
 .item summary::-webkit-details-marker { display: none; }
 .item summary:focus-visible { outline: 2px solid var(--primary-cyan); outline-offset: 2px; border-radius: 14px; }

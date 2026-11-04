@@ -39,7 +39,7 @@ export function Navbar() {
       right: 0,
       zIndex: 100,
       transition: 'all 0.3s ease',
-      background: scrolled ? 'rgba(7, 13, 23, 0.92)' : 'rgba(7, 13, 23, 0.75)',
+      background: scrolled ? 'rgba(5, 17, 15, 0.92)' : 'rgba(5, 17, 15, 0.75)',
       borderBottom: '1px solid rgba(255, 255, 255, 0.07)',
       boxShadow: scrolled ? '0 10px 30px rgba(0, 0, 0, 0.4)' : 'none'
     }}>
@@ -141,7 +141,7 @@ export function Navbar() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div style={{
-          background: 'rgba(7, 13, 23, 0.98)',
+          background: 'rgba(5, 17, 15, 0.98)',
           borderBottom: '1px solid var(--border-card)',
           padding: '24px 20px',
           display: 'flex',

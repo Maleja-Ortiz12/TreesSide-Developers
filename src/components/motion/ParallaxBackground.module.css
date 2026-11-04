@@ -2,9 +2,9 @@
 .layer { position: absolute; inset: -70px; background-repeat: repeat; will-change: transform, background-position; }
 .glow {
   background-image:
-    radial-gradient(circle at 18% 22%, rgba(0, 210, 255, .10), transparent 26%),
-    radial-gradient(circle at 82% 48%, rgba(0, 245, 160, .09), transparent 24%),
-    radial-gradient(circle at 40% 86%, rgba(0, 210, 255, .07), transparent 22%);
+    radial-gradient(circle at 18% 22%, rgba(46, 230, 197, .10), transparent 26%),
+    radial-gradient(circle at 82% 48%, rgba(62, 240, 168, .09), transparent 24%),
+    radial-gradient(circle at 40% 86%, rgba(46, 230, 197, .07), transparent 22%);
   background-size: 100% 1100px;
 }
 .shapes {
@@ -13,8 +13,8 @@
 }
 .particles {
   background-image:
-    radial-gradient(circle, rgba(0, 210, 255, .35) 1px, transparent 1.6px),
-    radial-gradient(circle, rgba(0, 245, 160, .28) 1px, transparent 1.6px);
+    radial-gradient(circle, rgba(46, 230, 197, .35) 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(62, 240, 168, .28) 1px, transparent 1.6px);
   background-size: 180px 180px, 260px 180px;
   background-position: 0 0, 90px 60px;
 }

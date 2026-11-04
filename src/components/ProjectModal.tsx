@@ -23,7 +23,7 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
       left: 0,
       right: 0,
       bottom: 0,
-      background: 'rgba(4, 8, 16, 0.85)',
+      background: 'rgba(3, 11, 10, 0.85)',
       backdropFilter: 'blur(12px)',
       zIndex: 200,
       display: 'flex',
@@ -32,15 +32,15 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
       padding: '20px'
     }} onClick={onClose}>
       <div style={{
-        background: 'linear-gradient(145deg, #0d1724, #070d17)',
-        border: '1px solid rgba(0, 245, 160, 0.3)',
+        background: 'linear-gradient(145deg, #0d1724, #05110f)',
+        border: '1px solid rgba(62, 240, 168, 0.3)',
         borderRadius: '20px',
         maxWidth: '720px',
         width: '100%',
         maxHeight: '90vh',
         overflowY: 'auto',
         position: 'relative',
-        boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 245, 160, 0.15)'
+        boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(62, 240, 168, 0.15)'
       }} onClick={(e) => e.stopPropagation()}>
         {/* Close button */}
         <button
@@ -63,7 +63,7 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
             zIndex: 10,
             transition: 'background 0.2s ease'
           }}
-          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0, 245, 160, 0.2)'}
+          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(62, 240, 168, 0.2)'}
           onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
         >
           <X size={20} />
@@ -75,7 +75,7 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
             src={project.image}
             alt={project.title}
             fill
-            style={{ objectFit: project.imageFit ?? 'cover', background: '#0b1220' }}
+            style={{ objectFit: project.imageFit ?? 'cover', background: '#071613' }}
           />
           <div style={{
             position: 'absolute',
@@ -88,7 +88,7 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
             position: 'absolute',
             bottom: '20px',
             left: '24px',
-            background: 'rgba(7, 13, 23, 0.85)',
+            background: 'rgba(5, 17, 15, 0.85)',
             border: '1px solid var(--primary-cyan)',
             backdropFilter: 'blur(8px)',
             borderRadius: '6px',
@@ -96,7 +96,7 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
             fontSize: '0.85rem',
             fontWeight: 600,
             color: 'var(--primary-cyan)',
-            boxShadow: '0 0 12px rgba(0, 210, 255, 0.3)'
+            boxShadow: '0 0 12px rgba(46, 230, 197, 0.3)'
           }}>
             {project.tag}
           </div>
