@@ -52,16 +52,12 @@ test('plans page publishes exactly the four approved starting prices with comple
   assert.ok(!/mejor precio del mercado|más barato del mercado|ventas garantizadas|primero en Google/i.test(content));
 });
 
-test('services retain the four approved offers after the S12 home redesign and link their full details', async () => {
-  for (const path of ['/servicios']) {
-    const html = await get(path);
-    const section = html.match(/<section id="planes-resumen"[\s\S]*?<\/section>/)?.[0];
-    assert.ok(section, `${path} plans summary`);
-    for (const plan of PLANS) {
-      assert.ok(text(section).includes(plan.price), `${path} ${plan.price}`);
-      assert.ok(section.includes(`href="/planes#${plan.id}"`), `${path} ${plan.name} full details`);
-    }
-  }
+test('S15 services links the unchanged full plans page instead of duplicating its price cards', async () => {
+  const html = await get('/servicios');
+  assert.ok(!html.includes('id="planes-resumen"'));
+  assert.ok([...html.matchAll(/<a[^>]*href="\/planes"[^>]*>[\s\S]*?<\/a>/g)].some(([link]) => text(link).trim() === 'Ver planes'));
+  const plans = await get('/planes');
+  for (const plan of PLANS) assert.ok(text(plans).includes(plan.price), plan.price);
 });
 
 test('custom commerce has no fixed product cap or WordPress dependency, and each upgrade names the included plan', async () => {

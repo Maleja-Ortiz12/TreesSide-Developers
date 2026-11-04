@@ -1,208 +1,58 @@
-'use client';
-
-import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { SERVICES } from '@/data/content';
-import {
-  Code,
-  Database,
-  Cloud,
-  Smartphone,
-  BarChart3,
-  ShieldCheck,
-  Check
-} from 'lucide-react';
+import styles from './services/Services.module.css';
+
+// Illustrations are decorative diagrams, not screenshots or additional service claims.
+const ART: Record<string, string> = {
+  'desarrollo-web': 'web',
+  'bases-de-datos': 'data',
+  'cloud-devops': 'cloud',
+  'aplicaciones-moviles': 'apps',
+  'business-intelligence': 'data',
+  'seguridad-mantenimiento': 'cloud',
+  videojuegos: 'apps',
+  automatizacion: 'apps',
+  'plataformas-conectadas': 'web',
+};
 
 export function ServicesSection() {
-  const getServiceIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'code':
-        return <Code size={24} color="var(--primary-cyan)" />;
-      case 'database':
-        return <Database size={24} color="var(--primary-cyan)" />;
-      case 'cloud':
-        return <Cloud size={24} color="var(--primary-cyan)" />;
-      case 'smartphone':
-        return <Smartphone size={24} color="var(--primary-cyan)" />;
-      case 'bar-chart':
-        return <BarChart3 size={24} color="var(--primary-cyan)" />;
-      case 'shield':
-        return <ShieldCheck size={24} color="var(--primary-cyan)" />;
-      default:
-        return <Code size={24} color="var(--primary-cyan)" />;
-    }
-  };
-
   return (
-    <section id="servicios" style={{
-      padding: '100px 0 80px',
-      position: 'relative'
-    }}>
-      {/* Background ambient light */}
-      <div style={{
-        position: 'absolute',
-        top: '20%',
-        left: '-5%',
-        width: '500px',
-        height: '500px',
-        background: 'radial-gradient(circle, rgba(46, 230, 197, 0.08) 0%, transparent 70%)',
-        filter: 'blur(80px)',
-        pointerEvents: 'none'
-      }} />
-
-      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        {/* Services Hero Row: Title & 3D Laptop illustration */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1.2fr 0.8fr',
-          gap: '50px',
-          alignItems: 'center',
-          marginBottom: '60px'
-        }} className="services-hero-grid">
-          <div>
-            <div className="kicker">
-              NUESTROS SERVICIOS
-            </div>
-            
-            <h2 className="section-title" style={{ marginBottom: '20px' }}>
-              Soluciones tecnológicas{' '}
-              <span className="text-gradient">para tus ideas</span>
-            </h2>
-
-            <p style={{
-              fontSize: '1.1rem',
-              color: 'var(--text-muted)',
-              lineHeight: 1.7,
-              maxWidth: '560px'
-            }}>
-              Te acompañamos en todo el proceso de desarrollo, desde la idea hasta la implementación y mantenimiento, con enfoque en calidad, rendimiento y escalabilidad.
-            </p>
-          </div>
-
-          {/* Right Visual: 3D Laptop with cyber code & cloud glow */}
-          <div style={{
-            position: 'relative',
-            display: 'flex',
-            justifyContent: 'center'
-          }}>
-            <div style={{
-              position: 'relative',
-              borderRadius: '20px',
-              overflow: 'hidden',
-              border: '1px solid rgba(46, 230, 197, 0.3)',
-              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(46, 230, 197, 0.25)',
-              maxWidth: '440px',
-              width: '100%',
-              aspectRatio: '4 / 3'
-            }} className="animate-float">
-              <Image
-                src="/images/services-laptop.webp"
-                alt="Servicios Tecnológicos TreesSide Developers"
-                fill
-                style={{ objectFit: 'cover' }}
-              />
+    <section id="servicios" className={styles.section}>
+      <div className="container">
+        <div className={styles.hero}>
+          <div className={styles.heroCopy}>
+            <h1>Tecnología que resuelve. Software <span className="text-gradient">que crece contigo.</span></h1>
+            <p>Creamos soluciones de software reales, escalables y a la medida, que convierten tus ideas en herramientas que funcionan, optimizan procesos y abren nuevas oportunidades de crecimiento.</p>
+            <div className={styles.actions}>
+              <Link href="/contacto" className="btn btn-primary">Conversemos sobre tu proyecto <ArrowRight size={20} aria-hidden="true" /></Link>
+              <Link href="/planes" className="btn btn-secondary">Ver planes</Link>
             </div>
           </div>
+          <Image src="/images/mockup/services-tree.webp" alt="" aria-hidden="true" width={1252} height={798} priority className={styles.tree} />
         </div>
 
-        {/* 6 Detailed Service Cards (2 cols x 3 rows) */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '24px'
-        }} className="services-grid">
-          {SERVICES.map((srv) => (
-            <div
-              key={srv.id}
-              className="glass-card"
-              style={{
-                padding: '28px 24px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px'
-              }}
-            >
-              {/* Icon badge */}
-              <div style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '12px',
-                background: 'rgba(46, 230, 197, 0.1)',
-                border: '1px solid rgba(46, 230, 197, 0.3)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 0 16px rgba(46, 230, 197, 0.2)'
-              }}>
-                {getServiceIcon(srv.iconName)}
+        <p className={styles.eyebrow}>02 / SERVICIOS</p>
+        <div className={styles.grid}>
+          {SERVICES.map((service, index) => (
+            <article key={service.id} id={`servicio-${service.id}`} data-service={service.id} className={styles.card}>
+              <div className={styles.cardMain}>
+                <div className={styles.cardCopy}>
+                  <span className={styles.number} aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                  <h2>{service.title}</h2>
+                  <p>{service.items[0]}</p>
+                </div>
+                <Image src={`/images/mockup/service-${ART[service.id] ?? 'apps'}.webp`} alt="" aria-hidden="true" width={576} height={412} className={styles.cardArt} />
               </div>
-
-              <div>
-                <h3 style={{
-                  fontSize: '1.25rem',
-                  fontWeight: 700,
-                  color: '#ffffff',
-                  marginBottom: '14px'
-                }}>
-                  {srv.title}
-                </h3>
-
-                {/* Bullets */}
-                <ul style={{
-                  listStyle: 'none',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '8px'
-                }}>
-                  {srv.items.map((item, i) => (
-                    <li
-                      key={i}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '10px',
-                        fontSize: '0.9rem',
-                        color: 'var(--text-muted)'
-                      }}
-                    >
-                      <span style={{
-                        color: 'var(--primary-green)',
-                        fontSize: '0.9rem',
-                        lineHeight: 1.4,
-                        fontWeight: 700
-                      }}>•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+              <details className={styles.details}>
+                <summary>Conocer más <ArrowRight size={18} aria-hidden="true" /></summary>
+                <ul>{service.items.map(item => <li key={item}>{item}</li>)}</ul>
+              </details>
+            </article>
           ))}
         </div>
       </div>
-
-      <style jsx>{`
-        @media (max-width: 990px) {
-          .services-hero-grid {
-            grid-template-columns: 1fr !important;
-            text-align: center;
-          }
-          .kicker {
-            justify-content: center;
-          }
-          .services-hero-grid p {
-            margin: 0 auto;
-          }
-          .services-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        @media (max-width: 640px) {
-          .services-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }

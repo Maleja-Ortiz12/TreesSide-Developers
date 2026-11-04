@@ -21,6 +21,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - S14. User correction (L14): "quita el footer anterior e integra eso al nevo y quita las demos y pon un carrusel de proyectos como el que teniamos": home now has the original ProjectCarousel instead of demos and laptop cards. Remove demo tabs, point the secondary hero CTA to #carrusel, and combine all former footer links/contact/policy/copyright with the new closing into one home footer. Other pages retain the existing shared footer. Supersedes the home demo/tab/laptop requirements in S9/S12/S13, while keeping hero artwork and stats.
 
+- S15. User (L16): "sigue con el mockup de servicios porfa". Follow Images/mockup servicios.png with its tree hero, two-column illustrated cards, connected four-step process and integrated closing. Decisions: "9 tarjetas con el estilo nuevo" and "Sí, textos del mockup". Keep all 9 existing service titles/items and technologies; replace plans preview with the hero link "Ver planes". Use mockup heading "Tecnología que resuelve. Software que crece contigo.", paragraph and process steps Descubrimos, Diseñamos, Construimos, Lanzamos. Preserve the site-wide lateral nav and reuse the integrated home footer. Other page content remains unchanged.
+
 ## Tasks
 
 - T1 [S1, S3] Global theme tokens, cards, buttons, kicker, background — inline — commit: a5c90d5, 773acf1 (done)
@@ -38,6 +40,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - T13 [S5, S9-S13] Verify: build, full suite, mobile check, side-by-side with the home mockup — inline — commit: n/a (162/162 tests; mobile 360/390 PASS; production build passed; done)
 
 - T14 [S14] Restore original project carousel, remove home demos, integrate old footer information into new closing — inline — commit: e67dabd (done)
+
+- T15 [S15] Services mockup redesign, preserving nine services and technologies — inline — commit: pending
 
 ## Log
 
@@ -59,3 +63,5 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L14 (user, verbatim): "quita el footer anterior e integra eso al nevo y quita las demos y pon un carrusel de proyectos como el que teniamos". Focused RED observed: both new public home tests fail on existing demo and separate footer.
 
 - L15 (evidence): e67dabd restores ProjectCarousel without modifying its retained source, removes home demos and tabs, points hero CTA at #carrusel. SitePage accepts an optional footer node, defaulting to the former Footer for all other routes. HomeClosing is the only home footer and keeps mission, full nav, email, WhatsApp number, location, policy and copyright. Production build exit 0; 158/158 tests; all-route mobile 360/390 PASS (including offscreen carousel animation check); screenshot ../_scratch_portfolio_tools/home-carousel-footer.png reviewed. Native assessment unavailable because of undeclared untracked files; returned self-verification plan.
+
+- L16 (user, verbatim): "sigue con el mockup de servicios porfa". Decisions: content → "9 tarjetas con el estilo nuevo"; texts → "Sí, textos del mockup".

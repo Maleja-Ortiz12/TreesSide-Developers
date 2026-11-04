@@ -3,7 +3,8 @@ import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { ServicesSection } from '@/components/ServicesSection';
 import { TechStackSection } from '@/components/TechStackSection';
-import { PlansPreview } from '@/components/PlansSection';
+import { ServicesProcess } from '@/components/services/ServicesProcess';
+import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata: Metadata = pageMetadata('/servicios', {
   title: 'Servicios | TreesSide Developers',
@@ -12,10 +13,10 @@ export const metadata: Metadata = pageMetadata('/servicios', {
 
 export default function ServicesPage() {
   return (
-    <SitePage>
+    <SitePage offsetHeader={false} footer={<HomeClosing />}>
       <ServicesSection />
-      <PlansPreview />
       <TechStackSection />
+      <ServicesProcess />
     </SitePage>
   );
 }
