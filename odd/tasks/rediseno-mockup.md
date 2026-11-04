@@ -41,7 +41,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - T14 [S14] Restore original project carousel, remove home demos, integrate old footer information into new closing — inline — commit: e67dabd (done)
 
-- T15 [S15] Services mockup redesign, preserving nine services and technologies — inline — commit: pending
+- T15 [S15] Services mockup redesign, preserving nine services and technologies — inline — commit: ea1b2f0 (art), a2ff51c (implementation/tests; done)
 
 ## Log
 
@@ -65,3 +65,5 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L15 (evidence): e67dabd restores ProjectCarousel without modifying its retained source, removes home demos and tabs, points hero CTA at #carrusel. SitePage accepts an optional footer node, defaulting to the former Footer for all other routes. HomeClosing is the only home footer and keeps mission, full nav, email, WhatsApp number, location, policy and copyright. Production build exit 0; 158/158 tests; all-route mobile 360/390 PASS (including offscreen carousel animation check); screenshot ../_scratch_portfolio_tools/home-carousel-footer.png reviewed. Native assessment unavailable because of undeclared untracked files; returned self-verification plan.
 
 - L16 (user, verbatim): "sigue con el mockup de servicios porfa". Decisions: content → "9 tarjetas con el estilo nuevo"; texts → "Sí, textos del mockup".
+
+- L17 (S15 evidence): ea1b2f0 adds five decorative crops; a2ff51c implements hero, nine native-details service cards, unchanged technologies, mockup-specific process and shared integrated closing. RED: three new public tests failed before implementation. GREEN: production build exit 0, 161/161 tests; browser mobile check PASS for all routes at 360/390. Browser check with real scrolling confirmed process wrapper opacity > .95 and all four labels; clicked all nine summaries open/closed with nonempty item lists (SERVICES_PROCESS_AND_NINE_DISCLOSURES_PASS). Screenshots: ../_scratch_portfolio_tools/services-preview.png and services-browser/services-process.png. Static headless capture by anchor was blank; real-scroll capture supplied visual proof. Original ProcessSection/data on /nosotros unchanged. Native assessment unavailable due undeclared untracked files; it returned writer self-verification. New page mockups and previous unrelated metadata/carousel changes left uncommitted.
