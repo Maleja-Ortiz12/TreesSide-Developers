@@ -72,8 +72,6 @@ test('employer projects are shown as member work experience, never as TreesSide 
     assert.ok(card.includes('Experiencia laboral · Ronaldo Delgado Correa'), title);
     assert.ok(!card.includes('Proyecto del equipo'), title);
   }
-  const chips = [...section.matchAll(/<button[^>]*aria-pressed="(?:true|false)"[^>]*>([^<]*)</g)].map(m => m[1]);
-  assert.ok(chips.includes('Experiencia laboral'));
   assert.ok(!/Cliente|encargo/.test(section));
 });
 

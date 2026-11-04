@@ -16,7 +16,7 @@ test('catalog integrates team projects with attribution and portfolio sources wi
   for (const title of ['Ocho80', 'Radio Navidad', 'Floraltech E-Commerce', 'Dimension Shift', 'UptownHair']) assert.ok(section.includes(title), title);
   for (const name of ['Ronaldo Delgado Correa', 'Jorge Luis Puentes Brochero', 'María Alejandra Ortiz Páez']) assert.ok(section.includes(name), name);
   assert.equal((section.match(/<h3[^>]*>Floraltech E-Commerce<\/h3>/g) || []).length, 1);
-  assert.ok(section.includes('Proyectos del equipo'));
+  assert.ok(section.includes('Proyecto del equipo · '));
   assert.ok(section.includes('pasarela de pagos simulada'));
   for (const url of ['https://ronaldo-delgado.vercel.app/', 'https://portafolio-xi-liart-92.vercel.app/', 'https://portafolio-bay-tau.vercel.app/']) {
     assert.ok(section.includes(`href="${url}"`));
@@ -33,8 +33,8 @@ test('project filter chips are unique and project actions name their project', a
   const html = await projectsPage();
   const section = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0];
   const chips = [...section.matchAll(/<button[^>]*aria-pressed="(?:true|false)"[^>]*>([^<]*)</g)].map(m => m[1]);
-  assert.ok(chips.includes('Proyectos del equipo'));
-  assert.equal(chips.length, new Set(chips).size, `duplicate chips: ${chips}`);
+  // Mockup filters (odd/tasks/rediseno-mockup.md S4): three groups that cover every real category.
+  assert.deepEqual(chips, ['Todos', 'Web', 'Aplicaciones', 'Datos']);
   assert.ok(section.includes('aria-label="Ver proyecto Ocho80"'));
   assert.ok(section.includes('aria-label="Ver portafolio de Ronaldo Delgado Correa (abre en otra pestaña)"'));
   assert.ok(!/Cliente|encargo/.test(section));
@@ -52,4 +52,14 @@ test('technologies and buildable solutions reflect verified portfolio skills', a
   for (const text of ['Aplicaciones de reservas', 'Radio web', 'Videojuegos con Unity', 'Automatización con n8n']) assert.ok(html.includes(text), text);
   assert.ok(!html.includes('Frontend (React, Vue, Angular)'));
   assert.ok(!html.includes('Power BI / Tableau'));
+});
+
+test('S4 each card names its mockup group next to its real category', async () => {
+  const html = await projectsPage();
+  const section = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0] ?? '';
+  const card = title => section.split(/(?=<div[^>]*data-project=)/).find(item => item.includes(`>${title}</h3>`)) ?? '';
+  const text = value => value.replace(/<!-- -->/g, '');
+  assert.ok(text(card('La Lupe')).includes('Web · Sitios web'));
+  assert.ok(text(card('Ocho80')).includes('Aplicaciones · Tiempo real'));
+  assert.ok(text(card('Dashboard BI · Superstore')).includes('Datos · Análisis de datos'));
 });
