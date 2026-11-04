@@ -29,8 +29,9 @@ test('every previously uncovered project has its own locally served conceptual c
     const card = cards.find(item => item.includes(`>${title}</h3>`));
     assert.ok(card, title);
     // The calculator shows the mockup illustration on /proyectos (S6); its own cover file stays served below.
-    const image = title === 'Calculadora de contenedores' ? 'mockup/projects-calculadora' : `projects/${slug}`;
-    assert.ok(card.includes(`%2Fimages%2F${image.replace('/', '%2F')}.webp`) || card.includes(`/images/${image}.webp`), `${title} cover`);
+    const image = title === 'Libres en Cristo Jesús' ? 'projects/libres-en-cristo.svg'
+      : title === 'Calculadora de contenedores' ? 'mockup/projects-calculadora.webp' : `projects/${slug}.webp`;
+    assert.ok(card.includes(encodeURIComponent(`/images/${image}`)) || card.includes(`/images/${image}`), `${title} cover`);
     assert.ok(text(card).includes(LABEL), `${title} must not pretend to be a real screenshot`);
     assert.ok(!card.includes('Imagen de marca'), `${title} no generic brand placeholder`);
     const response = await fetch(new URL(`/images/projects/${slug}.webp`, base));

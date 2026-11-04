@@ -107,6 +107,8 @@ for (const item of covers) {
   ${rect(64, 674, 1072, 42, '#102b37', '#42616c', 12)}
   ${text(86, 702, 'ILUSTRACIÓN CONCEPTUAL · NO ES UNA CAPTURA REAL DEL PRODUCTO', 18, '#d5e6ed', 600)}
   </g></svg>`;
+  // Preserve the existing illustration as vectors where text needs to stay sharp at any display density.
+  if (item.slug === 'libres-en-cristo') await writeFile(`${OUTPUT}/${item.slug}.svg`, svg);
   const file = `${OUTPUT}/${item.slug}.webp`;
   await sharp(Buffer.from(svg)).webp({ quality: 88 }).toFile(file);
   console.log(file);

@@ -28,7 +28,7 @@ const WITH_IMAGES = {
   TengoYa: 'tengoya', CarWeb: 'carweb', Histech: 'histech', 'Robot Alejo 2.0': 'robot-alejo',
   'La Lupe': 'la-lupe',
   'Calculadora de contenedores': 'mockup/projects-calculadora',
-  'Libres en Cristo Jesús': 'libres-en-cristo',
+  'Libres en Cristo Jesús': 'libres-en-cristo.svg',
   'API de Tienda + Asistente IA': 'tienda-api',
   'Sistema de gestión de inventarios': 'gestion-inventarios',
   'Aplicación de gestión agropecuaria': 'gestion-agropecuaria',
@@ -43,8 +43,8 @@ test('every portfolio project is listed with its local project image or labeled 
     const card = cardFor(section, title);
     assert.ok(card, `missing project: ${title}`);
     // The five mockup projects show artwork cropped from the mockup (S6); the rest keep their own image.
-    const image = slug.includes('/') ? slug : `projects/${slug}`;
-    assert.ok(card.includes(`%2Fimages%2F${image.replace('/', '%2F')}.webp`) || card.includes(`/images/${image}.webp`), `image: ${title}`);
+    const image = `${slug.includes('/') ? slug : `projects/${slug}`}${slug.endsWith('.svg') ? '' : '.webp'}`;
+    assert.ok(card.includes(encodeURIComponent(`/images/${image}`)) || card.includes(`/images/${image}`), `image: ${title}`);
     assert.ok(!card.includes('Imagen de marca'), `brand placeholder on ${title}`);
   }
   assert.equal(Object.keys(WITH_IMAGES).length, 31);
@@ -58,10 +58,11 @@ test('La Lupe is a single card', async () => {
   assert.equal(section.split(/(?=<div[^>]*data-project=)/).filter(item => item.includes('>La Lupe</h3>')).length, 1);
 });
 
-test('project images are served locally as nonempty WebP files', async () => {
+test('project images are served locally as nonempty WebP or vector files', async () => {
   for (const slug of Object.values(WITH_IMAGES)) {
-    const response = await get(`/images/${slug.includes('/') ? slug : `projects/${slug}`}.webp`);
-    assert.match(response.headers.get('content-type') || '', /image\/webp/);
+    const image = `${slug.includes('/') ? slug : `projects/${slug}`}${slug.endsWith('.svg') ? '' : '.webp'}`;
+    const response = await get(`/images/${image}`);
+    assert.match(response.headers.get('content-type') || '', /image\/(?:webp|svg\+xml)/);
     assert.ok((await response.arrayBuffer()).byteLength > 1000, slug);
   }
 });

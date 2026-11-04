@@ -69,41 +69,20 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
           <X size={20} />
         </button>
 
-        {/* Modal Image Header */}
-        <div style={{ position: 'relative', width: '100%', height: '280px' }}>
+        {/* Full original media stays flat and unobscured; the catalog thumbnail is only decorative. */}
+        <div data-project-detail-media="" style={{ position: 'relative', width: '100%', aspectRatio: '16 / 10', background: '#071613' }}>
           <Image
             src={project.image}
             alt={project.title}
             fill
-            style={{ objectFit: project.imageFit ?? 'cover', background: '#071613' }}
+            sizes="(max-width: 760px) calc(100vw - 40px), 720px"
+            style={{ objectFit: 'contain' }}
           />
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to top, #0b1f1b 5%, transparent 60%)'
-          }} />
-
-          {/* Tech Tag Badge */}
-          <div style={{
-            position: 'absolute',
-            bottom: '20px',
-            left: '24px',
-            background: 'rgba(5, 17, 15, 0.85)',
-            border: '1px solid var(--primary-cyan)',
-            backdropFilter: 'blur(8px)',
-            borderRadius: '6px',
-            padding: '4px 12px',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            color: 'var(--primary-cyan)',
-            boxShadow: '0 0 12px rgba(46, 230, 197, 0.3)'
-          }}>
-            {project.tag}
-          </div>
         </div>
 
         {/* Modal Content */}
         <div style={{ padding: '24px 30px 32px' }}>
+          <p style={{ color: 'var(--primary-cyan)', fontSize: '.85rem', marginBottom: '14px' }}>{project.tag}</p>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
             <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#ffffff' }}>
               {project.title}

@@ -27,6 +27,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - S17. User (L21): "sigue con la de proyectos". Apply the newly uploaded Images/proyectos mockup.png: heading "Ideas que ya están funcionando.", new tree/scenic art, laptop-framed project cards, connected central trunk and integrated closing. Preserve prior explicit decisions: all31 projects, filters Todos/Restaurantes/Juegos/Datos/E-commerce, rotating spotlight, full author/source details in modal, original images for La Lupe/Floraltech. Use conceptual screen crops from the new mockup only for Emisoras/Calculadora/Ocho80, retaining provenance notes; preserve all descriptions and project anchors. Keep the subtitle honest about personal/team work, rather than adopting mockup copy that attributes everything to the company. Other pages unchanged.
 
+- S18. User (L24): "arregla las card para que al ingresar al proyecto no se vea borrosa la card si no una imagen nitida igual en la de libre cristo jesus la imagen se ve borrosa tanto en la card como al ingresar a ver el proyecto, deespues del carrusel la rama que coneta los proyectos no se ve unida". Open full original project media in the detail view, not the low-resolution mockup thumbnail. Display the image flat, complete and unobscured. Preserve original descriptions/authors/provenance. Make Libres en Cristo Jesús sharp in its card and detail using a vector source of its existing conceptual illustration (not an invented real screenshot). Add a continuous connection from the featured carousel border through the first-row junction and central branch. Keep filters,31 projects,modal controls,featured rotation and anchors working.
+
 ## Tasks
 
 - T1 [S1, S3] Global theme tokens, cards, buttons, kicker, background — inline — commit: a5c90d5, 773acf1 (done)
@@ -50,6 +52,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - T16 [S16] Plans mockup hero/cards/comparison, full original scope and integrated closing — inline — commit: c728787 (art), 9bfde44 (implementation/tests; done)
 
 - T17 [S17] Projects refresh from newer mockup while retaining filters/catalog behavior — inline — commit: e963f0e (art), 4d905a9 (implementation/tests; done)
+
+- T18 [S18] Sharp original detail media, vector Libres cover and connected featured branch — inline — commit: pending
 
 ## Log
 
@@ -85,3 +89,5 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - L22 (S17 evidence): e963f0e adds five new mockup crops;4d905a9 updates hero, CSS laptops, icons, central tree/connections, rotating featured laptop and shared integrated closing. Existing31 projects, filter groups, real La Lupe/Floraltech images, full modal credits/links and category/experience/provenance labels retained. Underlying src/data unchanged. Three public design tests RED observed before implementation; fourth regression test RED observed before corrected build.
 - L23 (regression found/fixed): native Enter from home carousel to Ocho80 at1440px initially landed top-287 under header76. Probe showed first Reveal perspective changed document-top1925→1538 while native scroll stayed1825. A page-specific [data-reveal="first"]:has(> #proyectos){animation:none} fixes measurement without changing shared Reveal or other routes. Final build exit0,168/168 tests; unchanged carousel navigation script PASS click/Enter/direct at390/1440, all targets land100px below header76/full native load/no modal. Dedicated browser filters/modal PASS390/1440 (exact category members, keyboard Enter opens project, credits/portfolios present, close works); all-route mobile360/390 PASS. Screenshot ../_scratch_portfolio_tools/projects-final.png reviewed. Native assessment unavailable due undeclared untracked files; self-verification plan. No publishing performed; unrelated earlier changes remain unstaged.
+
+- L24 (user, verbatim): "arregla las card para que al ingresar al proyecto no se vea borrosa la card si no una imagen nitida igual en la de libre cristo jesus la imagen se ve borrosa tanto en la card como al ingresar a ver el proyecto, deespues del carrusel la rama que coneta los proyectos no se ve unida". Reproduction: mockup Emisoras image504x274 enlarged to718x280 with cover crop; Libres original WebP1200x750 likewise cropped and obscured by gradient. next.config.mjs explicitly disables image optimization, so image quality props would not fix this. Existing generator contains the vector source of Libres illustration. Before screenshots/metrics in ../_scratch_portfolio_tools/project-image-before/.

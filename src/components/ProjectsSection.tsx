@@ -31,6 +31,10 @@ export function ProjectsSection() {
 
   const router = useRouter();
   const goToContact = () => router.push('/contacto');
+  const openProject = (project: Project) => {
+    // Do not enlarge the small conceptual laptop crop when the original project image is available.
+    setSelectedProject(FEATURED_PROJECTS.find(original => original.id === project.id) ?? project);
+  };
 
   return (
     <section id="proyectos" className="projects-page">
@@ -68,7 +72,10 @@ export function ProjectsSection() {
 
         <div className="catalog-body">
           <span className="catalog-tree" aria-hidden="true" />
-          <ProjectSpotlight key={`spotlight-${activeFilter}`} projects={filteredProjects} onOpen={setSelectedProject} suspended={selectedProject !== null} groupOf={projectGroupLabel} />
+          <div className="featured-branch">
+            <ProjectSpotlight key={`spotlight-${activeFilter}`} projects={filteredProjects} onOpen={openProject} suspended={selectedProject !== null} groupOf={projectGroupLabel} />
+            <span data-featured-connector="" aria-hidden="true" className="featured-connector" />
+          </div>
 
           <div className="projects-grid" key={`grid-${activeFilter}`}>
             {filteredProjects.map((project, index) => (
@@ -82,7 +89,7 @@ export function ProjectsSection() {
                   scrollMarginTop: '100px',
                   animationDelay: `${Math.min(index, 8) * 55}ms`,
                 }}
-                onClick={() => setSelectedProject(project)}
+                onClick={() => openProject(project)}
               >
                 <div className="card-copy">
                   <ProjectIcon project={project} />
@@ -227,6 +234,20 @@ export function ProjectsSection() {
           position: relative;
           isolation: isolate;
         }
+        .featured-branch {
+          position: relative;
+        }
+        .featured-connector {
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          width: 2px;
+          height: 64px;
+          transform: translateX(-50%);
+          background: #64ffd0;
+          box-shadow: 0 0 9px #3ef0a8;
+          pointer-events: none;
+        }
         .catalog-tree {
           position: absolute;
           z-index: -1;
@@ -235,7 +256,10 @@ export function ProjectsSection() {
           left: 50%;
           width: 72px;
           transform: translateX(-50%);
-          background: url('/images/mockup/projects-trunk.webp') center top / 72px 620px repeat-y;
+          /* The continuous center line joins every elbow even where the scenic branch curves away. */
+          background:
+            linear-gradient(#64ffd0, #64ffd0) center top / 2px 100% no-repeat,
+            url('/images/mockup/projects-trunk.webp') center top / 72px 620px repeat-y;
           pointer-events: none;
           mask-image: linear-gradient(transparent, #000 60px, #000 calc(100% - 60px), transparent);
         }
