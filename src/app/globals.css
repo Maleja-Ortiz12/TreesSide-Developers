@@ -334,6 +334,13 @@ code, .font-mono {
   animation: floatSlow 5s ease-in-out infinite;
 }
 
+/* Room for the fixed vertical navigation rail (src/components/Navbar.tsx) on wide screens. */
+@media (min-width: 1061px) {
+  body {
+    padding-left: 116px;
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 900px) {
   .container {
