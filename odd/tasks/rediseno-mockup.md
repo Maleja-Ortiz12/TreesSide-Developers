@@ -19,6 +19,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - S13. Decision (L10) "Reales dentro de un laptop": the La Lupe and Emisoras Latinas cards on the home show their real project images inside a CSS laptop frame.
 - S5. Existing behavior keeps working: spotlight autoplay/keys/focus, carousel links to `/proyectos#id`, project modal, reduced motion, no horizontal scroll on phones.
 
+- S14. User correction (L14): "quita el footer anterior e integra eso al nevo y quita las demos y pon un carrusel de proyectos como el que teniamos": home now has the original ProjectCarousel instead of demos and laptop cards. Remove demo tabs, point the secondary hero CTA to #carrusel, and combine all former footer links/contact/policy/copyright with the new closing into one home footer. Other pages retain the existing shared footer. Supersedes the home demo/tab/laptop requirements in S9/S12/S13, while keeping hero artwork and stats.
+
 ## Tasks
 
 - T1 [S1, S3] Global theme tokens, cards, buttons, kicker, background — inline — commit: a5c90d5, 773acf1 (done)
@@ -34,6 +36,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - T11 [S9, S13] Crop home mockup art (hero tree with cards, closing roots) — inline — commit: edd81c9 (done: public/images/mockup/home-hero.webp 1316x872, home-roots.webp 566x740 with the Hablemos circle at its center, redrawn in CSS on top)
 - T12 [S9, S10, S12, S13] Home page rebuild per mockup, home tests updated — worker unavailable; parent inline fallback — commit: 1c3f406 (done)
 - T13 [S5, S9-S13] Verify: build, full suite, mobile check, side-by-side with the home mockup — inline — commit: n/a (162/162 tests; mobile 360/390 PASS; production build passed; done)
+
+- T14 [S14] Restore original project carousel, remove home demos, integrate old footer information into new closing — inline — commit: e67dabd (done)
 
 ## Log
 
@@ -51,3 +55,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L11 (evidence): T12 completed inline after worker failed (worker left three home test files, no source). 1c3f406 replaces the home hero/brand card, carousel and plans with S9-S13. Tabs are connected through useSyncExternalStore, with La Lupe as the server snapshot. Laptop cards keep original images. Closing circle uses a transparent functional link over the circle drawn in the mockup crop, avoiding duplicate artwork. Existing shared footer retained.
 - L12 (checks): production build exit 0, 162/162 tests on localhost:3000, browser check at 360/390 PASS. Initial mobile checker timed out because it unconditionally read removed #carrusel; checker now handles its absence, while retaining the offscreen animation check wherever a carousel exists. Old home SSR responsive test now checks linked module CSS instead of removed hero-grid styled-jsx. Native assessment unavailable due undeclared untracked files; it returned self-verification with no independent verifier. Screenshots: ../_scratch_portfolio_tools/home-final.png. No publishing performed.
 - L13 (scope preservation): existing unrelated README, layout metadata, static share image, and ProjectCarousel.tsx edits stay uncommitted. Home-dependent carousel/case tests were adapted as part of the requested replacement; retained reusable carousel and all six demo logic tests. New mockups for other pages were noticed but not implemented under this request.
+
+- L14 (user, verbatim): "quita el footer anterior e integra eso al nevo y quita las demos y pon un carrusel de proyectos como el que teniamos". Focused RED observed: both new public home tests fail on existing demo and separate footer.
+
+- L15 (evidence): e67dabd restores ProjectCarousel without modifying its retained source, removes home demos and tabs, points hero CTA at #carrusel. SitePage accepts an optional footer node, defaulting to the former Footer for all other routes. HomeClosing is the only home footer and keeps mission, full nav, email, WhatsApp number, location, policy and copyright. Production build exit 0; 158/158 tests; all-route mobile 360/390 PASS (including offscreen carousel animation check); screenshot ../_scratch_portfolio_tools/home-carousel-footer.png reviewed. Native assessment unavailable because of undeclared untracked files; returned self-verification plan.
