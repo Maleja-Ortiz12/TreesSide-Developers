@@ -49,7 +49,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - T16 [S16] Plans mockup hero/cards/comparison, full original scope and integrated closing — inline — commit: c728787 (art), 9bfde44 (implementation/tests; done)
 
-- T17 [S17] Projects refresh from newer mockup while retaining filters/catalog behavior — inline — commit: pending
+- T17 [S17] Projects refresh from newer mockup while retaining filters/catalog behavior — inline — commit: e963f0e (art), 4d905a9 (implementation/tests; done)
 
 ## Log
 
@@ -82,3 +82,6 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L20 (regression found/fixed): initial browser runs failed at665px document width for390px viewport. Absolutely positioned srOnly labels used BODY as offsetParent and escaped table scroller. Isolated browser probe confirmed position:relative on tableScroll restored390/390 immediately; applied and both browser suites passed. The comparison remains horizontally scrollable inside a labeled focusable region on phones. Screenshot ../_scratch_portfolio_tools/plans-final.png reviewed. Native assessment unavailable due undeclared untracked files; self-verification plan. No prices, scope, conditions, stored data or publishing changed.
 
 - L21 (user, verbatim): "sigue con la de proyectos". New file discovered: Images/proyectos mockup.png (distinct from the original Images/Mockups pagina.png used earlier). Prior filters,31 projects,spotlight and real La Lupe/Floraltech images remain the acceptance baseline.
+
+- L22 (S17 evidence): e963f0e adds five new mockup crops;4d905a9 updates hero, CSS laptops, icons, central tree/connections, rotating featured laptop and shared integrated closing. Existing31 projects, filter groups, real La Lupe/Floraltech images, full modal credits/links and category/experience/provenance labels retained. Underlying src/data unchanged. Three public design tests RED observed before implementation; fourth regression test RED observed before corrected build.
+- L23 (regression found/fixed): native Enter from home carousel to Ocho80 at1440px initially landed top-287 under header76. Probe showed first Reveal perspective changed document-top1925→1538 while native scroll stayed1825. A page-specific [data-reveal="first"]:has(> #proyectos){animation:none} fixes measurement without changing shared Reveal or other routes. Final build exit0,168/168 tests; unchanged carousel navigation script PASS click/Enter/direct at390/1440, all targets land100px below header76/full native load/no modal. Dedicated browser filters/modal PASS390/1440 (exact category members, keyboard Enter opens project, credits/portfolios present, close works); all-route mobile360/390 PASS. Screenshot ../_scratch_portfolio_tools/projects-final.png reviewed. Native assessment unavailable due undeclared untracked files; self-verification plan. No publishing performed; unrelated earlier changes remain unstaged.
