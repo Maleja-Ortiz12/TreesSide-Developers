@@ -73,7 +73,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - T22 [S22,S2,S5] Contact mockup with preserved sending, consent and FAQ — inline — commit: 407de33 (done)
 
-- T23 [S23,S5,S9] Crisp 3D footer sphere, clickable footer links, hero layout and 3D animated tree cards — inline — commit: pending (in progress)
+- T23 [S23,S5,S9] Crisp 3D footer sphere, clickable footer links, hero layout and 3D animated tree cards — inline — commit: 7a61bdb (done)
 
 ## Log
 
@@ -146,3 +146,5 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L42 (reproduction): browser probe at 1440 on /, /servicios, /contacto: footer "Proyectos" contact-path link is covered by the closing H2 (elementFromPoint hits H2). Footer sphere is part of home-roots.webp (566x740 upscale) with baked text, link is a transparent overlay; hard rectangular art edges; on 390 the path links overlap the sphere. Hero at 1440: h1 "vida." and the paragraph overlap the baked Restaurante card because the 78%-wide art extends under the copy. Cards are baked into home-hero.webp (1316x872), so they cannot move. All quick-link routes return 200.
 
 - L43 (S23 checks): footer sphere is a CSS/HTML link (radial-gradient body, specular highlight, inset shading, rim glow, rotating sheen, floating ground shadow; crisp vector icons and text) over closing-roots.webp (baked circle cut out, edges faded plus radial mask). Closing H2 no longer captures clicks; contact path above it; on phones the path links sit above the sphere. Hero: copy and scene are separate grid columns (stacked <=1060px); home-hero.webp keeps the tree with the three card areas opened; the cards are aria-hidden HTML with perspective, translateZ depth, floating, pointer parallax (fine pointer, >=900px), waveform and growing bars; burger/pallet/food thumbnails cropped from the original art. Motion off for reduced motion and on phones. RED: 3 rules before source change. Final: build exit0, 188/188; browser: no copy/card overlap and cards fully on screen at 390/1100/1280/1440/1920, cards float and tilt with the pointer, sphere animated with visible label; every footer link hit-testable on 7 pages at 390/1440 and every internal footer link clicked from / lands on its path; all-route mobile 360/390 PASS (no endless animations). Screenshots ../_scratch_portfolio_tools/home-3d/ reviewed; fixes from review: card clipped at 1280, gap before EXPLORA, rectangular roots edge. Validator harness bug (CSS-module hashed keyframe names) fixed in the validator, not the product. Native assessment unavailable.
+
+- L44 (S23 closure): 7a61bdb; home opened on localhost:3000. home-roots.webp is no longer referenced (kept in git history only if removed later). Risk: none.
