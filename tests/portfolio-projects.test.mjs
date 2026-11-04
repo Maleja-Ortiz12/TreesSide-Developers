@@ -19,20 +19,20 @@ function cardFor(section, title) {
 }
 
 const WITH_IMAGES = {
-  Ocho80: 'mockup/projects-ocho80', 'Radio Navidad': 'radio-navidad', Luhos: 'luhos', Gudfy: 'gudfy', Tanku: 'tanku',
+  Ocho80: 'ocho80', 'Radio Navidad': 'radio-navidad', Luhos: 'luhos', Gudfy: 'gudfy', Tanku: 'tanku',
   'Floraltech E-Commerce': 'floraltech', 'Atherium 3D Game': 'atherium', 'Otaku Portal': 'otaku-portal',
   'Portfolio CMS': 'portfolio-cms', 'Dashboard BI · Superstore': 'dashboard-superstore',
   'EDA · Renta Ciudadana': 'eda-renta-ciudadana', 'Análisis de Ventas de Cafetería': 'ventas-cafeteria',
-  'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'mockup/projects-emisoras',
+  'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'emisoras-latinas-cover',
   'Entre Lanas y Fragancias': 'entre-lanas-y-fragancias',
   TengoYa: 'tengoya', CarWeb: 'carweb', Histech: 'histech', 'Robot Alejo 2.0': 'robot-alejo',
   'La Lupe': 'la-lupe',
-  'Calculadora de contenedores': 'mockup/projects-calculadora',
+  'Calculadora de contenedores': 'calculadora-contenedores.svg',
   'Libres en Cristo Jesús': 'libres-en-cristo.svg',
-  'API de Tienda + Asistente IA': 'tienda-api',
-  'Sistema de gestión de inventarios': 'gestion-inventarios',
-  'Aplicación de gestión agropecuaria': 'gestion-agropecuaria',
-  'Migración Pega → UiPath': 'migracion-pega-uipath',
+  'API de Tienda + Asistente IA': 'tienda-api.svg',
+  'Sistema de gestión de inventarios': 'gestion-inventarios.svg',
+  'Aplicación de gestión agropecuaria': 'gestion-agropecuaria.svg',
+  'Migración Pega → UiPath': 'migracion-pega-uipath.svg',
   Gametroz: 'gametroz', 'Fundación Propósito Posible': 'fundacion-proposito-posible',
   'ALTiora Inmobiliaria': 'altiora-inmobiliaria', 'CV Automatic': 'cv-automatic',
 };
@@ -42,7 +42,7 @@ test('every portfolio project is listed with its local project image or labeled 
   for (const [title, slug] of Object.entries(WITH_IMAGES)) {
     const card = cardFor(section, title);
     assert.ok(card, `missing project: ${title}`);
-    // The five mockup projects show artwork cropped from the mockup (S6); the rest keep their own image.
+    // S19 restores canonical full-resolution media for every project.
     const image = `${slug.includes('/') ? slug : `projects/${slug}`}${slug.endsWith('.svg') ? '' : '.webp'}`;
     assert.ok(card.includes(encodeURIComponent(`/images/${image}`)) || card.includes(`/images/${image}`), `image: ${title}`);
     assert.ok(!card.includes('Imagen de marca'), `brand placeholder on ${title}`);

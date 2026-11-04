@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { ProjectImage } from './ProjectImage';
 import { useRouter } from 'next/navigation';
 import { FEATURED_PROJECTS, Project } from '@/data/content';
 import { ProjectModal } from './ProjectModal';
@@ -106,12 +107,12 @@ export function ProjectsSection() {
                 <div className="card-media">
                   <div data-project-laptop="" className="card-laptop">
                   <div className="card-screen">
-                    <Image
+                    <ProjectImage
                       src={project.image}
                       alt={project.title}
                       fill
                       sizes="(max-width: 900px) 90vw, 280px"
-                      style={{ objectFit: project.imageFit ?? 'cover' }}
+                      style={{ objectFit: 'contain' }}
                       className="project-thumb"
                     />
                   </div>
@@ -305,7 +306,7 @@ export function ProjectsSection() {
           animation: none;
         }
         .project-card:hover, .project-card:focus-within {
-          transform: translateY(-6px);
+          transform: none;
           border-color: rgba(62, 240, 168, 0.55);
           box-shadow: 0 26px 50px -22px rgba(62, 240, 168, 0.35);
         }
@@ -377,8 +378,6 @@ export function ProjectsSection() {
           align-self: center;
         }
         .card-laptop {
-          perspective: 800px;
-          transform: rotate(-4deg);
           padding-bottom: 8px;
         }
         .card-screen {
@@ -399,20 +398,14 @@ export function ProjectsSection() {
           border-radius: 2px 2px 50% 50%;
           box-shadow: 0 9px 14px #0008;
         }
-        .card-screen :global(.project-thumb) {
-          transition: transform 0.5s ease;
-        }
-        .project-card:hover :global(.project-thumb) {
-          transform: scale(1.05);
-        }
         .card-note {
           margin-top: 8px;
           font-size: 0.72rem;
           color: var(--text-muted);
         }
         @keyframes project-arrive {
-          from { opacity: 0; transform: translateY(18px); }
-          to { opacity: 1; transform: translateY(0); }
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
         @media (prefers-reduced-motion: reduce) {
           .project-card { animation: none; transition: none; }

@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import { ProjectImage, useDisplayDensity } from '../ProjectImage';
 import Link from 'next/link';
-import { motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
+import { motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react';
 import { Pause, Play } from 'lucide-react';
 import { FEATURED_PROJECTS, type Project } from '@/data/content';
 import { caseHref } from '@/data/cases';
@@ -31,8 +31,8 @@ function Item({ project, copy }: { project: Project; copy?: boolean }) {
   return (
     // No viewport prefetch: every moving card would make the browser recheck its visibility on each frame.
     <Link href={caseHref(project.title) ?? '/proyectos'} prefetch={false} className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
-      <Image src={project.image} alt={copy ? '' : project.title} fill sizes="300px" className={styles.image}
-        style={{ objectFit: project.imageFit ?? 'cover' }} />
+      <ProjectImage src={project.image} alt={copy ? '' : project.title} fill sizes="300px" className={styles.image}
+        style={{ objectFit: 'contain' }} />
       <span className={styles.caption}><strong>{project.title}</strong><small>{project.owner}</small></span>
     </Link>
   );
@@ -41,6 +41,8 @@ function Item({ project, copy }: { project: Project; copy?: boolean }) {
 function Row({ projects, direction, paused }: { projects: Project[]; direction: 1 | -1; paused: boolean }) {
   const track = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
+  const density = useDisplayDensity();
+  const renderX = useTransform(x, value => Math.round(value * density) / density);
   const reduce = useReducedMotion();
   // Off screen the strip stops updating transforms and measuring its width.
   const visible = useInView(track, { margin: '120px 0px' });
@@ -60,7 +62,7 @@ function Row({ projects, direction, paused }: { projects: Project[]; direction: 
   });
   return (
     <div className={styles.viewport} data-reduced={reduce || undefined}>
-      <motion.div ref={track} className={styles.track} style={{ x }}>
+      <motion.div ref={track} className={styles.track} style={{ x: renderX }}>
         <div className={styles.set}>
           {cards.map((project, index) => <Item key={`${project.id}-${index}`} project={project} copy={index >= projects.length} />)}
         </div>

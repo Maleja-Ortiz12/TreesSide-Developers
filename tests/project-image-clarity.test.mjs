@@ -18,7 +18,7 @@ test('S18 project detail shows the complete flat image without a gradient or gla
   const jsx = (type, props) => ({type, props});
   vm.runInNewContext(code, {exports, require: name => {
     if (name === 'react/jsx-runtime') return {jsx, jsxs: jsx};
-    if (name === 'next/image') return {default: 'Image'};
+    if (name === './ProjectImage') return {ProjectImage: 'Image'};
     if (name === 'next/link') return {default: 'Link'};
     if (name === '@/data/cases') return {caseHref: () => null};
     return {};

@@ -14,10 +14,10 @@ test('autoplay cleans up its timer, pauses during interaction, and respects redu
   const source = await readFile('src/components/ProjectSpotlight.tsx', 'utf8');
   for (const token of ['setTimeout(', '5000', 'clearTimeout(', 'visibilitychange', 'prefers-reduced-motion', 'onFocusCapture', 'suspended']) assert.ok(source.includes(token), token);
   const css = await readFile('src/components/ProjectSpotlight.module.css', 'utf8');
-  assert.ok(css.includes('@keyframes hologramFloat'));
-  assert.ok(css.includes('perspective: 800px'));
-  assert.ok(css.includes('rotateZ(1.4deg)'));
-  assert.ok(css.includes('translateZ(34px)'));
+  assert.ok(!css.includes('@keyframes hologramFloat'), 'S19 keeps image surfaces static and sharp');
+  assert.ok(!css.includes('perspective: 800px'));
+  assert.ok(!css.includes('rotateZ(1.4deg)'));
+  assert.ok(!css.includes('translateZ(34px)'));
   assert.ok(source.includes('styles.floatLayer'));
   assert.ok(source.includes('Vista previa del proyecto siguiente'));
   assert.ok(css.includes('prefers-reduced-motion: reduce'));

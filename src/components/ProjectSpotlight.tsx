@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { ProjectImage } from './ProjectImage';
 import { ArrowLeft, ArrowRight, Maximize2, Pause, Play } from 'lucide-react';
 import type { Project } from '@/data/content';
 import styles from './ProjectSpotlight.module.css';
@@ -57,7 +58,7 @@ export function ProjectSpotlight({ projects, onOpen, suspended = false, groupOf 
           <div className={styles.depthLayer}>
             <div className={styles.floatLayer}>
               <button className={styles.visual} onClick={() => onOpen(project)} aria-label="Ver detalles del proyecto destacado">
-                <Image src={project.image} alt={`Vista de ${project.title}`} fill sizes="(max-width: 850px) 85vw, 48vw" style={{ objectFit: project.imageFit ?? 'contain' }} />
+                <ProjectImage src={project.image} alt={`Vista de ${project.title}`} fill sizes="(max-width: 850px) 85vw, 48vw" style={{ objectFit: 'contain' }} />
                 <span className={styles.zoom}><Maximize2 size={18} aria-hidden="true" /> Explorar</span>
               </button>
             </div>

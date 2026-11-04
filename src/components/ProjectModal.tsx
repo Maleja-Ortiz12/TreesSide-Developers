@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import { ProjectImage } from './ProjectImage';
 import { Project } from '@/data/content';
 import Link from 'next/link';
 import { caseHref } from '@/data/cases';
@@ -71,7 +71,7 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
 
         {/* Full original media stays flat and unobscured; the catalog thumbnail is only decorative. */}
         <div data-project-detail-media="" style={{ position: 'relative', width: '100%', aspectRatio: '16 / 10', background: '#071613' }}>
-          <Image
+          <ProjectImage
             src={project.image}
             alt={project.title}
             fill
