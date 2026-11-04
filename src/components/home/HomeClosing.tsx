@@ -15,7 +15,6 @@ export function HomeClosing() {
     <footer className={styles.closing} aria-labelledby="closing-title">
       <div className={`container ${styles.closingInner}`}>
         <h2 id="closing-title">Lo que sigue,<br />lo construimos<br /><span className="text-gradient">contigo.</span></h2>
-        <Image src="/images/mockup/home-roots.webp" alt="" aria-hidden="true" width={566} height={740} className={styles.roots} />
         <svg className={styles.path} viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 200 C250 200 500 20 780 90 S920 140 1000 20" fill="none" stroke="#62ffd0" strokeWidth="2" />
           <g fill="#b3ffe3"><circle cx="220" cy="154" r="5" /><circle cx="430" cy="94" r="5" /><circle cx="630" cy="72" r="5" /></g>
@@ -25,7 +24,15 @@ export function HomeClosing() {
           <a href={`mailto:${CONTACT_INFO.email}`}><Mail />Correo</a>
           <Link href="/proyectos"><Layers />Proyectos</Link>
         </nav>
-        <Link href="/contacto" className={styles.talkCircle}><MessageCircle size={48} /><span>Hablemos <ArrowUpRight /></span></Link>
+        {/* Roots art has the circle cut out; the sphere is drawn in CSS so it stays sharp at any size. */}
+        <div className={styles.sphereStage}>
+          <Image src="/images/mockup/closing-roots.webp" alt="" aria-hidden="true" width={566} height={740} className={styles.roots} />
+          <span className={styles.sphereShadow} aria-hidden="true" />
+          <Link href="/contacto" className={styles.sphere} data-talk-sphere="">
+            <MessageCircle size={52} strokeWidth={1.8} aria-hidden="true" />
+            <span>Hablemos <ArrowUpRight size={30} aria-hidden="true" /></span>
+          </Link>
+        </div>
         <span className={styles.outline} aria-hidden="true">TreesSide</span>
       </div>
       <div className={`container ${styles.footerDetails}`}>

@@ -1,8 +1,4 @@
 .hero { position: relative; padding-top: 90px; overflow: clip; }
-.heroStage { position: relative; min-height: 650px; display: flex; flex-direction: column; justify-content: space-between; isolation: isolate; }
-.heroArt { position: absolute; z-index: -1; width: 78%; height: auto; right: -60px; top: -45px; mask-image: radial-gradient(ellipse 65% 65% at 57% 50%, #000 50%, transparent 100%); }
-.heroCopy { position: relative; max-width: 510px; padding-top: 35px; }
-.heroCopy h1 { color: #fff; font-size: clamp(2.7rem, 5.2vw, 4.8rem); line-height: 1.02; letter-spacing: -.035em; font-weight: 750; }
 .heroCopy p { max-width: 350px; font-size: 1.05rem; line-height: 1.45; color: #d3e4de; margin-top: 24px; }
 .heroActions { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 25px; }
 .explore { display: flex; align-items: center; gap: 48px; padding: 35px 0 30px; }
@@ -33,18 +29,14 @@
 .laptopBase { display: block; height: 10px; width: 116%; margin-left: -8%; border-radius: 2px 2px 50% 50%; background: linear-gradient(#94aaa8, #203e3b); box-shadow: 0 10px 16px #0009; }
 .closing { overflow: clip; position: relative; }
 .closingInner { position: relative; min-height: 590px; padding-top: 55px; isolation: isolate; }
-.closing h2 { position: relative; z-index: 2; font-size: clamp(2.5rem, 5vw, 4.6rem); font-weight: 750; letter-spacing: -.035em; line-height: 1.02; max-width: 650px; color: #fff; }
-.roots { position: absolute; z-index: -1; right: -70px; top: -25px; height: 650px; width: auto; mask-image: radial-gradient(ellipse 70% 65% at 55% 50%, #000 45%, transparent); }
-.path { position: absolute; left: 4%; width: 62%; height: 180px; top: 230px; filter: drop-shadow(0 0 8px #3ef0a8); }
-.contactPath { position: absolute; top: 300px; left: 16%; width: 43%; display: flex; justify-content: space-between; transform: rotate(-12deg); gap: 16px; }
+.closing h2 { position: relative; z-index: 2; pointer-events: none; font-size: clamp(2.5rem, 5vw, 4.6rem); font-weight: 750; letter-spacing: -.035em; line-height: 1.02; max-width: 650px; color: #fff; }
+.path { position: absolute; left: 4%; width: 68%; height: 180px; top: 230px; filter: drop-shadow(0 0 8px #3ef0a8); }
+.contactPath { position: absolute; z-index: 4; top: 300px; left: 16%; width: 43%; display: flex; justify-content: space-between; transform: rotate(-12deg); gap: 16px; }
 .contactPath a { display: inline-flex; gap: 8px; align-items: center; color: #fff; text-decoration: none; }
 .contactPath a:nth-child(2) { translate: 0 -22px; }
 .contactPath a:nth-child(3) { translate: 0 -36px; }
-.talkCircle { position: absolute; top: 168px; right: 6%; width: 230px; aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; border: 2px solid #c9ffe9; border-radius: 50%; background: radial-gradient(circle at 40% 40%, #073d2e 20%, #00352b 55%, #21e9b3 100%); box-shadow: 0 0 35px #3ef0a899, inset 0 0 35px #3ef0a899; color: #fff; text-decoration: none; z-index: 3; }
-.talkCircle span { display: flex; align-items: center; font-size: 1.7rem; font-weight: 600; }
 .outline { position: absolute; bottom: 0; left: 2%; color: transparent; -webkit-text-stroke: 1px #6effbe88; font-size: clamp(5rem, 16vw, 14rem); font-weight: 650; line-height: 1; z-index: -1; }
-@media(max-width: 1060px) { .heroStage { min-height: 610px; } .heroArt { right: -100px; top: 10px; width: 90%; opacity: .7; } .heroCopy { max-width: 460px; } }
-@media(max-width: 760px) { .hero { padding-top: 95px; } .heroStage { min-height: 0; } .heroArt { position: relative; order: 2; top: auto; right: auto; width: 115%; margin: -20px -8% -25px; opacity: 1; } .heroCopy { max-width: 100%; padding-top: 10px; } .heroCopy h1 { max-width: 480px; } .heroCopy p { max-width: 450px; } .explore { order: 3; flex-direction: column; align-items: flex-start; gap: 14px; } .tabs { flex-wrap: wrap; border-radius: 22px; } .tabs button { padding: 7px 11px; } .stats { padding: 18px 8px; } .stats li { padding: 0 3vw; } .stats a { flex-direction: column; gap: 6px; font-size: .7rem; } .stats strong { font-size: 2rem; } .demoLayout { grid-template-columns: 1fr; gap: 24px; } .projects { grid-template-columns: 1fr; } .closingInner { min-height: 670px; } .closing h2 { font-size: 2.8rem; } .roots { top: 160px; right: -100px; height: 520px; } .talkCircle { top: 320px; right: 12%; width: 190px; } .contactPath { top: 260px; left: 5%; width: 85%; transform: none; flex-wrap: wrap; } .contactPath a:nth-child(n) { translate: none; font-size: .85rem; } .path { top: 260px; } .outline { font-size: 22vw; bottom: 35px; } }
+@media(max-width: 760px) { .hero { padding-top: 95px; } .heroCopy p { max-width: 450px; } .explore { flex-direction: column; align-items: flex-start; gap: 14px; } .tabs { flex-wrap: wrap; border-radius: 22px; } .tabs button { padding: 7px 11px; } .stats { padding: 18px 8px; } .stats li { padding: 0 3vw; } .stats a { flex-direction: column; gap: 6px; font-size: .7rem; } .stats strong { font-size: 2rem; } .demoLayout { grid-template-columns: 1fr; gap: 24px; } .projects { grid-template-columns: 1fr; } .closingInner { min-height: 670px; } .closing h2 { font-size: 2.8rem; } .contactPath { top: 260px; left: 5%; width: 85%; transform: none; flex-wrap: wrap; } .contactPath a:nth-child(n) { translate: none; font-size: .85rem; } .path { top: 260px; } .outline { font-size: 22vw; bottom: 35px; } }
 @media(prefers-reduced-motion: reduce) { .laptop { transform: none; } }
 
 .footerDetails {
@@ -68,7 +60,103 @@
 .footerLegal a { text-decoration: underline; }
 .footerLegal span { color: var(--primary-green); }
 @media(max-width:760px) { .footerDetails { grid-template-columns: minmax(0, 1fr); padding-bottom: 96px; } }
-/* The artwork already draws the luminous circle; this transparent link makes that single circle interactive. */
-.talkCircle { top: 130px; right: 1%; width: 310px; background: transparent; border: 0; box-shadow: none; }
-.talkCircle > * { opacity: 0; }
-@media(max-width:760px) { .talkCircle { top: 300px; right: -5%; width: 250px; } }
+
+/* Closing sphere: roots art around a CSS sphere, positioned in % of the art so both scale together. */
+.sphereStage { position: absolute; z-index: 3; right: -30px; top: 0; width: min(430px, 36%); aspect-ratio: 566 / 740; }
+.roots { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 52%, transparent 100%); }
+.sphere {
+  position: absolute; left: 8.2%; top: 19.3%; width: 75%; aspect-ratio: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  border-radius: 50%; color: #fff; text-decoration: none; isolation: isolate;
+  background:
+    radial-gradient(circle at 33% 27%, rgba(255, 255, 255, .5) 0, rgba(210, 255, 238, .16) 9%, transparent 24%),
+    radial-gradient(circle at 50% 118%, rgba(98, 255, 208, .6), transparent 52%),
+    radial-gradient(circle at 42% 36%, #127a5c 0%, #07412f 42%, #03241b 72%, #01130e 100%);
+  box-shadow:
+    inset -22px -30px 46px rgba(0, 0, 0, .6), inset 16px 20px 34px rgba(150, 255, 220, .22),
+    inset 0 0 0 2px rgba(205, 255, 236, .6), 0 0 34px rgba(62, 240, 168, .6), 0 0 110px rgba(62, 240, 168, .28);
+  transition: scale 300ms ease, box-shadow 300ms ease;
+  animation: sphereFloat 6s ease-in-out infinite;
+}
+/* A slow sheen sweeping over the surface reads as a turning glass ball. */
+.sphere::before { content: ''; position: absolute; inset: 5%; z-index: -1; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0 62%, rgba(180, 255, 228, .2) 72%, transparent 82%); animation: sphereSheen 9s linear infinite; }
+.sphere::after { content: ''; position: absolute; inset: -3px; z-index: -2; border-radius: 50%; border: 1px solid rgba(160, 255, 222, .35); filter: blur(1px); }
+.sphere > svg { filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .55)); }
+.sphere span { display: flex; align-items: center; gap: 6px; font-size: clamp(1.4rem, 2.4vw, 2.2rem); font-weight: 650; letter-spacing: -.01em; text-shadow: 0 2px 6px rgba(0, 0, 0, .55); }
+.sphere:hover, .sphere:focus-visible { scale: 1.04; box-shadow: inset -22px -30px 46px rgba(0, 0, 0, .55), inset 16px 20px 34px rgba(150, 255, 220, .3), inset 0 0 0 2px #dfffee, 0 0 48px rgba(62, 240, 168, .8), 0 0 140px rgba(62, 240, 168, .4); }
+.sphere:focus-visible { outline: 3px solid var(--primary-green); outline-offset: 6px; }
+.sphereShadow { position: absolute; left: 22%; width: 47%; top: 78%; height: 7%; border-radius: 50%; background: radial-gradient(ellipse, rgba(0, 0, 0, .65), transparent 70%); animation: sphereShadow 6s ease-in-out infinite; pointer-events: none; }
+@keyframes sphereFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -14px; } }
+@keyframes sphereShadow { 0%, 100% { opacity: .9; scale: 1; } 50% { opacity: .55; scale: .86; } }
+@keyframes sphereSheen { to { rotate: 1turn; } }
+@media(max-width:760px) {
+  .closingInner { min-height: 0; display: flex; flex-direction: column; padding-bottom: 20px; }
+  .path { display: none; }
+  .contactPath { position: relative; top: auto; left: auto; width: 100%; transform: none; justify-content: flex-start; flex-wrap: wrap; gap: 14px 22px; margin-top: 24px; }
+  .sphereStage { position: relative; right: auto; top: auto; width: min(100%, 360px); margin: 6px auto 0; }
+  .outline { position: relative; bottom: auto; left: auto; margin-top: -40px; }
+}
+
+/* Hero: copy on the left, tree scene on the right; they never share space (S23). */
+.heroStage { position: relative; display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); grid-template-rows: auto auto; column-gap: 28px; isolation: isolate; }
+.heroCopy { position: relative; z-index: 2; grid-column: 1; grid-row: 1; max-width: 470px; padding-top: 35px; }
+.heroCopy h1 { color: #fff; font-size: clamp(2.6rem, 4.4vw, 4.3rem); line-height: 1.02; letter-spacing: -.035em; font-weight: 750; }
+.explore { grid-column: 1 / -1; grid-row: 2; }
+.heroScene { --px: 0; --py: 0; position: relative; grid-column: 2; grid-row: 1; align-self: start; width: 100%; margin: -30px 0 0; container-type: inline-size; perspective: 1300px; }
+.heroArt { display: block; width: 100%; height: auto; mask-image: radial-gradient(ellipse 72% 70% at 52% 50%, #000 58%, transparent 100%); transform: translate(calc(var(--px) * -6px), calc(var(--py) * -4px)); transition: transform 500ms cubic-bezier(.2, .8, .2, 1); }
+.heroCards { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; }
+.heroCard {
+  --ry: 0deg; --rx: 0deg; --z: 40px;
+  position: absolute; display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid rgba(160, 255, 222, .5); border-radius: 2.2cqw;
+  background: linear-gradient(150deg, rgba(20, 70, 56, .96), rgba(4, 26, 20, .96));
+  box-shadow: inset 0 1px 0 rgba(220, 255, 240, .35), 0 0 2.4cqw rgba(62, 240, 168, .35), 0 3cqw 5cqw -1.5cqw rgba(0, 0, 0, .8);
+  color: #eafff6; font-size: 1.45cqw;
+  transform: rotateY(calc(var(--ry) + var(--px) * 7deg)) rotateX(calc(var(--rx) - var(--py) * 6deg)) translateZ(var(--z));
+  transition: transform 500ms cubic-bezier(.2, .8, .2, 1);
+  animation: cardFloat 7s ease-in-out infinite;
+}
+/* Each card sits slightly larger than the opening left in the tree art. */
+.cardRestaurant { --ry: 14deg; --rx: 3deg; --z: 60px; left: 3%; top: 28%; width: 35%; height: 40%; animation-delay: -1.2s; }
+.cardRadio { --ry: -12deg; --rx: 4deg; --z: 45px; left: 64%; top: 8.2%; width: 28.2%; height: 31.8%; animation-duration: 6.2s; animation-delay: -3s; }
+.cardLogistics { --ry: -9deg; --rx: -2deg; --z: 70px; left: 60.6%; top: 50%; width: 35.8%; height: 32%; animation-duration: 7.8s; animation-delay: -5s; }
+.cardTop { display: flex; align-items: center; gap: 1cqw; padding: 1.4cqw 1.6cqw .8cqw; font-size: 1.5cqw; }
+.cardTop svg { width: 2.1cqw; height: 2.1cqw; flex-shrink: 0; color: #9fffdb; }
+.cardTop strong { font-weight: 600; }
+.cardIcons { display: flex; gap: 1.1cqw; margin-left: auto; }
+.restaurantBody { flex: 1; display: grid; grid-template-columns: 42% 1fr; gap: 1cqw; padding: 0 1.4cqw 1.4cqw; min-height: 0; }
+.burger { width: 100%; height: 100%; object-fit: cover; border-radius: 1.1cqw; }
+.menu { list-style: none; display: grid; align-content: center; gap: .7cqw; margin: 0; padding: 0; }
+.menu li { display: grid; grid-template-columns: 2.6cqw 1fr auto; align-items: center; gap: .8cqw; padding: .6cqw .8cqw; border-radius: .9cqw; background: rgba(255, 255, 255, .05); font-size: 1.15cqw; }
+.menu img { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; object-fit: cover; }
+.menu b { font-weight: 600; }
+.wave { flex: 1; display: flex; align-items: center; justify-content: center; gap: .45cqw; padding: 0 2cqw; min-height: 0; }
+.wave i { width: .45cqw; border-radius: 1cqw; background: linear-gradient(#9dffe0, #2ee6c5); box-shadow: 0 0 .8cqw rgba(62, 240, 168, .7); max-height: 70%; transform-origin: center; animation: waveBeat 1.2s ease-in-out infinite alternate; }
+.player { display: flex; align-items: center; justify-content: center; gap: 4.2cqw; padding: .6cqw 0 1.6cqw; }
+.player > svg { width: 2.2cqw; height: 2.2cqw; fill: #fff; }
+.play { display: grid; place-items: center; width: 4.6cqw; height: 4.6cqw; border-radius: 50%; background: linear-gradient(135deg, #7dffd0, #22d8a6); box-shadow: 0 0 1.6cqw rgba(62, 240, 168, .8); }
+.play svg { width: 2cqw; height: 2cqw; fill: #04241b; stroke: #04241b; translate: .2cqw 0; }
+.logisticsBody { flex: 1; display: grid; grid-template-columns: 45% 1fr; gap: 1.2cqw; padding: 0 1.6cqw 1.4cqw; min-height: 0; }
+.pallets { width: 100%; height: 100%; object-fit: cover; border-radius: 1cqw; }
+.stock { display: flex; flex-direction: column; justify-content: space-between; min-width: 0; padding: 1cqw; border-radius: 1cqw; background: rgba(255, 255, 255, .05); }
+.stock ul { list-style: none; display: grid; gap: .6cqw; margin: 0; padding: 0; font-size: 1.1cqw; }
+.stock li { display: flex; align-items: center; gap: .7cqw; }
+.stock li i { width: .8cqw; height: .8cqw; border-radius: 50%; background: #3ef0a8; box-shadow: 0 0 .6cqw #3ef0a8; }
+.stock li b { margin-left: auto; font-weight: 600; }
+.bars { display: flex; align-items: flex-end; gap: .6cqw; height: 5cqw; }
+.bars i { flex: 1; border-radius: .3cqw .3cqw 0 0; background: linear-gradient(#5cffc5, #12a77c); transform-origin: bottom; animation: barGrow 1.4s cubic-bezier(.2, .8, .2, 1) both; }
+.bars i:nth-child(2) { animation-delay: .1s; } .bars i:nth-child(3) { animation-delay: .2s; } .bars i:nth-child(4) { animation-delay: .3s; } .bars i:nth-child(5) { animation-delay: .4s; } .bars i:nth-child(6) { animation-delay: .5s; } .bars i:nth-child(7) { animation-delay: .6s; }
+@keyframes cardFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.1cqw; } }
+@keyframes waveBeat { from { scale: 1 .55; } to { scale: 1 1.05; } }
+@keyframes barGrow { from { scale: 1 0; } to { scale: 1 1; } }
+@media (max-width: 1060px) {
+  .heroStage { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto; min-height: 0; }
+  .heroCopy { max-width: 560px; }
+  .heroScene { grid-column: 1; grid-row: 2; width: calc(100% + 40px); margin: 10px -20px 0; }
+  .explore { grid-row: 3; }
+}
+@media (max-width: 899px), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sphere, .sphere::before, .sphereShadow, .heroCard, .wave i { animation: none; }
+  .heroCard, .heroArt { transition: none; }
+}
+@media (prefers-reduced-motion: reduce) { .bars i { animation: none; } }
