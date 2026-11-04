@@ -24,7 +24,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - T6 [S6] Crop mockup art into public/images/mockup/ — inline — commit: 7510544 (done)
 - T7 [S6, S7, S8] Proyectos page fidelity pass: art, compact cards, clean spotlight, CTA backdrop — inline — commit: 7510544 (done)
 - T8 [S5-S8] Verify: build, tests, mobile check, side-by-side with mockup — inline — commit: n/a (done)
-- T9 [S4, S6] Restore La Lupe/Floraltech images and switch filters to Restaurantes/Juegos/Datos/E-commerce — inline — commit: pending
+- T9 [S4, S6] Restore La Lupe/Floraltech images and switch filters to Restaurantes/Juegos/Datos/E-commerce — inline — commit: af6236c (done)
 
 ## Log
 
