@@ -65,7 +65,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - T20 [S20,S2,S5] Nosotros mockup with retained purpose/team information — inline — commit: 1c7d3cd (done)
 
-- T21 [S21,S2,S5] Team mockup with four connected initial cards and retained profiles — inline — commit: pending (in progress)
+- T21 [S21,S2,S5] Team mockup with photo/summary cards and retained profiles — inline — commit: 6eb01e2 (done)
 
 ## Log
 
@@ -125,3 +125,5 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L35 (user, verbatim): "si pero falto agregar las fotos yh el contenido o el breve rfesumen de nosotros". Requirement change to S21: overview cards add the real member photo and the existing short description (clamped to three lines); no new copy invented.
 
 - L36 (S21 checks): /equipo uses tree scenery cropped from the supplied mockup with its copy, button and card areas fully transparent (alpha 0 verified), real member cards positioned over the tree spots at >=1360px and stacked below. Cards show each real photo (84px circle, cover crop) and the existing short description (3-line clamp); initials only as loading fallback. Full portrait/profile, portfolios, attribution and existing selection/animation/focus handlers unchanged. Collaboration panel and shared HomeClosing added. RED: three new public rules before source change; L35 photo/summary rule RED against prior build. Regressions found and fixed by screenshots: hard tree seams and a mockup button ghost (re-cropped), tall portrait overflowing its circle over the name (fixed size; validator now asserts it). Three portrait tests initially failed because the avatar img preceded the large portrait; markup order restored with CSS order instead of weakening the tests; horizontal-card tests rewritten to the S21 layout. Final: build exit0, 181/181; browser 390/900/1360/1440 normal motion: 4 profiles opened by Enter and click, focus to return control and back to the member, real portraits/data/portfolios, no card overlap or overflow, tree only where covered, hero CTA clickable, single footer; all-route mobile 360/390 PASS. Screenshots ../_scratch_portfolio_tools/team-browser/ reviewed. Native assessment unavailable (undeclared untracked files); self-verification plan.
+
+- L37 (S21 closure): 6eb01e2 holds the S21 implementation/tests/art. Server on localhost:3000 serves the verified build; /equipo opened. Risk: none (page-specific composition; data, other pages and unrelated dirty files unchanged).
