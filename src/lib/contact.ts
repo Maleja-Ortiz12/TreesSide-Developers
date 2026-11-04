@@ -2,6 +2,8 @@ export interface ContactData {
   nombre: string;
   correo: string;
   mensaje: string;
+  /** Optional answer to "¿Qué necesitas construir?"; omitted from the payload when empty. */
+  necesidad?: string;
   consent: boolean;
   /** Honeypot field: hidden from people, so only bots fill it. */
   gotcha: string;
@@ -29,6 +31,7 @@ export async function sendContact(
         nombre: data.nombre,
         email: data.correo,
         mensaje: data.mensaje,
+        ...(data.necesidad?.trim() ? { necesidad: data.necesidad.trim() } : {}),
         _subject: `Nuevo mensaje de ${data.nombre} desde el sitio de TreesSide`,
         consentimiento: `Acepta la política de tratamiento de datos personales (${new Date().toISOString()})`,
       }),
