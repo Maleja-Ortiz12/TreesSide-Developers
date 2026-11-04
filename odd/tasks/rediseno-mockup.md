@@ -61,7 +61,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - T19 [S19,S5,S8,S18] Native-resolution originals and vector conceptual media across all31 project surfaces — worker unavailable; inline fallback — commit: c001165 (done)
 
-- T20 [S20,S2,S5] Nosotros mockup with retained purpose/team information — inline — commit: pending (in progress)
+- T20 [S20,S2,S5] Nosotros mockup with retained purpose/team information — inline — commit: 1c7d3cd (done)
 
 ## Log
 
@@ -113,3 +113,5 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L31 (user, verbatim): "listo ahora sigamos con la paarte de nosotros". Images/mockup nosotros.png1058x1487 confirmed. Existing purpose/about, four objective pillars, four passions and PROCESS_STEPS retained. Adapt visual structure without changing team/business data; full existing AboutSection remains accessible through native disclosure, while mockup hero/approach/process stay visible.
 
 - L32 (S20 checks):leafy branch crop from supplied mockup, new hero/real31-project46-technology4-member stats/three approach cards/connected sprout process/capabilities and HomeClosing implemented only on /nosotros. Original AboutSection unchanged and fully server-rendered inside accessible native details; all original mission, objective pillars and four passions retained. New process uses all original PROCESS_STEPS descriptions and original names alongside mockup headings. Three new public rules observed RED before source mutation. TypeScript/build exit0. First suite177/178 exposed stale assertion for the former primary Reveal#sobre-nosotros, now supplemental disclosure; updated to require new primary#nosotros-intro reveal without weakening original information tests. Final178/178 PASS. Dedicated browser390/1440 in normal motion: native Enter opens, all four passions and original purpose visible, closes/no overflow; process actually revealed to opacity1 with4 cards and4 capability links; single integrated footer. Desktop/mobile screenshots ../_scratch_portfolio_tools/about-browser/ reviewed against mockup. All-route mobile360/390 PASS. Native assessment unavailable due undeclared untracked files; returned self-verification. No original source-data, shared components, other pages or unrelated dirty files changed. This S20 unit is the review slice, not the accumulated feature branch.
+
+- L33 (S20 closure):1c7d3cd holds the complete212 authored-diff-line implementation/tests/art work unit. All functional checks observed PASS. Production server job-78 active; opened http://localhost:3000/nosotros. Risk:none (page-specific composition, existing source-data/shared components unchanged).
