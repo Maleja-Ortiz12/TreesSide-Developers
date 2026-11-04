@@ -112,12 +112,12 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           lineHeight: 1.15,
           userSelect: 'none'
         }}>
-          <span style={{ color: 'var(--primary-green)' }}>TreesSide</span>
+          <span style={{ color: '#ffffff', textShadow: '0 0 18px rgba(62, 240, 168, 0.25)' }}>TreesSide</span>
           <span style={{
-            color: 'var(--primary-cyan)',
-            fontSize: size === 'lg' ? '0.75rem' : '0.65rem',
-            fontWeight: 500,
-            letterSpacing: '0.18em',
+            color: '#d6eee6',
+            fontSize: size === 'lg' ? '0.75rem' : '0.66rem',
+            fontWeight: 400,
+            letterSpacing: '0.42em',
             marginTop: '4px'
           }}>Developers</span>
         </span>
