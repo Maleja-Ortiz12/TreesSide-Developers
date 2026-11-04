@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ArrowUpRight, ChevronRight, Code2 } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ChevronRight, ArrowRight } from 'lucide-react';
 import { TEAM_MEMBERS } from '@/data/team';
 import styles from './TeamGallery.module.css';
 
@@ -66,12 +66,14 @@ export function TeamGallery() {
   return (
     <section id="equipo" className={styles.section} aria-labelledby="team-title">
       <div className="container">
+        <div className={styles.stage} data-team-stage="" data-focused={selected !== null}>
+        <Image src="/images/mockup/team-tree.webp" alt="" aria-hidden="true" data-team-tree="" width={908} height={780} priority className={styles.tree} />
         <div className={styles.heading}>
-          <span className="kicker"><Code2 size={18} aria-hidden="true" /> NUESTRO EQUIPO</span>
-          <h1 id="team-title" className="section-title">Talento que crece.<br /><span className="text-gradient">Un mismo propósito.</span></h1>
-          <p className="section-subtitle">Conoce a las personas detrás del código. Abre un perfil para explorar su experiencia, sus habilidades y los proyectos que les dan forma.</p>
-          <p className={styles.hint}>Elige un integrante y explora su perfil en una vista centrada.</p>
-          <div className={styles.sculpture} aria-hidden="true"><span /><span /><span /></div>
+          <h1 id="team-title">Cuatro mentes.<br />Un mismo<br /><span className="text-gradient">propósito.</span></h1>
+          <h2 className={styles.discipline}>Desarrollo de software</h2>
+          <p className={styles.summary}>Un equipo que combina ideas, perspectivas y experiencia para crear soluciones reales, funcionales y escalables.</p>
+          <Link href="/proyectos" className="btn btn-primary">Ver proyectos <ArrowRight size={20} aria-hidden="true" /></Link>
+          <p className={styles.hint}>Conoce a las personas detrás del código. Abre un perfil para explorar su experiencia, sus habilidades y los proyectos que les dan forma. Elige un integrante y explora su perfil en una vista centrada.</p>
         </div>
 
         <div ref={gallery} key={selected ?? 'team'} data-team-gallery="true" data-focused={selected !== null}
@@ -85,6 +87,8 @@ export function TeamGallery() {
           </div>}
           {TEAM_MEMBERS.map((member, index) => {
             const active = selected === index;
+            const words = member.name.split(' ');
+            const initials = words[0][0] + words[member.name.startsWith('Jorge Luis') ? 2 : 1][0];
             return (
               <article key={member.portfolio} hidden={selected !== null && !active}
                 data-selected={active} className={styles.card}
@@ -98,6 +102,10 @@ export function TeamGallery() {
                     </div>
                     <span className={styles.photoShine} aria-hidden="true" />
                     <span className={styles.number}>{String(index + 1).padStart(2, '0')} / TREESSIDE</span>
+                  </div>
+                  <div data-team-avatar="" aria-hidden="true" className={styles.avatar}>
+                    <Image src={member.photo} alt="" width={160} height={160} className={styles.avatarPhoto} loading="lazy" />
+                    <strong>{initials}</strong>
                   </div>
                   <div className={styles.intro}>
                     <p className={styles.role}>{member.role}</p>
@@ -138,6 +146,11 @@ export function TeamGallery() {
           })}
         </div>
 
+        </div>
+        <div className={styles.collaboration}>
+          <h2>Distintas ideas.<br />Soluciones <span className="text-gradient">conectadas.</span></h2>
+          <p>Trabajamos de forma colaborativa, uniendo ideas, criterios y visión para transformar necesidades en software que funciona en el mundo real.</p>
+        </div>
         <div className={styles.bottom}>
           <p>Experiencia, formación y proyectos personales según los portafolios de cada integrante. Estos trabajos no se presentan como proyectos de TreesSide Developers.</p>
           <Link href="/contacto" className="btn btn-secondary">Construyamos tu próxima idea <ArrowUpRight size={18} aria-hidden="true" /></Link>

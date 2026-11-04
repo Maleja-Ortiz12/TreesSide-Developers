@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/metadata';
-import Link from 'next/link';
+import { HomeClosing } from '@/components/home/HomeClosing';
 import { Navbar } from '@/components/Navbar';
 import { TeamGallery } from '@/components/TeamGallery';
 import { MotionShell } from '@/components/motion/MotionShell';
@@ -17,12 +17,7 @@ export default function TeamPage() {
     <MotionShell>
       <Navbar />
       <main className={styles.main}><Reveal first><TeamGallery /></Reveal></main>
-      <footer className={styles.footer}>
-        <div className="container">
-          <p>TreesSide Developers · Código que construye futuro</p>
-          <Link href="/">Explorar nuestros servicios y proyectos</Link>
-        </div>
-      </footer>
+      <HomeClosing />
     </MotionShell>
   );
 }

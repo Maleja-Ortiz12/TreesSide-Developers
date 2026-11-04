@@ -17,5 +17,5 @@ test('closed team cards all share the same size with actions aligned at the bott
   // Equal rows across the whole grid, only while no profile is open.
   assert.match(css, /\.TeamGallery_gallery__[\w-]+\[data-focused=['"]?false['"]?\] ?\{[^}]*grid-auto-rows: ?1fr;[^}]*align-items: ?stretch/);
   assert.match(css, /\.TeamGallery_card__[\w-]+:not\(\[data-selected=['"]?true['"]?\]\) \.TeamGallery_overview__[\w-]+ ?\{[^}]*height: ?100%/);
-  assert.match(css, /\.TeamGallery_card__[\w-]+:not\(\[data-selected=['"]?true['"]?\]\) \.TeamGallery_overview__[\w-]+ ?\{[^}]*grid-template-rows: ?1fr auto auto/);
+  assert.match(css, /\.TeamGallery_card__[\w-]+:not\(\[data-selected=['"]?true['"]?\]\) \.TeamGallery_overview__[\w-]+ ?\{[^}]*grid-template-rows: ?auto 1fr auto auto/);
 });

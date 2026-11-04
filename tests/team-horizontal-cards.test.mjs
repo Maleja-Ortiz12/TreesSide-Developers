@@ -15,14 +15,18 @@ async function galleryCss() {
   return css.replace(/\s+/g, ' ');
 }
 
-test('closed team cards lay out horizontally: photo on the left, text on the right', async () => {
+test('S21 compact tree cards center native initials and retain portraits for the selected profile', async () => {
   const css = await galleryCss();
-  assert.match(css, /\.TeamGallery_card__[\w-]+:not\(\[data-selected=['"]?true['"]?\]\) \.TeamGallery_overview__[\w-]+ ?\{[^}]*display: ?grid;[^}]*grid-template-columns: ?minmax\(0, ?180px\) minmax\(0, ?1fr\)/);
-  assert.match(css, /\.TeamGallery_card__[\w-]+:not\(\[data-selected=['"]?true['"]?\]\) \.TeamGallery_photoFrame__[\w-]+ ?\{[^}]*grid-row: ?1 ?\/ ?-1/);
+  assert.match(css, /\.TeamGallery_overview__[\w-]+ ?\{[^}]*display: ?grid;[^}]*grid-template-columns: ?minmax\(0, ?1fr\)/);
+  assert.match(css, /\.TeamGallery_photoFrame__[\w-]+[^{}]*\{display:none/);
+  assert.ok(css.includes('TeamGallery_avatar'));
+  const page = await html('/equipo');
+  assert.equal((page.match(/data-team-avatar=/g) || []).length, 4);
 });
 
-test('two horizontal cards fit per row and stack vertically on phones', async () => {
+test('S21 tree positions become a two-column grid and then one column on phones', async () => {
   const css = await galleryCss();
-  assert.match(css, /\.TeamGallery_gallery__[\w-]+ ?\{[^}]*repeat\(auto-fit, ?minmax\(min\(100%, ?460px\), ?1fr\)\)/);
-  assert.match(css, /@media \(max-width: ?640px\) ?\{[^@]*\.TeamGallery_card__[\w-]+:not\(\[data-selected=['"]?true['"]?\]\) \.TeamGallery_overview__[\w-]+ ?\{[^}]*grid-template-columns: ?minmax\(0, ?1fr\)/);
+  assert.match(css, /\.TeamGallery_gallery__[\w-]+\[data-focused=['"]?false['"]?\] ?\{[^}]*grid-template-columns: ?repeat\(2, ?minmax\(0, ?1fr\)\)/);
+  assert.match(css, /@media ?\(min-width: ?1360px\)/);
+  assert.match(css, /@media ?\(max-width: ?640px\) ?\{[^@]*\.TeamGallery_gallery__[\w-]+\[data-focused=['"]?false['"]?\] ?\{[^}]*grid-template-columns: ?minmax\(0, ?1fr\)/);
 });
