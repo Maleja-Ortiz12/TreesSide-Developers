@@ -8,8 +8,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - S1. "en la raiz del proyecto ssubbi unos mockups para rediseñar la pagina porrfa guiate en estos backups" + decision (L2) "Todo el sitio con este estilo": every page adopts the mockup's visual language (dark green glass cards, mint accent, pill navigation, kicker with trailing line, circuit connectors, pill CTA, single-row footer).
 - S2. "toma la informaacion que ya tgenemos sin cambiarla": texts, projects, categories, authors, links and contact data stay as they are; mockup copy that differs (e.g. "Ideas que ya están funcionando.", "Sitio web conceptual" for La Lupe, "Herramienta web 3D" for the calculator) is not used.
 - S3. "e imagaanes solo adapatla al nuevo diseño": only images already in the project are used, placed in the new layout; no new images.
-- S4. Decision (L2) "4 grupos del mockup": /proyectos filters are Todos / Web / Aplicaciones / Datos, grouping the real categories; all projects are shown.
-- S6. Decision (L7) "Sí, árbol e ilustraciones": the 3D tree (with rocks) and the card illustrations of La Lupe, Emisoras Latinas, Calculadora de contenedores, Ocho80 and Floraltech are cropped from the mockup PNG and used on /proyectos; they are labeled as conceptual illustrations.
+- S4. Decision (L9) "en las caategorias dividelo por restaurantes, juegos, datos, eccomerce": /proyectos filters are Todos / Restaurantes / Juegos / Datos / E-commerce; projects outside those groups appear only under Todos.
+- S6. Decision (L7) "Sí, árbol e ilustraciones", corrected by L9 "en la lupe y en floraltech no pusiste las imagenes originales las ue ya existian de los prfoyhectos arregalo porfa": the 3D tree and rocks plus the Emisoras Latinas, Calculadora de contenedores and Ocho80 illustrations come from the mockup (labeled conceptual); La Lupe and Floraltech keep their original project images.
 - S7. Decision (L7) "Mantener el carrusel": the featured card keeps rotating, with a cleaner mockup-like layout and no visible control bar.
 - S8. Decision (L7) "Los 31, tarjetas compactas": all projects stay, cards show title, group · category, short description and "Ver proyecto"; authors and portfolios move to the detail modal.
 - S5. Existing behavior keeps working: spotlight autoplay/keys/focus, carousel links to `/proyectos#id`, project modal, reduced motion, no horizontal scroll on phones.
@@ -24,6 +24,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - T6 [S6] Crop mockup art into public/images/mockup/ — inline — commit: 7510544 (done)
 - T7 [S6, S7, S8] Proyectos page fidelity pass: art, compact cards, clean spotlight, CTA backdrop — inline — commit: 7510544 (done)
 - T8 [S5-S8] Verify: build, tests, mobile check, side-by-side with mockup — inline — commit: n/a (done)
+- T9 [S4, S6] Restore La Lupe/Floraltech images and switch filters to Restaurantes/Juegos/Datos/E-commerce — inline — commit: pending
 
 ## Log
 
@@ -35,3 +36,4 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L6 (evidence): final build OK, tsc OK, 156/156 tests on `next start`, `scripts/check-mobile-browser.mjs` PASS (no horizontal scroll at 360/390 on every page). Mockup copy not used per S2 (hero title, CTA copy, "conceptual" labels). /equipo keeps its own minimal footer (earlier design). Tree artwork reuses public/images/treesside-logo.webp (S3).
 - L7 (user, verbatim): "no se parece en nada a los mockups no los encontraste estan en la carpeta raiz con el nombre images". Only `Images/Mockups pagina.png` exists there (the one used). Decisions: images → "Sí, árbol e ilustraciones (Recomendado)"; featured → "Mantener el carrusel"; projects → "Los 31, tarjetas compactas".
 - L8 (evidence): 7510544 — build OK, tsc OK, 157/157 tests on next start, check-mobile-browser PASS. Requirement change S8: card-level author/portfolio assertions in member-ramirez, portfolio-catalog, portfolio-projects, project-spotlight, ramirez-new-projects now check the served catalog bundle and the modal source; employer cards keep a visible "Experiencia laboral" label. Mockup logo icon not used: brand test pins the current header logo and it was outside the L7 decision. Crop script lives in ../_scratch_portfolio_tools/crop_mockup.py (not committed).
+- L9 (user, verbatim): "vale pero en la lupe y en floraltech no pusiste las imagenes originales las ue ya existian de los prfoyhectos arregalo porfa y en las caategorias dividelo por restaurantes, juegos, datos, eccomerce". Grouping: Restaurantes = La Lupe; Juegos = Videojuegos + Gametroz + Ocho80; Datos = Análisis de datos; E-commerce = Web & E-Commerce. RED observed (4 tests), then 158/158 and check-mobile-browser PASS.

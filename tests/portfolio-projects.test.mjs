@@ -20,13 +20,13 @@ function cardFor(section, title) {
 
 const WITH_IMAGES = {
   Ocho80: 'mockup/ocho80', 'Radio Navidad': 'radio-navidad', Luhos: 'luhos', Gudfy: 'gudfy', Tanku: 'tanku',
-  'Floraltech E-Commerce': 'mockup/floraltech', 'Atherium 3D Game': 'atherium', 'Otaku Portal': 'otaku-portal',
+  'Floraltech E-Commerce': 'floraltech', 'Atherium 3D Game': 'atherium', 'Otaku Portal': 'otaku-portal',
   'Portfolio CMS': 'portfolio-cms', 'Dashboard BI · Superstore': 'dashboard-superstore',
   'EDA · Renta Ciudadana': 'eda-renta-ciudadana', 'Análisis de Ventas de Cafetería': 'ventas-cafeteria',
   'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'mockup/emisoras-latinas',
   'Entre Lanas y Fragancias': 'entre-lanas-y-fragancias',
   TengoYa: 'tengoya', CarWeb: 'carweb', Histech: 'histech', 'Robot Alejo 2.0': 'robot-alejo',
-  'La Lupe': 'mockup/la-lupe',
+  'La Lupe': 'la-lupe',
   'Calculadora de contenedores': 'mockup/calculadora-contenedores',
   'Libres en Cristo Jesús': 'libres-en-cristo',
   'API de Tienda + Asistente IA': 'tienda-api',
@@ -91,4 +91,14 @@ test('project ids are clean slugs and Jorge store API links to its repository', 
   const { readFile } = await import('node:fs/promises');
   const team = await readFile('src/data/team.ts', 'utf8');
   assert.ok(team.includes("link: 'https://github.com/jorge-puentes-b/tienda-api-efcore'"));
+});
+
+test('S6 La Lupe and Floraltech keep their original project images, not mockup art', async () => {
+  const section = await projectsSection();
+  for (const [title, slug] of [['La Lupe', 'la-lupe'], ['Floraltech E-Commerce', 'floraltech']]) {
+    const card = cardFor(section, title);
+    assert.ok(card.includes(`%2Fimages%2Fprojects%2F${slug}.webp`) || card.includes(`/images/projects/${slug}.webp`), title);
+    assert.ok(!card.includes('/mockup/') && !card.includes('%2Fmockup%2F'), `${title} mockup art`);
+    assert.ok(!card.includes('Ilustración conceptual'), `${title} is a real image`);
+  }
 });

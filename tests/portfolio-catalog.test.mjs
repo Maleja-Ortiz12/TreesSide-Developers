@@ -28,8 +28,8 @@ test('project filter chips are unique and project actions name their project', a
   const html = await projectsPage();
   const section = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0];
   const chips = [...section.matchAll(/<button[^>]*aria-pressed="(?:true|false)"[^>]*>([^<]*)</g)].map(m => m[1]);
-  // Mockup filters (odd/tasks/rediseno-mockup.md S4): three groups that cover every real category.
-  assert.deepEqual(chips, ['Todos', 'Web', 'Aplicaciones', 'Datos']);
+  // Filters requested in odd/tasks/rediseno-mockup.md S4 (L9).
+  assert.deepEqual(chips, ['Todos', 'Restaurantes', 'Juegos', 'Datos', 'E-commerce']);
   assert.ok(section.includes('aria-label="Ver proyecto Ocho80"'));
   assert.ok(!/Cliente|encargo/.test(section));
 });
@@ -48,14 +48,22 @@ test('technologies and buildable solutions reflect verified portfolio skills', a
   assert.ok(!html.includes('Power BI / Tableau'));
 });
 
-test('S4 each card names its mockup group next to its real category', async () => {
+test('S4 each card names its filter group next to its real category', async () => {
   const html = await projectsPage();
   const section = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0] ?? '';
   const card = title => section.split(/(?=<div[^>]*data-project=)/).find(item => item.includes(`>${title}</h3>`)) ?? '';
   const text = value => value.replace(/<!-- -->/g, '');
-  assert.ok(text(card('La Lupe')).includes('Web · Sitios web'));
-  assert.ok(text(card('Ocho80')).includes('Aplicaciones · Tiempo real'));
-  assert.ok(text(card('Dashboard BI · Superstore')).includes('Datos · Análisis de datos'));
+  const group = title => text(card(title)).match(/class="[^"]*card-group[^"]*">([^<]*)</)?.[1]?.replace(/&amp;/g, '&');
+  assert.equal(group('La Lupe'), 'Restaurantes · Sitios web');
+  assert.equal(group('Atherium 3D Game'), 'Juegos · Videojuegos');
+  assert.equal(group('Gametroz'), 'Juegos · Sitios web');
+  assert.equal(group('Ocho80'), 'Juegos · Tiempo real');
+  assert.equal(group('Dashboard BI · Superstore'), 'Datos · Análisis de datos');
+  assert.equal(group('Floraltech E-Commerce'), 'E-commerce · Web & E-Commerce');
+  assert.equal(group('Gudfy'), 'E-commerce · Web & E-Commerce');
+  // Projects outside the four groups appear only under Todos and show just their category.
+  assert.equal(group('Luhos'), 'Sistemas de gestión');
+  assert.equal(group('TengoYa'), 'Marketplaces');
 });
 
 test('S8 cards stay compact while the detail modal keeps every author, portfolio and experience note', async () => {

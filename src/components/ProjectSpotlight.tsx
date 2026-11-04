@@ -68,7 +68,7 @@ export function ProjectSpotlight({ projects, onOpen, suspended = false, groupOf 
           </button>}
         </div>
         <div className={styles.info} aria-live={running ? 'off' : 'polite'} aria-atomic="true">
-          <span className={styles.category}>{groupOf ? `${groupOf(project)} · ${project.category}` : project.category}</span>
+          <span className={styles.category}>{groupOf ? groupOf(project) : project.category}</span>
           <h2>{project.title}</h2>
           <p className={styles.description}>{project.description}</p>
           {project.imageLabel && <p className={styles.note}>{project.imageLabel}</p>}

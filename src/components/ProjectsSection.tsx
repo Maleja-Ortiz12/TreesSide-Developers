@@ -8,7 +8,7 @@ import { FEATURED_PROJECTS, Project } from '@/data/content';
 import { ProjectModal } from './ProjectModal';
 import { ProjectSpotlight } from './ProjectSpotlight';
 import { ArrowRight } from 'lucide-react';
-import { PROJECT_FILTERS, projectGroup, withMockupArt } from '@/lib/projectGroups';
+import { PROJECT_FILTERS, projectGroup, projectGroupLabel, withMockupArt } from '@/lib/projectGroups';
 
 const CATALOG = withMockupArt(FEATURED_PROJECTS);
 
@@ -57,7 +57,7 @@ export function ProjectsSection() {
 
         <span className="circuit-drop" aria-hidden="true" />
 
-        <ProjectSpotlight key={`spotlight-${activeFilter}`} projects={filteredProjects} onOpen={setSelectedProject} suspended={selectedProject !== null} groupOf={projectGroup} />
+        <ProjectSpotlight key={`spotlight-${activeFilter}`} projects={filteredProjects} onOpen={setSelectedProject} suspended={selectedProject !== null} groupOf={projectGroupLabel} />
 
         <div className="projects-grid" key={`grid-${activeFilter}`}>
           {filteredProjects.map((project, index) => (
@@ -75,7 +75,7 @@ export function ProjectsSection() {
             >
               <div className="card-copy">
                 <h3 className="card-title">{project.title}</h3>
-                <p className="card-group">{projectGroup(project)} · {project.category}</p>
+                <p className="card-group">{projectGroupLabel(project)}</p>
                 {project.experience && <span className="card-experience">Experiencia laboral</span>}
                 <p className="card-description">{project.description}</p>
                 <button type="button" aria-label={`Ver proyecto ${project.title}`} className="card-action">
