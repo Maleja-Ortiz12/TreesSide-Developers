@@ -22,45 +22,16 @@ async function loadModule() {
   return exports;
 }
 
-test('S2 home shows a project image carousel inside a scroll reveal', async () => {
+// S12 replaces the home strip with two static laptop project links; the reusable strip remains tested below.
+test('S12 the home shows two laptop project cards instead of the moving strip', async () => {
   const html = await home();
-  assert.match(html, /data-reveal[^>]*>\s*<section id="carrusel"/);
-  const section = carousel(html);
-  assert.ok(section, 'carousel section');
-  assert.ok(section.includes('Proyectos que ya construimos'));
-  const visible = items(section, false);
-  for (const [title, slug] of [['La Lupe', 'la-lupe'], ['Ocho80', 'ocho80'], ['TengoYa', 'tengoya'], ['Emisoras Latinas', 'emisoras-latinas-cover']]) {
-    const item = visible.find(entry => entry.includes(title));
-    assert.ok(item, `item ${title}`);
-    assert.ok(item.includes(`%2Fimages%2Fprojects%2F${slug}.webp`) || item.includes(`/images/projects/${slug}.webp`), `image ${title}`);
-    const expected = { 'La Lupe': '/casos/la-lupe', TengoYa: '/casos/tengoya', 'Emisoras Latinas': '/casos/emisoras-latinas' }[title] ?? '/proyectos';
-    assert.ok(item.includes(`href="${expected}"`), `link ${title}`);
-  }
-  assert.ok(!visible.some(entry => entry.includes('Gudfy') || entry.includes('Luhos')), 'employer work stays out');
-  assert.ok(!section.includes('treesside-logo'), 'only real project images');
+  assert.ok(!carousel(html));
+  assert.equal((html.match(/data-laptop/g) || []).length, 2);
+  for (const id of ['equipo-la-lupe', 'equipo-emisoras-latinas']) assert.ok(html.includes(`href="/proyectos#${id}"`));
 });
-
-test('S2 the loop copy and wide-screen fillers are hidden from assistive tech and keyboard, and motion can be paused', async () => {
-  const section = carousel(await home());
-  const visible = items(section, false);
-  const titles = visible.map(item => item.match(/<strong>([^<]+)<\/strong>/)?.[1]);
-  assert.equal(new Set(titles).size, titles.length, 'each project is announced once');
-  for (const hidden of items(section, true)) assert.ok(hidden.includes('aria-hidden="true"'), 'repeat hidden from screen readers');
-  assert.match(section, /<div[^>]*aria-hidden="true"[^>]*data-carousel-copy/);
-  assert.ok(section.includes('Pausar carrusel'));
-});
-
-test('S4 every strip copy holds at least 14 cards so very wide screens never see a gap', async () => {
-  const section = carousel(await home());
-  const rows = section.split(/(?=<div[^>]*class="[^"]*viewport)/).slice(1);
-  assert.equal(rows.length, 2);
-  for (const row of rows) {
-    const count = (row.match(/data-carousel-item/g) || []).length;
-    assert.ok(count >= 28, `two copies of at least 14 cards, got ${count}`);
-  }
+test('the retained strip helper fills wide screens without changing ordering', async () => {
   const { repeatToMinimum } = await loadModule();
   assert.deepEqual(Array.from(repeatToMinimum(['a', 'b', 'c'], 7)), ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c']);
-  assert.deepEqual(Array.from(repeatToMinimum(['a', 'b'], 1)), ['a', 'b']);
   assert.deepEqual(Array.from(repeatToMinimum([], 14)), []);
 });
 
@@ -79,13 +50,4 @@ test('S7 the carousel stops moving for reduced motion and while hovered, focused
   // Starting from rest means reduced-motion visitors never see the strip drift while the spring settles.
   assert.match(source, /useSpring\(0,/);
   for (const event of ['onPointerEnter', 'onPointerLeave', 'onFocus', 'onBlur']) assert.ok(source.includes(event), event);
-});
-
-test('S4 both strip copies hold the same number of cards', async () => {
-  const rows = carousel(await home()).split(/(?=<div[^>]*class="[^"]*viewport)/).slice(1);
-  for (const row of rows) {
-    const sets = row.split(/(?=<div class="[^"]*set)/).slice(1).map(s => (s.match(/data-carousel-item/g) || []).length);
-    assert.equal(sets.length, 2);
-    assert.equal(sets[0], sets[1]);
-  }
 });

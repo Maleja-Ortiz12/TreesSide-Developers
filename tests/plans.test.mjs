@@ -52,8 +52,8 @@ test('plans page publishes exactly the four approved starting prices with comple
   assert.ok(!/mejor precio del mercado|más barato del mercado|ventas garantizadas|primero en Google/i.test(content));
 });
 
-test('home and services show the same four approved offers and link their full details', async () => {
-  for (const path of ['/', '/servicios']) {
+test('services retain the four approved offers after the S12 home redesign and link their full details', async () => {
+  for (const path of ['/servicios']) {
     const html = await get(path);
     const section = html.match(/<section id="planes-resumen"[\s\S]*?<\/section>/)?.[0];
     assert.ok(section, `${path} plans summary`);

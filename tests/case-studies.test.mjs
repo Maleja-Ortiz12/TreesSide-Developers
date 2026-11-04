@@ -52,15 +52,13 @@ test('S2 the case index lists the three cases, unknown slugs are 404, and the si
   }
 });
 
-test('S2 cases are reachable from the footer, the home carousel and the demo cards', async () => {
+test('S2 cases are reachable from the footer and the demo cards, and the home carousel leads to their catalog card', async () => {
   const home = await page('/');
   const footer = home.match(/<footer[\s\S]*?<\/footer>/)?.[0] ?? '';
   assert.ok(footer.includes('href="/casos"'), 'footer link');
-  const carousel = home.match(/<section id="carrusel"[\s\S]*?<\/section>/)?.[0] ?? '';
-  for (const item of CASES) {
-    const card = [...carousel.matchAll(/<a[^>]*data-carousel-item[^>]*>[\s\S]*?<\/a>/g)].map(m => m[0])
-      .find(entry => !entry.includes('tabindex="-1"') && entry.includes(`<strong>${item.title}</strong>`));
-    assert.ok(card?.includes(`href="/casos/${item.slug}"`), `carousel ${item.slug}`);
+  // S12 replaces the moving strip with two laptop cards; all case studies stay linked from /casos.
+  for (const slug of ['la-lupe', 'emisoras-latinas']) {
+    assert.ok(home.includes(`href="/proyectos#equipo-${slug}"`), `laptop ${slug}`);
   }
   const demo = home.match(/<article[^>]*data-demo="la-lupe"[\s\S]*?<\/article>/)?.[0] ?? '';
   assert.ok(demo.includes('href="/casos/la-lupe"'), 'La Lupe demo links its case study');

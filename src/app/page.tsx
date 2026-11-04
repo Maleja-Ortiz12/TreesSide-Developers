@@ -2,8 +2,7 @@ import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { Hero } from '@/components/Hero';
 import { HomeDemos } from '@/components/HomeDemos';
-import { PlansPreview } from '@/components/PlansSection';
-import { ProjectCarousel } from '@/components/motion/ProjectCarousel';
+import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata = pageMetadata('/', {
   title: 'TreesSide Developers | Transformamos ideas en soluciones digitales',
@@ -14,9 +13,8 @@ export default function HomePage() {
   return (
     <SitePage offsetHeader={false}>
       <Hero />
-      <ProjectCarousel />
       <HomeDemos />
-      <PlansPreview />
+      <HomeClosing />
     </SitePage>
   );
 }

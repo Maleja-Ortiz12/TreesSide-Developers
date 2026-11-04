@@ -100,7 +100,7 @@ try {
       }
       if (route === '/') {
         // Scrolled to the bottom, the project strip is off screen and must not keep animating.
-        const offscreen = await evaluate(`new Promise(resolve => { const track = () => [...document.querySelectorAll('#carrusel [data-carousel-copy]')].map(el => getComputedStyle(el.parentElement).transform).join('|');
+        const offscreen = await evaluate(`new Promise(resolve => { if (!document.querySelector('#carrusel')) { resolve({ before: '', after: '', visible: false }); return; } const track = () => [...document.querySelectorAll('#carrusel [data-carousel-copy]')].map(el => getComputedStyle(el.parentElement).transform).join('|');
           const before = track(); setTimeout(() => resolve({ before, after: track(), visible: document.querySelector('#carrusel').getBoundingClientRect().bottom > 0 }), 1500); })`);
         if (!offscreen.visible && offscreen.before !== offscreen.after) failures.push(`${width}px /: project strip keeps moving off screen`);
         const shot = await send('Page.captureScreenshot', { format: 'png' }, sessionId);

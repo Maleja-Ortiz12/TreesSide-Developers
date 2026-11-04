@@ -10,8 +10,13 @@ async function page(path) {
 const styles = html => [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map(match => match[1]).join('\n');
 
 test('S2 component responsive rules are in the server HTML, so phones get the mobile layout before JavaScript loads', async () => {
+  // S9 uses a CSS module for the home instead of an inline styled-jsx hero grid.
+  const html = await page('/');
+  const urls = [...html.matchAll(/<link[^>]*href="([^"]+\.css[^"]*)"[^>]*>/g)].map(m => m[1]);
+  const css = (await Promise.all(urls.map(async url => (await fetch(new URL(url.replace(/&amp;/g, '&'), base))).text()))).join(String.fromCharCode(10));
+  assert.match(css, /@media\s*\(max-width:\s*760px\)/, 'home responsive CSS linked before hydration');
   const cases = [
-    ['/', /\.hero-grid\.jsx-[0-9a-f]+\{grid-template-columns:1fr!important/],
+
     ['/servicios', /\.tech-grid\.jsx-[0-9a-f]+\{grid-template-columns:repeat\(2,1fr\)!important/],
   ];
   for (const [path, rule] of cases) {
