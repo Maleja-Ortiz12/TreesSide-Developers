@@ -69,7 +69,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - T21 [S21,S2,S5] Team mockup with photo/summary cards and retained profiles — inline — commit: 6eb01e2 (done)
 
-- T22 [S22,S2,S5] Contact mockup with preserved sending, consent and FAQ — inline — commit: pending (in progress)
+- T22 [S22,S2,S5] Contact mockup with preserved sending, consent and FAQ — inline — commit: 407de33 (done)
 
 ## Log
 
@@ -135,3 +135,5 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L38 (user, verbatim): "listo sigue con el contacto". Images/mockup contacto.png confirmed. Mockup consent copy "He leído la política de datos" is not used: the existing explicit authorization text stays (legal consent, S2). Select options come from SERVICES titles, not invented categories.
 
 - L39 (S22 checks): /contacto follows the mockup: hero with sprout art cropped from the supplied image (edges faded), "Cuéntanos tu idea." with WhatsApp call, location, email with copy and phone; glass form with labelled Nombre, Correo electrónico, optional ¿Qué necesitas construir? (SERVICES titles + Otro) and Cuéntanos sobre tu proyecto; three topic cards; preserved FAQ with JSON-LD; shared HomeClosing. Sending logic, honeypot, required unchecked consent with the existing legal authorization text, success only on real send and kept form data are unchanged; src/lib/contact.ts adds the optional necesidad field only when chosen. RED: four new rules before source change. Final: build exit0, 185/185 (incl. existing Formspree/consent tests). Browser 390/1440: empty submit blocked natively with focus on Nombre, Tab order skips honeypot, consent still required, submit without a configured form ID shows the not-configured alert, keeps entered data, shows no false success and makes no Formspree request; topics revealed; FAQ opens with Enter; single footer; no overflow. All-route mobile 360/390 PASS on the build before the CSS-only mask tweak (mask does not affect layout); screenshots ../_scratch_portfolio_tools/contact-browser/ reviewed. Native assessment unavailable; self-verification.
+
+- L40 (S22 closure): 407de33 holds the S22 work unit; /contacto opened on localhost:3000. Risk: none (page composition plus one optional payload field; existing sending/consent behavior and other pages unchanged).
