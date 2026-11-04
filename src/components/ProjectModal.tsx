@@ -32,7 +32,7 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
       padding: '20px'
     }} onClick={onClose}>
       <div style={{
-        background: 'linear-gradient(145deg, #0d1724, #05110f)',
+        background: 'linear-gradient(145deg, #0b1f1b, #05110f)',
         border: '1px solid rgba(62, 240, 168, 0.3)',
         borderRadius: '20px',
         maxWidth: '720px',
@@ -80,7 +80,7 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to top, #0d1724 5%, transparent 60%)'
+            background: 'linear-gradient(to top, #0b1f1b 5%, transparent 60%)'
           }} />
 
           {/* Tech Tag Badge */}

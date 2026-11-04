@@ -3,7 +3,7 @@
 .summary { max-width: 720px; color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; }
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 40px; }
 .card { display: flex; flex-direction: column; overflow: hidden; text-decoration: none; }
-.thumb { position: relative; display: block; aspect-ratio: 16 / 10; background: #08111e; }
+.thumb { position: relative; display: block; aspect-ratio: 16 / 10; background: #071613; }
 .cardBody { display: grid; gap: 8px; padding: 20px 22px 24px; color: var(--text-muted); font-size: .9rem; line-height: 1.6; }
 .cardBody strong { color: var(--text-main); font-size: 1.15rem; }
 .cardBody em { display: inline-flex; align-items: center; gap: 6px; color: var(--primary-green); font-style: normal; font-weight: 600; }
@@ -12,7 +12,7 @@
 .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; margin: 24px 0 40px; }
 .hero :global(.btn) { margin-top: 20px; }
 .authors { margin-top: 14px; color: var(--primary-green); font-size: .92rem; }
-.cover { position: relative; aspect-ratio: 16 / 10; border: 1px solid #2ee6c535; border-radius: 18px; overflow: hidden; background: #08111e; box-shadow: 0 24px 50px -28px #000; }
+.cover { position: relative; aspect-ratio: 16 / 10; border: 1px solid #2ee6c535; border-radius: 18px; overflow: hidden; background: #071613; box-shadow: 0 24px 50px -28px #000; }
 .block { margin-top: 30px; color: var(--text-muted); line-height: 1.75; }
 .block h2 { margin-bottom: 12px; color: var(--text-main); font-size: 1.3rem; }
 .block ul { display: grid; gap: 8px; padding-left: 20px; }

@@ -71,7 +71,7 @@ code, .font-mono {
   background: var(--bg-darker);
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #173a32;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {

@@ -2,7 +2,7 @@
 .heading { max-width: 760px; margin-bottom: 34px; }
 .disclaimer { margin-top: 16px; padding-left: 12px; border-left: 2px solid var(--primary-cyan); color: var(--text-muted); font-size: .82rem; line-height: 1.65; }
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: stretch; }
-.card { min-width: 0; display: flex; flex-direction: column; border: 1px solid #2ee6c535; border-radius: 20px; background: linear-gradient(150deg, #13263a, #08111e 65%); box-shadow: 0 18px 45px -26px #000c; overflow: hidden; transition: border-color 250ms ease, box-shadow 250ms ease; }
+.card { min-width: 0; display: flex; flex-direction: column; border: 1px solid #2ee6c535; border-radius: 20px; background: linear-gradient(150deg, #11302a, #071613 65%); box-shadow: 0 18px 45px -26px #000c; overflow: hidden; transition: border-color 250ms ease, box-shadow 250ms ease; }
 .card:hover, .card:focus-within { border-color: #3ef0a865; box-shadow: 0 20px 45px -25px #2ee6c530; }
 .chrome { display: flex; align-items: center; gap: 5px; border-bottom: 1px solid #ffffff0e; padding: 13px 18px; background: #030b0a55; }
 .chrome > span { width: 6px; height: 6px; border-radius: 50%; background: #2ee6c560; }
