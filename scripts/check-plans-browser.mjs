@@ -66,7 +66,9 @@ try {
         width: innerWidth, client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth,
         main: rect(main), desktop: getComputedStyle(document.querySelector('.desktop-nav')).display,
         menu: getComputedStyle(document.querySelector('.mobile-toggle')).display,
-        overflowing: [...main.querySelectorAll('*')].filter(el => {const r=el.getBoundingClientRect(); return r.width > 0 && (r.right > innerWidth + 1 || r.left < -1);}).slice(0,12).map(el=>({tag:el.tagName,class:el.className,...rect(el)})),
+        // Decorative art is deliberately clipped, and the comparison scrolls within its own region.
+        // Actual controls must still remain inside the viewport.
+        overflowing: [...main.querySelectorAll('a, button, summary')].filter(el => {const r=el.getBoundingClientRect(); return r.width > 0 && (r.right > innerWidth + 1 || r.left < -1);}).slice(0,12).map(el=>({tag:el.tagName,class:el.className,...rect(el)})),
         plans: [...document.querySelectorAll('[data-plan]')].map(el=>el.dataset.plan),
       };
     })()`);
@@ -74,8 +76,32 @@ try {
     const screenshot = await send('Page.captureScreenshot', { format: 'png' }, sessionId);
     await writeFile(path.join(output, `${width}.png`), Buffer.from(screenshot.data, 'base64'));
     assert.equal(metrics.width, width, 'real viewport width');
-    assert.equal(metrics.overflowing.length, 0, 'plan content fits viewport');
+    assert.equal(metrics.scroll, metrics.client, 'the comparison scroll stays inside its region, not the whole page');
+    assert.equal(metrics.overflowing.length, 0, 'plan controls fit viewport');
     assert.deepEqual(metrics.plans, ['impulso-web', 'catalogo-administrable', 'vende-online', 'automatiza-tu-negocio']);
+    // Native fragments reveal the complete scope, including links to an inherited plan.
+    for (const id of metrics.plans) {
+      await evaluate(`document.querySelector('[data-plan-preview="${id}"] a').click()`);
+      const scope = await evaluate(`new Promise(resolve => setTimeout(() => {
+        const article = document.getElementById('${id}');
+        resolve({open: article.closest('details').open, height: article.getBoundingClientRect().height,
+          headings: [...article.querySelectorAll('h3')].map(el => el.textContent.trim())});
+      }, 300))`);
+      assert.equal(scope.open, true, `${id}: Ver alcance opens full details at ${width}px`);
+      assert.ok(scope.height > 0, `${id}: full scope is rendered`);
+      assert.deepEqual(scope.headings, ['Qué incluye', 'No incluye', 'Costos recurrentes', 'Qué necesitamos de ti', 'Entrega y alcance']);
+    }
+    await evaluate(`document.querySelector('#vende-online a[href="#catalogo-administrable"]').click()`);
+    const inherited = await evaluate(`new Promise(resolve => setTimeout(() => resolve({ hash: location.hash,
+      open: document.getElementById('catalogo-administrable').closest('details').open }), 300))`);
+    assert.deepEqual(inherited, {hash: '#catalogo-administrable', open: true});
+    const toggled = await evaluate(`(() => {
+      const details = document.getElementById('catalogo-administrable').closest('details');
+      details.querySelector('summary').click(); const closed = !details.open;
+      details.querySelector('summary').click(); return {closed, reopened: details.open};
+    })()`);
+    assert.deepEqual(toggled, {closed: true, reopened: true});
+    console.log(`PLAN_SCOPE_LINKS_${width}_PASS`);
     if (width < 600) {
       assert.equal(metrics.desktop, 'none', 'desktop links hidden on mobile');
       assert.notEqual(metrics.menu, 'none', 'mobile menu toggle visible');

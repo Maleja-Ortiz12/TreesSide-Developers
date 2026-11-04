@@ -23,6 +23,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - S15. User (L16): "sigue con el mockup de servicios porfa". Follow Images/mockup servicios.png with its tree hero, two-column illustrated cards, connected four-step process and integrated closing. Decisions: "9 tarjetas con el estilo nuevo" and "Sí, textos del mockup". Keep all 9 existing service titles/items and technologies; replace plans preview with the hero link "Ver planes". Use mockup heading "Tecnología que resuelve. Software que crece contigo.", paragraph and process steps Descubrimos, Diseñamos, Construimos, Lanzamos. Preserve the site-wide lateral nav and reuse the integrated home footer. Other page content remains unchanged.
 
+- S16. User (L18): "continua con los planes". Adapt Images/mockup planes.png: hero "Elige cómo empieza tu próxima idea.", four illustrated plan cards, comparison of cumulative scope, and integrated closing. Keep COMMERCIAL_PLANS untouched (names, COP prices, inclusions, exclusions, recurrence, requirements, delivery, inherited tiers and WhatsApp messages). Preserve the four existing canonical plan anchors. Expose full original details via "Ver alcance" and preserve written-quote/tax/starting-price disclaimers. No checkout or new payment behavior.
+
 ## Tasks
 
 - T1 [S1, S3] Global theme tokens, cards, buttons, kicker, background — inline — commit: a5c90d5, 773acf1 (done)
@@ -42,6 +44,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - T14 [S14] Restore original project carousel, remove home demos, integrate old footer information into new closing — inline — commit: e67dabd (done)
 
 - T15 [S15] Services mockup redesign, preserving nine services and technologies — inline — commit: ea1b2f0 (art), a2ff51c (implementation/tests; done)
+
+- T16 [S16] Plans mockup hero/cards/comparison, full original scope and integrated closing — inline — commit: pending
 
 ## Log
 
@@ -67,3 +71,5 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L16 (user, verbatim): "sigue con el mockup de servicios porfa". Decisions: content → "9 tarjetas con el estilo nuevo"; texts → "Sí, textos del mockup".
 
 - L17 (S15 evidence): ea1b2f0 adds five decorative crops; a2ff51c implements hero, nine native-details service cards, unchanged technologies, mockup-specific process and shared integrated closing. RED: three new public tests failed before implementation. GREEN: production build exit 0, 161/161 tests; browser mobile check PASS for all routes at 360/390. Browser check with real scrolling confirmed process wrapper opacity > .95 and all four labels; clicked all nine summaries open/closed with nonempty item lists (SERVICES_PROCESS_AND_NINE_DISCLOSURES_PASS). Screenshots: ../_scratch_portfolio_tools/services-preview.png and services-browser/services-process.png. Static headless capture by anchor was blank; real-scroll capture supplied visual proof. Original ProcessSection/data on /nosotros unchanged. Native assessment unavailable due undeclared untracked files; it returned writer self-verification. New page mockups and previous unrelated metadata/carousel changes left uncommitted.
+
+- L18 (user, verbatim): "continua con los planes". Existing values match the mockup: 500000 / 900000 / 1490000 / 3490000 COP. Scope is presentation only; financial data and legal conditions stay unchanged.

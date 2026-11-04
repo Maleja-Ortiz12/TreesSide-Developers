@@ -21,7 +21,8 @@ function planCards(html) {
 
 test('plans page publishes exactly the four approved starting prices with complete scope', async () => {
   const html = await get('/planes');
-  assert.match(html, /<h1[^>]*>[^<]*Planes[^<]*<\/h1>/);
+  // S16 changes only the visual heading; the full commercial scope below stays unchanged.
+  assert.match(text(html.match(/<h1\b[\s\S]*?<\/h1>/)?.[0] ?? ''), /Elige cómo empieza tu próxima idea\./);
   assert.match(html, /<link rel="canonical" href="https:\/\/treesside-developers\.malejawork12\.workers\.dev\/planes"/);
   const cards = planCards(html);
   assert.deepEqual(cards.map(card => card.id), PLANS.map(plan => plan.id));

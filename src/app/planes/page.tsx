@@ -1,5 +1,6 @@
 import { SitePage } from '@/components/SitePage';
 import { PlansSection } from '@/components/PlansSection';
+import { HomeClosing } from '@/components/home/HomeClosing';
 import { pageMetadata } from '@/lib/metadata';
 
 export const metadata = pageMetadata('/planes', {
@@ -9,7 +10,7 @@ export const metadata = pageMetadata('/planes', {
 
 export default function PlansPage() {
   return (
-    <SitePage>
+    <SitePage offsetHeader={false} footer={<HomeClosing />}>
       <PlansSection />
     </SitePage>
   );

@@ -1,7 +1,9 @@
 import Link from 'next/link';
-import { ArrowRight, Check, Minus, MessageCircle, FileText, RefreshCw, ClipboardList } from 'lucide-react';
+import { ArrowRight, ArrowDown, Check, Minus, MessageCircle, FileText, RefreshCw, ClipboardList } from 'lucide-react';
 import { COMMERCIAL_PLANS, formatPlanPrice, planWhatsAppUrl } from '@/data/plans';
 import styles from './PlansSection.module.css';
+import { PlansHero, PlansOverview, PlansComparison } from './plans/PlansMockup';
+import mockup from './plans/PlansMockup.module.css';
 
 function IncludedPlan({ id, preview = false }: { id?: string; preview?: boolean }) {
   const included = COMMERCIAL_PLANS.find(plan => plan.id === id);
@@ -14,7 +16,7 @@ function IncludedPlan({ id, preview = false }: { id?: string; preview?: boolean 
   );
 }
 
-/** Small entry point on the home and services pages; the complete scope lives at /planes. */
+/** Reusable compact entry point; the complete scope lives at /planes. */
 export function PlansPreview() {
   return (
     <section id="planes-resumen" className={styles.preview} aria-labelledby="plans-preview-title">
@@ -43,11 +45,13 @@ export function PlansPreview() {
 
 export function PlansSection() {
   return (
-    <section id="planes" className={styles.section} aria-labelledby="plans-title">
+    <section id="planes" className={mockup.page} aria-labelledby="plans-title">
       <div className="container">
-        <header className={styles.heading}>
-          <span className="kicker">ALCANCE CLARO, SIN SORPRESAS</span>
-          <h1 id="plans-title">Planes para tu negocio</h1>
+        <PlansHero />
+        <PlansOverview />
+        <PlansComparison />
+        <div className={mockup.scopeHeading}>
+          <h2>Alcances y condiciones</h2>
           <p>Elige un punto de partida y revisa qué incluye, qué no incluye y qué necesitas para comenzar. Antes de contratar confirmamos contigo el alcance, el precio y el cronograma.</p>
           <div className={styles.notice}>
             <FileText size={20} aria-hidden="true" />
@@ -56,11 +60,14 @@ export function PlansSection() {
           <nav className={styles.jumpLinks} aria-label="Ir al detalle de un plan">
             {COMMERCIAL_PLANS.map(plan => <a key={plan.id} href={`#${plan.id}`}>{plan.name}<ArrowRight size={14} aria-hidden="true" /></a>)}
           </nav>
-        </header>
+        </div>
 
         <div className={styles.planList}>
           {COMMERCIAL_PLANS.map((plan, index) => (
-            <article key={plan.id} id={plan.id} data-plan={plan.id} className={styles.plan}>
+            <details key={plan.id} className={mockup.scopeDisclosure}>
+              <summary>Alcance completo de {plan.name}<ArrowDown size={20} aria-hidden="true" /></summary>
+              {/* Keeping the public fragment inside details lets native anchor navigation reveal its full scope. */}
+              <article id={plan.id} data-plan={plan.id} className={styles.plan}>
               <div className={styles.planHeader}>
                 <div>
                   <span className={styles.line}>{`0${index + 1} / ${plan.line}`}</span>
@@ -103,7 +110,8 @@ export function PlansSection() {
                 </a>
                 <Link href="/contacto" className={styles.details}>Prefiero el formulario o correo <ArrowRight size={16} aria-hidden="true" /></Link>
               </div>
-            </article>
+              </article>
+            </details>
           ))}
         </div>
 
