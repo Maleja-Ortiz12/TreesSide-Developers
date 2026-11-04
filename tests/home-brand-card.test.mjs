@@ -26,8 +26,8 @@ test('S10 home hero uses the mockup copy, with "vida." in the mint gradient', as
   assert.ok(primary.includes('href="/contacto"'), 'primary CTA goes to contact');
   assert.equal(text(primary), 'Construyamos tu proyecto');
   assert.ok(primary.includes('<svg'), 'arrow icon');
-  const secondary = section.match(/<a[^>]*href="#demos"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
-  assert.equal(text(secondary), 'Explorar demos');
+  const secondary = section.match(/<a[^>]*href="#carrusel"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
+  assert.equal(text(secondary), 'Explorar proyectos');
   assert.ok(text(section).includes('01 / EXPLORA'));
 });
 
@@ -55,9 +55,9 @@ test('S9 the stats band counts come from the real catalog data', async () => {
   for (const count of ['FEATURED_PROJECTS.length', 'TECHNOLOGIES.length', 'TEAM_MEMBERS.length']) assert.ok(source.includes(count), count);
 });
 
-test('S12 the old hero, brand card, quick services, carousel and plans preview are gone from the home', async () => {
+test('S12 the old hero, brand card, quick services, and plans preview are gone from the home', async () => {
   const html = (await home()).replace(/<script[\s\S]*?<\/script>/g, '').replace(/<head[\s\S]*?<\/head>/g, '');
-  for (const marker of ['data-brand-card', 'quick-features-grid', 'id="carrusel"', 'id="planes-resumen"', 'Transformamos']) {
+  for (const marker of ['data-brand-card', 'quick-features-grid', 'id="planes-resumen"', 'Transformamos']) {
     assert.ok(!html.includes(marker), marker);
   }
 });

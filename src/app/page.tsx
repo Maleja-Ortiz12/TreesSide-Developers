@@ -1,7 +1,7 @@
 import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { Hero } from '@/components/Hero';
-import { HomeDemos } from '@/components/HomeDemos';
+import { ProjectCarousel } from '@/components/motion/ProjectCarousel';
 import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata = pageMetadata('/', {
@@ -11,10 +11,9 @@ export const metadata = pageMetadata('/', {
 
 export default function HomePage() {
   return (
-    <SitePage offsetHeader={false}>
+    <SitePage offsetHeader={false} footer={<HomeClosing />}>
       <Hero />
-      <HomeDemos />
-      <HomeClosing />
+      <ProjectCarousel />
     </SitePage>
   );
 }

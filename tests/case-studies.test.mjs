@@ -52,16 +52,15 @@ test('S2 the case index lists the three cases, unknown slugs are 404, and the si
   }
 });
 
-test('S2 cases are reachable from the footer and the demo cards, and the home carousel leads to their catalog card', async () => {
+test('S2 cases remain reachable from the integrated footer and project modal, with catalog links in the home carousel', async () => {
   const home = await page('/');
   const footer = home.match(/<footer[\s\S]*?<\/footer>/)?.[0] ?? '';
   assert.ok(footer.includes('href="/casos"'), 'footer link');
-  // S12 replaces the moving strip with two laptop cards; all case studies stay linked from /casos.
+  // S14 restores the moving strip; all case studies stay linked from /casos and project detail.
   for (const slug of ['la-lupe', 'emisoras-latinas']) {
     assert.ok(home.includes(`href="/proyectos#equipo-${slug}"`), `laptop ${slug}`);
   }
-  const demo = home.match(/<article[^>]*data-demo="la-lupe"[\s\S]*?<\/article>/)?.[0] ?? '';
-  assert.ok(demo.includes('href="/casos/la-lupe"'), 'La Lupe demo links its case study');
+  assert.ok(!home.includes('data-demo='), 'S14 removes demos from the home');
   const modal = await readFile('src/components/ProjectModal.tsx', 'utf8');
   assert.ok(modal.includes('Ver caso de éxito'), 'project modal links the case study');
 });

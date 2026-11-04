@@ -25,7 +25,7 @@ async function page(path) {
 }
 
 const SECTIONS = {
-  '/': ['demos'],
+  '/': ['carrusel'],
   '/servicios': ['servicios', 'tecnologias'],
   '/proyectos': ['proyectos'],
   '/nosotros': ['sobre-nosotros', 'proceso'],

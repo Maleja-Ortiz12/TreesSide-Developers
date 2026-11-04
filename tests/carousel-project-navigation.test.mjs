@@ -8,7 +8,8 @@ async function page(path) {
   assert.equal(response.status, 200, path);
   return response.text();
 }
-const anchors = html => [...html.matchAll(/<article[^>]*data-project-card[^>]*>[\s\S]*?<\/article>/g)].map(m => m[0]);
+const anchors = html => [...(html.match(/<section id="carrusel"[\s\S]*?<\/section>/)?.[0] ?? '')
+  .matchAll(/<a[^>]*data-carousel-item[^>]*>[\s\S]*?<\/a>/g)].map(m => m[0]);
 
 test('S1 every home carousel card, copies included, leads to the same project card in the catalog', async () => {
   const [home, catalog] = await Promise.all([page('/'), page('/proyectos')]);
@@ -16,7 +17,7 @@ test('S1 every home carousel card, copies included, leads to the same project ca
   assert.ok(items.length > 0, 'carousel cards');
   const seen = new Set();
   for (const item of items) {
-    const title = item.match(/<h3[^>]*>([^<]+)<\/h3>/)?.[1];
+    const title = item.match(/<strong>([^<]+)<\/strong>/)?.[1];
     const id = item.match(/href="\/proyectos#([a-z0-9-]+)"/)?.[1];
     assert.ok(id, `${title} links to a catalog anchor, got ${item.match(/href="([^"]+)"/)?.[1]}`);
     const start = catalog.search(new RegExp(`<div[^>]*\\sid="${id}"[^>]*data-project="${id}"`));
@@ -25,7 +26,7 @@ test('S1 every home carousel card, copies included, leads to the same project ca
     assert.match(card, new RegExp(`<h3[^>]*>${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</h3>`), `#${id} shows ${title}`);
     seen.add(title);
   }
-  for (const title of ['La Lupe', 'Emisoras Latinas']) assert.ok(seen.has(title), `carousel includes ${title}`);
+  for (const title of ['La Lupe', 'Emisoras Latinas', 'Ocho80', 'TengoYa']) assert.ok(seen.has(title), `carousel includes ${title}`);
 });
 
 test('S1 the carousel lands with a native anchor load on a card that does not animate while targeted', async () => {

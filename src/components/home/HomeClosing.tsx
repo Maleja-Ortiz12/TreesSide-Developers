@@ -3,13 +3,48 @@ import Link from 'next/link';
 import { Mail, Layers, MessageCircle, ArrowUpRight } from 'lucide-react';
 import { CONTACT_INFO } from '@/data/content';
 import styles from './Home.module.css';
+
+const footerLinks = [
+  ['Inicio', '/'], ['Servicios', '/servicios'], ['Planes', '/planes'],
+  ['Proyectos', '/proyectos'], ['Casos de éxito', '/casos'],
+  ['Sobre Nosotros', '/nosotros'], ['Equipo', '/equipo'], ['Contacto', '/contacto'],
+];
+
 export function HomeClosing() {
-  return <section className={styles.closing} aria-labelledby="closing-title"><div className={`container ${styles.closingInner}`}>
-    <h2 id="closing-title">Lo que sigue,<br />lo construimos<br /><span className="text-gradient">contigo.</span></h2>
-    <Image src="/images/mockup/home-roots.webp" alt="" aria-hidden="true" width={566} height={740} className={styles.roots} />
-    <svg className={styles.path} viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true"><path d="M0 200 C250 200 500 20 780 90 S920 140 1000 20" fill="none" stroke="#62ffd0" strokeWidth="2" /><g fill="#b3ffe3"><circle cx="220" cy="154" r="5" /><circle cx="430" cy="94" r="5" /><circle cx="630" cy="72" r="5" /></g></svg>
-    <nav className={styles.contactPath} aria-label="Construyamos juntos"><a href={CONTACT_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />WhatsApp</a><a href={`mailto:${CONTACT_INFO.email}`}><Mail />Correo</a><Link href="/proyectos"><Layers />Proyectos</Link></nav>
-    <Link href="/contacto" className={styles.talkCircle}><MessageCircle size={48} /><span>Hablemos <ArrowUpRight /></span></Link>
-    <span className={styles.outline} aria-hidden="true">TreesSide</span>
-  </div></section>;
+  return (
+    <footer className={styles.closing} aria-labelledby="closing-title">
+      <div className={`container ${styles.closingInner}`}>
+        <h2 id="closing-title">Lo que sigue,<br />lo construimos<br /><span className="text-gradient">contigo.</span></h2>
+        <Image src="/images/mockup/home-roots.webp" alt="" aria-hidden="true" width={566} height={740} className={styles.roots} />
+        <svg className={styles.path} viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 200 C250 200 500 20 780 90 S920 140 1000 20" fill="none" stroke="#62ffd0" strokeWidth="2" />
+          <g fill="#b3ffe3"><circle cx="220" cy="154" r="5" /><circle cx="430" cy="94" r="5" /><circle cx="630" cy="72" r="5" /></g>
+        </svg>
+        <nav className={styles.contactPath} aria-label="Construyamos juntos">
+          <a href={CONTACT_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer"><MessageCircle />WhatsApp</a>
+          <a href={`mailto:${CONTACT_INFO.email}`}><Mail />Correo</a>
+          <Link href="/proyectos"><Layers />Proyectos</Link>
+        </nav>
+        <Link href="/contacto" className={styles.talkCircle}><MessageCircle size={48} /><span>Hablemos <ArrowUpRight /></span></Link>
+        <span className={styles.outline} aria-hidden="true">TreesSide</span>
+      </div>
+      <div className={`container ${styles.footerDetails}`}>
+        <div className={styles.footerBrand}>
+          <strong>TreesSide Developers · {CONTACT_INFO.location}</strong>
+          <p>Desarrollamos soluciones de software a medida con tecnologías modernas y enfoque en calidad y escalabilidad.</p>
+        </div>
+        <nav className={styles.footerLinks} aria-label="Enlaces rápidos">
+          {footerLinks.map(([label, href]) => <Link href={href} key={href}>{label}</Link>)}
+        </nav>
+        <div className={styles.footerContact}>
+          <a href={`mailto:${CONTACT_INFO.email}`}>{CONTACT_INFO.email}</a>
+          <a href={CONTACT_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer">WhatsApp {CONTACT_INFO.phone}</a>
+        </div>
+        <div className={styles.footerLegal}>
+          <p>© 2025 TreesSide Developers. Todos los derechos reservados. · <Link href="/politica-de-datos">Política de datos</Link></p>
+          <span>Código que construye futuro</span>
+        </div>
+      </div>
+    </footer>
+  );
 }
