@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
-import { AboutSection } from '@/components/AboutSection';
-import { ProcessSection } from '@/components/ProcessSection';
+import { AboutMockup } from '@/components/about/AboutMockup';
+import { AboutProcess } from '@/components/about/AboutProcess';
+import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata: Metadata = pageMetadata('/nosotros', {
   title: 'Sobre nosotros | TreesSide Developers',
@@ -11,9 +12,9 @@ export const metadata: Metadata = pageMetadata('/nosotros', {
 
 export default function AboutPage() {
   return (
-    <SitePage>
-      <AboutSection />
-      <ProcessSection />
+    <SitePage footer={<HomeClosing />}>
+      <AboutMockup />
+      <AboutProcess />
     </SitePage>
   );
 }

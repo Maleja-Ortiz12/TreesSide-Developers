@@ -28,7 +28,8 @@ const SECTIONS = {
   '/': ['carrusel'],
   '/servicios': ['servicios', 'tecnologias'],
   '/proyectos': ['proyectos'],
-  '/nosotros': ['sobre-nosotros', 'proceso'],
+  // S20: the original purpose section is now inside a native disclosure; the new hero is the page entry.
+  '/nosotros': ['nosotros-intro', 'proceso'],
   '/contacto': ['contacto'],
 };
 
