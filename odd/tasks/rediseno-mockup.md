@@ -45,7 +45,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - T15 [S15] Services mockup redesign, preserving nine services and technologies — inline — commit: ea1b2f0 (art), a2ff51c (implementation/tests; done)
 
-- T16 [S16] Plans mockup hero/cards/comparison, full original scope and integrated closing — inline — commit: pending
+- T16 [S16] Plans mockup hero/cards/comparison, full original scope and integrated closing — inline — commit: c728787 (art), 9bfde44 (implementation/tests; done)
 
 ## Log
 
@@ -73,3 +73,6 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L17 (S15 evidence): ea1b2f0 adds five decorative crops; a2ff51c implements hero, nine native-details service cards, unchanged technologies, mockup-specific process and shared integrated closing. RED: three new public tests failed before implementation. GREEN: production build exit 0, 161/161 tests; browser mobile check PASS for all routes at 360/390. Browser check with real scrolling confirmed process wrapper opacity > .95 and all four labels; clicked all nine summaries open/closed with nonempty item lists (SERVICES_PROCESS_AND_NINE_DISCLOSURES_PASS). Screenshots: ../_scratch_portfolio_tools/services-preview.png and services-browser/services-process.png. Static headless capture by anchor was blank; real-scroll capture supplied visual proof. Original ProcessSection/data on /nosotros unchanged. Native assessment unavailable due undeclared untracked files; it returned writer self-verification. New page mockups and previous unrelated metadata/carousel changes left uncommitted.
 
 - L18 (user, verbatim): "continua con los planes". Existing values match the mockup: 500000 / 900000 / 1490000 / 3490000 COP. Scope is presentation only; financial data and legal conditions stay unchanged.
+
+- L19 (S16 evidence): c728787 supplies decorative assets and 9bfde44 adds mockup hero, four data-derived price cards, semantic cumulative comparison (derived from includesPlan), original full commercial scopes in native details and integrated closing. COMMERCIAL_PLANS file unchanged. Canonical article anchors retained inside details: browser fragment navigation reveals them natively, no client handlers added. RED: three public tests failed before source changes. Final GREEN: tsc/build exit 0, 164/164 tests; check-plans-browser PASS at390/1440 incl four scope links, previous-plan link, close/reopen and mobile drawer; check-mobile-browser PASS for all routes360/390.
+- L20 (regression found/fixed): initial browser runs failed at665px document width for390px viewport. Absolutely positioned srOnly labels used BODY as offsetParent and escaped table scroller. Isolated browser probe confirmed position:relative on tableScroll restored390/390 immediately; applied and both browser suites passed. The comparison remains horizontally scrollable inside a labeled focusable region on phones. Screenshot ../_scratch_portfolio_tools/plans-final.png reviewed. Native assessment unavailable due undeclared untracked files; self-verification plan. No prices, scope, conditions, stored data or publishing changed.
