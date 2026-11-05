@@ -33,9 +33,9 @@ Branch: `feat/rediseno-mockup` (after 1a88297). Proyectos stays exactly as commi
 ## Tasks
 
 - T1 [S1, S4] Crop hero art and conceptual view from the 15 mockups (plus the old restaurant POS) into `public/images/services/` — worker — commit: 8601751 (done; 30 webp, 17-91 KB, visually checked)
-- T2 [S1, S3, S4] Category data, shared page template, route, `/servicios` categories section, sitemap, tests — commit: pending
-- T3 [S2] Servicios submenu (desktop hover/click, mobile toggle), tests — commit: pending
-- T4 [S1-S5] Verify: build, full suite on `next start`, browser check 390/1440, visual comparison with mockups; README — commit: pending
+- T2 [S1, S3, S4] Category data, shared page template, route, `/servicios` categories section, sitemap, tests — inline + 2 workers (data #2-#8, #9-#15) — commit: e207fb4 (data), b3ac951 (page; done)
+- T3 [S2] Servicios submenu (desktop hover/click, mobile toggle), tests — inline — commit: 5456839 (done)
+- T4 [S1-S5] Verify: build, full suite on `next start`, browser check 390/1440, visual comparison with mockups; README — inline — commit: README in b3ac951 (done)
 
 ## Log
 
@@ -43,3 +43,5 @@ Branch: `feat/rediseno-mockup` (after 1a88297). Proyectos stays exactly as commi
 - L3 (evidence): branch commit-slice counter reports 11.5k lines since origin/main because origin (jorge-puentes-b) is far behind; publication goes to treesside/main. This feature's slices: 8601751 (T1 art), then T2+T3 code.
 - L4 (evidence): RED before implementation: tests/service-categories.test.mjs 18 fail / 1 pass (Proyectos unchanged); tests/services-submenu.test.mjs 2 fail. T2 data for #2-#8 and #9-#15 delegated to two background workers with disjoint files; #1 ecommerce, template, types, index, /servicios section and sitemap inline.
 - L2 (user, earlier verbatim): "no sigas con los bakups haremos otro cambios mejor restablece a lo que teniamos anttes de empezar edeja tal cual como estaban los proyectos porfa" — restored to 1a88297; build OK, 205/205.
+- L5 (evidence): GREEN on `next build` + `next start`: service-categories + services-submenu 21/21; full suite 226/226; browser check (Edge headless, 390 and 1440): Servicios hover opens, leaving closes, click opens without navigating, 16 links inside viewport, Escape closes, link navigates, mobile drawer closes; all 15 pages one h1 and no horizontal overflow. Screenshots reviewed; headline/art overlap fixed (copy 47%, art 54%). Restaurantes full page reviewed: flow, POS view, Gestión integral modes, La Lupe original image.
+- L6 (worker judgment calls, open to the user): concept text for #2/#3/#10 written from the illustration labels (no paragraph in the mockup); restaurant flow lead/step texts reused from mockup #5 lines; streaming has 2 offer cards (as drawn); #14 typo fixes ("Servidores en la nube", "Despliegues y dominios", "Respaldos y monitoreo"); #12 first plan marked featured from its orange border.
