@@ -81,7 +81,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - T24 [S24,S14,S23] Footer path labels above the line, line joined to the sphere, mobile footer and hero per mobile mockup — inline — commit: 135a00b (done)
 
-- T25 [S25,S9,S10,S12,S13,S19] Reintroduce hero tabs, demos and laptop cards next to the carousel — inline — commit: pending (in progress)
+- T25 [S25,S9,S10,S12,S13,S19] Reintroduce hero tabs, demos and laptop cards next to the carousel — inline — commit: 4626d1c (done)
 
 ## Log
 
