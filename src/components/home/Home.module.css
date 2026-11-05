@@ -28,15 +28,10 @@
 .screen img { width: 100%; height: 100%; display: block; }
 .laptopBase { display: block; height: 10px; width: 116%; margin-left: -8%; border-radius: 2px 2px 50% 50%; background: linear-gradient(#94aaa8, #203e3b); box-shadow: 0 10px 16px #0009; }
 .closing { overflow: clip; position: relative; }
-.closingInner { position: relative; min-height: 590px; padding-top: 55px; isolation: isolate; }
+.closingInner { position: relative; min-height: 640px; padding-top: 55px; isolation: isolate; }
 .closing h2 { position: relative; z-index: 2; pointer-events: none; font-size: clamp(2.5rem, 5vw, 4.6rem); font-weight: 750; letter-spacing: -.035em; line-height: 1.02; max-width: 650px; color: #fff; }
-.path { position: absolute; left: 4%; width: 68%; height: 180px; top: 230px; filter: drop-shadow(0 0 8px #3ef0a8); }
-.contactPath { position: absolute; z-index: 4; top: 300px; left: 16%; width: 43%; display: flex; justify-content: space-between; transform: rotate(-12deg); gap: 16px; }
-.contactPath a { display: inline-flex; gap: 8px; align-items: center; color: #fff; text-decoration: none; }
-.contactPath a:nth-child(2) { translate: 0 -22px; }
-.contactPath a:nth-child(3) { translate: 0 -36px; }
 .outline { position: absolute; bottom: 0; left: 2%; color: transparent; -webkit-text-stroke: 1px #6effbe88; font-size: clamp(5rem, 16vw, 14rem); font-weight: 650; line-height: 1; z-index: -1; }
-@media(max-width: 760px) { .hero { padding-top: 95px; } .heroCopy p { max-width: 450px; } .explore { flex-direction: column; align-items: flex-start; gap: 14px; } .tabs { flex-wrap: wrap; border-radius: 22px; } .tabs button { padding: 7px 11px; } .stats { padding: 18px 8px; } .stats li { padding: 0 3vw; } .stats a { flex-direction: column; gap: 6px; font-size: .7rem; } .stats strong { font-size: 2rem; } .demoLayout { grid-template-columns: 1fr; gap: 24px; } .projects { grid-template-columns: 1fr; } .closingInner { min-height: 670px; } .closing h2 { font-size: 2.8rem; } .contactPath { top: 260px; left: 5%; width: 85%; transform: none; flex-wrap: wrap; } .contactPath a:nth-child(n) { translate: none; font-size: .85rem; } .path { top: 260px; } .outline { font-size: 22vw; bottom: 35px; } }
+@media(max-width: 760px) { .hero { padding-top: 95px; } .heroCopy p { max-width: 450px; } .explore { flex-direction: column; align-items: flex-start; gap: 14px; } .tabs { flex-wrap: wrap; border-radius: 22px; } .tabs button { padding: 7px 11px; } .stats { padding: 18px 8px; } .stats li { padding: 0 3vw; } .stats a { flex-direction: column; gap: 6px; font-size: .7rem; } .stats strong { font-size: 2rem; } .demoLayout { grid-template-columns: 1fr; gap: 24px; } .projects { grid-template-columns: 1fr; } .closingInner { min-height: 670px; } .closing h2 { font-size: 2.8rem; } .outline { font-size: 22vw; bottom: 35px; } }
 @media(prefers-reduced-motion: reduce) { .laptop { transform: none; } }
 
 .footerDetails {
@@ -62,7 +57,8 @@
 @media(max-width:760px) { .footerDetails { grid-template-columns: minmax(0, 1fr); padding-bottom: 96px; } }
 
 /* Closing sphere: roots art around a CSS sphere, positioned in % of the art so both scale together. */
-.sphereStage { position: absolute; z-index: 3; right: -30px; top: 0; width: min(430px, 36%); aspect-ratio: 566 / 740; }
+/* Sphere centre sits at the height where the contact line ends (pathStage top + 16px). */
+.sphereStage { position: absolute; z-index: 3; right: -30px; top: 306px; width: min(430px, 36%); aspect-ratio: 566 / 740; transform: translateY(-47.98%); }
 .roots { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 52%, transparent 100%); }
 .sphere {
   position: absolute; left: 8.2%; top: 19.3%; width: 75%; aspect-ratio: 1;
@@ -86,13 +82,11 @@
 .sphere:hover, .sphere:focus-visible { scale: 1.04; box-shadow: inset -22px -30px 46px rgba(0, 0, 0, .55), inset 16px 20px 34px rgba(150, 255, 220, .3), inset 0 0 0 2px #dfffee, 0 0 48px rgba(62, 240, 168, .8), 0 0 140px rgba(62, 240, 168, .4); }
 .sphere:focus-visible { outline: 3px solid var(--primary-green); outline-offset: 6px; }
 .sphereShadow { position: absolute; left: 22%; width: 47%; top: 78%; height: 7%; border-radius: 50%; background: radial-gradient(ellipse, rgba(0, 0, 0, .65), transparent 70%); animation: sphereShadow 6s ease-in-out infinite; pointer-events: none; }
-@keyframes sphereFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -14px; } }
+@keyframes sphereFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
 @keyframes sphereShadow { 0%, 100% { opacity: .9; scale: 1; } 50% { opacity: .55; scale: .86; } }
 @keyframes sphereSheen { to { rotate: 1turn; } }
 @media(max-width:760px) {
   .closingInner { min-height: 0; display: flex; flex-direction: column; padding-bottom: 20px; }
-  .path { display: none; }
-  .contactPath { position: relative; top: auto; left: auto; width: 100%; transform: none; justify-content: flex-start; flex-wrap: wrap; gap: 14px 22px; margin-top: 24px; }
   .sphereStage { position: relative; right: auto; top: auto; width: min(100%, 360px); margin: 6px auto 0; }
   .outline { position: relative; bottom: auto; left: auto; margin-top: -40px; }
 }
@@ -160,3 +154,61 @@
   .heroCard, .heroArt { transition: none; }
 }
 @media (prefers-reduced-motion: reduce) { .bars i { animation: none; } }
+
+/* Footer contact path: line plus labels share one box; --x/--y is each label's point on the line. */
+.pathStage { position: absolute; z-index: 4; left: 4%; width: 68%; top: 290px; height: 180px; }
+.path, .pathMobile { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 8px #3ef0a8); pointer-events: none; }
+.pathMobile { display: none; }
+/* Glowing joint where the line meets the sphere rim. */
+.pathJoin { position: absolute; right: -6px; top: calc(var(--join-y, 16px) - 6px); width: 12px; height: 12px; border-radius: 50%; background: #dfffee; box-shadow: 0 0 10px 3px #3ef0a8, 0 0 22px 6px rgba(62, 240, 168, .45); pointer-events: none; z-index: 5; }
+.contactPath { position: absolute; inset: 0; }
+.contactPath a { position: absolute; left: var(--x); top: var(--y); display: inline-flex; align-items: center; gap: 8px; padding: 4px 6px; color: #fff; text-decoration: none; white-space: nowrap; transform: translate(-50%, calc(-100% - var(--gap, 22px))) rotate(var(--r, 0deg)); transform-origin: 50% 100%; }
+/* Dot on the line under each label. */
+.contactPath a::after { content: ''; position: absolute; left: 50%; bottom: calc(-1 * var(--gap, 22px) - 5px); width: 10px; height: 10px; border-radius: 50%; translate: -50% 0; rotate: calc(-1 * var(--r, 0deg)); background: #b3ffe3; box-shadow: 0 0 10px #3ef0a8; }
+.contactPath a:hover, .contactPath a:focus-visible { color: var(--primary-green); }
+.stopWhatsapp { --x: 22%; --y: 70%; --r: -18deg; --gap: 52px; }
+.stopMail { --x: 43%; --y: 42.7%; --r: -9deg; --gap: 30px; }
+.stopProjects { --x: 63%; --y: 32.7%; --r: -2deg; --gap: 20px; }
+@media(max-width:760px) {
+  .pathStage { position: relative; left: auto; top: auto; width: 100%; height: 96px; margin-top: 48px; }
+  .pathJoin { display: none; }
+  .path { display: none; }
+  .pathMobile { display: block; }
+  .contactPath a { font-size: .9rem; gap: 6px; padding: 2px 4px; }
+  .contactPath a svg { width: 18px; height: 18px; }
+  .stopWhatsapp { --x: 18%; --y: 58%; --r: -10deg; --gap: 32px; }
+  .stopMail { --x: 50%; --y: 38.6%; --r: 0deg; --gap: 14px; }
+  .stopProjects { --x: 82%; --y: 58%; --r: 10deg; --gap: 32px; }
+}
+/* Home on phones follows the mobile mockup: centered copy, full-width actions, readable tree cards. */
+@media(max-width:760px) {
+  .heroCopy { text-align: center; margin-inline: auto; }
+  .heroCopy h1 { font-size: clamp(2.3rem, 10vw, 3rem); }
+  .heroCopy p { margin-inline: auto; }
+  .heroActions { align-items: stretch; }
+  .heroActions a { width: 100%; justify-content: center; }
+  .explore { align-items: center; }
+  .heroCard { font-size: 2.6cqw; border-radius: 3.4cqw; }
+  .cardTop { font-size: 3cqw; gap: 1.6cqw; padding: 2.2cqw 2.4cqw 1.4cqw; }
+  .cardTop svg { width: 3.6cqw; height: 3.6cqw; }
+  .cardIcons, .menu, .stock, .wave i:nth-child(odd) { display: none; }
+  .cardLogistics .cardTop svg { display: none; }
+  .cardLogistics .cardTop { font-size: 2.8cqw; white-space: nowrap; }
+  .restaurantBody, .logisticsBody { grid-template-columns: 1fr; padding: 0 2.2cqw 2.2cqw; }
+  .wave { gap: 1cqw; }
+  .wave i { width: .9cqw; }
+  .player > svg { width: 3.6cqw; height: 3.6cqw; }
+  .play { width: 7cqw; height: 7cqw; }
+  .play svg { width: 3.2cqw; height: 3.2cqw; }
+}
+
+/* Phones: footer scaled to the mobile mockup; the sphere hangs from the apex of the arc. */
+@media(max-width:760px) {
+  .closing h2 { font-size: 2.2rem; }
+  .closingInner { padding-top: 40px; }
+  .sphereStage { width: 220px; transform: none; margin: -114px auto 0; }
+  .sphere > svg { width: 30px; height: 30px; }
+  .sphere span { font-size: 1.15rem; gap: 4px; }
+  .sphere span svg { width: 18px; height: 18px; }
+  .outline { font-size: 22vw; margin-top: -24px; }
+}
