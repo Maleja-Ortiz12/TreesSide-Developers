@@ -9,7 +9,7 @@ async function page(path) {
 }
 
 const ROUTES = [
-  { path: '/', title: /<title>TreesSide Developers/, sections: ['inicio', 'carrusel'] },
+  { path: '/', title: /<title>TreesSide Developers/, sections: ['inicio', 'demos', 'carrusel'] },
   { path: '/servicios', title: /<title>Servicios \| TreesSide Developers/, sections: ['servicios', 'tecnologias'] },
   { path: '/proyectos', title: /<title>Proyectos \| TreesSide Developers/, sections: ['proyectos'] },
   { path: '/nosotros', title: /<title>Sobre nosotros \| TreesSide Developers/, sections: ['sobre-nosotros', 'proceso'] },

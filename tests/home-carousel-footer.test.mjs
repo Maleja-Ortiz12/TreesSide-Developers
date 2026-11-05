@@ -6,13 +6,10 @@ async function home() {
   assert.equal(response.status, 200);
   return response.text();
 }
-test('home replaces demos and demo tabs with the original controllable project carousel', async () => {
+// S25 brought the mockup demos back next to the carousel; the original controllable carousel stays.
+test('home keeps the original controllable project carousel after the mockup demos', async () => {
   const html = await home();
-  assert.ok(!html.includes('id="demos"'));
-  assert.ok(!html.includes('data-demo='));
-  assert.ok(!html.includes('data-demo-tab='));
-  assert.ok(!html.includes('data-project-card='));
-  assert.ok(html.includes('href="#carrusel"'));
+  assert.ok(html.indexOf('id="demos"') > 0 && html.indexOf('id="demos"') < html.indexOf('id="carrusel"'), 'demos come before the carousel');
   const carousel = html.match(/<section id="carrusel"[\s\S]*?<\/section>/)?.[0];
   assert.ok(carousel);
   assert.ok(carousel.includes('Pausar carrusel'));

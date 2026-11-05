@@ -60,7 +60,8 @@ test('S2 cases remain reachable from the integrated footer and project modal, wi
   for (const slug of ['la-lupe', 'emisoras-latinas']) {
     assert.ok(home.includes(`href="/proyectos#equipo-${slug}"`), `laptop ${slug}`);
   }
-  assert.ok(!home.includes('data-demo='), 'S14 removes demos from the home');
+  // S25 brought the demos back; each names its case study.
+  for (const slug of ['la-lupe', 'emisoras-latinas']) assert.ok(home.includes(`href="/casos/${slug}"`), `demo links case ${slug}`);
   const modal = await readFile('src/components/ProjectModal.tsx', 'utf8');
   assert.ok(modal.includes('Ver caso de éxito'), 'project modal links the case study');
 });

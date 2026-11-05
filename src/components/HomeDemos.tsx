@@ -24,6 +24,7 @@ export function HomeDemos() {
           <p className={styles.demoLabel}>Demo conceptual · {kind}</p><Demo /><p className={styles.source}>Basado en <Link href={caseHref(title) ?? `/proyectos#equipo-${id}`}>{title}</Link></p>
         </article>)}</div>
       </div>
+      <h3 className={styles.projectsTitle}>Ideas que cobran <span className="text-gradient">vida.</span></h3>
       <div className={styles.projects}>{demos.slice(0, 2).map(({ title }) => {
         const project = FEATURED_PROJECTS.find(item => item.title === title)!;
         return <article key={project.id} data-project-card={project.id} className={styles.project}>

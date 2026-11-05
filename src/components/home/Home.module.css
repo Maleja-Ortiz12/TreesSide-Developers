@@ -23,7 +23,7 @@
 .project h3 { font-size: 1.5rem; line-height: 1.1; color: #fff; }
 .project p { font-size: .85rem; line-height: 1.45; color: #d3e4de; margin-top: 12px; }
 .projectLink { display: inline-flex; align-items: center; gap: 10px; margin-top: 16px; color: var(--primary-green); text-decoration: none; font-size: .9rem; font-weight: 600; }
-.laptop { perspective: 800px; min-width: 0; transform: rotate(-6deg); }
+.laptop { min-width: 0; }
 .screen { border: 6px solid #08100f; border-radius: 10px 10px 3px 3px; box-shadow: 0 0 0 1px #b6dcce70, 5px 10px 20px #000a; overflow: hidden; aspect-ratio: 1.4; }
 .screen img { width: 100%; height: 100%; display: block; }
 .laptopBase { display: block; height: 10px; width: 116%; margin-left: -8%; border-radius: 2px 2px 50% 50%; background: linear-gradient(#94aaa8, #203e3b); box-shadow: 0 10px 16px #0009; }
@@ -32,7 +32,6 @@
 .closing h2 { position: relative; z-index: 2; pointer-events: none; font-size: clamp(2.5rem, 5vw, 4.6rem); font-weight: 750; letter-spacing: -.035em; line-height: 1.02; max-width: 650px; color: #fff; }
 .outline { position: absolute; bottom: 0; left: 2%; color: transparent; -webkit-text-stroke: 1px #6effbe88; font-size: clamp(5rem, 16vw, 14rem); font-weight: 650; line-height: 1; z-index: -1; }
 @media(max-width: 760px) { .hero { padding-top: 95px; } .heroCopy p { max-width: 450px; } .explore { flex-direction: column; align-items: flex-start; gap: 14px; } .tabs { flex-wrap: wrap; border-radius: 22px; } .tabs button { padding: 7px 11px; } .stats { padding: 18px 8px; } .stats li { padding: 0 3vw; } .stats a { flex-direction: column; gap: 6px; font-size: .7rem; } .stats strong { font-size: 2rem; } .demoLayout { grid-template-columns: 1fr; gap: 24px; } .projects { grid-template-columns: 1fr; } .closingInner { min-height: 670px; } .closing h2 { font-size: 2.8rem; } .outline { font-size: 22vw; bottom: 35px; } }
-@media(prefers-reduced-motion: reduce) { .laptop { transform: none; } }
 
 .footerDetails {
   position: relative;
@@ -211,4 +210,22 @@
   .sphere span { font-size: 1.15rem; gap: 4px; }
   .sphere span svg { width: 18px; height: 18px; }
   .outline { font-size: 22vw; margin-top: -24px; }
+}
+
+/* Hero tabs (S25): pick the demo shown in the demos section. */
+.tabs { display: flex; gap: 8px; padding: 5px; border-radius: 999px; background: #071c19c9; border: 1px solid #8fffd366; box-shadow: inset 0 1px 6px #7affd22b; }
+.tabs button { background: transparent; border: 1px solid transparent; color: #ecfaf4; cursor: pointer; border-radius: 999px; padding: 8px 18px; font: inherit; font-size: .85rem; }
+.tabs button::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border: 1px solid #dcfff0; border-radius: 50%; }
+.tabs button[aria-pressed='true'] { border-color: #3ef0a8; box-shadow: 0 0 12px #3ef0a833; }
+.tabs button[aria-pressed='true']::before { background: #3ef0a8; border-color: #3ef0a8; box-shadow: 0 0 9px #3ef0a8; }
+.tabs button:focus-visible { outline: 2px solid var(--primary-green); outline-offset: 2px; }
+.projectsTitle { margin-top: 40px; color: #fff; font-size: clamp(1.6rem, 2.6vw, 2.2rem); font-weight: 700; letter-spacing: -.02em; }
+.projectsTitle + .projects { margin-top: 18px; }
+@media(max-width:760px) {
+  .explore { align-items: center; gap: 14px; }
+  .tabs { width: 100%; justify-content: space-between; flex-wrap: nowrap; border-radius: 999px; }
+  .tabs button { padding: 7px 10px; font-size: .8rem; white-space: nowrap; }
+  .demoLayout { text-align: left; }
+  .project { grid-template-columns: .9fr 1fr; padding: 16px; gap: 14px; }
+  .project h3 { font-size: 1.25rem; }
 }

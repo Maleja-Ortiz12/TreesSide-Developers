@@ -26,8 +26,9 @@ test('S10 home hero uses the mockup copy, with "vida." in the mint gradient', as
   assert.ok(primary.includes('href="/contacto"'), 'primary CTA goes to contact');
   assert.equal(text(primary), 'Construyamos tu proyecto');
   assert.ok(primary.includes('<svg'), 'arrow icon');
-  const secondary = section.match(/<a[^>]*href="#carrusel"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
-  assert.equal(text(secondary), 'Explorar proyectos');
+  // S25: the mockup's secondary call to action leads to the demos again.
+  const secondary = section.match(/<a[^>]*href="#demos"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
+  assert.equal(text(secondary), 'Explorar demos');
   assert.ok(text(section).includes('01 / EXPLORA'));
 });
 

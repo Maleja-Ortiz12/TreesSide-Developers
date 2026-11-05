@@ -1,6 +1,7 @@
 import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { Hero } from '@/components/Hero';
+import { HomeDemos } from '@/components/HomeDemos';
 import { ProjectCarousel } from '@/components/motion/ProjectCarousel';
 import { HomeClosing } from '@/components/home/HomeClosing';
 
@@ -13,6 +14,7 @@ export default function HomePage() {
   return (
     <SitePage offsetHeader={false} footer={<HomeClosing />}>
       <Hero />
+      <HomeDemos />
       <ProjectCarousel />
     </SitePage>
   );
