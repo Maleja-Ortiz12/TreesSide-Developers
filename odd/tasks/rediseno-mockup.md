@@ -172,3 +172,5 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - L50 (user, verbatim): "el arbol en moil del home en las cards se ven cortadas, arreglalas porfa la de restaurante y logistica"
 - L51 (S26 checks): RED (browser, 7 widths): burger and pallets overflowed the card at 360-760 (cut at the bottom) and were side-cropped by object-fit cover at 900/1440. Fix: card body grid row minmax(0,1fr) and object-fit contain; phones get slightly taller Restaurante/Logística cards. Final: build exit0, 197/197 + S26 CSS test; hero cards validator PASS at 360/390/430/600/760/900/1440 (whole, inside the card, >=24px); hero labels/centering PASS; all-route mobile 360/390 PASS; screenshot ../_scratch_portfolio_tools/hero-cards/cards-390.png reviewed.
+
+- L52 (S26 correction): commit 172983d included the S26 CSS test with a regex broken by shell escaping (it failed, 3/4 in that file) and was committed without noticing. Fixed the test (no product change); full suite now 198/198.

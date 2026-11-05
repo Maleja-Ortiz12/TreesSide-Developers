@@ -47,6 +47,7 @@ test('S26 the restaurant and logistics photos are shown whole inside their tree 
   const css = await readFile('src/components/home/Home.module.css', 'utf8');
   assert.match(css, /\.burger, \.pallets \{[^}]*object-fit: contain/, 'whole photo, never cropped');
   for (const body of ['restaurantBody', 'logisticsBody']) {
-    assert.match(css, new RegExp(`\.${body} \{[^}]*grid-template-rows: minmax\(0, 1fr\)`), `${body} keeps the photo inside the card`);
+    const rule = css.match(new RegExp(`[.]${body} [{][^}]*[}]`))?.[0] ?? '';
+    assert.ok(rule.includes('grid-template-rows: minmax(0, 1fr)'), `${body} keeps the photo inside the card`);
   }
 });
