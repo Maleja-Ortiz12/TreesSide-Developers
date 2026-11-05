@@ -39,8 +39,8 @@ export const metadata: Metadata = {
     images: [SHARE_IMAGE.url],
   },
   icons: {
-    icon: '/images/treesside-logo.jpg',
-    apple: '/images/treesside-logo.jpg',
+    icon: '/images/treesside-icon-v2.png',
+    apple: '/images/treesside-apple-v2.png',
   }
 };
 
@@ -73,7 +73,6 @@ export default function RootLayout({
   return (
     <html lang="es-419" className={`${outfit.variable} ${mono.variable}`}>
       <head>
-        <link rel="icon" href="/images/treesside-logo.jpg" />
         {/* Scroll reveals start hidden until JavaScript animates them in; without it, show them as they are. */}
         <noscript><style>{'[data-reveal]{opacity:1 !important;transform:none !important}'}</style></noscript>
       </head>
