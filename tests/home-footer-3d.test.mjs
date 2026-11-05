@@ -42,3 +42,11 @@ test('S23 the home hero shows the three tree cards as real 3D HTML cards over a 
   assert.match(css, /\.heroCard[^{]*\{[^}]*rotateY\(/);
   assert.match(css, /@media \(max-width: 899px\), \(pointer: coarse\), \(prefers-reduced-motion: reduce\) \{[^}]*\.heroCard[^}]*animation: none/);
 });
+
+test('S26 the restaurant and logistics photos are shown whole inside their tree cards', async () => {
+  const css = await readFile('src/components/home/Home.module.css', 'utf8');
+  assert.match(css, /\.burger, \.pallets \{[^}]*object-fit: contain/, 'whole photo, never cropped');
+  for (const body of ['restaurantBody', 'logisticsBody']) {
+    assert.match(css, new RegExp(`\.${body} \{[^}]*grid-template-rows: minmax\(0, 1fr\)`), `${body} keeps the photo inside the card`);
+  }
+});

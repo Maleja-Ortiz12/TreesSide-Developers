@@ -117,8 +117,10 @@
 .cardTop svg { width: 2.1cqw; height: 2.1cqw; flex-shrink: 0; color: #9fffdb; }
 .cardTop strong { font-weight: 600; }
 .cardIcons { display: flex; gap: 1.1cqw; margin-left: auto; }
-.restaurantBody { flex: 1; display: grid; grid-template-columns: 42% 1fr; gap: 1cqw; padding: 0 1.4cqw 1.4cqw; min-height: 0; }
-.burger { width: 100%; height: 100%; object-fit: cover; border-radius: 1.1cqw; }
+/* One row that takes the space left under the title, so the picture can never grow past the card. */
+.restaurantBody { flex: 1; display: grid; grid-template-columns: 42% 1fr; grid-template-rows: minmax(0, 1fr); gap: 1cqw; padding: 0 1.4cqw 1.4cqw; min-height: 0; }
+/* contain shows the whole photo; the box is sized by the grid row, not by the image. */
+.burger, .pallets { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; border-radius: 1.1cqw; }
 .menu { list-style: none; display: grid; align-content: center; gap: .7cqw; margin: 0; padding: 0; }
 .menu li { display: grid; grid-template-columns: 2.6cqw 1fr auto; align-items: center; gap: .8cqw; padding: .6cqw .8cqw; border-radius: .9cqw; background: rgba(255, 255, 255, .05); font-size: 1.15cqw; }
 .menu img { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; object-fit: cover; }
@@ -129,8 +131,7 @@
 .player > svg { width: 2.2cqw; height: 2.2cqw; fill: #fff; }
 .play { display: grid; place-items: center; width: 4.6cqw; height: 4.6cqw; border-radius: 50%; background: linear-gradient(135deg, #7dffd0, #22d8a6); box-shadow: 0 0 1.6cqw rgba(62, 240, 168, .8); }
 .play svg { width: 2cqw; height: 2cqw; fill: #04241b; stroke: #04241b; translate: .2cqw 0; }
-.logisticsBody { flex: 1; display: grid; grid-template-columns: 45% 1fr; gap: 1.2cqw; padding: 0 1.6cqw 1.4cqw; min-height: 0; }
-.pallets { width: 100%; height: 100%; object-fit: cover; border-radius: 1cqw; }
+.logisticsBody { flex: 1; display: grid; grid-template-columns: 45% 1fr; grid-template-rows: minmax(0, 1fr); gap: 1.2cqw; padding: 0 1.6cqw 1.4cqw; min-height: 0; }
 .stock { display: flex; flex-direction: column; justify-content: space-between; min-width: 0; padding: 1cqw; border-radius: 1cqw; background: rgba(255, 255, 255, .05); }
 .stock ul { list-style: none; display: grid; gap: .6cqw; margin: 0; padding: 0; font-size: 1.1cqw; }
 .stock li { display: flex; align-items: center; gap: .7cqw; }
@@ -193,6 +194,10 @@
   .cardIcons, .menu, .stock, .wave i:nth-child(odd) { display: none; }
   .cardLogistics .cardTop svg { display: none; }
   .cardLogistics .cardTop { font-size: 2.8cqw; white-space: nowrap; }
+  /* A little taller on phones so the photos under the titles stay readable (still covering the art openings). */
+  .cardRestaurant { height: 44%; }
+  .cardLogistics { top: 46%; height: 40%; }
+  .cardTop { padding-bottom: 1cqw; }
   .restaurantBody, .logisticsBody { grid-template-columns: 1fr; padding: 0 2.2cqw 2.2cqw; }
   .wave { gap: 1cqw; }
   .wave i { width: .9cqw; }
