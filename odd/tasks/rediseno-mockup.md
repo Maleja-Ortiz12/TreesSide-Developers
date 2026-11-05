@@ -77,7 +77,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - T23 [S23,S5,S9] Crisp 3D footer sphere, clickable footer links, hero layout and 3D animated tree cards — inline — commit: 7a61bdb (done)
 
-- T24 [S24,S14,S23] Footer path labels above the line and mobile home layout per mobile mockup — inline — commit: pending (in progress)
+- T24 [S24,S14,S23] Footer path labels above the line, line joined to the sphere, mobile footer and hero per mobile mockup — inline — commit: 135a00b (done)
 
 ## Log
 
