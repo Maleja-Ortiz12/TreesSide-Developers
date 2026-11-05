@@ -82,11 +82,9 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
         position: 'relative',
         width: `${width}px`,
         height: `${height}px`,
-        borderRadius: '10px',
-        overflow: 'hidden',
-        border: '1px solid rgba(62, 240, 168, 0.3)',
-        boxShadow: '0 0 14px rgba(62, 240, 168, 0.3)',
-        flexShrink: 0
+        flexShrink: 0,
+        // The tree mark has a transparent background, so it sits directly on the header like the brand artwork.
+        filter: 'drop-shadow(0 0 8px rgba(62, 240, 168, 0.35))'
       }}>
         <Image
           src="/images/treesside-logo.webp"
@@ -94,7 +92,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           width={width}
           height={height}
           style={{
-            objectFit: 'cover',
+            objectFit: 'contain',
             width: '100%',
             height: '100%'
           }}
@@ -113,11 +111,13 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           userSelect: 'none'
         }}>
           <span style={{ color: '#ffffff', textShadow: '0 0 18px rgba(62, 240, 168, 0.25)' }}>TreesSide</span>
+          {/* Matches the updated logo: spaced green capitals under the white name. */}
           <span style={{
-            color: '#d6eee6',
+            color: '#82cb8c',
             fontSize: size === 'lg' ? '0.75rem' : '0.66rem',
-            fontWeight: 400,
+            fontWeight: 600,
             letterSpacing: '0.42em',
+            textTransform: 'uppercase',
             marginTop: '4px'
           }}>Developers</span>
         </span>

@@ -45,6 +45,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - S26. User (L50): "el arbol en moil del home en las cards se ven cortadas, arreglalas porfa la de restaurante y logistica". The Restaurante and Logística tree cards show their whole photo (burger, pallets) inside the card at every width; on phones the cards are tall enough for a readable photo under the title.
 
+- S27. User (L53): "no primero hagamos otro cambio el del logo, ya lo subi actualizado en la carpeta raiz images". Replace the brand logo with Images/LOGO actualizado.png (tree mark + "TreesSide" / "DEVELOPERS" wordmark) wherever the old circuit-tree logo appears: header on every page, favicon/apple icon, Organization logo, share card, About and Technologies brand images. Square uses get the new tree mark only (transparent background); the header keeps the wordmark as crisp HTML text styled like the new logo (white "TreesSide", green spaced "DEVELOPERS"). File names stay so existing references keep working. Push stays on hold until the user answers remote and scope.
+
 ## Tasks
 
 - T1 [S1, S3] Global theme tokens, cards, buttons, kicker, background — inline — commit: a5c90d5, 773acf1 (done)
@@ -86,6 +88,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - T25 [S25,S9,S10,S12,S13,S19] Reintroduce hero tabs, demos and laptop cards next to the carousel — inline — commit: 4626d1c (done)
 
 - T26 [S26,S23,S24] Whole photos in the Restaurante and Logística tree cards — inline — commit: 172983d (done)
+
+- T27 [S27] New brand logo across header, icons, share card and brand images — inline — commit: (this commit) (done)
 
 ## Log
 
@@ -174,3 +178,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L51 (S26 checks): RED (browser, 7 widths): burger and pallets overflowed the card at 360-760 (cut at the bottom) and were side-cropped by object-fit cover at 900/1440. Fix: card body grid row minmax(0,1fr) and object-fit contain; phones get slightly taller Restaurante/Logística cards. Final: build exit0, 197/197 + S26 CSS test; hero cards validator PASS at 360/390/430/600/760/900/1440 (whole, inside the card, >=24px); hero labels/centering PASS; all-route mobile 360/390 PASS; screenshot ../_scratch_portfolio_tools/hero-cards/cards-390.png reviewed.
 
 - L52 (S26 correction): commit 172983d included the S26 CSS test with a regex broken by shell escaping (it failed, 3/4 in that file) and was committed without noticing. Fixed the test (no product change); full suite now 198/198.
+
+- L53 (user, verbatim): "no primero hagamos otro cambio el del logo, ya lo subi actualizado en la carpeta raiz images". Push requested earlier ("sube los cambios y haz el push") is postponed; the remote/scope question was cancelled and remains open. New file Images/LOGO actualizado.png 1983x793: mark bbox 158,72-754,696; wordmark 788,264-1844,530; background ~#000A06; DEVELOPERS ~#82CB8C.
+
+- L54 (S27 checks): only one logo file exists, Images/LOGO actualizado.png (user confirmed the name). RED: 2 new tests failed before change. treesside-logo.webp (640, transparent) and treesside-logo.jpg (1024, on #000A06) are the tree mark cropped from it (right edge alpha 0, no part of the wordmark); header mark drawn without the old frame; "DEVELOPERS" uppercase #82cb8c under white "TreesSide". All existing references (header, favicon/apple icon, Organization logo, generated OG card, About/Tech brand images) pick up the new files by name. public/images/treesside-share.png (pre-existing uncommitted share card) regenerated with the new mark in the same 340px box; left uncommitted with the rest of that pre-existing work. Final: build exit0, 200/200 (incl. social-sharing logo comparison), all-route mobile 360/390 PASS; header screenshots 390/1440 and share card reviewed.
