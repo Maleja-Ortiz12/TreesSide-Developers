@@ -52,7 +52,10 @@ export default async function ServiceCategoryPage({ params }: Props) {
               </div>
               {hero.chips && <ul className={styles.chips}>{hero.chips.map(chip => <li key={chip}>{chip}</li>)}</ul>}
             </div>
-            <Image src={`/images/services/${category.slug}-hero.webp`} alt="" aria-hidden="true" width={1100} height={560} priority className={styles.heroArt} />
+            {/* 3D stage: the art leans and floats; TiltEffect turns the stage toward the pointer. */}
+            <div className={styles.heroStage} data-art-3d="hero" data-tilt="" aria-hidden="true">
+              <Image src={`/images/services/${category.slug}-hero.webp`} alt="" width={1100} height={560} priority className={styles.heroArt} />
+            </div>
           </header>
 
           <section aria-labelledby="offers-title" className={styles.offers}>
@@ -85,7 +88,9 @@ export default async function ServiceCategoryPage({ params }: Props) {
               <h2 id="concept-title">{concept.title}</h2>
               <p>{concept.text}</p>
             </div>
-            <Image src={`/images/services/${category.slug}-concept.webp`} alt={concept.alt} width={1300} height={420} sizes="(max-width: 900px) 92vw, 760px" className={styles.conceptArt} />
+            <div className={styles.conceptStage} data-art-3d="concept" data-tilt="">
+              <Image src={`/images/services/${category.slug}-concept.webp`} alt={concept.alt} width={1300} height={420} sizes="(max-width: 900px) 92vw, 760px" className={styles.conceptArt} />
+            </div>
           </section>
 
           <section aria-labelledby="plans-title" className={styles.plans}>

@@ -48,6 +48,17 @@ for (const [slug, [label, headline, firstPlan]] of Object.entries(CATEGORIES)) {
   });
 }
 
+test('category illustrations sit on tilting 3D stages', async () => {
+  for (const slug of Object.keys(CATEGORIES)) {
+    const { html } = await get(`/servicios/${slug}`);
+    for (const art of ['hero', 'concept']) {
+      const stage = html.match(new RegExp(`<div[^>]*data-art-3d="${art}"[^>]*>[\\s\\S]*?<\\/div>`))?.[0] ?? '';
+      assert.match(stage, /data-tilt/, `${slug} ${art} tilts`);
+      assert.ok(stage.includes(`src="/images/services/${slug}-${art}.webp"`), `${slug} ${art} inside its stage`);
+    }
+  }
+});
+
 test('restaurantes combines both restaurant mockups and keeps La Lupe original', async () => {
   const { html } = await get('/servicios/restaurantes');
   assert.ok(html.includes('Del pedido al cierre'));
