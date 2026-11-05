@@ -11,7 +11,7 @@ async function html(path) {
 test('team gallery preserves profile content behind accessible selection buttons', async () => {
   const page = await html('/equipo');
   const heading = page.match(/<h1\b[\s\S]*?<\/h1>/)?.[0];
-  assert.ok(heading?.includes('Cuatro mentes.'));
+  assert.ok(heading?.includes('Distintas mentes.'));
   assert.ok(!heading.includes('Tres miradas'));
   const articles = [...page.matchAll(/<article\b[\s\S]*?<\/article>/g)].map(([article]) => article);
   assert.equal(articles.length, 4);

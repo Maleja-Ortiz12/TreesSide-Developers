@@ -28,8 +28,9 @@ test('S14 the original project carousel returns with accessible copies and pause
   const section = carousel(html);
   assert.ok(section);
   assert.match(html, /data-reveal[^>]*>\s*<section id="carrusel"/);
-  // S25: the mockup demos come back before the carousel; the carousel itself is unchanged.
-  assert.ok(html.indexOf('id="demos"') < html.indexOf('id="carrusel"'));
+  // The carousel comes before the demos; both sections remain available.
+  assert.ok(html.includes('id="demos"'));
+  assert.ok(html.indexOf('id="carrusel"') < html.indexOf('id="demos"'));
   assert.ok(section.includes('Pausar carrusel'));
   const visible = items(section, false);
   assert.ok(visible.length > 0);

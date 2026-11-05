@@ -7,9 +7,9 @@ async function home() {
   return response.text();
 }
 // S25 brought the mockup demos back next to the carousel; the original controllable carousel stays.
-test('home keeps the original controllable project carousel after the mockup demos', async () => {
+test('home keeps the original controllable project carousel before the mockup demos', async () => {
   const html = await home();
-  assert.ok(html.indexOf('id="demos"') > 0 && html.indexOf('id="demos"') < html.indexOf('id="carrusel"'), 'demos come before the carousel');
+  assert.ok(html.indexOf('id="carrusel"') > 0 && html.indexOf('id="carrusel"') < html.indexOf('id="demos"'), 'carousel comes before the demos');
   const carousel = html.match(/<section id="carrusel"[\s\S]*?<\/section>/)?.[0];
   assert.ok(carousel);
   assert.ok(carousel.includes('Pausar carrusel'));

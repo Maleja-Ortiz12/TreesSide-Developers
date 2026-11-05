@@ -6,7 +6,7 @@ const text=html=>html.replace(/<!-- -->/g,'').replace(/<[^>]*>/g,' ').replace(/\
 
 test('S21 team uses the supplied central tree and mockup heading',async()=>{
   const html=await page();
-  assert.equal(text(html.match(/<h1\b[^>]*>[\s\S]*?<\/h1>/)?.[0]||''),'Cuatro mentes. Un mismo propósito.');
+  assert.equal(text(html.match(/<h1\b[^>]*>[\s\S]*?<\/h1>/)?.[0]||''),'Distintas mentes. Un mismo propósito.');
   assert.ok(html.includes('data-team-stage'));
   assert.match(html,/<img[^>]*data-team-tree[^>]*src="\/images\/mockup\/team-tree.webp"|<img[^>]*src="\/images\/mockup\/team-tree.webp"[^>]*data-team-tree/);
   assert.match(html,/<a[^>]*href="\/proyectos"[^>]*>[\s\S]*?Ver proyectos/);

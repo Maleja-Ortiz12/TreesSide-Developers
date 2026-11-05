@@ -14,8 +14,8 @@ export default function HomePage() {
   return (
     <SitePage offsetHeader={false} footer={<HomeClosing />}>
       <Hero />
-      <HomeDemos />
       <ProjectCarousel />
+      <HomeDemos />
     </SitePage>
   );
 }

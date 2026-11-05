@@ -69,7 +69,7 @@ export function TeamGallery() {
         <div className={styles.stage} data-team-stage="" data-focused={selected !== null}>
         <Image src="/images/mockup/team-tree.webp" alt="" aria-hidden="true" data-team-tree="" width={908} height={780} priority className={styles.tree} />
         <div className={styles.heading}>
-          <h1 id="team-title">Cuatro mentes.<br />Un mismo<br /><span className="text-gradient">propósito.</span></h1>
+          <h1 id="team-title">Distintas mentes.<br />Un mismo<br /><span className="text-gradient">propósito.</span></h1>
           <h2 className={styles.discipline}>Desarrollo de software</h2>
           <p className={styles.summary}>Un equipo que combina ideas, perspectivas y experiencia para crear soluciones reales, funcionales y escalables.</p>
           <Link href="/proyectos" className="btn btn-primary">Ver proyectos <ArrowRight size={20} aria-hidden="true" /></Link>
