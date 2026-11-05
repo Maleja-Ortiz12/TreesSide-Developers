@@ -2,11 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { ProjectImage, useDisplayDensity } from '../ProjectImage';
-import Link from 'next/link';
 import { motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react';
 import { Pause, Play } from 'lucide-react';
 import { FEATURED_PROJECTS, type Project } from '@/data/content';
-import { caseHref } from '@/data/cases';
 import styles from './ProjectCarousel.module.css';
 
 const PLACEHOLDER = '/images/treesside-logo.jpg';
@@ -29,12 +27,13 @@ export function wrapOffset(x: number, width: number) {
 
 function Item({ project, copy }: { project: Project; copy?: boolean }) {
   return (
-    // No viewport prefetch: every moving card would make the browser recheck its visibility on each frame.
-    <Link href={caseHref(project.title) ?? '/proyectos'} prefetch={false} className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
+    // Each card opens the catalog scrolled to that same project's card. A plain anchor (no viewport prefetch, no
+    // client routing) lets the browser scroll to the fragment after layout instead of mid card entry animation.
+    <a href={`/proyectos#${project.id}`} className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
       <ProjectImage src={project.image} alt={copy ? '' : project.title} fill sizes="300px" className={styles.image}
         style={{ objectFit: 'contain' }} />
       <span className={styles.caption}><strong>{project.title}</strong><small>{project.owner}</small></span>
-    </Link>
+    </a>
   );
 }
 

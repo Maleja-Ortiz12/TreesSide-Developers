@@ -6,7 +6,7 @@ Repositorio: https://github.com/Maleja-Ortiz12/TreesSide-Developers
 
 ## Estado actual
 
-- El inicio combina el hero, un carrusel de proyectos, seis demos locales y un resumen de los planes.
+- El inicio combina el hero, un carrusel de proyectos, seis demos locales y un resumen de los planes. Cada tarjeta del carrusel lleva a la tarjeta del mismo proyecto en el catálogo de `/proyectos` (`/proyectos#<id del proyecto>`).
 - `/planes` presenta cuatro ofertas acumulativas: **Impulso Web desde $500.000 COP**, **Catálogo Administrable desde $900.000**, **Vende Online desde $1.490.000** y **Negocio Integral desde $3.490.000**. El alcance, impuestos aplicables, renovaciones y costos externos se detallan antes de cotizar. Los datos se editan en `src/data/plans.ts`.
 - La tienda ofrecida se desarrolla con código a medida y pasarela externa. No tiene un tope fijo de productos: volumen, variantes y carga inicial se cotizan. El paquete integral incorpora web, panel, tienda y un flujo de automatización.
 - `/casos` documenta La Lupe, Emisoras Latinas y TengoYa. `/contacto` incluye preguntas frecuentes y enlaza a `/politica-de-datos`.
