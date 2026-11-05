@@ -24,8 +24,8 @@ test('S4 every page shares and canonicalizes its own URL, keeping the shared Ope
     assert.equal(meta(html, 'property', 'og:title'), title, `${path} og:title matches the page title`);
     assert.equal(meta(html, 'property', 'og:site_name'), 'TreesSide Developers', `${path} site name`);
     assert.equal(meta(html, 'property', 'og:locale'), 'es_CO', `${path} locale`);
-    assert.ok(meta(html, 'property', 'og:image')?.startsWith(`${SITE}/opengraph-image`), `${path} og:image on the public domain`);
-    assert.ok(meta(html, 'name', 'twitter:image')?.startsWith(`${SITE}/opengraph-image`), `${path} twitter:image on the public domain`);
+    assert.equal(meta(html, 'property', 'og:image'), `${SITE}/images/treesside-share.png`, `${path} og:image on the public domain`);
+    assert.equal(meta(html, 'name', 'twitter:image'), `${SITE}/images/treesside-share.png`, `${path} twitter:image on the public domain`);
   }
 });
 

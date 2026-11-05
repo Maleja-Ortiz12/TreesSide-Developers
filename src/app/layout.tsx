@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { JetBrains_Mono, Outfit } from 'next/font/google';
 import { CONTACT_INFO, SERVICES, SITE_URL } from '@/data/content';
-import { BASE_OPEN_GRAPH } from '@/lib/metadata';
+import { BASE_OPEN_GRAPH, SHARE_IMAGE } from '@/lib/metadata';
 import { StyledJsxRegistry } from '@/components/StyledJsxRegistry';
 import './globals.css';
 
@@ -30,11 +30,13 @@ export const metadata: Metadata = {
     ...BASE_OPEN_GRAPH,
     title: 'TreesSide Developers | Transformamos ideas en soluciones digitales',
     description: 'Desarrollo de software a medida, aplicaciones web, soluciones cloud e inteligencia de negocios.',
+    images: [SHARE_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'TreesSide Developers | Transformamos ideas en soluciones digitales',
     description: 'Desarrollo de software a medida, aplicaciones web, soluciones cloud e inteligencia de negocios.',
+    images: [SHARE_IMAGE.url],
   },
   icons: {
     icon: '/images/treesside-logo.jpg',

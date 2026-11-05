@@ -7,9 +7,10 @@ export const BASE_OPEN_GRAPH = {
   type: 'website',
 } as const;
 
-// A page that sets its own openGraph stops inheriting src/app/opengraph-image, so it is listed explicitly.
-const SHARE_IMAGE = {
-  url: '/opengraph-image',
+// Published as a static file: WhatsApp and other crawlers download it as is, without generating it on each request.
+export const SHARE_IMAGE = {
+  url: '/images/treesside-share.png',
+  type: 'image/png',
   width: 1200,
   height: 630,
   alt: 'TreesSide Developers · Transformamos ideas en soluciones digitales',

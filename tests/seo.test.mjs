@@ -40,10 +40,12 @@ test('S4 the home page publishes Organization structured data with the real cont
 test('S4 pages share a large Open Graph image served as PNG', async () => {
   const html = await (await get('/')).text();
   const image = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
-  // next dev resolves file-based images against the dev server; production builds use metadataBase (the real domain).
-  assert.ok([SITE, new URL(base).origin].some(origin => image?.startsWith(`${origin}/opengraph-image`)), `og:image ${image}`);
+  assert.equal(image, `${SITE}/images/treesside-share.png`);
+  assert.match(html, /<meta property="og:image:type" content="image\/png"/);
+  assert.match(html, /<meta property="og:image:width" content="1200"/);
+  assert.match(html, /<meta property="og:image:height" content="630"/);
   assert.match(html, /<meta name="twitter:card" content="summary_large_image"/);
-  const png = await get(new URL(image).pathname + new URL(image).search);
+  const png = await get(new URL(image).pathname);
   assert.equal(png.headers.get('content-type'), 'image/png');
   assert.ok((await png.arrayBuffer()).byteLength > 5000, 'non-trivial image');
 });
