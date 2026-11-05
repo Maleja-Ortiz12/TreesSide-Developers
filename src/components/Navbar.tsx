@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from './Logo';
+import { ServicesSubmenu } from './ServicesSubmenu';
 import { Menu, X, Send, House, Layers, Tag, Monitor, Sprout, Users, Mail, MessageCircle, type LucideIcon } from 'lucide-react';
 
 export const NAV_LINKS = [
@@ -41,6 +42,7 @@ export function Navbar() {
   useEffect(() => setMobileMenuOpen(false), [pathname]);
 
   const isCurrent = (href: string) => pathname === href;
+  const servicesActive = pathname === '/servicios' || pathname.startsWith('/servicios/');
 
   return (
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
@@ -68,7 +70,12 @@ export function Navbar() {
       </div>
 
       <nav className="desktop-nav" aria-label="Principal">
-        {RAIL_LINKS.map(({ label, href, icon: Icon }) => (
+        {RAIL_LINKS.map(({ label, href, icon: Icon }) => href === '/servicios' ? (
+          <ServicesSubmenu key={href} active={servicesActive} className="rail-link">
+            <Icon size={22} strokeWidth={1.6} aria-hidden="true" />
+            <span>{label}</span>
+          </ServicesSubmenu>
+        ) : (
           <Link
             key={href}
             href={href}
@@ -83,7 +90,11 @@ export function Navbar() {
 
       {mobileMenuOpen && (
         <div className="mobile-drawer">
-          {NAV_LINKS.map((item) => (
+          {NAV_LINKS.map((item) => item.href === '/servicios' ? (
+            <ServicesSubmenu key={item.href} mobile active={servicesActive} className="drawer-link">
+              {item.label}
+            </ServicesSubmenu>
+          ) : (
             <Link
               key={item.href}
               href={item.href}
@@ -219,6 +230,8 @@ export function Navbar() {
           display: flex;
           flex-direction: column;
           gap: 16px;
+          max-height: calc(100dvh - 76px);
+          overflow-y: auto;
         }
         .mobile-drawer :global(.drawer-link) {
           color: #ffffff;
