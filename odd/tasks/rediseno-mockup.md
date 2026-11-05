@@ -85,7 +85,7 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - T25 [S25,S9,S10,S12,S13,S19] Reintroduce hero tabs, demos and laptop cards next to the carousel — inline — commit: 4626d1c (done)
 
-- T26 [S26,S23,S24] Whole photos in the Restaurante and Logística tree cards — inline — commit: pending
+- T26 [S26,S23,S24] Whole photos in the Restaurante and Logística tree cards — inline — commit: 172983d (done)
 
 ## Log
 
