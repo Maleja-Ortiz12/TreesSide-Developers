@@ -11,7 +11,8 @@ import styles from '../casos.module.css';
 
 type Params = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
+// dynamicParams is left at its default: on Cloudflare (OpenNext without an incremental cache) prerendered pages cannot be
+// read back, so turning it off made every case page fail with NoFallbackError. Unknown slugs still 404 through notFound().
 export const generateStaticParams = () => CASE_STUDIES.map(item => ({ slug: item.slug }));
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {

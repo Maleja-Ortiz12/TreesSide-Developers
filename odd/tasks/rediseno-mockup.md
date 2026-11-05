@@ -47,6 +47,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 
 - S27. User (L53): "no primero hagamos otro cambio el del logo, ya lo subi actualizado en la carpeta raiz images". Replace the brand logo with Images/LOGO actualizado.png (tree mark + "TreesSide" / "DEVELOPERS" wordmark) wherever the old circuit-tree logo appears: header on every page, favicon/apple icon, Organization logo, share card, About and Technologies brand images. Square uses get the new tree mark only (transparent background); the header keeps the wordmark as crisp HTML text styled like the new logo (white "TreesSide", green spaced "DEVELOPERS"). File names stay so existing references keep working. Push stays on hold until the user answers remote and scope.
 
+- S28. User (L58) reported a production error: "Internal: NoFallbackError" for GET /casos/emisoras-latinas?_rsc=... on the Cloudflare Worker treesside-developers. The three case pages must answer 200 on Cloudflare (HTML and client navigation) and unknown case slugs must still answer 404.
+
 ## Tasks
 
 - T1 [S1, S3] Global theme tokens, cards, buttons, kicker, background — inline — commit: a5c90d5, 773acf1 (done)
@@ -90,6 +92,8 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - T26 [S26,S23,S24] Whole photos in the Restaurante and Logística tree cards — inline — commit: 172983d (done)
 
 - T27 [S27] New brand logo across header, icons, share card and brand images — inline — commit: (this commit) (done)
+
+- T28 [S28] Case pages work on Cloudflare without a prerender cache — inline — commit: (this commit) (done)
 
 ## Log
 
@@ -187,3 +191,6 @@ Branch: `feat/rediseno-mockup` (after 061727f). Pre-existing uncommitted work on
 - L56 (user, verbatim): "los metadatos tambieen hay que subirlo para el SEO" — committed the pre-existing metadata work: static share image public/images/treesside-share.png (with the new logo), SHARE_IMAGE in metadata.ts and layout.tsx (og:image/twitter:image), its metadata/SEO/social tests and the README SEO section. page-metadata/seo/social-sharing 10/10 and full suite 200/200 on the same working tree. Still local only: the ProjectCarousel native-anchor change and its README line, scripts/check-carousel-navigation.mjs, deletion of 2 Images/media_*.jpg, mockups and logo in Images/.
 
 - L57 (user, verbatim): "si hazlo" — committed the pre-existing carousel change (plain <a href="/proyectos#<id>"> instead of case-study Link), its README line and scripts/check-carousel-navigation.mjs, so the pushed tests match the pushed code. Carousel tests 9/9 now; full suite 200/200 and the navigation script (click/Enter/direct at 390/1440) passed earlier on this same code. Still local only: deletion of 2 Images/media_*.jpg, mockups and logo in Images/.
+
+- L58 (user report): Cloudflare log "Internal: NoFallbackError" at handleRevalidate for /casos/emisoras-latinas?_rsc=1p-R_iEY6bj0jY31. Reproduced live: /casos/la-lupe, /casos/emisoras-latinas -> 404 (HTML and RSC); /casos and / -> 200. Live site still serves the pre-redesign build (no redesign markers), so production builds another branch (main). Cause: casos/[slug] exports dynamicParams=false with generateStaticParams (since 81abdeb, 2026-10-24, already on main); OpenNext on Workers without an incremental cache cannot read the prerendered page, falls back to rendering, and dynamicParams=false raises NoFallbackError. Fix chosen: drop dynamicParams=false (render on demand, notFound() keeps 404 for unknown slugs) instead of adding OpenNext/wrangler config, which this repo does not contain. RED: source test failed before the change.
+- L59 (S28 checks): build exit0 (the three slugs still prerendered as SSG), full suite 202/202 incl. case-routes-cloudflare (200 HTML and RSC for the three cases, 404 for /casos/no-existe). Not verifiable locally: the Cloudflare Worker itself; production must be redeployed from a branch that contains this fix.
