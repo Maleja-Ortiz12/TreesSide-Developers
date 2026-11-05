@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/data/content';
 import { CASE_STUDIES } from '@/data/cases';
+import { SERVICE_CATEGORIES } from '@/data/serviceCategories';
 
 const ROUTES = [
-  '', '/servicios', '/planes', '/proyectos', '/casos', ...CASE_STUDIES.map(item => `/casos/${item.slug}`),
+  '', '/servicios', ...SERVICE_CATEGORIES.map(category => `/servicios/${category.slug}`), '/planes', '/proyectos', '/casos', ...CASE_STUDIES.map(item => `/casos/${item.slug}`),
   '/nosotros', '/equipo', '/contacto', '/politica-de-datos',
 ];
 

@@ -227,3 +227,13 @@
   .step::before, .step::after { display: none; }
   .step { padding: 18px 14px; }
 }
+.categories { padding: 30px 0 40px; scroll-margin-top: 90px; }
+.categories h2 { color: #fff; font-size: clamp(1.8rem, 2.8vw, 2.3rem); letter-spacing: -.025em; line-height: 1.08; }
+.categoryGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 24px; list-style: none; padding: 0; }
+.categoryCard { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 20px 18px; border: 1px solid #a9ffdc45; border-radius: 18px; background: var(--panel-bg); color: #d8e9e2; text-decoration: none; transition: border-color .2s ease, transform .2s ease; }
+.categoryCard:hover, .categoryCard:focus-visible { border-color: #68ffd0; transform: translateY(-2px); }
+.categoryCard:focus-visible { outline: 2px solid var(--primary-green); outline-offset: 3px; }
+.categoryCard > svg { color: var(--primary-green); }
+.categoryLabel { color: #fff; font-size: 1.1rem; font-weight: 700; }
+.categoryText { font-size: .85rem; line-height: 1.4; }
+.categoryMore { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 6px; color: var(--primary-green); font-size: .88rem; font-weight: 500; }

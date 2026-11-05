@@ -4,6 +4,7 @@ import { SitePage } from '@/components/SitePage';
 import { ServicesSection } from '@/components/ServicesSection';
 import { TechStackSection } from '@/components/TechStackSection';
 import { ServicesProcess } from '@/components/services/ServicesProcess';
+import { ServiceCategories } from '@/components/services/ServiceCategories';
 import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata: Metadata = pageMetadata('/servicios', {
@@ -15,6 +16,7 @@ export default function ServicesPage() {
   return (
     <SitePage offsetHeader={false} footer={<HomeClosing />}>
       <ServicesSection />
+      <ServiceCategories />
       <TechStackSection />
       <ServicesProcess />
     </SitePage>
