@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Check, Info, MessageCircle } from 'lucide-react';
 import { FEATURED_PROJECTS } from '@/data/content';
-import { SERVICE_CATEGORIES, serviceCategory } from '@/data/serviceCategories';
+import { SERVICE_CATEGORIES, LEGACY_SERVICE_CATEGORIES, serviceCategory } from '@/data/serviceCategories';
 import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { ProjectImage } from '@/components/ProjectImage';
@@ -15,7 +15,7 @@ import styles from './category.module.css';
 
 type Props = { params: Promise<{ categoria: string }> };
 
-export const generateStaticParams = () => SERVICE_CATEGORIES.map(({ slug }) => ({ categoria: slug }));
+export const generateStaticParams = () => [...SERVICE_CATEGORIES, ...LEGACY_SERVICE_CATEGORIES].map(({ slug }) => ({ categoria: slug }));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const category = serviceCategory((await params).categoria);

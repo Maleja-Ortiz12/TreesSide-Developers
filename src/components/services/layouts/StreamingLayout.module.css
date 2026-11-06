@@ -1,0 +1,81 @@
+.root { --mint: #4ff0b4; --gold: #e2b24f; --line: #5ff4c455; color: #edf8f3; padding-bottom: 3rem; }
+.root h1, .root h2, .root h3, .root p { margin: 0; }
+.root h2 { font-size: clamp(1.5rem, 2.2vw, 2.1rem); line-height: 1.2; letter-spacing: -.02em; }
+.root h3 { font-size: 1.05rem; line-height: 1.25; }
+.root p { line-height: 1.55; color: #c8dbd2; }
+.root section[id] { scroll-margin-top: 6rem; }
+.section { margin-top: 3rem; }
+
+/* Gold accents drawn in the mockup: a short bar under a heading or a rule after it. */
+.underlined::after, .lead::after, .conceptCopy p::after { content: ''; display: block; width: 44px; height: 2px; margin-top: .8rem; background: var(--gold); border-radius: 2px; }
+.trailing { display: flex; align-items: center; gap: 1rem; }
+.trailing::after { content: ''; width: 44px; height: 2px; background: var(--gold); border-radius: 2px; }
+
+.hero { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: 1.5rem; padding-top: 1.2rem; }
+.hero h1 { font-size: clamp(2.4rem, 4.4vw, 4.4rem); line-height: 1.05; letter-spacing: -.035em; margin-bottom: 1.2rem; }
+.hero h1 span { display: block; }
+.hero h1 .highlight { color: var(--mint); }
+.lead { font-size: 1.12rem; max-width: 520px; }
+
+.heroStage, .artStage { position: relative; transform: perspective(1300px) rotateX(2deg); transform-style: preserve-3d; transition: transform .3s ease; }
+.heroStage img, .artStage img { display: block; width: 100%; height: auto; border-radius: 18px; }
+.heroStage img { mask-image: linear-gradient(to right, transparent, #000 10%); filter: drop-shadow(0 18px 26px #0008); }
+.artStage img { border: 1px solid #5ff4c488; box-shadow: 0 0 34px #5ff4c42e, 0 22px 40px #0009; }
+
+.capabilities { list-style: none; padding: 0; margin: 1.4rem 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.capabilities li { display: flex; align-items: center; gap: .9rem; padding: 1rem 1.2rem; border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(120deg, #0c3026aa, #06201866); }
+.capabilities svg { flex-shrink: 0; color: var(--mint); }
+.capabilities h3 { font-weight: 500; }
+
+.concept { display: grid; grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr); align-items: center; gap: 2rem; margin-top: 3rem; }
+.conceptCopy { display: grid; gap: 1.4rem; justify-items: start; }
+.root .pill { font-size: 1rem; font-weight: 600; letter-spacing: 0; padding: .35rem 1rem; border: 1px solid var(--gold); border-radius: 10px; color: #f7e7c2; box-shadow: 0 0 18px #e2b24f2e; }
+.conceptCopy p { font-size: 1.12rem; color: #e6f3ed; }
+
+.planGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 1.4rem; }
+.plan { display: flex; flex-direction: column; gap: .9rem; min-width: 0; padding: 1.3rem; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(145deg, #13392e, #061a14 65%); box-shadow: 0 8px 0 #03120e, 0 18px 35px #0007, inset 0 1px #b6ffdd35; transition: transform .25s ease; }
+.planHead { display: flex; align-items: center; gap: .9rem; }
+.planHead svg { flex-shrink: 0; color: var(--mint); }
+.planHead h3 { font-size: 1.2rem; }
+.plan > p { font-size: .92rem; }
+.price { display: grid; margin-top: auto; border: 1px solid #5ff4c430; border-radius: 12px; background: #ffffff08; text-align: center; }
+.price span { padding: .4rem; font-size: .88rem; color: #dbe9e3; }
+.price a { padding: .55rem; border: 1px solid #5ff4c488; border-radius: 10px; background: #020c09; color: var(--mint); font-size: 1.35rem; font-weight: 700; text-decoration: none; }
+.price a:hover { background: #5ff4c41f; }
+.price a:focus-visible, .cta a:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
+.root .support { display: flex; align-items: center; justify-content: center; gap: .8rem; margin-top: 1.3rem; padding: .8rem 1.2rem; border: 1px solid #5ff4c488; border-radius: 12px; background: linear-gradient(90deg, #0d3a2c, #082a20); color: #e6f5ef; text-align: center; }
+.support svg { flex-shrink: 0; color: var(--mint); }
+.support strong { color: #fff; }
+.root .external { margin-top: .7rem; font-size: .88rem; text-align: center; }
+
+.steps { list-style: none; padding: 0; margin: 1.4rem 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.2rem; }
+.steps li { position: relative; display: grid; align-content: start; gap: .7rem; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 12px; background: #0c352e55; }
+.stepHead { display: flex; align-items: center; gap: .8rem; }
+.stepHead svg { flex-shrink: 0; color: var(--mint); }
+.steps p { font-size: .86rem; line-height: 1.4; }
+.arrow { position: absolute; top: 50%; right: -1.75rem; translate: 0 -50%; color: var(--mint); }
+.steps li:last-child .arrow { display: none; }
+
+.cta { display: flex; justify-content: center; margin-top: 2.6rem; }
+.root .cta h2 { font-size: clamp(1.3rem, 2vw, 1.8rem); }
+.cta a { display: inline-flex; align-items: center; gap: 1rem; padding: 1rem 2.6rem; border: 2px solid var(--mint); border-radius: 999px; background: linear-gradient(90deg, #0b2a20, #06301f); color: #fff; text-decoration: none; box-shadow: 0 0 0 1px #e2b24f66, 0 0 30px #5ff4c433; transition: box-shadow .2s ease; }
+.cta a:hover { box-shadow: 0 0 0 1px #e2b24f, 0 0 40px #5ff4c466; }
+.cta svg { flex-shrink: 0; color: var(--mint); }
+
+@media (max-width: 1000px) {
+  .capabilities, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps li:nth-child(2n) .arrow { display: none; }
+  .concept { grid-template-columns: 1fr; gap: 1.2rem; }
+}
+@media (max-width: 800px) {
+  .hero { grid-template-columns: 1fr; }
+  .heroStage img { mask-image: none; }
+  .planGrid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .root h1 { font-size: 2.3rem; }
+  .capabilities, .steps { grid-template-columns: 1fr; gap: .8rem; }
+  .arrow { display: none; }
+  .cta a { padding: .9rem 1.3rem; gap: .7rem; }
+}
+@media (prefers-reduced-motion: reduce) { .heroStage, .artStage, .plan { transform: none !important; transition: none; } .cta a { transition: none; } }

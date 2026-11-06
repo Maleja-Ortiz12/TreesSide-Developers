@@ -80,6 +80,7 @@ const CUSTOM = {
     art: ['hero', 'gameplay'],
   },
 };
+const VISIBLE_SLUGS = [...Object.keys(CATEGORIES).filter(slug => slug !== 'streaming-y-redes'), ...Object.keys(CUSTOM), 'streaming'];
 
 for (const [slug, page] of Object.entries(CUSTOM)) {
   test(`${slug} follows its own mockup section by section`, async () => {
@@ -166,13 +167,16 @@ test('/servicios lists every category and keeps its services', async () => {
   const { html } = await get('/servicios');
   const section = html.match(/<section[^>]*id="categorias"[\s\S]*?<\/section>/)?.[0] ?? '';
   assert.ok(section, 'categorias section');
-  for (const slug of [...Object.keys(CATEGORIES), ...Object.keys(CUSTOM)]) assert.ok(section.includes(`href="/servicios/${slug}"`), slug);
+  for (const slug of VISIBLE_SLUGS) assert.equal((section.match(new RegExp(`href="/servicios/${slug}"`, 'g')) || []).length, 1, slug);
+  assert.equal(VISIBLE_SLUGS.length, 15);
+  assert.ok(!section.includes('href="/servicios/streaming-y-redes"'), 'legacy page is not a third category');
   assert.equal((html.match(/data-service="/g) || []).length, 9);
 });
 
 test('category pages are in the sitemap; unknown categories are 404', async () => {
   const { html: xml } = await get('/sitemap.xml');
-  for (const slug of [...Object.keys(CATEGORIES), ...Object.keys(CUSTOM)]) assert.ok(xml.includes(`<loc>${site}/servicios/${slug}</loc>`), slug);
+  for (const slug of VISIBLE_SLUGS) assert.ok(xml.includes(`<loc>${site}/servicios/${slug}</loc>`), slug);
+  assert.ok(!xml.includes(`<loc>${site}/servicios/streaming-y-redes</loc>`), 'legacy URL omitted from visible sitemap');
   assert.equal((await get('/servicios/no-existe')).status, 404);
 });
 
