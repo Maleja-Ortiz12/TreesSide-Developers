@@ -1,0 +1,84 @@
+.root { --mint: #5ff4c4; --gold: #e2b24f; --line: #5ff4c455; color: #edf8f3; padding-bottom: 3rem; }
+.root h1, .root h2, .root h3, .root p { margin: 0; }
+.root h2 { font-size: clamp(1.5rem, 2.2vw, 2.1rem); line-height: 1.2; letter-spacing: -.02em; }
+.root h3 { font-size: 1.02rem; line-height: 1.25; }
+.root p { line-height: 1.5; color: #c8dbd2; }
+.root section[id] { scroll-margin-top: 6rem; }
+.root .highlight { color: var(--mint); }
+.section { margin-top: 2.6rem; }
+.visuallyHidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Short gold bar under each heading, as drawn in the mockup. */
+.underlined::after { content: ''; display: block; width: 44px; height: 2px; margin-top: .55rem; background: var(--gold); border-radius: 2px; }
+
+.hero { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: 1rem; padding-top: 1.2rem; }
+.hero h1 { max-width: 11.5em; font-size: clamp(2.4rem, 4.4vw, 4.2rem); line-height: 1.05; letter-spacing: -.035em; margin-bottom: 1.4rem; }
+.lead { max-width: 25em; font-size: 1.12rem; }
+
+.heroStage, .artStage { position: relative; transform: perspective(1300px) rotateX(2deg); transform-style: preserve-3d; transition: transform .3s ease; }
+.heroStage img, .artStage img { display: block; width: 100%; height: auto; border-radius: 18px; }
+/* The desk scene fades into the page on its left edge, where the mockup lays the copy over it. */
+.heroStage img { mask-image: linear-gradient(to right, transparent, #000 14%); filter: drop-shadow(0 18px 26px #0008); }
+.artStage img { border: 1px solid #5ff4c466; box-shadow: 0 0 34px #5ff4c42a, 0 22px 40px #0009; }
+
+.offers { list-style: none; padding: 0; margin: 1.3rem 0 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .9rem; }
+.offers li { display: grid; align-content: start; gap: .8rem; padding: 1.1rem 1.1rem 1.2rem; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(150deg, #0c3026cc, #061a14aa); box-shadow: inset 0 1px #b6ffdd26; }
+.offerHead { display: flex; align-items: center; gap: .8rem; }
+.offerHead svg { flex-shrink: 0; color: var(--mint); }
+.offers p { font-size: .86rem; }
+
+.concept { margin-top: 2.6rem; }
+.concept figure { margin: 0; }
+
+.planGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 1.3rem; }
+.plan { display: flex; flex-direction: column; gap: .9rem; min-width: 0; padding: 1.2rem 1.3rem 1.3rem; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(145deg, #13392e, #061a14 65%); box-shadow: 0 8px 0 #03120e, 0 18px 35px #0007, inset 0 1px #b6ffdd35; transition: transform .25s ease; }
+.planHead { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; }
+.planHead svg { flex-shrink: 0; color: var(--mint); }
+.planHead h3 { font-size: 1.1rem; }
+.badge { margin-left: auto; padding: .22rem .7rem; border: 1px solid #5ff4c488; border-radius: 999px; background: #0d3a2c; color: #dff5ec; font-size: .72rem; font-weight: 500; white-space: nowrap; }
+.plan > p { font-size: .92rem; }
+.quote { margin-top: auto; padding: .55rem; border: 2px solid #5ff4c4aa; border-radius: 999px; background: #020c09; color: var(--mint); font-size: 1.25rem; font-weight: 700; text-align: center; text-decoration: none; box-shadow: 0 0 18px #5ff4c422; transition: background .2s ease; }
+.quote:hover { background: #5ff4c41f; }
+.quote:focus-visible, .ctaButton:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
+.root .note { display: flex; align-items: flex-start; justify-content: center; gap: .6rem; max-width: 880px; margin: 1.1rem auto 0; font-size: .84rem; }
+.note svg { flex-shrink: 0; margin-top: .1rem; color: #dbe9e3; }
+
+.steps { list-style: none; padding: 0 2.5rem; margin: 1.3rem 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3rem; }
+.steps li { position: relative; }
+.step { display: flex; align-items: center; justify-content: center; gap: .9rem; height: 100%; padding: .8rem 1rem; border: 1px solid var(--line); border-radius: 12px; background: #0c352e55; }
+.step svg { flex-shrink: 0; color: var(--mint); }
+.step h3 { max-width: 9.5em; font-size: .95rem; font-weight: 600; }
+.arrow { position: absolute; top: 50%; right: -2.1rem; translate: 0 -50%; color: var(--mint); }
+.steps li:last-child .arrow { display: none; }
+
+.cta { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: 1rem; margin-top: 2.6rem; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: radial-gradient(ellipse at 50% 30%, #6b4a1e66, transparent 60%), linear-gradient(180deg, #0d241c, #06130f); }
+.cta img { display: block; width: 100%; max-width: 300px; height: auto; }
+.ctaLeft { justify-self: start; }
+.cta .ctaRight { justify-self: end; max-width: 260px; }
+.ctaCopy { display: grid; justify-items: center; gap: 1.1rem; align-self: center; padding: 1.6rem 0; text-align: center; }
+.root .ctaCopy h2 { font-size: clamp(1.3rem, 2.2vw, 2rem); }
+.ctaButton { display: inline-flex; align-items: center; gap: .6rem; padding: .7rem 2.2rem; border-radius: 999px; background: var(--mint); color: #03140f; font-size: 1.1rem; font-weight: 700; text-decoration: none; box-shadow: 0 0 28px #5ff4c466; transition: box-shadow .2s ease; }
+.ctaButton:hover { box-shadow: 0 0 40px #5ff4c499; }
+
+@media (max-width: 1100px) {
+  .offers { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0; }
+  .steps li:nth-child(2n) .arrow { display: none; }
+}
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .heroStage img { mask-image: none; }
+  .planGrid { grid-template-columns: 1fr; }
+  .offers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .cta { grid-template-columns: 1fr 1fr; align-items: end; }
+  .ctaCopy { grid-column: 1 / -1; grid-row: 1; padding: 1.6rem 1rem 0; }
+}
+@media (max-width: 560px) {
+  .root h1 { font-size: 2.3rem; }
+  .offers, .steps { grid-template-columns: 1fr; gap: .8rem; }
+  .arrow { display: none; }
+  .badge { margin-left: 0; white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) { .heroStage, .artStage, .plan { transform: none !important; transition: none; } .quote, .ctaButton { transition: none; } }

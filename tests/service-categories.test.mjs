@@ -80,7 +80,7 @@ const CUSTOM = {
     art: ['hero', 'gameplay'],
   },
 };
-const VISIBLE_SLUGS = [...Object.keys(CATEGORIES).filter(slug => slug !== 'streaming-y-redes'), ...Object.keys(CUSTOM), 'streaming'];
+const VISIBLE_SLUGS = [...Object.keys(CATEGORIES).filter(slug => slug !== 'streaming-y-redes'), ...Object.keys(CUSTOM), 'streaming', 'redes-sociales'];
 
 for (const [slug, page] of Object.entries(CUSTOM)) {
   test(`${slug} follows its own mockup section by section`, async () => {
@@ -168,7 +168,7 @@ test('/servicios lists every category and keeps its services', async () => {
   const section = html.match(/<section[^>]*id="categorias"[\s\S]*?<\/section>/)?.[0] ?? '';
   assert.ok(section, 'categorias section');
   for (const slug of VISIBLE_SLUGS) assert.equal((section.match(new RegExp(`href="/servicios/${slug}"`, 'g')) || []).length, 1, slug);
-  assert.equal(VISIBLE_SLUGS.length, 15);
+  assert.equal(VISIBLE_SLUGS.length, 16);
   assert.ok(!section.includes('href="/servicios/streaming-y-redes"'), 'legacy page is not a third category');
   assert.equal((html.match(/data-service="/g) || []).length, 9);
 });

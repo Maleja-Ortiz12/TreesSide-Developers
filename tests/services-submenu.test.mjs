@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
-const SLUGS = ['ecommerce', 'sistemas-de-gestion', 'datos-y-analitica', 'logistica', 'restaurantes', 'streaming', 'videojuegos', 'automatizacion', 'inteligencia-artificial', 'reservas-y-citas', 'agropecuario', 'soporte-tecnico', 'marketplaces', 'infraestructura', 'sitios-web'];
+const SLUGS = ['ecommerce', 'sistemas-de-gestion', 'datos-y-analitica', 'logistica', 'restaurantes', 'streaming', 'redes-sociales', 'videojuegos', 'automatizacion', 'inteligencia-artificial', 'reservas-y-citas', 'agropecuario', 'soporte-tecnico', 'marketplaces', 'infraestructura', 'sitios-web'];
 
 test('the Servicios menu item opens a submenu with every category', async () => {
   const html = await (await fetch(`${base}/`)).text();
@@ -14,7 +14,7 @@ test('the Servicios menu item opens a submenu with every category', async () => 
   assert.ok(panel.includes('href="/servicios"') && panel.includes('Todos los servicios'));
   for (const slug of SLUGS) assert.equal((panel.match(new RegExp(`href="/servicios/${slug}"`, 'g')) || []).length, 1, slug);
   assert.ok(!panel.includes('href="/servicios/streaming-y-redes"'), 'combined legacy category is not listed');
-  assert.equal(SLUGS.length, 15, 'dedicated streaming replaces the visible combined category');
+  assert.equal(SLUGS.length, 16, 'two separate services replace one combined category');
 });
 
 test('Servicios stays highlighted on a category page; other rail links are unchanged', async () => {
