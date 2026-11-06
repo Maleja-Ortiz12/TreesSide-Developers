@@ -47,13 +47,13 @@ Branch: `feat/rediseno-mockup` (after 1a88297). Proyectos stays exactly as commi
 - T3 [S2] Servicios submenu (desktop hover/click, mobile toggle), tests — inline — commit: 5456839 (done)
 - T4 [S1-S5] Verify: build, full suite on `next start`, browser check 390/1440, visual comparison with mockups; README — inline — commit: README in b3ac951 (done)
 
-- T5 [S3, S7, S10-S11] Restaurantes page per updated `mockup de restaurantes.png` — inline small source correction plus local AI asset processing — commit: baseline being recorded; done (build, focused22/22, full229/229, source-compared outputs and independent T10 verification)
-- T6 [S6-S8] Videojuegos page per `mockup videeojuegos.png` (layout, CSS, art) — inline bounded correction — commit: uncommitted; done (backup plans, build/tests/browser)
-- T7 [S3, S6-S10] Functional verification: build, suite, browser 390/1440, artwork and plans — inline — commit: uncommitted; done (build exit0, focused22/22, suite229/229, screenshots, pointer tilt)
+- T5 [S3, S7, S10-S11] Restaurantes page per updated `mockup de restaurantes.png` — inline small source correction plus local AI asset processing — commit: 11a1d4e; done (build, focused22/22, full229/229, source-compared outputs and independent T10 verification)
+- T6 [S6-S8] Videojuegos page per `mockup videeojuegos.png` (layout, CSS, art) — inline bounded correction — commit: 11a1d4e; done (backup plans, build/tests/browser)
+- T7 [S3, S6-S10] Functional verification: build, suite, browser 390/1440, artwork and plans — inline — commit: 11a1d4e; done (build exit0, focused22/22, suite229/229, screenshots, pointer tilt)
 
-- T8 [S3, S6-S8] Integrate both backup plan sets, 3D presentation and existing sharp artwork; update public regression tests and README — inline bounded edits after narrowed follow-up (each behavior below writer-size threshold; reuse existing data/assets, no downloads) — commit: uncommitted; done (both plan sets, actual restaurant mockup previews per S11, 3D cards, tests and README)
-- T9 [S9] Remove extra sector row from both custom pages; retain breadcrumb and return link — inline small edit — commit: uncommitted; done (build, focused 19/19, suite 226/226, browser checks)
-- T10 [S1, S5, S11] Verify aggregate shared-dispatcher and AI-tool risk — independent verifier — commit: baseline being recorded; done after human-authorized model/root repair, verifier mw5fjnlw-7-4nkv independently passed22/22 with no item3/5 blockers
+- T8 [S3, S6-S8] Integrate both backup plan sets, 3D presentation and existing sharp artwork; update public regression tests and README — inline bounded edits after narrowed follow-up (each behavior below writer-size threshold; reuse existing data/assets, no downloads) — commit: 11a1d4e; done (both plan sets, actual restaurant mockup previews per S11, 3D cards, tests and README)
+- T9 [S9] Remove extra sector row from both custom pages; retain breadcrumb and return link — inline small edit — commit: 11a1d4e; done (build, focused 19/19, suite 226/226, browser checks)
+- T10 [S1, S5, S11] Verify aggregate shared-dispatcher and AI-tool risk — independent verifier — commit: 11a1d4e; done after human-authorized model/root repair, verifier mw5fjnlw-7-4nkv independently passed22/22 with no item3/5 blockers
 
 ## Log
 
