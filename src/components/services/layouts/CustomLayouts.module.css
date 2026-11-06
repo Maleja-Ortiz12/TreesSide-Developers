@@ -1,0 +1,110 @@
+.root { --mint: #5ff4c4; color: #edf8f3; padding-bottom: 3rem; }
+.root h1, .root h2, .root h3, .root p { margin: 0; }
+.root h1 { font-size: clamp(2.4rem, 4vw, 4.3rem); line-height: 1.08; letter-spacing: -.035em; }
+.root h2 { font-size: clamp(1.65rem, 2.6vw, 2.6rem); line-height: 1.18; letter-spacing: -.025em; margin-bottom: 1.4rem; }
+.root h3 { font-size: 1.15rem; line-height: 1.25; }
+.root p { line-height: 1.6; color: #c8dbd2; }
+.root h1 span, .root h2 span { color: var(--mint); }
+.root section[id] { scroll-margin-top: 6rem; }
+.restaurant h1, .restaurant h2, .restaurant h3 { font-family: Georgia, 'Times New Roman', serif; font-weight: 500; }
+.restaurant h2 { text-align: center; }
+.restaurantHero { text-align: center; position: relative; padding-top: 1.5rem; }
+.restaurantHero h1 { max-width: 950px; margin: 0 auto 1rem; }
+.restaurantHero > p { font-size: 1.08rem; }
+.heroStage, .artStage { position: relative; transform: perspective(1300px) rotateX(2deg); transform-style: preserve-3d; transition: transform .3s ease; }
+.heroStage img, .artStage img { display: block; width: 100%; height: auto; border-radius: 18px; filter: drop-shadow(0 18px 26px #0008); }
+.heroStage { margin: 1.6rem auto; }
+.restaurantHero .heroStage { max-width: 1040px; }
+.restaurantHero .connected { display: table; margin: 1rem auto 1.5rem; border: 1px solid var(--mint); padding: .65rem 1.5rem; border-radius: 100px; color: var(--mint); box-shadow: 0 0 24px #5ff4c41c; font-family: Georgia, serif; font-size: 1.6rem; }
+.actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+.restaurantHero .actions { justify-content: center; }
+.root .caption { font-size: .75rem; text-align: right; font-style: italic; margin-top: .6rem; }
+.section { margin-top: 3.3rem; }
+.startList { display: grid; gap: 1rem; }
+.startCard { display: grid; grid-template-columns: 60px 1fr minmax(200px, 34%); gap: 1.5rem; align-items: center; overflow: hidden; border: 1px solid #9ed8bf40; border-radius: 16px; padding: 1rem 1.2rem; background: linear-gradient(120deg, #071d16, #03110c); }
+.number { font-size: 2.4rem; color: var(--mint); border-right: 1px solid #9ed8bf40; font-family: Georgia, serif; }
+.startCard h3 { font-size: 1.5rem; margin-bottom: .3rem; }
+.startCard small { display: inline-block; vertical-align: middle; border: 1px solid #c79d3c; border-radius: 20px; color: #edc46b; font: 500 .7rem var(--font-body, sans-serif); padding: .2rem .5rem; }
+.startCard p { font-size: .92rem; }
+.startCard img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; }
+.outline { display: inline-flex; align-items: center; gap: .5rem; color: var(--mint); border: 1px solid var(--mint); border-radius: 30px; padding: .35rem 1rem; margin-top: .75rem; font-size: .85rem; }
+.flow, .steps { list-style: none; padding: 0; display: grid; gap: 1rem; }
+.flow { grid-template-columns: repeat(5, 1fr); margin: 1.5rem 0 2rem; text-align: center; }
+.flow li { position: relative; }
+.flow li:not(:last-child)::after { content: ''; position: absolute; height: 1px; background: var(--mint); box-shadow: 0 0 10px var(--mint); top: 26px; left: 65%; width: 80%; z-index: 0; }
+.flow span { display: inline-flex; position: relative; z-index: 1; align-items: center; justify-content: center; width: 52px; height: 52px; background: #06291f; border: 1px solid #5ff4c48c; border-radius: 50%; color: var(--mint); }
+.flow h3 { font-family: inherit; font-size: .9rem; margin-top: .6rem; }
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; }
+.mode { display: flex; align-items: center; gap: 1rem; padding: 1.2rem; border: 1px solid #5ff4c470; border-radius: 14px; background: linear-gradient(120deg, #0c3026aa, #06201866); }
+.mode > svg { color: var(--mint); flex-shrink: 0; }
+.mode h3 { font-family: inherit; font-size: 1.05rem; margin-bottom: .4rem; }
+.mode p { font-size: .88rem; }
+.mode > svg:last-child { margin-left: auto; }
+.steps { grid-template-columns: repeat(4, 1fr); margin: 1.7rem 0 0; }
+.steps li { padding: 1rem; text-align: center; border-right: 1px solid #5ff4c430; }
+.steps li:last-child { border: 0; }
+.steps svg { color: var(--mint); margin-bottom: .7rem; }
+.steps h3 { font-family: inherit; margin-bottom: .35rem; }
+.steps p { font-size: .88rem; line-height: 1.4; }
+.reference { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #5ff4c430; }
+.reference h2 { text-align: left; }
+.reference p { margin-bottom: 1.3rem; }
+.referenceImage { position: relative; aspect-ratio: 16/10; overflow: hidden; border-radius: 14px; border: 1px solid #5ff4c470; }
+.projectLink { display: flex; align-items: center; gap: .5rem; margin-top: 1rem; color: var(--mint); font-size: .9rem; }
+.gameHero { display: grid; grid-template-columns: 1fr 1.15fr; align-items: center; gap: 1rem; min-height: 400px; padding-top: 1rem; }
+.gameHero h1 { margin-bottom: 1rem; }
+.gameHero p { margin-bottom: 1.5rem; }
+.gameHero .heroStage img { min-height: 330px; object-fit: cover; object-position: center; mask-image: linear-gradient(to right, transparent, #000 12%); }
+.offerGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.offerCard { position: relative; isolation: isolate; min-height: 230px; border: 1px solid #5ff4c470; border-radius: 16px; padding: 1.3rem; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+.offerCard img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.offerCard::before { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, #021c19 0%, #021c19ba 50%, #021c1922); z-index: -1; }
+.offerCard svg { color: var(--mint); margin-bottom: 1.2rem; }
+.offerCard h3 { font-size: 1.35rem; margin-bottom: .4rem; }
+.offerCard p { font-size: .95rem; }
+.mechanics { display: grid; grid-template-columns: 1.65fr 1fr; gap: 1.3rem; align-items: stretch; }
+.mechanics .artStage { display: flex; align-items: center; }
+.mechanicsList { display: grid; gap: .65rem; list-style: none; margin: 0; padding: 0; }
+.mechanicsList li { display: flex; align-items: center; gap: 1rem; padding: .8rem 1rem; border: 1px solid #5ff4c45e; border-radius: 12px; background: linear-gradient(120deg, #0c352eaa, #051c1966); }
+.mechanicsList svg { flex-shrink: 0; color: var(--mint); }
+.mechanicsList p { font-size: .8rem; }
+.gameSteps li { text-align: left; border: 1px solid #5ff4c45e !important; border-radius: 12px; background: #0c352e77; }
+.exploration { border: 1px solid #5ff4c45e; border-radius: 16px; padding: 1.2rem; display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); align-items: center; gap: 1rem; margin-top: 2rem; background: #092e2677; }
+.exploration h2 { font-size: 1.5rem; margin: .4rem 0; }
+.exploration small { color: var(--mint); font-size: .65rem; letter-spacing: .06em; text-transform: uppercase; }
+.exploration p { font-size: .87rem; }
+.exploration img { width: 100%; height: auto; aspect-ratio: 1.7; object-fit: cover; border-radius: 10px; border: 1px solid #5ff4c455; }
+.gameCta { display: flex; align-items: center; justify-content: space-between; gap: 2rem; background: linear-gradient(100deg, #14483e, #0d2a25); border: 1px solid #5ff4c455; border-radius: 16px; padding: 1.7rem; margin-top: 1.2rem; }
+.gameCta h2 { font-size: 1.8rem; margin-bottom: .5rem; }
+.gameCta a { flex-shrink: 0; }
+@media (max-width: 1000px) { .startCard { grid-template-columns: 45px 1fr 30%; gap: 1rem; } .gameHero { grid-template-columns: 1fr 1fr; } .gameHero h1 { font-size: 2.6rem; } .mechanics { grid-template-columns: 1.3fr 1fr; } .exploration { grid-template-columns: repeat(3, 1fr); } .exploration > div { grid-column: 1 / -1; } .gameCta { flex-wrap: wrap; } }
+@media (max-width: 700px) {
+ .root h1 { font-size: 2.25rem; } .root h2 { font-size: 1.8rem; } .section { margin-top: 2.4rem; }
+ .startCard { grid-template-columns: 36px 1fr; gap: .8rem; } .startCard img { grid-column: 2; height: auto; max-height: 140px; object-position: top; } .number { font-size: 1.9rem; align-self: start; } .startCard h3 { font-size: 1.4rem; }
+ .flow { grid-template-columns: repeat(3, 1fr); row-gap: 1.5rem; } .flow li::after { display: none; } .flow h3 { font-size: .8rem; }
+ .modes, .reference, .mechanics { grid-template-columns: 1fr; } .steps { grid-template-columns: repeat(2, 1fr); } .steps li { border: 0; }
+ .restaurantHero .connected { font-size: 1.25rem; padding: .5rem 1rem; } .actions { gap: .65rem; } .actions a { padding: .8rem 1rem; font-size: .85rem; }
+ .gameHero { grid-template-columns: 1fr; gap: 0; } .gameHero .heroStage { margin-top: 1rem; } .gameHero .heroStage img { min-height: 0; max-height: 300px; mask-image: linear-gradient(to bottom, #000 80%, transparent); }
+ .offerGrid { grid-template-columns: 1fr; } .offerCard { min-height: 210px; } .offerCard img { object-position: center 40%; } .reference { gap: 1.5rem; }
+ .exploration { grid-template-columns: 1fr; } .exploration img { aspect-ratio: 2; } .gameCta { padding: 1.3rem; gap: 1rem; }
+}
+.plansLead { margin: -.5rem 0 1.5rem !important; max-width: 850px; }
+.planGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
+.planCard { display: flex; flex-direction: column; gap: .85rem; min-width: 0; padding: 1.4rem; border: 1px solid #5ff4c455; border-radius: 18px; background: linear-gradient(145deg, #13392e, #061a14 65%); box-shadow: 0 8px 0 #03120e, 0 18px 35px #0007, inset 0 1px #b6ffdd35; transition: transform .25s ease; }
+.planCard[data-featured] { border-color: var(--mint); box-shadow: 0 8px 0 #093d2b, 0 0 28px #5ff4c41c; }
+.planHeading { display: flex; gap: .8rem; align-items: center; }
+.planHeading svg, .planCard > strong, .planCard li svg { color: var(--mint); flex-shrink: 0; }
+.planHeading h3 { font-family: inherit; font-size: 1.25rem; }
+.planCard p, .planCard li, .planCard strong { font-size: .88rem; }
+.planBadge { align-self: flex-start; padding: .25rem .55rem; border-radius: 20px; border: 1px solid #5ff4c455; color: #c4f4e0; font-size: .7rem; }
+.planCard ul, .planNotes { list-style: none; margin: 0; padding: 0; }
+.planCard li, .planNotes li { display: flex; gap: .5rem; align-items: flex-start; line-height: 1.6; margin-bottom: .45rem; }
+.planCard li svg, .planNotes svg { margin-top: .25rem; flex-shrink: 0; }
+.planModes { padding-top: .7rem; border-top: 1px solid #5ff4c433; }
+.planModes p { margin-top: .7rem; }
+.planQuote { display: flex; justify-content: center; align-items: center; gap: .6rem; background: #5ff4c41f; color: #e7fff4; border: 1px solid #5ff4c477; border-radius: 10px; padding: .7rem; margin-top: auto; font-weight: 700; text-decoration: none; }
+.planQuote:hover { background: #5ff4c43d; }
+.planQuote:focus-visible { outline: 2px solid var(--mint); outline-offset: 4px; }
+.planNotes { display: grid; gap: .5rem; margin-top: 1.3rem; font-size: .85rem; color: #c8dbd2; }
+@media (max-width: 900px) { .planGrid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .heroStage, .artStage, .planCard, .startCard { transform: none !important; transition: none; } }

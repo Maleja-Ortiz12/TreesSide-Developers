@@ -1,0 +1,16 @@
+.root { display: grid; gap: 16px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: .85rem; }
+.crumbs { display: flex; flex-wrap: wrap; gap: 8px; color: #c4dcd2; }
+.crumbs a { color: #e6f5ef; text-decoration: none; }
+.crumbs a:hover { color: var(--primary-green); }
+.crumbs [aria-current] { color: var(--primary-green); font-weight: 600; }
+.back { display: inline-flex; align-items: center; gap: 6px; color: var(--primary-green); text-decoration: none; font-weight: 500; }
+.pills { display: flex; flex-wrap: wrap; gap: 10px; }
+.pills a { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border: 1px solid #a9ffdc55; border-radius: 999px; background: #0c281ecc; color: #e6f5ef; font-size: .88rem; font-weight: 500; text-decoration: none; transition: border-color .2s ease, background .2s ease; }
+.pills a:hover { border-color: #68ffd0; }
+.pills a[aria-current] { background: var(--primary-green); border-color: var(--primary-green); color: #03140f; font-weight: 700; box-shadow: 0 0 18px #3ef0a866; }
+.pills a:focus-visible, .back:focus-visible { outline: 2px solid var(--primary-green); outline-offset: 3px; }
+@media (max-width: 600px) {
+  .pills { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .pills a { flex: none; }
+}

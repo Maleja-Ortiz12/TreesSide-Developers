@@ -10,6 +10,7 @@ import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { ProjectImage } from '@/components/ProjectImage';
 import { HomeClosing } from '@/components/home/HomeClosing';
+import { CUSTOM_LAYOUTS } from '@/components/services/layouts';
 import styles from './category.module.css';
 
 type Props = { params: Promise<{ categoria: string }> };
@@ -25,6 +26,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ServiceCategoryPage({ params }: Props) {
   const category = serviceCategory((await params).categoria);
   if (!category) notFound();
+  const Custom = CUSTOM_LAYOUTS[category.slug];
+  if (Custom) {
+    return (
+      <SitePage offsetHeader={false} footer={<HomeClosing />}>
+        <article className={styles.page}><Custom category={category} /></article>
+      </SitePage>
+    );
+  }
   const { hero, offers, flow, concept, plans, references, process, cta, icon: Icon } = category;
   const projects = references ? FEATURED_PROJECTS.filter(project => references.projectIds.includes(project.id)) : [];
 
