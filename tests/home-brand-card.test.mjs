@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-// The brand card hero was replaced by the home mockup hero (odd/tasks/rediseno-mockup.md S9, S10, S12).
+// Keep the tree hero while updating its business proposition (odd/tasks/client-conversion.md S1-S3).
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
 async function home() {
   const response = await fetch(base, { signal: AbortSignal.timeout(20000) });
@@ -10,25 +10,24 @@ async function home() {
   return response.text();
 }
 const text = html => html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<!-- -->/g, '').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
-const hero = html => html.match(/<section[^>]*id="inicio"[\s\S]*?<\/section>/)?.[0];
+const hero = html => html.match(/<section[^>]*id="inicio"[\s\S]*?data-home-stats[\s\S]*?<\/section>/)?.[0];
 
-test('S10 home hero uses the mockup copy, with "vida." in the mint gradient', async () => {
+test('S2 home hero uses the exact business proposition and mint gradient', async () => {
   const html = await home();
   const section = hero(html);
   assert.ok(section, 'hero section');
   const titles = [...html.matchAll(/<h1\b[\s\S]*?<\/h1>/g)].map(m => m[0]);
   assert.equal(titles.length, 1, 'one h1 on the page');
   assert.ok(section.includes(titles[0]), 'the h1 is the hero title');
-  assert.equal(text(titles[0]), 'Tu próxima idea merece cobrar vida.');
-  assert.match(titles[0], /<span class="[^"]*text-gradient[^"]*">vida\.<\/span>/);
-  assert.ok(text(section).includes('Desarrollamos software a la medida para restaurantes, medios de streaming, logística y más, convirtiendo tus ideas en soluciones reales, funcionales y escalables.'));
+  assert.equal(text(titles[0]), 'Tu negocio puede vender más y trabajar mejor con el software adecuado');
+  assert.match(titles[0], /<span class="[^"]*text-gradient[^"]*">el software adecuado<\/span>/);
+  assert.ok(text(section).includes('Creamos páginas web, tiendas y plataformas a medida para negocios que necesitan recibir clientes, organizar su operación y automatizar tareas'));
   const primary = section.match(/<a[^>]*class="[^"]*btn btn-primary[^"]*"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
   assert.ok(primary.includes('href="/contacto"'), 'primary CTA goes to contact');
-  assert.equal(text(primary), 'Construyamos tu proyecto');
+  assert.equal(text(primary), 'Cotizar mi proyecto');
   assert.ok(primary.includes('<svg'), 'arrow icon');
-  // S25: the mockup's secondary call to action leads to the demos again.
-  const secondary = section.match(/<a[^>]*href="#demos"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
-  assert.equal(text(secondary), 'Explorar demos');
+  const secondary = section.match(/<a[^>]*href="\/proyectos"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
+  assert.equal(text(secondary), 'Ver proyectos reales');
   assert.ok(text(section).includes('01 / EXPLORA'));
 });
 
@@ -40,20 +39,21 @@ test('S9 hero artwork is the mockup tree, decorative only', async () => {
   assert.ok(!section.includes('treesside-logo'), 'old brand card art removed');
 });
 
-test('S9 the stats band counts come from the real catalog data', async () => {
+test('S2 the proof band names portfolio evidence rather than counting projects or technologies', async () => {
   const section = hero(await home());
   const band = section.match(/<ul[^>]*data-home-stats[\s\S]*?<\/ul>/)?.[0];
-  assert.ok(band, 'stats band');
-  const team = await readFile('src/data/team.ts', 'utf8');
-  // Entries marked sameAs are merged into another member's card.
-  const projects = team.split('\n').filter(line => /\{ name: '[^']+', description:/.test(line) && !line.includes('sameAs')).length;
+  assert.ok(band, 'proof band');
+  assert.equal(text(band), 'La Lupe Web y carta de restaurante Emisoras Latinas Plataforma de radio del portafolio Conoce al equipo Participación y portafolios');
+  for (const href of ['/proyectos#equipo-la-lupe', '/proyectos#equipo-emisoras-latinas', '/equipo']) assert.ok(band.includes(`href="${href}"`), href);
+  assert.doesNotMatch(text(band), /\d|tecnologías|desarrolladores/);
+  // Preserve the earlier standalone-project regression: Bendita Gracia remains in the catalog,
+  // but adding it (or any member project) no longer becomes a company-contract count on the hero.
   const content = await readFile('src/data/content.ts', 'utf8');
-  const techs = (content.match(/export const TECHNOLOGIES[\s\S]*?\];/)[0].match(/name: '/g) || []).length;
-  const members = (team.match(/photo: '\/images\/team\//g) || []).length;
-  assert.equal(text(band), `${projects} proyectos ${techs} tecnologías ${members} desarrolladores`);
-  assert.ok(band.includes('href="/proyectos"'), 'projects count leads to the catalog');
+  const standalone = content.match(/export const FEATURED_PROJECTS[\s\S]*?\.\.\.TEAM_PROJECTS/)[0];
+  assert.ok(standalone.includes("id: 'equipo-bendita-gracia'"));
+  assert.ok(standalone.includes("title: 'Bendita Gracia'"));
   const source = await readFile('src/components/Hero.tsx', 'utf8');
-  for (const count of ['FEATURED_PROJECTS.length', 'TECHNOLOGIES.length', 'TEAM_MEMBERS.length']) assert.ok(source.includes(count), count);
+  for (const count of ['FEATURED_PROJECTS.length', 'TECHNOLOGIES.length', 'TEAM_MEMBERS.length']) assert.ok(!source.includes(count), count);
 });
 
 test('S12 the old hero, brand card, quick services, and plans preview are gone from the home', async () => {

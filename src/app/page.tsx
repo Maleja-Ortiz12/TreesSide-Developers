@@ -6,8 +6,8 @@ import { ProjectCarousel } from '@/components/motion/ProjectCarousel';
 import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata = pageMetadata('/', {
-  title: 'TreesSide Developers | Transformamos ideas en soluciones digitales',
-  description: 'En TreesSide Developers desarrollamos software a medida, combinando creatividad, tecnología y buenas prácticas: Desarrollo Web, Bases de Datos, Soluciones Cloud y Apps a Medida.',
+  title: 'Tu negocio puede vender más y trabajar mejor con el software adecuado | TreesSide Developers',
+  description: 'Creamos páginas web, tiendas y plataformas a medida para negocios que necesitan recibir clientes, organizar su operación y automatizar tareas',
 });
 
 export default function HomePage() {

@@ -86,6 +86,6 @@ test('S5 his technologies render with their own logo', async () => {
   for (const t of ['RPA con UiPath', 'Modelado de procesos con Bizagi', 'SEO técnico']) assert.ok(content.includes(t), t);
 });
 
-test('S6 home brand card counts four developers', async () => {
-  assert.ok(text(await page('/')).includes('4 desarrolladores'));
+test('S6 home links to team evidence instead of counting contracts', async () => {
+  assert.ok(text(await page('/')).includes('Conoce al equipo'));
 });

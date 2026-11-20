@@ -31,7 +31,7 @@ test('S23 the sphere floats and shines in 3D on desktop and stays still on phone
 test('S23 the home hero shows the three tree cards as real 3D HTML cards over a card-free tree', async () => {
   const html = await page('/');
   const hero = html.match(/<section[^>]*id="inicio"[\s\S]*?<\/section>/)?.[0] || '';
-  const scene = hero.match(/<div[^>]*data-hero-scene[\s\S]*?<ul[^>]*data-home-stats/)?.[0] || '';
+  const scene = hero.match(/<div[^>]*data-hero-scene[\s\S]*?data-demo-tab/)?.[0] || '';
   assert.ok(scene, 'hero scene');
   const cards = [...scene.matchAll(/data-hero-card="([^"]+)"/g)].map(([, id]) => id);
   assert.deepEqual(cards, ['restaurante', 'radio', 'logistica']);

@@ -198,16 +198,16 @@ test('S13/S25 La Lupe and Emisoras Latinas cards show their real image in a lapt
     assert.ok(plain(card).includes(description), `${id} real description`);
     const laptop = card.match(/<div[^>]*data-laptop[\s\S]*?<img[^>]*>/)?.[0] ?? '';
     assert.ok(laptop.includes(`src="/images/projects/${image}.webp"`), `${id} real image inside the laptop`);
-    const link = card.match(/<a[^>]*href="([^"]+)"[^>]*>[\s\S]*?<\/a>/);
+    const link = card.match(/<a[^>]*href="(\/proyectos#[^"]+)"[^>]*>[\s\S]*?<\/a>/);
     assert.equal(link?.[1], `/proyectos#${id}`, `${id} link`);
     assert.ok(plain(link[0]).includes('Ver proyecto'), `${id} link text`);
   }
 });
 
-test('S25 the laptop cards sit under "Ideas que cobran vida." and their screens are flat', async () => {
+test('S3 the laptop cards sit under the portfolio-evidence heading and their screens are flat', async () => {
   const html = await home();
   const section = html.match(/<section id="demos"[\s\S]*?<\/section>/)?.[0] ?? '';
-  assert.match(section, /<h3[^>]*>Ideas que cobran <span class="[^"]*text-gradient[^"]*">vida\.<\/span><\/h3>/);
+  assert.match(section, /<h2[^>]*>Experiencia que puedes <span class="[^"]*text-gradient[^"]*">revisar\.<\/span><\/h2>/);
   const css = readFileSync('src/components/home/Home.module.css', 'utf8');
   assert.doesNotMatch(css, /\.laptop \{[^}]*rotate\(/, 'no tilt on the project screenshot');
 });
