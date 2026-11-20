@@ -63,7 +63,7 @@ test('streaming sections keep the mockup order, labels and copy', async () => {
   assert.deepEqual([...process.matchAll(/<h3\b[^>]*>([\s\S]*?)<\/h3>/g)].map(([, inner]) => textOf(inner)), STEPS.map(([title]) => title));
   for (const [, text] of STEPS) assert.ok(textOf(process).includes(text), text);
   const cta = section(rendered, 'contacto-streaming');
-  assert.match(cta, /<a\b[^>]*href="\/contacto"/, 'CTA links to contact');
+  assert.match(cta, /<a\b[^>]*href="\/contacto\?servicio=[^"]+"/, 'CTA links to contact');
   assert.equal((rendered.match(/id="closing-title"/g) || []).length, 1, 'one shared closing footer');
   for (const anchor of [...rendered.matchAll(/href="#([^"]+)"/g)].map(match => match[1])) assert.ok(rendered.includes(`id="${anchor}"`), anchor);
 });
@@ -77,7 +77,7 @@ test('streaming plans: three one-time plans priced "Por cotizar" with support an
   assert.equal((plans.match(/<article\b/g) || []).length, 3);
   assert.equal((plans.match(/Pago único/g) || []).length, 3);
   assert.equal((plans.match(/Por cotizar/g) || []).length, 3);
-  assert.equal((plans.match(/<a\b[^>]*href="\/contacto"/g) || []).length, 3, 'one contact link per plan');
+  assert.equal((plans.match(/<a\b[^>]*href="\/contacto\?servicio=[^"]+"/g) || []).length, 3, 'one contact link per plan');
   assert.equal((plans.match(/data-tilt=""/g) || []).length, 3, 'three 3D plan cards');
   assert.ok(text.includes(SUPPORT), 'recurring support bar');
   assert.ok(text.includes(EXTERNAL), 'external-cost note');

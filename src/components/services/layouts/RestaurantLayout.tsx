@@ -44,7 +44,7 @@ export function RestaurantLayout({ category }: { category: ServiceCategory }) {
           {starts.map(([title, badge, text, cta, art], index) => (
             <article key={title} className={styles.startCard} data-tilt="">
               <span className={styles.number} aria-hidden="true">0{index + 1}</span>
-              <div><h3>{title} <small>{badge}</small></h3><p>{text}</p><Link href={index === 2 ? '#sistema' : '/contacto'} className={styles.outline}>{cta} <ArrowRight size={16} aria-hidden="true" /></Link></div>
+              <div><h3>{title} <small>{badge}</small></h3><p>{text}</p><Link href={index === 2 ? '#sistema' : `/contacto?servicio=${category.slug}`} className={styles.outline}>{cta} <ArrowRight size={16} aria-hidden="true" /></Link></div>
               <Image src={`/images/services/restaurantes/${art}-ai.webp`} alt={`Vista conceptual de ${title.toLowerCase()}, conservada del mockup actualizado.`} width={948} height={index === 2 ? 336 : 324} sizes="(max-width: 700px) 75vw, 360px" />
             </article>
           ))}
@@ -60,12 +60,12 @@ export function RestaurantLayout({ category }: { category: ServiceCategory }) {
         </div>
         <p className={styles.caption}>Vista conceptual</p>
       </section>
-      <CategoryPlans plans={category.plans} />
+      <CategoryPlans serviceSlug={category.slug} plans={category.plans} />
       <section aria-labelledby="modes-title" className={styles.section}>
         <h2 id="modes-title">El sistema completo, <span>a tu manera.</span></h2>
         <div className={styles.modes}>
           {[{ icon: CalendarDays, title: 'Suscripción', text: 'Acceso a la plataforma con cuota recurrente. Alcance por definir.' }, { icon: Code2, title: 'Desarrollo personalizado · pago único', text: 'Adaptado a tu operación. Infraestructura y mantenimiento se cotizan según alcance.' }].map(({ icon: Icon, title, text }) => (
-            <Link href="/contacto" key={title} className={styles.mode}><Icon size={30} aria-hidden="true" /><div><h3>{title}</h3><p>{text}</p></div><ArrowRight size={20} aria-hidden="true" /></Link>
+            <Link href={`/contacto?servicio=${category.slug}`} key={title} className={styles.mode}><Icon size={30} aria-hidden="true" /><div><h3>{title}</h3><p>{text}</p></div><ArrowRight size={20} aria-hidden="true" /></Link>
           ))}
         </div>
       </section>
@@ -74,7 +74,7 @@ export function RestaurantLayout({ category }: { category: ServiceCategory }) {
         <ol className={styles.steps}>{steps.map(({ icon: Icon, title, text }) => <li key={title}><Icon size={30} aria-hidden="true" /><h3>{title}</h3><p>{text}</p></li>)}</ol>
       </section>
       {project && <section className={styles.reference} aria-labelledby="lupe-title">
-        <div><h2 id="lupe-title">La Lupe</h2><p>Un restaurante de comida mexicana con presencia digital alineada a su esencia: carta, sedes y contacto, en una experiencia clara y atractiva.</p><Link href="/contacto" className="btn btn-primary">Hablemos de cómo trabaja tu restaurante. <ArrowRight size={18} aria-hidden="true" /></Link><Link href={`/proyectos#${project.id}`} className={styles.projectLink}>Ver proyecto real: La Lupe <ArrowRight size={16} aria-hidden="true" /></Link></div>
+        <div><h2 id="lupe-title">La Lupe</h2><p>Un restaurante de comida mexicana con presencia digital alineada a su esencia: carta, sedes y contacto, en una experiencia clara y atractiva.</p><Link href={`/contacto?servicio=${category.slug}`} className="btn btn-primary">Hablemos de cómo trabaja tu restaurante. <ArrowRight size={18} aria-hidden="true" /></Link><Link href={`/proyectos#${project.id}`} className={styles.projectLink}>Ver proyecto real: La Lupe <ArrowRight size={16} aria-hidden="true" /></Link></div>
         <div className={styles.referenceImage}><ProjectImage src={project.image} alt={project.title} fill sizes="(max-width: 760px) 90vw, 520px" /></div>
       </section>}
     </div>

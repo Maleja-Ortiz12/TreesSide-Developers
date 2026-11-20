@@ -56,7 +56,7 @@ export default async function ServiceCategoryPage({ params }: Props) {
               <h1>{hero.title} <span className="text-gradient">{hero.highlight}</span>{hero.titleEnd && <> {hero.titleEnd}</>}</h1>
               <p className={styles.lead}>{hero.lead}</p>
               <div className={styles.actions}>
-                <Link href="/contacto" className="btn btn-primary">{hero.cta} <ArrowRight size={18} aria-hidden="true" /></Link>
+                <Link href={`/contacto?servicio=${category.slug}`} className="btn btn-primary">{hero.cta} <ArrowRight size={18} aria-hidden="true" /></Link>
                 {hero.secondary && <Link href={hero.secondary.href} className="btn btn-secondary">{hero.secondary.label}</Link>}
               </div>
               {hero.chips && <ul className={styles.chips}>{hero.chips.map(chip => <li key={chip}>{chip}</li>)}</ul>}
@@ -129,6 +129,7 @@ export default async function ServiceCategoryPage({ params }: Props) {
                   )}
                   {plan.billing && <p className={styles.billing}><span>Tipo de facturación</span> {plan.billing}</p>}
                   <p className={styles.price}>Por cotizar</p>
+                  <Link href={`/contacto?servicio=${category.slug}&opcion=${encodeURIComponent(plan.name)}`} className="btn btn-secondary">Consultar este plan</Link>
                 </article>
               ))}
             </div>
@@ -180,7 +181,7 @@ export default async function ServiceCategoryPage({ params }: Props) {
               <h2 id="cta-title">{cta.title}</h2>
               <p>{cta.text}</p>
             </div>
-            <Link href="/contacto" className="btn btn-primary">{cta.button} <ArrowRight size={18} aria-hidden="true" /></Link>
+            <Link href={`/contacto?servicio=${category.slug}`} className="btn btn-primary">{cta.button} <ArrowRight size={18} aria-hidden="true" /></Link>
           </section>
         </div>
       </article>

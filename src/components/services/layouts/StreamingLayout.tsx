@@ -50,7 +50,7 @@ export function StreamingLayout({ category }: { category: ServiceCategory }) {
               <p>{summary}</p>
               <div className={styles.price}>
                 <span>{billing}</span>
-                <Link href="/contacto" aria-describedby={`plan-${index}`}>Por cotizar</Link>
+                <Link href={`/contacto?servicio=${category.slug}&opcion=${encodeURIComponent(name)}`} aria-describedby={`plan-${index}`}>Consultar este plan · Por cotizar</Link>
               </div>
             </article>
           ))}
@@ -73,7 +73,7 @@ export function StreamingLayout({ category }: { category: ServiceCategory }) {
       </section>
 
       <section id="contacto-streaming" aria-labelledby="contacto-streaming-title" className={styles.cta}>
-        <h2 id="contacto-streaming-title"><Link href="/contacto"><Radio size={30} aria-hidden="true" />{cta.title}</Link></h2>
+        <h2 id="contacto-streaming-title"><Link href={`/contacto?servicio=${category.slug}`}><Radio size={30} aria-hidden="true" />{cta.title}</Link></h2>
       </section>
     </div>
   );

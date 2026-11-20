@@ -9,10 +9,10 @@ async function page(path) {
 }
 const text = html => html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<!-- -->/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
 
-test('about page no longer repeats the team section, which lives on /equipo', async () => {
+test('about page presents existing team portraits and links to full profiles on /equipo', async () => {
   const html = await page('/nosotros');
   assert.ok(!/<section[^>]*id="equipo"/.test(html));
-  assert.ok(!html.includes('/images/team/'), 'no team portraits on /nosotros');
+  assert.ok(html.includes('/images/team/'), 'available team portraits on /nosotros');
   assert.ok(html.includes('href="/equipo"'), 'still links to the team page');
   const team = await page('/equipo');
   assert.ok(/<section[^>]*id="equipo"/.test(team));

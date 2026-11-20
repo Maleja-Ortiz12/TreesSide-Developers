@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ProjectImage } from './ProjectImage';
 import { useRouter } from 'next/navigation';
 import { FEATURED_PROJECTS, Project } from '@/data/content';
+import { projectEvidenceLabel } from '@/lib/projectEvidence';
 import { ProjectModal } from './ProjectModal';
 import { ProjectSpotlight } from './ProjectSpotlight';
 import { ArrowRight, UtensilsCrossed, Radio, Boxes, Infinity, Flower2, Monitor, type LucideIcon } from 'lucide-react';
@@ -31,7 +32,7 @@ export function ProjectsSection() {
   const filteredProjects = CATALOG.filter(p => activeFilter === 'Todos' || projectGroup(p) === activeFilter);
 
   const router = useRouter();
-  const goToContact = () => router.push('/contacto');
+  const goToContact = () => router.push(selectedProject ? `/contacto?proyecto=${encodeURIComponent(selectedProject.id)}` : '/contacto');
   const openProject = (project: Project) => {
     // Do not enlarge the small conceptual laptop crop when the original project image is available.
     setSelectedProject(FEATURED_PROJECTS.find(original => original.id === project.id) ?? project);
@@ -46,7 +47,7 @@ export function ProjectsSection() {
               Ideas que ya están <span className="text-gradient">funcionando.</span>
             </h1>
             <p className="section-subtitle">
-              Catálogo de TreesSide y proyectos personales de sus integrantes. Cada proyecto del equipo conserva su autoría y su fuente.
+              Proyectos para clientes, proyectos personales y experiencia laboral de nuestros integrantes, identificados por separado. Conservamos su autoría y su fuente.
             </p>
 
             <div className="filters" role="group" aria-label="Filtrar proyectos">
@@ -96,7 +97,7 @@ export function ProjectsSection() {
                   <ProjectIcon project={project} />
                   <h3 className="card-title">{project.title}</h3>
                   <p className="card-group">{projectGroupLabel(project)}</p>
-                  {project.experience && <span className="card-experience">Experiencia laboral</span>}
+                  <span className="card-experience">{projectEvidenceLabel(project)}</span>
                   <p className="card-description">{project.description}</p>
                   <button type="button" aria-label={`Ver proyecto ${project.title}`} className="card-action">
                     Ver proyecto

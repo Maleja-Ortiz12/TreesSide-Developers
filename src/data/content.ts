@@ -265,26 +265,10 @@ export const PURPOSE_PILLARS: ValuePillar[] = [
 ];
 
 export const PROCESS_STEPS: ProcessStep[] = [
-  {
-    step: 1,
-    title: 'Analizamos',
-    description: 'Entendemos tus necesidades.'
-  },
-  {
-    step: 2,
-    title: 'Diseñamos',
-    description: 'Planificamos la mejor solución.'
-  },
-  {
-    step: 3,
-    title: 'Desarrollamos',
-    description: 'Construimos con metodologías ágiles.'
-  },
-  {
-    step: 4,
-    title: 'Entregamos',
-    description: 'Soporte y mejora continua.'
-  }
+  { step: 1, title: 'Descubrimiento', description: 'Necesidades, propuesta y alcance.' },
+  { step: 2, title: 'Diseño', description: 'Estructura y diseño para aprobación.' },
+  { step: 3, title: 'Desarrollo', description: 'Avances revisables.' },
+  { step: 4, title: 'Lanzamiento', description: 'Publicación, entrega y capacitación según el alcance contratado.' },
 ];
 
 // Public address of the deployed site; canonical links, share previews, sitemap and robots are built from it.

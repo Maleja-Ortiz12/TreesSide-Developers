@@ -49,12 +49,12 @@ test('S15 process uses the mockup steps and the page ends in one integrated foot
   const html = await page();
   const process = html.match(/<section id="proceso-servicios"[\s\S]*?<\/section>/)?.[0] ?? '';
   const labels = [...process.matchAll(/<h3\b[^>]*>([^<]*)<\/h3>/g)].map(([, label]) => label);
-  assert.deepEqual(labels, ['Descubrimos', 'Diseñamos', 'Construimos', 'Lanzamos']);
+  assert.deepEqual(labels, ['Descubrimiento', 'Diseño', 'Desarrollo', 'Lanzamiento']);
   const footers = [...html.matchAll(/<footer\b[\s\S]*?<\/footer>/g)].map(([footer]) => footer);
   assert.equal(footers.length, 1);
   for (const copy of ['Lo que sigue,', 'Hablemos', 'Política de datos']) assert.ok(footers[0].includes(copy));
   assert.ok(!footers[0].includes('site-footer'));
   // The existing process on Nosotros is not replaced by the services-specific copy.
   const about = await page('/nosotros');
-  for (const copy of ['Analizamos', 'Diseñamos', 'Desarrollamos', 'Entregamos']) assert.ok(about.includes(copy), copy);
+  for (const copy of ['Descubrimiento', 'Diseño', 'Desarrollo', 'Lanzamiento']) assert.ok(about.includes(copy), copy);
 });

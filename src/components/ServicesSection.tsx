@@ -17,6 +17,12 @@ const ART: Record<string, string> = {
   'plataformas-conectadas': 'web',
 };
 
+const SERVICE_ROUTES: Record<string, string> = {
+  'desarrollo-web': 'sitios-web', 'bases-de-datos': 'sistemas-de-gestion', 'cloud-devops': 'infraestructura',
+  'aplicaciones-moviles': 'sistemas-de-gestion', 'business-intelligence': 'datos-y-analitica',
+  'seguridad-mantenimiento': 'soporte-tecnico', videojuegos: 'videojuegos', automatizacion: 'automatizacion', 'plataformas-conectadas': 'streaming',
+};
+
 export function ServicesSection() {
   return (
     <section id="servicios" className={styles.section}>
@@ -24,7 +30,7 @@ export function ServicesSection() {
         <div className={styles.hero}>
           <div className={styles.heroCopy}>
             <h1>Tecnología que resuelve. Software <span className="text-gradient">que crece contigo.</span></h1>
-            <p>Creamos soluciones de software reales, escalables y a la medida, que convierten tus ideas en herramientas que funcionan, optimizan procesos y abren nuevas oportunidades de crecimiento.</p>
+            <p>Una web para recibir consultas, una tienda para vender por internet o herramientas para organizar tu operación. Explora cada servicio y definamos juntos el alcance que necesita tu negocio.</p>
             <div className={styles.actions}>
               <Link href="/contacto" className="btn btn-primary">Conversemos sobre tu proyecto <ArrowRight size={20} aria-hidden="true" /></Link>
               <Link href="/planes" className="btn btn-secondary">Ver planes</Link>
@@ -49,6 +55,7 @@ export function ServicesSection() {
                 <summary>Conocer más <ArrowRight size={18} aria-hidden="true" /></summary>
                 <ul>{service.items.map(item => <li key={item}>{item}</li>)}</ul>
               </details>
+              <Link href={`/contacto?servicio=${SERVICE_ROUTES[service.id]}`} className="btn btn-secondary">Consultar este servicio <ArrowRight size={18} aria-hidden="true" /></Link>
             </article>
           ))}
         </div>

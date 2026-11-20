@@ -70,7 +70,7 @@ test('S8 cards stay compact while the detail modal keeps every author, portfolio
   const html = await projectsPage();
   const section = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0] ?? '';
   const cards = section.split(/(?=<div[^>]*data-project=)/).slice(1);
-  assert.equal(cards.length, 31);
+  assert.equal(cards.length, 32);
   for (const card of cards) assert.ok(!card.includes('Ver portafolio de '), 'portfolio links live in the modal');
   // The modal reads the catalog shipped to the browser, so its data must be in the served bundles.
   const scripts = [...html.matchAll(/<script[^>]*src="([^"]+)"/g)].map(match => match[1]);
@@ -83,5 +83,5 @@ test('S8 cards stay compact while the detail modal keeps every author, portfolio
   }
   const { readFile } = await import('node:fs/promises');
   const modal = await readFile('src/components/ProjectModal.tsx', 'utf8');
-  for (const token of ['project.authors.map', 'author.portfolio', 'Experiencia laboral · ${project.owner}']) assert.ok(modal.includes(token), token);
+  for (const token of ['project.authors.map', 'author.portfolio', 'Producto de otra empresa']) assert.ok(modal.includes(token), token);
 });

@@ -58,7 +58,7 @@ export function SocialLayout({ category }: { category: ServiceCategory }) {
                 {badge && <span className={styles.badge}>{badge}</span>}
               </div>
               <p>{summary}</p>
-              <Link href="/contacto" className={styles.quote} aria-describedby={`plan-redes-${index}`}>Por cotizar</Link>
+              <Link href={`/contacto?servicio=${category.slug}&opcion=${encodeURIComponent(name)}`} className={styles.quote} aria-describedby={`plan-redes-${index}`}>Consultar este plan · Por cotizar</Link>
             </article>
           ))}
         </div>
@@ -81,7 +81,7 @@ export function SocialLayout({ category }: { category: ServiceCategory }) {
         <Image src={`${ART}/cta-left-ai.webp`} alt="" width={1080} height={568} sizes="(max-width: 700px) 46vw, 300px" className={styles.ctaLeft} />
         <div className={styles.ctaCopy}>
           <h2 id="contacto-redes-title">{ctaLead}{ctaHighlight && <> <span className={styles.highlight}>{ctaHighlight}</span></>}</h2>
-          <Link href="/contacto" className={styles.ctaButton}><MessageCircle size={22} aria-hidden="true" />{cta.button}</Link>
+          <Link href={`/contacto?servicio=${category.slug}`} className={styles.ctaButton}><MessageCircle size={22} aria-hidden="true" />{cta.button}</Link>
         </div>
         <Image src={`${ART}/cta-right-ai.webp`} alt="" width={780} height={412} sizes="(max-width: 700px) 46vw, 260px" className={styles.ctaRight} />
       </section>

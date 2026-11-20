@@ -19,7 +19,8 @@ export function AboutProcess() {
       </div>
       <ol className={styles.steps}>
         {PROCESS_STEPS.map((step,index)=>{
-          const {title,Icon}=PRESENTATION[index];
+          const {Icon}=PRESENTATION[index];
+          const title=step.title;
           return <li key={step.step} className={styles.step} data-about-step="">
             <Sprout className={styles.sprout} size={42} strokeWidth={1.2} aria-hidden="true" />
             <Icon size={32} strokeWidth={1.6} aria-hidden="true" />

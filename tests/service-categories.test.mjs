@@ -159,7 +159,7 @@ for (const [slug, expected] of Object.entries(BACKUP_PLANS)) {
     for (const value of [...expected.names, expected.billing, ...expected.scope, 'El alcance, los entregables y los costos externos se acuerdan antes de iniciar.']) assert.ok(text.includes(value), value);
     assert.equal((section.match(/Por cotizar/g) || []).length, 3);
     assert.equal((section.match(/data-tilt=""/g) || []).length, 3, 'three 3D plan cards');
-    assert.equal((section.match(/href="\/contacto"/g) || []).length, 3, 'one contact link per plan');
+    assert.equal((section.match(/href="\/contacto\?servicio=[^"]+"/g) || []).length, 3, 'one contact link per plan');
   });
 }
 
@@ -184,5 +184,5 @@ test('Proyectos stays as it was: no sector pages or submenu', async () => {
   const { html } = await get('/proyectos');
   assert.ok(!html.includes('Subcategorías de proyectos'));
   assert.equal((await get('/proyectos/restaurantes')).status, 404);
-  assert.equal((html.match(/data-project="/g) || []).length, 31);
+  assert.equal((html.match(/data-project="/g) || []).length, 32);
 });

@@ -10,7 +10,7 @@ import styles from './casos.module.css';
 
 export const metadata: Metadata = pageMetadata('/casos', {
   title: 'Casos de éxito | TreesSide Developers',
-  description: 'Cómo resolvimos retos reales: el contexto, la solución y los resultados de proyectos construidos por el equipo de TreesSide.',
+  description: 'Cómo resolvimos retos reales: el contexto, la solución y los resultados de proyectos construidos por el equipo de TreesSide Developers.',
 });
 
 export default function CaseStudiesPage() {

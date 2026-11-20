@@ -4,7 +4,7 @@ import type { ServiceCategory } from '@/data/serviceCategories/types';
 import styles from './CustomLayouts.module.css';
 
 /** The original mockup's commercial scope, rendered without rasterized text. */
-export function CategoryPlans({ plans }: { plans: ServiceCategory['plans'] }) {
+export function CategoryPlans({ plans, serviceSlug }: { serviceSlug: string; plans: ServiceCategory['plans'] }) {
   return (
     <section id="planes" aria-labelledby="plans-title" className={styles.section}>
       <h2 id="plans-title">{plans.title}</h2>
@@ -19,7 +19,7 @@ export function CategoryPlans({ plans }: { plans: ServiceCategory['plans'] }) {
             <ul>{plan.scope.map(item => <li key={item}><Check size={16} aria-hidden="true" /><span>{item}</span></li>)}</ul>
             {plan.modes && <div className={styles.planModes}><strong>Modalidades de contratación</strong>{plan.modes.map(mode => <p key={mode.title}><strong>{mode.title}</strong><br />{mode.text}</p>)}</div>}
             {plan.billing && <p>Tipo de facturación: {plan.billing}</p>}
-            <Link href="/contacto" className={styles.planQuote} aria-label={`Cotizar ${plan.name}`}>Por cotizar <ArrowRight size={17} aria-hidden="true" /></Link>
+            <Link href={`/contacto?servicio=${serviceSlug}&opcion=${encodeURIComponent(plan.name)}`} className={styles.planQuote} aria-label={`Cotizar ${plan.name}`}>Consultar este plan · Por cotizar <ArrowRight size={17} aria-hidden="true" /></Link>
           </article>
         ))}
       </div>

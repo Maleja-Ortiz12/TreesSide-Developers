@@ -76,7 +76,7 @@ test('social sections keep the mockup order and copy, with no invented concept h
   assert.equal(textOf(process.replace(/<h2\b[\s\S]*?<\/h2>/, '')), STEPS.join(' '), 'only the step titles');
 
   const cta = section(rendered, 'contacto-redes');
-  assert.match(cta, /<a\b[^>]*href="\/contacto"[^>]*>[\s\S]*?Hablemos[\s\S]*?<\/a>/, 'Hablemos links to contact');
+  assert.match(cta, /<a\b[^>]*href="\/contacto\?servicio=[^"]+"[^>]*>[\s\S]*?Hablemos[\s\S]*?<\/a>/, 'Hablemos links to contact');
   for (const [file, width, height] of CTA_ART) {
     const img = cta.match(new RegExp(`<img\\b[^>]*src="/images/services/redes-sociales/${file}"[^>]*>`))?.[0] ?? '';
     assert.ok(img.includes(`width="${width}"`) && img.includes(`height="${height}"`), `${file} CTA side art`);
@@ -97,7 +97,7 @@ test('social plans: three cards with their billing badges, summaries, "Por cotiz
     for (const part of [name, badge, summary, 'Por cotizar']) assert.ok(cards[index].includes(part), `${name}: ${part}`);
   });
   assert.equal((plans.match(/Por cotizar/g) || []).length, 3);
-  assert.equal((plans.match(/<a\b[^>]*href="\/contacto"/g) || []).length, 3, 'one contact link per plan');
+  assert.equal((plans.match(/<a\b[^>]*href="\/contacto\?servicio=[^"]+"/g) || []).length, 3, 'one contact link per plan');
   assert.equal((plans.match(/data-tilt=""/g) || []).length, 3, 'three 3D plan cards');
   assert.ok(!/<ul\b|Incluye/.test(plans.replace(/<p[^>]*class="[^"]*note[^"]*"[\s\S]*?<\/p>/, '')), 'no invented Includes bullets');
   assert.ok(textOf(plans).includes(NOTE), 'qualification note');

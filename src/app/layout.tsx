@@ -11,8 +11,8 @@ const mono = JetBrains_Mono({ subsets: ['latin'], display: 'swap', variable: '--
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'TreesSide Developers | Transformamos ideas en soluciones digitales',
-  description: 'En TreesSide Developers desarrollamos software a medida, combinando creatividad, tecnología y buenas prácticas: Desarrollo Web, Bases de Datos, Soluciones Cloud y Apps a Medida.',
+  title: 'TreesSide Developers | Web, tiendas y software para tu negocio',
+  description: 'Páginas web, tiendas virtuales y software a medida para recibir clientes, organizar tu negocio y automatizar tareas. Conoce nuestros proyectos y solicita una propuesta.',
   keywords: [
     'TreesSide Developers',
     'Desarrollo de Software',
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
   authors: [{ name: 'TreesSide Developers' }],
   openGraph: {
     ...BASE_OPEN_GRAPH,
-    title: 'TreesSide Developers | Transformamos ideas en soluciones digitales',
+    title: 'TreesSide Developers | Web, tiendas y software para tu negocio',
     description: 'Desarrollo de software a medida, aplicaciones web, soluciones cloud e inteligencia de negocios.',
     images: [SHARE_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'TreesSide Developers | Transformamos ideas en soluciones digitales',
+    title: 'TreesSide Developers | Web, tiendas y software para tu negocio',
     description: 'Desarrollo de software a medida, aplicaciones web, soluciones cloud e inteligencia de negocios.',
     images: [SHARE_IMAGE.url],
   },

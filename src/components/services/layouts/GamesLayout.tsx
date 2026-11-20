@@ -29,7 +29,7 @@ export function GamesLayout({ category }: { category: ServiceCategory }) {
     <div className={`${styles.root} container`}>
       <SectorNav slug={category.slug} label={category.label} />
       <header className={styles.gameHero}>
-        <div><h1>Ideas que se juegan. Mundos que se <span>exploran.</span></h1><p>Arte e interfaces conceptuales.</p><div className={styles.actions}><Link href="/contacto" className="btn btn-primary"><Gamepad2 size={20} aria-hidden="true" /> Cuéntanos tu juego</Link><Link href="#posibilidades" className="btn btn-secondary">Explorar posibilidades</Link></div></div>
+        <div><h1>Ideas que se juegan. Mundos que se <span>exploran.</span></h1><p>Arte e interfaces conceptuales.</p><div className={styles.actions}><Link href={`/contacto?servicio=${category.slug}`} className="btn btn-primary"><Gamepad2 size={20} aria-hidden="true" /> Cuéntanos tu juego</Link><Link href="#posibilidades" className="btn btn-secondary">Explorar posibilidades</Link></div></div>
         <div className={styles.heroStage} data-art-3d="hero" data-tilt=""><Image src="/images/services/videojuegos/hero.webp" alt="Islas flotantes, cascadas y un árbol luminoso de un mundo de videojuego conceptual." width={960} height={680} priority /></div>
       </header>
       <section id="posibilidades" className={styles.section} aria-labelledby="offers-title">
@@ -43,7 +43,7 @@ export function GamesLayout({ category }: { category: ServiceCategory }) {
           <ul className={styles.mechanicsList}>{mechanics.map(({ icon: Icon, title, text }) => <li key={title}><Icon size={30} aria-hidden="true" /><div><h3>{title}</h3><p>{text}</p></div></li>)}</ul>
         </div>
       </section>
-      <CategoryPlans plans={category.plans} />
+      <CategoryPlans serviceSlug={category.slug} plans={category.plans} />
       <section className={styles.section} aria-labelledby="process-title">
         <h2 id="process-title">Nuestro proceso de desarrollo.</h2>
         <ol className={`${styles.steps} ${styles.gameSteps}`}>{steps.map(({ icon: Icon, title, text }) => <li key={title}><Icon size={30} aria-hidden="true" /><h3>{title}</h3><p>{text}</p></li>)}</ol>
@@ -52,7 +52,7 @@ export function GamesLayout({ category }: { category: ServiceCategory }) {
         <div><small>Exploración de proyecto · Vista conceptual</small><h2 id="exploration-title">Aventura en islas flotantes</h2><p>Exploración, plataformas y retos en un mundo fantástico de estilo propio.</p></div>
         {['islas', 'cueva', 'portal'].map((art, index) => <Image key={art} src={`/images/services/videojuegos/${art}.webp`} alt={`Vista conceptual: ${['islas con cascadas y ruinas', 'cueva de cristales luminosos', 'plataforma y portal sobre el vacío'][index]}.`} width={420} height={240} />)}
       </section>
-      <section className={styles.gameCta} aria-labelledby="cta-title"><div><h2 id="cta-title">Definamos juntos el alcance de tu juego.</h2><p>Las plataformas, el estilo y la complejidad se acuerdan al cotizar.</p></div><Link href="/contacto" className="btn btn-primary"><Gamepad2 size={22} aria-hidden="true" /> Diseñemos la experiencia <ArrowRight size={18} aria-hidden="true" /></Link></section>
+      <section className={styles.gameCta} aria-labelledby="cta-title"><div><h2 id="cta-title">Definamos juntos el alcance de tu juego.</h2><p>Las plataformas, el estilo y la complejidad se acuerdan al cotizar.</p></div><Link href={`/contacto?servicio=${category.slug}`} className="btn btn-primary"><Gamepad2 size={22} aria-hidden="true" /> Diseñemos la experiencia <ArrowRight size={18} aria-hidden="true" /></Link></section>
     </div>
   );
 }

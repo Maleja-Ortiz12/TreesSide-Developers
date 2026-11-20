@@ -17,10 +17,12 @@ test('S18 project detail shows the complete flat image without a gradient or gla
   const exports = {};
   const jsx = (type, props) => ({type, props});
   vm.runInNewContext(code, {exports, require: name => {
+    if (name === 'react') return {useRef:()=>({current:null}),useId:()=> 'project-title',useEffect:()=>{}};
+    if (name === '@/lib/projectEvidence') return {projectEvidenceLabel:()=> 'Proyecto personal del equipo'};
     if (name === 'react/jsx-runtime') return {jsx, jsxs: jsx};
     if (name === './ProjectImage') return {ProjectImage: 'Image'};
     if (name === 'next/link') return {default: 'Link'};
-    if (name === '@/data/cases') return {caseHref: () => null};
+    if (name === '@/data/cases') return {caseHref: () => null,caseForProject:()=>null};
     return {};
   }});
   const tree = exports.ProjectModal({project: {id: 'test', title: 'Ejemplo', image: '/images/projects/example.webp', category: 'Sitios web', tag: 'React'}, onClose() {}, onContactClick() {}});
@@ -54,5 +56,5 @@ test('S18 the featured carousel has an explicit connection into the catalog bran
   const html = await page();
   assert.match(html, /data-featured-connector=""[^>]*aria-hidden="true"/);
   assert.ok(html.includes('catalog-tree'));
-  assert.equal((html.match(/data-project="/g) || []).length, 31);
+  assert.equal((html.match(/data-project="/g) || []).length, 32);
 });

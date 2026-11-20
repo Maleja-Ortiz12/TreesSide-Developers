@@ -10,7 +10,7 @@ test('S20 Nosotros has the leafy mockup hero, team link and real counts',async()
   assert.ok(html.includes('/images/mockup/about-branch.webp'));
   assert.match(html,/<a[^>]*href="\/equipo"[^>]*>[\s\S]*?Conocer al equipo/);
   const stats=text(html.match(/<ul[^>]*data-about-stats[\s\S]*?<\/ul>/)?.[0]||'');
-  for(const value of ['31 proyectos','46 tecnologías','4 desarrolladores'])assert.ok(stats.includes(value),value);
+  for(const value of ['Proyectos con autoría y fuentes','La Lupe consulta el desarrollo','Equipo conoce a sus integrantes'])assert.ok(stats.includes(value),value);
 });
 
 test('S20 shows three approach cards while preserving original purpose and all member passions',async()=>{
@@ -26,8 +26,8 @@ test('S20 shows three approach cards while preserving original purpose and all m
 test('S20 connected process retains original steps and ends with capabilities and one integrated footer',async()=>{
   const html=await page();
   const process=html.match(/<section id="proceso"[\s\S]*?<\/section>/)?.[0]||'';
-  assert.deepEqual([...process.matchAll(/<h3\b[^>]*>([^<]*)<\/h3>/g)].map(([,title])=>title),['Descubrimos','Diseñamos','Construimos','Lanzamos']);
-  for(const original of ['Analizamos','Entendemos tus necesidades.','Planificamos la mejor solución.','Desarrollamos','Construimos con metodologías ágiles.','Entregamos','Soporte y mejora continua.'])assert.ok(text(process).includes(original),original);
+  assert.deepEqual([...process.matchAll(/<h3\b[^>]*>([^<]*)<\/h3>/g)].map(([,title])=>title),['Descubrimiento','Diseño','Desarrollo','Lanzamiento']);
+  for(const original of ['Necesidades, propuesta y alcance.','Estructura y diseño para aprobación.','Avances revisables.','Publicación, entrega y capacitación según el alcance contratado.'])assert.ok(text(process).includes(original),original);
   const capabilities=html.match(/<nav[^>]*aria-label="Nuestras capacidades"[\s\S]*?<\/nav>/)?.[0]||'';
   for(const label of ['Web','Datos','Cloud','Apps'])assert.ok(text(capabilities).includes(label));
   const footers=[...html.matchAll(/<footer\b[\s\S]*?<\/footer>/g)].map(([footer])=>footer);

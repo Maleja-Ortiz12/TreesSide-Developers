@@ -12,7 +12,7 @@ test('S17 projects uses the new mockup hero without changing the requested filte
   const html = await page();
   assert.equal(text(html.match(/<h1\b[\s\S]*?<\/h1>/)?.[0] ?? ''), 'Ideas que ya están funcionando.');
   assert.ok(html.includes('projects-hero-tree.webp'));
-  assert.ok(text(html).includes('Cada proyecto del equipo conserva su autoría y su fuente.'));
+  assert.ok(text(html).includes('Conservamos su autoría y su fuente.'));
   const group = html.match(/<div[^>]*aria-label="Filtrar proyectos"[\s\S]*?<\/div>/)?.[0] ?? '';
   assert.deepEqual([...group.matchAll(/<button[^>]*>[\s\S]*?<\/button>/g)].map(([button]) => text(button)), ['Todos', 'Restaurantes', 'Juegos', 'Datos', 'E-commerce']);
 });
@@ -20,8 +20,8 @@ test('S17 projects uses the new mockup hero without changing the requested filte
 test('S17 every project keeps its canonical anchor and image inside a laptop', async () => {
   const html = await page();
   const cards = html.split(/(?=<div[^>]*data-project=)/).slice(1);
-  assert.equal(cards.length, 31);
-  assert.equal((html.match(/data-project-laptop/g) ?? []).length, 31);
+  assert.equal(cards.length, 32);
+  assert.equal((html.match(/data-project-laptop/g) ?? []).length, 32);
   for (const card of cards) {
     const id = card.match(/data-project="([^"]+)"/)?.[1];
     assert.ok(card.includes(`id="${id}"`), id);

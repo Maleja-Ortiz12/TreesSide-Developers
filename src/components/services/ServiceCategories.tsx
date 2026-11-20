@@ -19,6 +19,7 @@ export function ServiceCategories() {
                 <span className={styles.categoryText}>{hero.title} {hero.highlight}{hero.titleEnd && ` ${hero.titleEnd}`}</span>
                 <span className={styles.categoryMore}>Ver servicio <ArrowRight size={16} aria-hidden="true" /></span>
               </Link>
+              <Link href={`/contacto?servicio=${slug}`} className="btn btn-secondary">Solicitar una propuesta</Link>
             </li>
           ))}
         </ul>

@@ -39,22 +39,22 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: 'emisoras-latinas',
     project: 'Emisoras Latinas',
-    summary: 'Plataforma de radio latina en vivo con un directorio de miles de emisoras y un reproductor optimizado.',
+    summary: 'Plataforma de radio latina en vivo con un directorio de emisoras y un reproductor optimizado.',
     context: 'Emisoras Latinas es una plataforma para escuchar radio latina en vivo con un directorio de emisoras y un reproductor optimizado.',
     challenge: [
-      'Reunir miles de emisoras en un solo lugar y que sea fácil encontrar la indicada.',
+      'Reunir emisoras en un solo lugar y que sea fácil encontrar la indicada.',
       'Reproducir audio en vivo de forma estable.',
       'Atraer visitas desde buscadores y asistentes de inteligencia artificial.',
     ],
     solution: [
-      'Directorio completo con más de 15.000 emisoras latinas en vivo.',
+      'Directorio de emisoras latinas con acceso al reproductor.',
       'Reproductor optimizado con Web Audio API.',
       'Estrategia de SEO, AEO y GEO para buscadores y motores de IA.',
     ],
     technologies: ['Next.js', 'Web Audio API', 'SEO · AEO · GEO'],
     results: [
-      'Más de 15.000 emisoras latinas disponibles en vivo en un solo directorio.',
-      'La plataforma recibe miles de visitas diarias.',
+      'Directorio y reproductor reunidos en una misma plataforma.',
+      'La navegación organiza el acceso a las emisoras.',
     ],
   },
   {
@@ -74,7 +74,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     technologies: ['Next.js', 'SEO', 'AEO'],
     results: [
-      'Cobertura en más de 1.122 municipios de Colombia.',
+      'Directorio de servicios locales organizado por ubicación.',
       'Clientes y profesionales se contactan directo por WhatsApp.',
     ],
   },

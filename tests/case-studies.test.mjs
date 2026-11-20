@@ -14,8 +14,8 @@ async function page(path) {
 const plain = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/\s+/g, ' ');
 const CASES = [
   { slug: 'la-lupe', title: 'La Lupe', authors: 'María Alejandra Ortiz Páez y Ronaldo Delgado Correa', image: 'la-lupe', facts: ['menú', 'WhatsApp', 'catering'], live: 'https://lalupe.co/' },
-  { slug: 'emisoras-latinas', title: 'Emisoras Latinas', authors: 'María Alejandra Ortiz Páez y Jorge Luis Ramírez Trochez', image: 'emisoras-latinas-cover', facts: ['15.000 emisoras', 'miles de visitas diarias'] },
-  { slug: 'tengoya', title: 'TengoYa', authors: 'Jorge Luis Ramírez Trochez', image: 'tengoya', facts: ['1.122 municipios', 'WhatsApp'] },
+  { slug: 'emisoras-latinas', title: 'Emisoras Latinas', authors: 'María Alejandra Ortiz Páez y Jorge Luis Ramírez Trochez', image: 'emisoras-latinas-cover', facts: ['Directorio de emisoras', 'reproductor'] },
+  { slug: 'tengoya', title: 'TengoYa', authors: 'Jorge Luis Ramírez Trochez', image: 'tengoya', facts: ['Directorio de servicios locales', 'WhatsApp'] },
 ];
 
 test('S2 each case study tells context, challenge, solution, technologies and results with the real authors', async () => {
@@ -23,13 +23,13 @@ test('S2 each case study tells context, challenge, solution, technologies and re
     const html = await page(`/casos/${item.slug}`);
     assert.match(html, new RegExp(`<h1[^>]*>[^<]*${item.title}[^<]*</h1>`), `${item.slug} h1`);
     const text = plain(html);
-    for (const heading of ['Contexto', 'El reto', 'La solución', 'Tecnologías', 'Resultados']) {
+    for (const heading of ['Contexto', 'El reto', 'La solución', 'Tecnologías', 'Funcionalidades publicadas']) {
       assert.match(html, new RegExp(`<h2[^>]*>${heading}</h2>`), `${item.slug} ${heading}`);
     }
     assert.ok(text.includes(item.authors), `${item.slug} authors`);
     for (const fact of item.facts) assert.ok(text.includes(fact), `${item.slug} fact ${fact}`);
     assert.ok(html.includes(`%2Fimages%2Fprojects%2F${item.image}.webp`) || html.includes(`/images/projects/${item.image}.webp`), `${item.slug} image`);
-    assert.ok(html.includes('href="/contacto"'), `${item.slug} call to action`);
+    assert.ok(html.includes(`href="/contacto?proyecto=equipo-${item.slug}"`), `${item.slug} contextual call to action`);
     if (item.live) assert.ok(html.includes(`href="${item.live}"`), `${item.slug} live site`);
     assert.match(html, new RegExp(`<link rel="canonical" href="https://treesside-developers.malejawork12.workers.dev/casos/${item.slug}"`), `${item.slug} canonical`);
   }
@@ -63,7 +63,7 @@ test('S2 cases remain reachable from the integrated footer and project modal, wi
   // S25 brought the demos back; each names its case study.
   for (const slug of ['la-lupe', 'emisoras-latinas']) assert.ok(home.includes(`href="/casos/${slug}"`), `demo links case ${slug}`);
   const modal = await readFile('src/components/ProjectModal.tsx', 'utf8');
-  assert.ok(modal.includes('Ver caso de éxito'), 'project modal links the case study');
+  assert.ok(modal.includes('Ver caso del proyecto'), 'project modal links the case study');
 });
 
 test('S2 case claims borrowed from another project are not published', async () => {
