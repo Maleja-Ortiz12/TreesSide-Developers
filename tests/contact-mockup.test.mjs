@@ -28,7 +28,7 @@ test('S22 the form keeps real fields, consent and honeypot and adds an optional 
   for (const label of ['Nombre', 'Correo electrónico', '¿Qué necesitas construir?', 'Cuéntanos sobre tu proyecto']) assert.ok(text(form).includes(label), label);
   const select = form.match(/<select\b[\s\S]*?<\/select>/)?.[0] || '';
   assert.ok(select && !/<select[^>]*required/.test(select), 'optional select');
-  for (const option of ['Selecciona una opción', 'Desarrollo Web', 'Aplicaciones Móviles', 'Automatización con n8n', 'Otro']) assert.ok(text(select).includes(option), option);
+  for (const option of ['Selecciona una opción', 'Necesito una página web.', 'Quiero vender por internet.', 'Quiero organizar mi negocio.', 'Quiero automatizar tareas.', 'Necesito orientación.']) assert.ok(text(select).includes(option), option);
   for (const control of [/<input[^>]*type="text"[^>]*required/, /<input[^>]*type="email"[^>]*required/, /<textarea[^>]*required/, /<input[^>]*name="_gotcha"/]) assert.match(form, control);
   assert.match(form, /Autorizo[\s\S]*?href="\/politica-de-datos"/);
   for (const id of ['contact-name', 'contact-email', 'contact-need', 'contact-message']) assert.match(form, new RegExp(`<label[^>]*for="${id}"`), `label for ${id}`);

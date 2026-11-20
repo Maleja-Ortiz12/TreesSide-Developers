@@ -54,7 +54,9 @@ test('S3 a finished reveal leaves no transform, so fixed overlays like the proje
 
 test('S3 every page section is wrapped in a scroll reveal', async () => {
   for (const [path, ids] of Object.entries(SECTIONS)) {
-    const html = await page(path);
+    // React Suspense emits boundary comments and a bailout template before its SSR fallback.
+    // They are not layout ancestors; the reveal still directly wraps the contact section.
+    const html = (await page(path)).replace(/<!--[\s\S]*?-->/g, '').replace(/<template\b[^>]*>[\s\S]*?<\/template>/g, '');
     for (const id of ids) {
       assert.match(html, new RegExp(`data-reveal[^>]*>\\s*<section id="${id}"`), `${path} #${id}`);
     }

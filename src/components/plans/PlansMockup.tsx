@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowDown, ArrowRight, Check, Minus } from 'lucide-react';
 import { COMMERCIAL_PLANS, formatPlanPrice, type CommercialPlan } from '@/data/plans';
 import styles from './PlansMockup.module.css';
@@ -48,6 +49,8 @@ export function PlansOverview() {
           <p className={styles.summary}>{SUMMARIES[plan.id] ?? plan.outcome}</p>
           <p className={styles.price}><span>Desde</span><strong>{formatPlanPrice(plan.price)} <small>COP</small></strong></p>
           <p className={styles.frequency}>Implementación · pago único</p>
+          <p>{plan.audience}</p>
+          <Link href={`/contacto?plan=${plan.id}`} className="btn btn-primary">Consultar este plan</Link>
           <a href={`#${plan.id}`} className={`btn ${plan.id === 'vende-online' ? 'btn-primary' : 'btn-secondary'} ${styles.scopeLink}`}>Ver alcance <ArrowRight size={18} aria-hidden="true" /></a>
         </article>
       ))}

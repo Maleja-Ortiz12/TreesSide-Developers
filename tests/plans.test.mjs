@@ -44,7 +44,7 @@ test('plans page publishes exactly the four approved starting prices with comple
     assert.equal(url.pathname, '/573057173986');
     assert.ok(url.searchParams.get('text').includes(plan.name), `${plan.name} selected in message`);
     assert.ok(url.searchParams.get('text').includes(plan.price), `${plan.name} indicative price in message`);
-    assert.ok(links.includes('/contacto'), `${plan.name} email/form alternative`);
+    assert.ok(links.includes(`/contacto?plan=${plan.id}`), `${plan.name} email/form alternative`);
   }
   const content = text(html);
   assert.ok(content.includes('antes de impuestos si aplican'));

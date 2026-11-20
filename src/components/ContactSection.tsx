@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { ENQUIRY_NEEDS, readEnquiryContext, enquiryLabel, enquiryMessage, enquiryWhatsAppUrl, type EnquiryContext } from '@/lib/enquiry';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CONTACT_INFO, SERVICES } from '@/data/content';
+import { CONTACT_INFO } from '@/data/content';
 import { sendContact, type ContactResult } from '@/lib/contact';
 import { Mail, MapPin, Phone, ArrowRight, MessageCircle, CheckCircle2, Copy, Check, AlertCircle, ChevronDown } from 'lucide-react';
 import styles from './contact/Contact.module.css';
@@ -11,20 +13,27 @@ import styles from './contact/Contact.module.css';
 // Inlined at build time; set it in Netlify once the Formspree form exists.
 const FORMSPREE_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID;
 const EMPTY_FORM = { nombre: '', correo: '', necesidad: '', mensaje: '', consent: false, gotcha: '' };
-// The optional "what do you need" answers are the services the team actually offers.
-const NEEDS = [...SERVICES.map(service => service.title), 'Otro'];
+function ContactQuery() {
+  const params = useSearchParams();
+  return <ContactForm context={readEnquiryContext(params.toString())} />;
+}
 
 export function ContactSection() {
+  return <Suspense fallback={<ContactForm context={[]} />}><ContactQuery /></Suspense>;
+}
+
+function ContactForm({ context }: { context: EnquiryContext }) {
   const [formData, setFormData] = useState(EMPTY_FORM);
   const [status, setStatus] = useState<'idle' | 'sending' | ContactResult>('idle');
   const [copied, setCopied] = useState(false);
   const loading = status === 'sending';
+  const whatsappUrl = enquiryWhatsAppUrl(context, formData);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading || !formData.nombre || !formData.correo || !formData.mensaje || !formData.consent) return;
     setStatus('sending');
-    const result = await sendContact(formData, FORMSPREE_FORM_ID);
+    const result = await sendContact({ ...formData, mensaje: enquiryMessage(formData.mensaje, context) }, FORMSPREE_FORM_ID);
     setStatus(result);
     // Keep what the visitor wrote unless the message really went out.
     if (result === 'sent') setFormData(EMPTY_FORM);
@@ -44,7 +53,7 @@ export function ContactSection() {
           <Image src="/images/mockup/contact-tree.webp" alt="" aria-hidden="true" width={395} height={310} priority className={styles.tree} />
           <h2>Cuéntanos tu idea.</h2>
           <p>Conversemos sobre lo que quieres construir, exploremos opciones y encontremos juntos la mejor forma de hacerlo realidad.</p>
-          <a href={CONTACT_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer" className={`btn btn-primary ${styles.whatsapp}`}>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={`btn btn-primary ${styles.whatsapp}`}>
             <MessageCircle size={22} aria-hidden="true" /> Prefiero hablar por WhatsApp <ArrowRight size={20} aria-hidden="true" />
           </a>
           <ul className={styles.direct}>
@@ -57,20 +66,21 @@ export function ContactSection() {
                 {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
               </button>
             </li>
-            <li><Phone size={18} aria-hidden="true" /><a href={CONTACT_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer">{CONTACT_INFO.phone}</a></li>
+            <li><Phone size={18} aria-hidden="true" /><a href={whatsappUrl} target="_blank" rel="noopener noreferrer">{CONTACT_INFO.phone}</a></li>
           </ul>
         </div>
 
         <div className={styles.card}>
           <div className={styles.cardHeading}>
             <Mail size={40} strokeWidth={1.5} aria-hidden="true" />
-            <div><h2>Envíanos un mensaje</h2><p>Cuéntanos sobre tu proyecto y te leemos.</p></div>
+            <div><h2>Envíanos un mensaje</h2><p>Revisamos tu necesidad, aclaramos contigo el alcance y preparamos una propuesta según lo acordado.</p></div>
           </div>
+          {context.length > 0 && <aside aria-label="Contexto de la consulta"><h3>Consulta sobre:</h3><ul>{context.map(entry => <li key={entry.kind}>{enquiryLabel(entry)}</li>)}</ul><p>Agrega tus detalles en el mensaje. Esta selección no implica una contratación.</p></aside>}
           {status === 'sent' ? (
             <div className={styles.sent} role="status">
               <CheckCircle2 size={44} aria-hidden="true" />
               <h3>¡Mensaje enviado con éxito!</h3>
-              <p>Gracias por escribirnos. Nuestro equipo en TreesSide Developers revisará tu requerimiento y te contactará a la brevedad.</p>
+              <p>Gracias por escribirnos. Nuestro equipo en TreesSide Developers revisará tu requerimiento y te contactará para aclarar las necesidades y definir el siguiente paso.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className={styles.form}>
@@ -87,7 +97,7 @@ export function ContactSection() {
                 <select id="contact-need" value={formData.necesidad}
                   onChange={(e) => setFormData({ ...formData, necesidad: e.target.value })}>
                   <option value="">Selecciona una opción</option>
-                  {NEEDS.map(need => <option key={need} value={need}>{need}</option>)}
+                  {ENQUIRY_NEEDS.map(need => <option key={need} value={need}>{need}</option>)}
                 </select>
                 <ChevronDown size={20} aria-hidden="true" />
               </div>
@@ -118,7 +128,7 @@ export function ContactSection() {
                       : 'El formulario todavía no está conectado. Mientras tanto, escríbenos a '}
                     <a href={`mailto:${CONTACT_INFO.email}`}>{CONTACT_INFO.email}</a>
                     {' o por '}
-                    <a href={CONTACT_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer">WhatsApp</a>.
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">WhatsApp</a>.
                   </span>
                 </div>
               )}

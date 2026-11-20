@@ -26,13 +26,14 @@ export function PlansPreview() {
         <p className="section-subtitle">Presencia digital, ventas en línea o automatización. Conoce el alcance antes de cotizar.</p>
         <div className={styles.previewGrid}>
           {COMMERCIAL_PLANS.map(plan => (
-            <article key={plan.id} className={`glass-card ${styles.previewCard}`}>
+            <article key={plan.id} data-plan-preview={plan.id} className={`glass-card ${styles.previewCard}`}>
               <p className={styles.line}>{plan.line}</p>
               <h3>{plan.name}</h3>
               <p className={styles.price}><span>Desde</span> <strong>{formatPlanPrice(plan.price)}</strong> <small>COP</small></p>
               <p className={styles.frequency}>Implementación · pago único</p>
               <IncludedPlan id={plan.includesPlan} preview />
               <p>{plan.outcome}</p>
+              <Link href={`/contacto?plan=${plan.id}`} className="btn btn-primary">Consultar este plan</Link>
               <Link href={`/planes#${plan.id}`} className={styles.details}>Ver alcance y condiciones <ArrowRight size={16} aria-hidden="true" /></Link>
             </article>
           ))}
@@ -108,7 +109,7 @@ export function PlansSection() {
                 <a href={planWhatsAppUrl(plan)} target="_blank" rel="noopener noreferrer" className="btn btn-primary" aria-label={`Cotizar ${plan.name} por WhatsApp`}>
                   <MessageCircle size={18} aria-hidden="true" />Cotizar este plan
                 </a>
-                <Link href="/contacto" className={styles.details}>Prefiero el formulario o correo <ArrowRight size={16} aria-hidden="true" /></Link>
+                <Link href={`/contacto?plan=${plan.id}`} className={styles.details}>Consultar este plan <ArrowRight size={16} aria-hidden="true" /></Link>
               </div>
               </article>
             </details>
