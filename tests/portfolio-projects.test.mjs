@@ -26,7 +26,7 @@ const WITH_IMAGES = {
   'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'emisoras-latinas-cover',
   'Entre Lanas y Fragancias': 'entre-lanas-y-fragancias',
   TengoYa: 'tengoya', CarWeb: 'carweb', Histech: 'histech', 'Robot Alejo 2.0': 'robot-alejo',
-  'La Lupe': 'la-lupe',
+  'La Lupe': 'la-lupe', 'Bendita Gracia': 'bendita-gracia',
   'Calculadora de contenedores': 'calculadora-contenedores.svg',
   'Libres en Cristo Jesús': 'libres-en-cristo.svg',
   'API de Tienda + Asistente IA': 'tienda-api.svg',
@@ -47,7 +47,7 @@ test('every portfolio project is listed with its local project image or labeled 
     assert.ok(card.includes(encodeURIComponent(`/images/${image}`)) || card.includes(`/images/${image}`), `image: ${title}`);
     assert.ok(!card.includes('Imagen de marca'), `brand placeholder on ${title}`);
   }
-  assert.equal(Object.keys(WITH_IMAGES).length, 31);
+  assert.equal(Object.keys(WITH_IMAGES).length, 32);
   assert.equal((section.match(/data-project=/g) || []).length, Object.keys(WITH_IMAGES).length);
 });
 
