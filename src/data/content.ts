@@ -98,6 +98,18 @@ const TEAM_PROJECTS: Project[] = TEAM_MEMBERS.flatMap(member =>
 
 // Own projects first; employer work follows as the member's experience.
 export const FEATURED_PROJECTS: Project[] = [
+  {
+    id: 'equipo-bendita-gracia',
+    title: 'Bendita Gracia',
+    tag: 'Next.js · Catálogo web',
+    description: 'Sitio web de velas artesanales de cera de soya, con catálogo de diseños, colección navideña y pedidos personalizados por WhatsApp.',
+    image: '/images/projects/bendita-gracia.webp',
+    imageFit: 'contain',
+    category: 'Sitios web',
+    client: 'Bendita Gracia',
+    year: 'No especificado',
+    projectUrl: 'https://bendita-gracia.benditagraciaccesorios1.workers.dev/',
+  },
   ...TEAM_PROJECTS.filter(project => !project.experience),
   ...TEAM_PROJECTS.filter(project => project.experience),
 ];
