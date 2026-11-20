@@ -18,4 +18,7 @@
   .first { animation-name: reveal-first-flat; }
   .scroll { transform: none !important; }
 }
-@media (prefers-reduced-motion: reduce) { .first { animation-name: reveal-first-fade; } }
+@media (prefers-reduced-motion: reduce) {
+  .first { animation: none; }
+  .scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+}

@@ -34,3 +34,11 @@ Las demos de restaurante, radio y logística siguen siendo simulaciones locales 
 ## Verificación sin consultas reales
 
 `node --test tests/client-conversion-*.test.mjs` incluye simulación del transporte: nunca envía mensajes reales. Las pruebas generales requieren un servidor mediante `TEST_BASE_URL`. Las pruebas de navegador deben interceptar o bloquear peticiones de envío y no abrir enlaces externos de WhatsApp.
+
+## Comprobaciones realizadas
+
+- Compilación de producción, TypeScript y suite completa: 264/264 pruebas aprobadas.
+- Navegador real: once rutas en 390, 768 y 1440 px; planes, contexto, validación sin envíos, demos, foco/Escape y enlaces del carrusel aprobados.
+- Movimiento reducido: secciones visibles sin perspectiva ni animación de entrada. Las capturas completas cargan explícitamente imágenes diferidas solo en el verificador, no en producción.
+- Revisión independiente del contexto/consentimiento: una corrección de codificación detectada y revalidada; sin cambios de precios ni transporte.
+- `npm run lint` no pudo ejecutarse como comprobación: ESLint carece de configuración y abre un asistente interactivo. No se añadieron dependencias ni configuración sin alcance específico.

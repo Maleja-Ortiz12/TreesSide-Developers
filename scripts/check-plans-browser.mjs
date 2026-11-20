@@ -81,7 +81,7 @@ try {
     assert.deepEqual(metrics.plans, ['impulso-web', 'catalogo-administrable', 'vende-online', 'automatiza-tu-negocio']);
     // Native fragments reveal the complete scope, including links to an inherited plan.
     for (const id of metrics.plans) {
-      await evaluate(`document.querySelector('[data-plan-preview="${id}"] a').click()`);
+      await evaluate(`document.querySelector('[data-plan-preview="${id}"] a[href="#${id}"]').click()`);
       const scope = await evaluate(`new Promise(resolve => setTimeout(() => {
         const article = document.getElementById('${id}');
         resolve({open: article.closest('details').open, height: article.getBoundingClientRect().height,
