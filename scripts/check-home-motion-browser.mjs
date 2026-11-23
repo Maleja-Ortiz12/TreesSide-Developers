@@ -3,6 +3,24 @@ import { spawn } from 'node:child_process';
 import { mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
+import ts from 'typescript';
+
+// Read the same source catalog as the server, independently of rendered frame contents.
+function loadCatalog(file) {
+  const module = { exports: {} };
+  vm.runInNewContext(ts.transpileModule(readFileSync(file, 'utf8'), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS },
+  }).outputText, { module, exports: module.exports, require: name => {
+    assert.equal(name, './team');
+    return loadCatalog('src/data/team.ts');
+  } });
+  return module.exports;
+}
+const expectedProjects = Array.from(loadCatalog('src/data/content.ts').FEATURED_PROJECTS)
+  .filter(p => !p.experience && p.image !== '/images/treesside-logo.jpg' && p.id !== 'equipo-uptownhair');
+const frameCount = 1 + Math.ceil((expectedProjects.length - 1) / 3);
 
 // Standalone CDP check: installed Edge, no packages, build or real enquiries.
 // All browser state/evidence lives outside the repository. Keep screenshots for visual review.
@@ -83,7 +101,7 @@ try {
     const frameBefore = await evaluate(`document.querySelector('#hero-collage').dataset.frame`);
     await wait(`document.querySelector('#hero-collage').dataset.frame!==${JSON.stringify(frameBefore)}`);
     check(`${width} artwork advances automatically`, await evaluate(`document.querySelector('#hero-collage').dataset.frame!==${JSON.stringify(frameBefore)}`), true);
-    check(`${width} every rotating card has truthful visible label`, await evaluate(`(()=>{const c=document.querySelector('#hero-collage'),labels=[...c.querySelectorAll('figcaption')];return labels.length===3 && labels.every(el=>{const r=el.getBoundingClientRect();return r.width>0 && r.height>0 && (el.textContent.includes('Diseño conceptual') || el.textContent.includes('Web real · Portafolio del equipo'));});})()`), true);
+    check(`${width} every rotating card has truthful visible label`, await evaluate(`(()=>{const c=document.querySelector('#hero-collage'),labels=[...c.querySelectorAll('figcaption')];return labels.length===3 && labels.every(el=>{const r=el.getBoundingClientRect();return r.width>0 && r.height>0 && (el.textContent.includes('Diseño conceptual') || el.textContent.includes('Portafolio del equipo'));});})()`), true);
     const scene = await evaluate(`(()=>{const c=document.querySelector('#hero-collage'),tree=c.querySelector('img[aria-hidden="true"]'),figures=[...c.querySelectorAll('figure')];return {perspective:getComputedStyle(c).perspective,relative:getComputedStyle(c).position,treeInside:!!tree,treeZ:Number(getComputedStyle(tree).zIndex),treeOpacity:Number(getComputedStyle(tree).opacity),figures:figures.map(f=>({z:Number(getComputedStyle(f).zIndex),delay:getComputedStyle(f).animationDelay,transform:getComputedStyle(f).transform})),carousel:!!document.querySelector('#carrusel')};})()`);
     console.log(`SCENE ${width} ${JSON.stringify(scene)}`);
     check(`${width} tree behind all figures`, scene.treeInside && scene.figures.every(f => f.z > scene.treeZ) && scene.treeOpacity >= .7 && scene.relative === 'relative', true);
@@ -107,6 +125,66 @@ try {
     await evaluate(`document.querySelector('button[aria-label="Composición anterior"]').click()`);
     await wait(`document.querySelector('#hero-collage').dataset.frame===${JSON.stringify(pausedFrame)}`);
     check(`${width} manual access preserves pause`, await evaluate(`document.querySelector('#hero-collage').dataset.motion`), 'paused');
+    // Exhaust the cycle while paused via public controls, not six-second sleeps per frame.
+    const seen = [];
+    for (let step = 0; step < frameCount; step++) {
+      const index = Number(await evaluate(`document.querySelector('#hero-collage').dataset.frame`));
+      await evaluate(`Promise.all([...document.querySelectorAll('#hero-collage img')].map(img=>img.decode())).then(()=>true)`);
+      const cards = await evaluate(`([...document.querySelectorAll('#hero-collage figure')].map(f=>{const img=f.querySelector('img'),label=f.querySelector('figcaption');return {id:img?.dataset.homeProject || null,src:img?.getAttribute('src'),alt:img?.alt,text:label.textContent,visible:label.getBoundingClientRect().height>0,loaded:!img || (img.complete && img.naturalWidth>0),fit:img && getComputedStyle(img).objectFit};}))`);
+      check(`${width} frame ${index} three loaded visible labelled cards`, cards.length===3 && cards.every(c=>c.visible && c.loaded), true);
+      // Job21 checked text/geometry only: mint-on-mint badges still passed all 394 checks.
+      // Use computed colors after the cascade, not authored CSS tokens or screenshot presence.
+      const contrast = await evaluate(`(()=>{
+        const rgb = color => {
+          if (!/^rgba?[(]/.test(color)) return null;
+          const values = color.match(/[0-9.]+/g)?.map(Number);
+          // Badges currently use opaque sRGB. Fail closed on unsupported/transparent colors.
+          return values && (values.length===3 || (values.length===4 && values[3]===1))
+            && values.slice(0,3).every(v=>Number.isFinite(v) && v>=0 && v<=255) ? values.slice(0,3) : null;
+        };
+        const luminance = channels => channels.map(v=>{const s=v/255;return s<=0.04045?s/12.92:((s+0.055)/1.055)**2.4;})
+          .reduce((sum,v,i)=>sum+v*[0.2126,0.7152,0.0722][i],0);
+        return [...document.querySelectorAll('#hero-collage figcaption span')]
+          .filter(el=>el.textContent.includes('Diseño conceptual')).map(el=>{
+            const style=getComputedStyle(el),fg=rgb(style.color),bg=rgb(style.backgroundColor);
+            const a=fg && luminance(fg),b=bg && luminance(bg);
+            return {text:el.textContent,color:style.color,background:style.backgroundColor,
+              ratio:fg && bg ? (Math.max(a,b)+0.05)/(Math.min(a,b)+0.05) : null};
+          });
+      })()`);
+      console.log(`CONCEPT_CONTRAST ${width} frame ${index} ${JSON.stringify(contrast)}`);
+      const expectedBadges = cards.filter(card=>card.text.includes('Diseño conceptual')).length;
+      check(`${width} frame ${index} every conceptual badge contrast >=4.5:1`,
+        contrast.length===expectedBadges && contrast.every(label=>Number.isFinite(label.ratio) && label.ratio>=4.5), true);
+      check(`${width} frame ${index} ordinary primary portfolio span stays mint`, await evaluate(`(()=>{
+        const span=[...document.querySelector('#hero-collage figure').querySelectorAll('figcaption span')]
+          .find(el=>el.textContent==='Portafolio del equipo');
+        return !!span && getComputedStyle(span).color==='rgb(155, 255, 206)';
+      })()`), true);
+      for (const card of cards) {
+        if (!card.id) { check(`${width} frame ${index} generic concept`, card.text.includes('Diseño conceptual'), true); continue; }
+        seen.push(card.id);
+        const project = expectedProjects.find(p=>p.id===card.id);
+        check(`${width} frame ${index} eligible ${card.id}`, !!project, true);
+        if (!project) continue;
+        const imagePath = new URL(card.src, base);
+        check(`${width} ${card.id} title/image/label/fit`, {
+          title:card.text.includes(project.title),image:imagePath.searchParams.get('url') || imagePath.pathname,
+          portfolio:card.text.includes('Portafolio del equipo'),fit:card.fit,
+          provenance:!project.imageLabel || (card.text.includes(project.imageLabel) && card.text.includes('Diseño conceptual') && !card.alt.includes('Captura real')),
+          neutral:!card.text.includes('Web real'),
+        }, {title:true,image:project.image,portfolio:true,fit:project.imageFit || 'cover',provenance:true,neutral:true});
+      }
+      await layout(width, `/ frame ${index}`);
+      check(`${width} frame ${index} cards inside hero`, await evaluate(`(()=>{const h=document.querySelector('#inicio').getBoundingClientRect();return [...document.querySelectorAll('#hero-collage figure')].every(f=>{const r=f.getBoundingClientRect();return r.left>=0 && r.right<=innerWidth && r.top>=h.top && r.bottom<=h.bottom;});})()`), true);
+      const rect = await evaluate(`(()=>{const r=document.querySelector('#inicio').getBoundingClientRect();return {x:0,y:scrollY+r.top,width:innerWidth,height:r.height,scale:1};})()`);
+      const shot = await cdp('Page.captureScreenshot', {format:'png',captureBeyondViewport:width<=1060,...(width<=1060?{clip:rect}:{})});
+      await writeFile(path.join(output, `${width}-home-frame-${index}.png`), Buffer.from(shot.data,'base64'));
+      await evaluate(`document.querySelector('button[aria-label="Siguiente composición"]').click()`);
+      await wait(`Number(document.querySelector('#hero-collage').dataset.frame)===${(index + 1) % frameCount}`);
+    }
+    check(`${width} every eligible project exactly once`, seen.sort(), expectedProjects.map(p=>p.id).sort());
+    check(`${width} full cycle wraps and stays paused`, await evaluate(`({frame:document.querySelector('#hero-collage').dataset.frame,motion:document.querySelector('#hero-collage').dataset.motion})`), {frame:pausedFrame,motion:'paused'});
     const visibilityProbe = `(()=>{const title=document.querySelector('#home-title'),r=title.getBoundingClientRect();const ancestors=[];for(let el=title;el;el=el.parentElement){const s=getComputedStyle(el);ancestors.push({tag:el.tagName,class:el.className,opacity:s.opacity,visibility:s.visibility,display:s.display,transform:s.transform});}return {scrollX,scrollY,title:{left:r.left,top:r.top,width:r.width,height:r.height},ancestors};})()`;
     console.log(`CAPTURE_BEFORE ${width} ${JSON.stringify(await evaluate(visibilityProbe))}`);
     // Off-viewport composited content is not guaranteed to be painted by captureBeyondViewport.

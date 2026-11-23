@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import ts from 'typescript';
 
-function fixture(reduced = false) {
+function fixture(reduced = false, frames = ['real + concepts', 'more real + concept']) {
   const states = [], effects = [], timers = new Map(), listeners = new Set();
   let cursor = 0, serial = 0;
   const media = { matches: reduced, addEventListener: (_, fn) => listeners.add(fn), removeEventListener: (_, fn) => listeners.delete(fn) };
@@ -31,7 +31,7 @@ function fixture(reduced = false) {
     require: name => name === 'react' ? react : name === 'react/jsx-runtime' ? { jsx, jsxs: jsx } : { default: new Proxy({}, { get: (_, key) => key }) },
   });
   return {
-    render() { cursor = 0; const tree = module.exports.HeroCollage({ frames: ['real + concepts', 'more real + concept'], children: 'tree' });
+    render() { cursor = 0; const tree = module.exports.HeroCollage({ frames, children: 'tree' });
       for (const effect of effects) if (effect?.pending) { effect.cleanup = effect.pending(); delete effect.pending; }
       return tree;
     },
@@ -59,6 +59,24 @@ test('S11 six-second artwork cycles, wraps, pauses persistently, supports manual
   button(tree, 'Composición anterior').props.onClick(); tree = ui.render(); assert.ok(region(tree).props.children.includes('real + concepts'));
   button(tree, 'Reanudar animación').props.onClick(); ui.render(); assert.equal(ui.timers.size, 1);
   ui.unmount(); assert.equal(ui.timers.size, 0); assert.equal(ui.listeners.size, 0);
+});
+
+test('S12 arbitrary frame counts wrap in both directions with automatic and manual access', () => {
+  for (const count of [3, 7, 10]) {
+    const frames = Array.from({ length: count }, (_, i) => `frame ${i}`), ui = fixture(false, frames);
+    ui.render(); let tree = ui.render();
+    for (let i = 1; i <= count; i++) {
+      ui.tick(); tree = ui.render();
+      assert.equal(region(tree).props['data-frame'], i % count);
+      assert.ok(region(tree).props.children.includes(frames[i % count]));
+    }
+    button(tree, 'Pausar animación').props.onClick(); tree = ui.render();
+    button(tree, 'Composición anterior').props.onClick(); tree = ui.render();
+    assert.equal(region(tree).props['data-frame'], count - 1);
+    button(tree, 'Siguiente composición').props.onClick(); tree = ui.render();
+    assert.equal(region(tree).props['data-frame'], 0);
+    assert.equal(ui.timers.size, 0); ui.unmount();
+  }
 });
 
 test('S11 reduced motion starts static, allows manual access, responds to changes without losing pause', () => {

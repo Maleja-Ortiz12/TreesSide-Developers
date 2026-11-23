@@ -122,7 +122,7 @@
   font-size: .73rem;
 }
 .collage .captureFrame { grid-column: 1 / 13; grid-row: 1 / 11; --depth: 12px; --tilt-x: 3deg; --tilt-y: -5deg; --roll: -2deg; animation-delay: -2s; }
-.captureFrame figcaption > span { color: #9bffce; }
+.captureFrame figcaption > span:not(.conceptLabel) { color: #9bffce; }
 .captureFrame img { display: block; width: 100%; height: auto; }
 .collage .salonFrame { grid-column: 6 / 13; grid-row: 7 / 14; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 3deg; animation-delay: -6s; z-index: 2; }
 .collage .shopFrame { grid-column: 1 / 9; grid-row: 12 / 17; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -2deg; animation-delay: -10s; z-index: 3; }

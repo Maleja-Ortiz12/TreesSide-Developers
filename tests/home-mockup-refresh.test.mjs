@@ -91,17 +91,48 @@ test('S2 exact hero copy, two actions, real capture and two visibly labelled con
   assert.equal(nodes(hero).filter(n => n.type === 'button').length, 3, 'motion and manual artwork controls belong in the hero');
 });
 
-test('S11 alternate frame uses verified portfolio captures and retains a labelled generic concept', () => {
+test('S11/S12 alternate frame batches portfolio captures instead of repeating La Lupe', () => {
   const hero = byId(home(1).tree, 'inicio'), figures = nodes(hero).filter(n => n.type === 'figure');
   assert.equal(figures.length, 3);
-  assert.equal(figures.filter(n => text(n).includes('Diseño conceptual')).length, 1);
-  for (const name of ['La Lupe', 'Bendita Gracia']) {
+  for (const name of ['Bendita Gracia', 'Ocho80', 'Radio Navidad']) {
     const real = figures.find(n => text(n).includes(name));
-    assert.ok(real, name); assert.match(text(real), /Web real · Portafolio del equipo/);
+    assert.ok(real, name); assert.match(text(real), /Portafolio del equipo/);
   }
   assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/projects/bendita-gracia.webp'));
-  assert.doesNotMatch(figures.map(text).join(' '), /cliente|contrat|UptownHair/i);
-  assert.match(text(hero), /Peluquerías/);
+  assert.doesNotMatch(figures.map(text).join(' '), /cliente|contrat|UptownHair|La Lupe/i);
+});
+
+test('S12 rotation covers the eligible catalog once with truthful media and no nonprojects', () => {
+  const { load } = home(), { FEATURED_PROJECTS: catalog } = load('src/data/content');
+  const expected = Array.from(catalog).filter(p => !p.experience && p.image !== '/images/treesside-logo.jpg' && p.id !== 'equipo-uptownhair');
+  const count = 1 + Math.ceil((expected.length - 1) / 3), seen = [];
+  const covered = Array.from({ length: count }, (_, frame) => nodes(byId(home(frame).tree, 'inicio'))
+    .filter(n => n.type === 'img').map(n => catalog.find(p => p.image === n.props.src)?.id)).flat().filter(Boolean);
+  assert.deepEqual([...new Set(covered)].sort(), expected.map(p => p.id).sort(), 'all eligible project IDs must appear');
+  for (let frame = 0; frame < count; frame++) {
+    const hero = byId(home(frame).tree, 'inicio');
+    const figures = nodes(hero).filter(n => n.type === 'figure');
+    assert.equal(figures.length, 3);
+    for (const figure of figures) {
+      const image = nodes(figure).find(n => n.type === 'img');
+      const project = catalog.find(p => p.image === image?.props.src);
+      if (!project) { assert.match(text(figure), /Diseño conceptual/); continue; }
+      seen.push(project.id);
+      assert.ok(expected.some(p => p.id === project.id), project.id);
+      assert.ok(text(figure).includes(project.title));
+      assert.match(text(figure), /Portafolio del equipo/);
+      assert.doesNotMatch(text(figure), /Web real/);
+      if (project.imageLabel) {
+        assert.ok(text(figure).includes(project.imageLabel));
+        assert.match(text(figure), /Diseño conceptual/);
+        assert.doesNotMatch(image.props.alt, /Captura real/);
+      }
+      assert.equal(image.props.style?.objectFit, project.imageFit ?? 'cover');
+      assert.ok(existsSync(`public${image.props.src}`), project.id);
+    }
+  }
+  assert.deepEqual([...new Set(seen)].sort(), expected.map(p => p.id).sort(), 'all eligible project IDs must appear');
+  assert.equal(seen.length, expected.length, 'no duplicate projects across the cycle');
 });
 
 test('S10 tree shares the relative collage layer behind all three preserved figures', () => {
@@ -116,6 +147,19 @@ test('S10 tree shares the relative collage layer behind all three preserved figu
   assert.match(css, /\.collage\s*\{[^}]*position: relative/);
   assert.match(css, /\.treeAccent\s*\{[^}]*z-index: 0/);
   assert.match(css, /\.collage figure\s*\{[^}]*z-index: 1/);
+});
+
+test('S12/S2 conceptual badges retain dark text while plain capture captions stay mint', () => {
+  const css = readFileSync('src/components/home/HomeRedesign.module.css', 'utf8');
+  // Exclude badges from the more-specific caption rule, not just a later color override.
+  assert.equal(/\.captureFrame figcaption > span:not\(\.conceptLabel\)\s*\{\s*color: #9bffce;\s*\}/.test(css), true,
+    'mint caption color must explicitly exclude conceptual badges');
+  assert.equal(/\.captureFrame figcaption > span\s*\{/.test(css), false);
+  assert.match(css, /\.conceptLabel\s*\{[^}]*color: #073526;[^}]*background: #a0f3cd;/);
+  const firstCard = nodes(byId(home(2).tree, 'inicio')).find(n => n.type === 'figure');
+  const spans = nodes(firstCard).filter(n => n.type === 'span');
+  assert.ok(spans.some(n => n.props.className === 'conceptLabel' && text(n).includes('Diseño conceptual')));
+  assert.ok(spans.some(n => !n.props.className && text(n) === 'Portafolio del equipo'), 'ordinary portfolio span retains the mint rule');
 });
 
 test('S10 all three cards float slowly with staggered 3D depth, modest mobile motion and reduced-motion opt-out', () => {

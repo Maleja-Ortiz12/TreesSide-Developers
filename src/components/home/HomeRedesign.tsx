@@ -32,13 +32,12 @@ function SalonPreview() {
 }
 
 function HeroArtwork() {
-  const real = (id: string) => {
-    const project = FEATURED_PROJECTS.find(item => item.id === id)!;
-    return <>
-      <figcaption>{project.title} <span>Web real · Portafolio del equipo</span></figcaption>
-      <Image src={project.image} alt={`Captura real de ${project.title}, portafolio del equipo`} width={1200} height={833} sizes="(max-width: 600px) 90vw, (max-width: 1060px) 75vw, 42vw" />
-    </>;
-  };
+  // Match the existing strip's eligibility, except S5 expressly excludes UptownHair.
+  const projects = FEATURED_PROJECTS.filter(project => !project.experience && project.image !== '/images/treesside-logo.jpg' && project.id !== 'equipo-uptownhair');
+  const real = (project: (typeof projects)[number]) => <>
+    <figcaption>{project.title} <span>Portafolio del equipo</span>{project.imageLabel && <span className={styles.conceptLabel}>Diseño conceptual · {project.imageLabel}</span>}</figcaption>
+    <Image data-home-project={project.id} src={project.image} alt={`${project.imageLabel ? 'Ilustración conceptual' : 'Captura real'} de ${project.title}, portafolio del equipo`} style={{ objectFit: project.imageFit ?? 'cover' }} width={1200} height={833} sizes="(max-width: 600px) 90vw, (max-width: 1060px) 75vw, 42vw" />
+  </>;
   const salon = <>
     <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Peluquerías</figcaption>
     <SalonPreview />
@@ -47,8 +46,15 @@ function HeroArtwork() {
     <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Comercio electrónico</figcaption>
     <Image src="/images/services/ecommerce-hero.webp" alt="Ilustración de una propuesta de tienda y catálogo, no un proyecto desarrollado" width={1689} height={957} sizes="(max-width: 600px) 70vw, (max-width: 1060px) 50vw, 27vw" />
   </>;
-  const lupe = real('equipo-la-lupe');
-  const frames = [[lupe, salon, shop], [real('equipo-bendita-gracia'), lupe, salon]].map((artwork, index) => <div key={index} className={styles.artworkFrame}>
+  const lupe = projects.find(project => project.id === 'equipo-la-lupe')!;
+  // Preserve the first paint; batch remaining projects in three slots without repeats.
+  const compositions = [[real(lupe), salon, shop]];
+  const remaining = projects.filter(project => project !== lupe);
+  for (let index = 0; index < remaining.length; index += 3) {
+    const batch = remaining.slice(index, index + 3).map(real);
+    compositions.push([...batch, salon, shop].slice(0, 3));
+  }
+  const frames = compositions.map((artwork, index) => <div key={index} className={styles.artworkFrame}>
     <figure className={styles.captureFrame}>{artwork[0]}</figure>
     <figure className={styles.salonFrame}>{artwork[1]}</figure>
     <figure className={styles.shopFrame}>{artwork[2]}</figure>
