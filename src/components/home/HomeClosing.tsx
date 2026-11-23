@@ -11,10 +11,15 @@ const footerLinks = [
   ['Sobre Nosotros', '/nosotros'], ['Equipo', '/equipo'], ['Contacto', '/contacto'],
 ];
 
-export function HomeClosing() {
+export function HomeClosing({ showClosing = true }: { showClosing?: boolean } = {}) {
   return (
-    <footer className={styles.closing} aria-labelledby="closing-title">
-      <div className={`container ${styles.closingInner}`}>
+    <footer
+      className={styles.closing}
+      aria-labelledby={showClosing ? 'closing-title' : undefined}
+      aria-label={showClosing ? undefined : 'Pie de página'}
+      style={showClosing ? undefined : { background: '#041b14' }}
+    >
+      {showClosing && <div className={`container ${styles.closingInner}`}>
         <h2 id="closing-title">Lo que sigue,<br />lo construimos<br /><span className="text-gradient">contigo.</span></h2>
         <ClosingPath />
         {/* Roots art has the circle cut out; the sphere is drawn in CSS so it stays sharp at any size. */}
@@ -27,7 +32,7 @@ export function HomeClosing() {
           </Link>
         </div>
         <span className={styles.outline} aria-hidden="true">TreesSide</span>
-      </div>
+      </div>}
       <div className={`container ${styles.footerDetails}`}>
         <div className={styles.footerBrand}>
           <strong>TreesSide Developers · {CONTACT_INFO.location}</strong>
