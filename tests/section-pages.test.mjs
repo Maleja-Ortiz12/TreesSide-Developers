@@ -9,13 +9,13 @@ async function page(path) {
 }
 
 const ROUTES = [
-  { path: '/', title: /<title>Tu negocio puede vender más y trabajar mejor con el software adecuado \| TreesSide Developers/, sections: ['inicio', 'demos', 'carrusel'] },
+  { path: '/', title: /<title>Tu negocio puede vender más y trabajar mejor \| TreesSide Developers/, sections: ['inicio', 'demos', 'soluciones', 'trabajo', 'propuestas', 'proceso-home', 'siguiente-paso'] },
   { path: '/servicios', title: /<title>Servicios \| TreesSide Developers/, sections: ['servicios', 'tecnologias'] },
   { path: '/proyectos', title: /<title>Proyectos \| TreesSide Developers/, sections: ['proyectos'] },
   { path: '/nosotros', title: /<title>Sobre nosotros \| TreesSide Developers/, sections: ['sobre-nosotros', 'proceso'] },
   { path: '/contacto', title: /<title>Contacto \| TreesSide Developers/, sections: ['contacto'] },
 ];
-const ALL_SECTIONS = ['inicio', 'demos', 'carrusel', 'servicios', 'tecnologias', 'proyectos', 'sobre-nosotros', 'equipo', 'proceso', 'contacto'];
+const ALL_SECTIONS = ['soluciones', 'trabajo', 'propuestas', 'proceso-home', 'siguiente-paso', 'inicio', 'demos', 'carrusel', 'servicios', 'tecnologias', 'proyectos', 'sobre-nosotros', 'equipo', 'proceso', 'contacto'];
 
 for (const route of ROUTES) {
   test(`${route.path} renders only its own sections`, async () => {
@@ -47,7 +47,7 @@ test('footer quick links and calls to action navigate to section pages', async (
   assert.ok(footer);
   for (const href of ['/', '/servicios', '/proyectos', '/nosotros', '/contacto']) assert.ok(footer.includes(`href="${href}"`), href);
   const hero = home.match(/<section[^>]*id="inicio"[\s\S]*?<\/section>/)?.[0];
-  assert.ok(hero.includes('href="/proyectos"'));
+  assert.ok(hero.includes('href="#trabajo"'));
   assert.ok(hero.includes('href="/contacto"'));
   for (const path of ['/servicios', '/proyectos', '/nosotros', '/equipo']) {
     const html = await page(path);

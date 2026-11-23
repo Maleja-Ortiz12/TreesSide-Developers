@@ -10,7 +10,7 @@ async function home() {
   return response.text();
 }
 const text = html => html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<!-- -->/g, '').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
-const hero = html => html.match(/<section[^>]*id="inicio"[\s\S]*?data-home-stats[\s\S]*?<\/section>/)?.[0];
+const hero = html => html.match(/<section[^>]*id="inicio"[\s\S]*?<\/section>/)?.[0];
 
 test('S2 home hero uses the exact business proposition and mint gradient', async () => {
   const html = await home();
@@ -19,21 +19,21 @@ test('S2 home hero uses the exact business proposition and mint gradient', async
   const titles = [...html.matchAll(/<h1\b[\s\S]*?<\/h1>/g)].map(m => m[0]);
   assert.equal(titles.length, 1, 'one h1 on the page');
   assert.ok(section.includes(titles[0]), 'the h1 is the hero title');
-  assert.equal(text(titles[0]), 'Tu negocio puede vender más y trabajar mejor con el software adecuado');
-  assert.match(titles[0], /<span class="[^"]*text-gradient[^"]*">el software adecuado<\/span>/);
-  assert.ok(text(section).includes('Creamos páginas web, tiendas y plataformas a medida para negocios que necesitan recibir clientes, organizar su operación y automatizar tareas'));
+  assert.equal(text(titles[0]), 'Tu negocio puede vender más y trabajar mejor');
+  assert.match(titles[0], /<span>trabajar mejor<\/span>/);
+  assert.ok(text(section).includes('Creamos páginas web, tiendas y software a medida para ayudarte a atraer clientes, organizar tu operación y automatizar tareas'));
   const primary = section.match(/<a[^>]*class="[^"]*btn btn-primary[^"]*"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
   assert.ok(primary.includes('href="/contacto"'), 'primary CTA goes to contact');
   assert.equal(text(primary), 'Cotizar mi proyecto');
   assert.ok(primary.includes('<svg'), 'arrow icon');
-  const secondary = section.match(/<a[^>]*href="\/proyectos"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
-  assert.equal(text(secondary), 'Ver proyectos reales');
-  assert.ok(text(section).includes('01 / EXPLORA'));
+  const secondary = section.match(/<a[^>]*href="#trabajo"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
+  assert.equal(text(secondary), 'Ver nuestro trabajo');
+  assert.equal((section.match(/<figure/g) || []).length, 3);
 });
 
 test('S9 hero artwork is the mockup tree, decorative only', async () => {
   const section = hero(await home());
-  const art = section.match(/<img[^>]*home-hero\.webp[^>]*>/)?.[0];
+  const art = section.match(/<img[^>]*about-branch\.webp[^>]*>/)?.[0];
   assert.ok(art, 'hero art');
   assert.ok(art.includes('alt=""'));
   assert.ok(!section.includes('treesside-logo'), 'old brand card art removed');
@@ -41,11 +41,9 @@ test('S9 hero artwork is the mockup tree, decorative only', async () => {
 
 test('S2 the proof band names portfolio evidence rather than counting projects or technologies', async () => {
   const section = hero(await home());
-  const band = section.match(/<ul[^>]*data-home-stats[\s\S]*?<\/ul>/)?.[0];
-  assert.ok(band, 'proof band');
-  assert.equal(text(band), 'La Lupe Web y carta de restaurante Emisoras Latinas Plataforma de radio del portafolio Conoce al equipo Participación y portafolios');
-  for (const href of ['/proyectos#equipo-la-lupe', '/proyectos#equipo-emisoras-latinas', '/equipo']) assert.ok(band.includes(`href="${href}"`), href);
-  assert.doesNotMatch(text(band), /\d|tecnologías|desarrolladores/);
+  assert.ok(!section.includes('data-home-stats'));
+  assert.equal((text(section).match(/Diseño conceptual/g) || []).length, 2);
+  assert.ok(section.includes('la-lupe.webp'));
   // Preserve the earlier standalone-project regression: Bendita Gracia remains in the catalog,
   // but adding it (or any member project) no longer becomes a company-contract count on the hero.
   const content = await readFile('src/data/content.ts', 'utf8');

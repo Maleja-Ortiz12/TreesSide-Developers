@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import ts from 'typescript';
@@ -16,7 +16,7 @@ function loader() {
     document: { getElementById: id => ({ scrollIntoView: options => scrolled.push({ id, options }) }) },
     window: { matchMedia: () => ({ matches: false }) },
   };
-  const file = base => ['', '.ts', '.tsx'].map(ext => base + ext).find(candidate => existsSync(candidate) && !candidate.endsWith(path.sep));
+  const file = base => ['', '.ts', '.tsx', '/index.ts', '/index.tsx'].map(ext => base + ext).find(candidate => existsSync(candidate) && statSync(candidate).isFile());
   function load(target) {
     if (cache.has(target)) return cache.get(target).exports;
     const module = { exports: {} };
@@ -24,7 +24,7 @@ function loader() {
     const code = ts.transpileModule(readFileSync(target, 'utf8'), {
       compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
     }).outputText;
-    vm.runInNewContext(code, { ...globals, module, exports: module.exports, require: spec => resolve(spec, target) });
+    vm.runInNewContext(code, { ...globals, URL, URLSearchParams, module, exports: module.exports, require: spec => resolve(spec, target) });
     return module.exports;
   }
   function resolve(spec, from) {
@@ -45,11 +45,11 @@ function loader() {
 const nodes = tree => !tree || typeof tree !== 'object' ? [] : [tree, ...[tree.props?.children].flat(Infinity).flatMap(nodes)];
 const text = tree => tree == null || typeof tree === 'boolean' ? '' : typeof tree !== 'object' ? String(tree) : [tree.props?.children].flat(Infinity).map(text).join('');
 
-test('S9 the hero tabs pick which demo the demos section shows and scroll to it', () => {
+test('S9 the local demo tabs select each preserved demo panel', () => {
   const { load, scrolled } = loader();
   const { Hero } = load('src/components/Hero.tsx');
   const { HomeDemos } = load('src/components/HomeDemos.tsx');
-  const tabs = () => nodes(Hero()).filter(node => node.type === 'button' && node.props['data-demo-tab']);
+  const tabs = () => nodes(HomeDemos()).filter(node => node.type === 'button' && node.props['data-demo-tab']);
   const visible = () => nodes(HomeDemos()).filter(node => node.type === 'article' && node.props['data-demo'] && !node.props.hidden).map(node => node.props['data-demo']);
   const pressed = () => tabs().filter(tab => tab.props['aria-pressed']).map(tab => text(tab).trim());
 
@@ -63,9 +63,9 @@ test('S9 the hero tabs pick which demo the demos section shows and scroll to it'
     tab.props.onClick();
     assert.deepEqual(pressed(), [label], `${label} pressed`);
     assert.deepEqual(visible(), [demo], `${label} shows ${demo}`);
-    assert.equal(scrolled.at(-1)?.id, 'demos', `${label} scrolls to the demos`);
+    assert.equal(scrolled.length, 0, 'local controls do not scroll the page');
   }
-  assert.equal(scrolled.length, 3);
+  assert.equal(scrolled.length, 0);
 });
 
 test('S9 the tab scroll jumps instead of gliding for reduced motion', () => {
@@ -83,7 +83,7 @@ test('S9 the server HTML renders the tabs with the first one pressed, each point
   const response = await fetch(process.env.TEST_BASE_URL || 'http://localhost:3000', { signal: AbortSignal.timeout(20000) });
   assert.equal(response.status, 200);
   const html = await response.text();
-  const hero = html.match(/<section[^>]*id="inicio"[\s\S]*?<\/section>/)?.[0] ?? '';
+  const hero = html.match(/<section[^>]*id="demos"[\s\S]*?<\/section>/)?.[0] ?? '';
   const tabs = [...hero.matchAll(/<button[^>]*data-demo-tab="([^"]+)"[^>]*>/g)];
   assert.deepEqual(tabs.map(match => match[1]), ['la-lupe', 'emisoras-latinas', 'calculadora-de-contenedores']);
   assert.deepEqual(tabs.map(match => match[0].includes('aria-pressed="true"')), [true, false, false]);

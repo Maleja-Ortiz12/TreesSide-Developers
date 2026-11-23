@@ -87,5 +87,6 @@ test('S5 his technologies render with their own logo', async () => {
 });
 
 test('S6 home links to team evidence instead of counting contracts', async () => {
-  assert.ok(text(await page('/')).includes('Conoce al equipo'));
+  assert.ok((await page('/')).includes('href="/equipo"'));
+  assert.ok(text(await page('/equipo')).includes('Jorge'));
 });

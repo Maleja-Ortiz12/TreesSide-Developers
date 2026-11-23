@@ -4,15 +4,14 @@ import sharp from 'sharp';
 
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
 
-test('Bendita Gracia appears once with its real home screenshot and home carousel anchor', async () => {
+test('Bendita Gracia appears once with its real home screenshot and canonical catalog anchor', async () => {
   const response = await fetch(`${base}/proyectos`);
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.equal((html.match(/data-project="equipo-bendita-gracia"/g) || []).length, 1);
   assert.ok(html.includes('bendita-gracia.webp'), 'the card uses its own screenshot');
-  const home = await fetch(base);
-  assert.equal(home.status, 200);
-  assert.ok((await home.text()).includes('/proyectos#equipo-bendita-gracia'));
+  assert.ok(html.includes('id="equipo-bendita-gracia"'));
+  assert.ok(html.includes('aria-label="Ver proyecto Bendita Gracia"'));
   const image = await fetch(`${base}/images/projects/bendita-gracia.webp`);
   assert.equal(image.status, 200);
   assert.match(image.headers.get('content-type'), /image\/webp/);

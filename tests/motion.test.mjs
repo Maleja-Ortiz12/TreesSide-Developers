@@ -25,7 +25,7 @@ async function page(path) {
 }
 
 const SECTIONS = {
-  '/': ['carrusel'],
+  // Home uses isolated static sections; other route reveal contracts remain unchanged.
   '/servicios': ['servicios', 'tecnologias'],
   '/proyectos': ['proyectos'],
   // S20: the original purpose section is now inside a native disclosure; the new hero is the page entry.

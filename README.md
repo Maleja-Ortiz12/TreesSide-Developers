@@ -8,7 +8,7 @@ Repositorio: https://github.com/Maleja-Ortiz12/TreesSide-Developers
 
 Consulta [contexto de consultas y datos pendientes](docs/client-conversion.md) para configurar los canales y clasificar evidencia sin atribuir contratos no confirmados.
 
-- El inicio presenta una propuesta de valor para negocios, tres soluciones principales (restaurantes, tiendas virtuales y software a medida/automatización), un carrusel de proyectos y tres demos locales interactivas. Cada tarjeta del carrusel lleva a la tarjeta del mismo proyecto en el catálogo de `/proyectos` (`/proyectos#<id del proyecto>`).
+- El inicio presenta una propuesta de valor para negocios, tres soluciones principales (restaurantes, tiendas virtuales y software/automatización), el proyecto real La Lupe y propuestas de peluquería y comercio electrónico identificadas como “Diseño conceptual”. Conserva tres demos locales interactivas con datos de ejemplo; no representan funciones implementadas en La Lupe. El proyecto destacado enlaza a `/proyectos#equipo-la-lupe`.
 - `/planes` presenta cuatro ofertas acumulativas: **Impulso Web desde $500.000 COP**, **Catálogo Administrable desde $900.000**, **Vende Online desde $1.490.000** y **Negocio Integral desde $3.490.000**. El alcance, impuestos aplicables, renovaciones y costos externos se detallan antes de cotizar. Los datos se editan en `src/data/plans.ts`.
 - La tienda ofrecida se desarrolla con código a medida y pasarela externa. No tiene un tope fijo de productos: volumen, variantes y carga inicial se cotizan. El paquete integral incorpora web, panel, tienda y un flujo de automatización.
 - `/casos` documenta La Lupe, Emisoras Latinas y TengoYa. `/contacto` incluye preguntas frecuentes y enlaza a `/politica-de-datos`.
@@ -39,7 +39,7 @@ Los datos legales de la política están pendientes de completar por el equipo. 
 
   | Ruta | Contenido |
   | --- | --- |
-  | `/` | Propuesta de valor, soluciones, carrusel y demos |
+  | `/` | Propuesta de valor, soluciones, La Lupe, conceptos, demos, proceso y contacto |
   | `/servicios` | Servicios, planes y tecnologías que usamos |
   | `/servicios/<categoría>` | 16 páginas de servicios por categoría, cada una con su propio diseño |
   | `/planes` | Cuatro planes con precios, alcance y condiciones |
@@ -52,7 +52,7 @@ Los datos legales de la política están pendientes de completar por el equipo. 
 
 - **Secciones**:
   1. **Navegación Sticky**: Cabecera de cristal compartida por todas las páginas; resalta la página actual y tiene menú móvil responsivo.
-  2. **Inicio (`/`)**: “Tu negocio puede vender más y trabajar mejor con el software adecuado”, con acciones “Cotizar mi proyecto” y “Ver proyectos reales”. Las tres soluciones explican destinatarios, problemas y funciones según alcance; se conservan el árbol tecnológico y las demos de restaurante, radio y logística. La evidencia enlaza proyectos y portafolios, sin contar esos proyectos como contratos de la empresa.
+  2. **Inicio (`/`)**: “Tu negocio puede vender más y trabajar mejor”, con acciones “Cotizar mi proyecto” y “Ver nuestro trabajo”. Alterna secciones claras y oscuras con soluciones, una captura real de La Lupe, dos propuestas conceptuales, demos de restaurante/radio/logística, cuatro etapas de trabajo y contacto. Mantiene el menú lateral y los datos del footer; solo el Home omite el cierre decorativo grande. Las propuestas no son clientes ni sitios desarrollados; las demos no envían datos reales.
   3. **Proyectos (`/proyectos`)**: Un carrusel en primer plano permite recorrer cada proyecto con imagen grande, autoría, tecnologías y acceso al detalle. Respeta el filtro activo y vuelve al primer proyecto al cambiar de categoría, con avance automático cada 5 segundos y una escena holográfica inspirada en el inicio del portafolio de Jorge Ramírez: captura principal flotante, profundidad por capas, balanceo suave, brillo y vistas pequeñas del proyecto anterior y siguiente. Incluye pausa/reanudación y flechas; arranca automáticamente al entrar a la página y no se detiene por pasar el mouse. Se pausa al entrar el foco, al abrir un detalle o al ocultar la pestaña; el botón Reanudar vuelve a activar el temporizador incluso con el mouse encima. Con movimiento reducido empieza pausado. Las tarjetas del catálogo tienen entrada escalonada y realce al pasar el mouse; las animaciones respetan *prefers-reduced-motion*. Catálogo generado desde `src/data/team.ts` con los proyectos publicados en los portafolios del equipo: Ronaldo (Ocho80, Radio Navidad, Calculadora de contenedores, Libres en Cristo Jesús), Jorge (Floraltech E-Commerce, Atherium 3D Game, Otaku Portal, API de Tienda + Asistente IA, Portfolio CMS, Dashboard BI · Superstore, EDA · Renta Ciudadana, Análisis de Ventas de Cafetería) y María Alejandra (Dimension Shift, UptownHair, Emisoras Latinas, Entre Lanas y Fragancias, Sistema de gestión de inventarios, Aplicación de gestión agropecuaria) y Jorge Ramírez (TengoYa, CarWeb, Histech). Un proyecto que publican dos integrantes aparece en una sola tarjeta con ambos autores y un enlace a cada portafolio: Emisoras Latinas (María Alejandra y Jorge Ramírez) y Radio Navidad (Ronaldo y Jorge Ramírez, que lo llama *Christmas Radio Navidad*); se declara con `sameAs` en `src/data/team.ts`. Luhos, Gudfy y Tanku (Ronaldo) y Robot Alejo 2.0 y Migración Pega → UiPath (Jorge Ramírez) se muestran como **Experiencia laboral**: son trabajos hechos como empleados de otras empresas, no proyectos de TreesSide. Las imágenes se tomaron de cada portafolio y se guardan en `public/images/projects/` (WebP, 960 px); los seis proyectos sin captura pública utilizable tienen ilustraciones propias, rotuladas **Ilustración conceptual · No es una captura real**. La Lupe utiliza una captura real de su inicio. Las portadas conceptuales pueden regenerarse con `node scripts/generate-project-covers.mjs`. Los filtros incluyen **Proyectos del equipo**, **Experiencia laboral** y cada categoría, y el detalle enlaza al portafolio del autor y, cuando existe, al proyecto en línea.
   4. **Servicios Tecnológicos (`/servicios`)**:
      - Ilustración 3D de laptop futurista con código resplandeciente y nube flotante.
@@ -85,7 +85,7 @@ TreesSide Developers/
 │   ├── app/
 │   │   ├── globals.css            # Sistema de diseño, tokens de color, sombras y animaciones
 │   │   ├── layout.tsx             # Metadatos SEO, OpenGraph y configuración HTML
-│   │   ├── page.tsx               # Inicio (hero)
+│   │   ├── page.tsx               # Inicio (HomeRedesign y footer compacto)
 │   │   ├── servicios/page.tsx     # Servicios y tecnologías
 │   │   ├── servicios/[categoria]/ # Plantilla de las 16 categorías visibles y la URL de compatibilidad
 │   │   ├── proyectos/page.tsx     # Proyectos
@@ -96,7 +96,9 @@ TreesSide Developers/
 │   │   ├── AboutSection.tsx       # Objetivo, convicción y lo que apasiona a cada integrante
 │   │   ├── ContactSection.tsx     # Sección de contacto y formulario interactivo
 │   │   ├── Footer.tsx             # Pie de página y enlaces sociales
-│   │   ├── Hero.tsx               # Portada principal y tarjetas de características
+│   │   ├── Hero.tsx               # Portada anterior conservada; no se monta en el Home
+│   │   ├── home/HomeRedesign.tsx   # Secciones del inicio; estilos aislados en HomeRedesign.module.css
+│   │   ├── HomeDemos.tsx          # Tres demos locales con selectores y enlaces de consulta
 │   │   ├── Logo.tsx               # Componente de marca y logotipo reactivo
 │   │   ├── Navbar.tsx             # Barra de navegación entre páginas y menú móvil
 │   │   ├── ProcessSection.tsx     # Flujo de proceso en 4 pasos
@@ -146,7 +148,7 @@ La página **Nuestro equipo** está en `/equipo`, accesible desde el menú princ
 
 En `/equipo`, los integrantes aparecen en una cuadrícula adaptable, con foto grande y descripción breve debajo. El título **Talento que crece** no fija una cantidad: se agregan perfiles en `src/data/team.ts`, sin añadir selectores CSS por integrante. **Ver perfil** cambia a una vista donde solo aparece la tarjeta seleccionada, centrada y ocupando todo el ancho del contenedor; no desplaza la fila ni utiliza desplazamiento horizontal. La foto y descripción quedan a la izquierda y la información a la derecha, en el flujo normal de la página. **Volver al equipo** restaura la cuadrícula y devuelve el foco al botón del integrante seleccionado. Hasta 760px, foto e información se apilan para mantener la lectura. Los botones tienen `aria-expanded` y `aria-controls`; los perfiles no seleccionados y su contenido están ocultos. Los controles funcionan con clic, toque y teclado (Enter/Espacio).
 
-Las fotos tienen un diseño CSS 3D con placa posterior desplazada, relieve, sombras, perspectiva, reflejo frontal y flotación suave; reaccionan al mouse también en la vista seleccionada, sin mover el texto. Los cambios de vista incluyen una salida breve, entrada con desvanecimiento y escala, y aparición progresiva de la información; la cuadrícula reaparece de forma escalonada. No se reconstruyen modelos 3D de los rostros. Una escultura de capas flotantes aporta movimiento decorativo, sin WebGL ni dependencias adicionales. El resumen del inicio conserva sus tarjetas y animaciones anteriores. La inclinación se desactiva en pantallas táctiles; con `prefers-reduced-motion: reduce` el cambio es inmediato y se eliminan las animaciones y transiciones de la galería. Los enlaces a los portafolios permanecen accesibles en ambas vistas y abren en otra pestaña.
+Las fotos tienen un diseño CSS 3D con placa posterior desplazada, relieve, sombras, perspectiva, reflejo frontal y flotación suave; reaccionan al mouse también en la vista seleccionada, sin mover el texto. Los cambios de vista incluyen una salida breve, entrada con desvanecimiento y escala, y aparición progresiva de la información; la cuadrícula reaparece de forma escalonada. No se reconstruyen modelos 3D de los rostros. Una escultura de capas flotantes aporta movimiento decorativo, sin WebGL ni dependencias adicionales. El inicio no monta la galería del equipo; los perfiles y sus interacciones permanecen en `/equipo`. La inclinación se desactiva en pantallas táctiles; con `prefers-reduced-motion: reduce` el cambio es inmediato y se eliminan las animaciones y transiciones de la galería. Los enlaces a los portafolios permanecen accesibles en ambas vistas y abren en otra pestaña.
 
 Para comprobar las fotos y conservar los enlaces del equipo, con el servidor local iniciado:
 ```bash
@@ -158,7 +160,7 @@ Para comprobar en un navegador que ninguna página se desplaza hacia los lados e
 ```bash
 node scripts/check-mobile-browser.mjs
 ```
-En celulares y pantallas táctiles, las entradas al hacer scroll solo se desvanecen, sin inclinación 3D. Para que el scroll sea fluido, allí el fondo parallax queda quieto, los resplandores no laten, los íconos de tecnologías no giran y el encabezado usa un fondo sólido en lugar de desenfocar lo que pasa detrás; el escritorio conserva todos los efectos. También se detienen las flotaciones decorativas y el pulso del botón de WhatsApp en celulares; sus controles siguen funcionando. La cinta de proyectos del inicio se detiene mientras está fuera de la pantalla. El mismo script comprueba estas reglas y que los controles de contacto no queden recortados.
+En celulares y pantallas táctiles, las entradas al hacer scroll solo se desvanecen, sin inclinación 3D. Para que el scroll sea fluido, allí el fondo parallax queda quieto, los resplandores no laten, los íconos de tecnologías no giran y el encabezado usa un fondo sólido en lugar de desenfocar lo que pasa detrás; el escritorio conserva todos los efectos. También se detienen las flotaciones decorativas y el pulso del botón de WhatsApp en celulares; sus controles siguen funcionando. El inicio ya no monta la cinta de proyectos; destaca únicamente La Lupe y separa las propuestas conceptuales de las demos. El mismo script comprueba las reglas móviles y que los controles de contacto no queden recortados.
 
 Las imágenes de servicios y del logo dentro de las páginas usan WebP. Se conserva el JPG del logo para favicon y metadatos. Las fuentes Outfit y JetBrains Mono se descargan durante `npm run build` mediante `next/font/google` y luego se sirven desde el propio sitio: el visitante no hace solicitudes a Google Fonts. La compilación requiere acceso a Google Fonts; no se garantiza precarga automática en todas las plataformas.
 

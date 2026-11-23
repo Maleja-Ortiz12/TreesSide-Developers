@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
 
 test('S24 the footer contact line has a desktop curve, a mobile arc and a joint on the sphere', async () => {
-  const response = await fetch(base); assert.equal(response.status, 200);
+  const response = await fetch(`${base}/nosotros`); assert.equal(response.status, 200);
   const footer = (await response.text()).match(/<footer\b[\s\S]*?<\/footer>/)?.[0] || '';
   assert.equal((footer.match(/data-closing-path=""/g) || []).length, 2, 'desktop curve and mobile arc');
   assert.match(footer, /class="[^"]*pathJoin[^"]*"/, 'joint where the line meets the sphere');

@@ -23,29 +23,14 @@ async function loadModule() {
 }
 
 // S14 restores the original moving strip in place of the home demos.
-test('S14 the original project carousel returns with accessible copies and pause controls', async () => {
+test('Home uses the requested project showcase instead of the retired strip', async () => {
   const html = await home();
-  const section = carousel(html);
-  assert.ok(section);
-  assert.match(html, /data-reveal[^>]*>\s*<section id="carrusel"/);
-  // The carousel comes before the demos; both sections remain available.
-  assert.ok(html.includes('id="demos"'));
-  assert.ok(html.indexOf('id="carrusel"') < html.indexOf('id="demos"'));
-  assert.ok(section.includes('Pausar carrusel'));
-  const visible = items(section, false);
-  assert.ok(visible.length > 0);
-  const titles = visible.map(item => item.match(/<strong>([^<]+)<\/strong>/)?.[1]);
-  assert.equal(new Set(titles).size, titles.length);
-  for (const hidden of items(section, true)) assert.ok(hidden.includes('aria-hidden="true"'));
-  const rows = section.split(/(?=<div[^>]*class="[^"]*viewport)/).slice(1);
-  assert.equal(rows.length, 2);
-  for (const row of rows) {
-    const copies = row.split(/(?=<div class="[^"]*set)/).slice(1).map(copy => (copy.match(/data-carousel-item/g) || []).length);
-    assert.equal(copies.length, 2);
-    assert.equal(copies[0], copies[1]);
-    assert.ok(copies[0] >= 14);
-  }
+  assert.ok(!carousel(html));
+  assert.ok(html.includes('id="trabajo"'));
+  assert.ok(html.indexOf('id="trabajo"') < html.indexOf('id="demos"'));
+  assert.ok(html.includes('href="/proyectos#equipo-la-lupe"'));
 });
+
 test('the retained strip helper fills wide screens without changing ordering', async () => {
   const { repeatToMinimum } = await loadModule();
   assert.deepEqual(Array.from(repeatToMinimum(['a', 'b', 'c'], 7)), ['a', 'b', 'c', 'a', 'b', 'c', 'a', 'b', 'c']);

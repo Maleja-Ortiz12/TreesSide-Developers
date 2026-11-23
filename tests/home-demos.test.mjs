@@ -157,57 +157,27 @@ test('S12 home shows the three mockup demos in order, the first one visible', as
   for (const gone of ['uptownhair', 'ocho80', 'entre-lanas-y-fragancias']) assert.ok(!html.includes(`data-demo="${gone}"`), `${gone} demo left the home`);
 });
 
-test('S9 home demo cards carry the mockup label and name the real project they are based on', async () => {
+test('Home demos identify simulations and retain exact enquiry context', async () => {
   const html = await home();
-  for (const [id, kind, project, href] of [
-    ['la-lupe', 'Restaurante', 'La Lupe', '/casos/la-lupe'],
-    ['emisoras-latinas', 'Radio', 'Emisoras Latinas', '/casos/emisoras-latinas'],
-    ['calculadora-de-contenedores', 'Logística', 'Calculadora de contenedores', null],
-  ]) {
+  for (const [id, service, demo] of [['la-lupe', 'restaurantes', 'restaurante'], ['emisoras-latinas', 'streaming', 'radio'], ['calculadora-de-contenedores', 'logistica', 'logistica']]) {
     const card = demoCard(html, id);
-    assert.ok(card, `demo card ${id}`);
-    assert.ok(plain(card).includes(`Demo conceptual · ${kind}`), `label ${id}`);
-    assert.ok(plain(card).includes(`Basado en ${project}`), `source ${id}`);
-    if (href) assert.ok(card.includes(`href="${href}"`), `${id} links its case study`);
+    assert.ok(plain(card).includes('Simulación local'));
+    assert.ok(card.includes(`/contacto?servicio=${service}&amp;demo=${demo}`));
+    assert.ok(card.includes(`/servicios/${service}?servicio=${service}&amp;demo=${demo}`));
+    assert.ok(plain(card).includes('Quiero una solución similar'));
   }
+  const copy = plain(html);
+  for (const label of ['Pruébalo antes de imaginarlo', 'Demo interactiva · Datos de ejemplo', 'No se guardan ni se envían datos', 'Esta simulación no representa funcionalidades implementadas en la web real de La Lupe.']) assert.ok(copy.includes(label), label);
 });
 
-test('S10 home demos section uses the mockup heading and keeps the sample-data disclaimer', async () => {
+test('Home showcases only confirmed real La Lupe work with a flat capture', async () => {
   const html = await home();
-  const section = html.match(/<section id="demos"[\s\S]*?<\/section>/)?.[0];
-  assert.ok(section, 'demos section');
-  const title = section.match(/<h2\b[\s\S]*?<\/h2>/)?.[0] ?? '';
-  assert.equal(plain(title).trim(), 'Menos promesas. Más cosas que puedes probar.');
-  assert.match(title, /<span class="[^"]*text-gradient[^"]*">puedes probar\.<\/span>/);
-  assert.ok(plain(section).includes('Explora demos conceptuales de soluciones reales y comprueba por ti mismo cómo podemos llevar tu idea al siguiente nivel.'));
-  assert.ok(section.includes('No se guardan ni se envían datos'));
-  assert.ok(!html.includes('Prueba lo que podemos construir'), 'previous heading replaced');
-});
-
-test('S13/S25 La Lupe and Emisoras Latinas cards show their real image in a laptop and lead to their catalog card', async () => {
-  const html = await home();
-  const team = readFileSync('src/data/team.ts', 'utf8');
   const cards = [...html.matchAll(/<article[^>]*data-project-card="([^"]+)"[\s\S]*?<\/article>/g)];
-  assert.deepEqual(cards.map(match => match[1]), ['equipo-la-lupe', 'equipo-emisoras-latinas']);
-  for (const [index, [title, image]] of [['La Lupe', 'la-lupe'], ['Emisoras Latinas', 'emisoras-latinas-cover']].entries()) {
-    const [card, id] = cards[index];
-    // The catalog card is the member entry that is not merged into another one (no sameAs).
-    const entry = team.split('\n').find(line => line.includes(`{ name: '${title}', description:`) && !line.includes('sameAs'));
-    const description = entry.match(/description: '([^']+)'/)[1];
-    assert.match(card, new RegExp(`<h3[^>]*>${title}</h3>`), `${id} title`);
-    assert.ok(plain(card).includes(description), `${id} real description`);
-    const laptop = card.match(/<div[^>]*data-laptop[\s\S]*?<img[^>]*>/)?.[0] ?? '';
-    assert.ok(laptop.includes(`src="/images/projects/${image}.webp"`), `${id} real image inside the laptop`);
-    const link = card.match(/<a[^>]*href="(\/proyectos#[^"]+)"[^>]*>[\s\S]*?<\/a>/);
-    assert.equal(link?.[1], `/proyectos#${id}`, `${id} link`);
-    assert.ok(plain(link[0]).includes('Ver proyecto'), `${id} link text`);
-  }
-});
-
-test('S3 the laptop cards sit under the portfolio-evidence heading and their screens are flat', async () => {
-  const html = await home();
-  const section = html.match(/<section id="demos"[\s\S]*?<\/section>/)?.[0] ?? '';
-  assert.match(section, /<h2[^>]*>Experiencia que puedes <span class="[^"]*text-gradient[^"]*">revisar\.<\/span><\/h2>/);
+  assert.deepEqual(cards.map(m => m[1]), ['equipo-la-lupe']);
+  const card = cards[0][0];
+  for (const label of ['La Lupe', 'restaurante mexicano', 'Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp']) assert.ok(plain(card).includes(label), label);
+  assert.ok(card.includes('/images/projects/la-lupe.webp'));
+  assert.ok(card.includes('href="/proyectos#equipo-la-lupe"'));
   const css = readFileSync('src/components/home/Home.module.css', 'utf8');
-  assert.doesNotMatch(css, /\.laptop \{[^}]*rotate\(/, 'no tilt on the project screenshot');
+  assert.doesNotMatch(css, /\.laptop \{[^}]*rotate\(/);
 });

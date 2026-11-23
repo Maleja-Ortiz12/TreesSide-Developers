@@ -5,7 +5,7 @@ const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
 async function page(path) { const response = await fetch(`${base}${path}`); assert.equal(response.status, 200, path); return response.text(); }
 const text = html => html.replace(/<!-- -->/g, '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 const footerOf = html => html.match(/<footer\b[\s\S]*?<\/footer>/)?.[0] || '';
-const PAGES = ['/', '/servicios', '/planes', '/proyectos', '/nosotros', '/equipo', '/contacto'];
+const PAGES = [ '/servicios', '/planes', '/proyectos', '/nosotros', '/equipo', '/contacto'];
 
 test('S23 the footer sphere is a crisp HTML link with visible text, not a transparent overlay on a raster', async () => {
   for (const path of PAGES) {
@@ -28,15 +28,13 @@ test('S23 the sphere floats and shines in 3D on desktop and stays still on phone
   assert.match(css, /@media \(max-width: 899px\), \(pointer: coarse\), \(prefers-reduced-motion: reduce\) \{[^}]*\.sphere[^}]*animation: none/);
 });
 
-test('S23 the home hero shows the three tree cards as real 3D HTML cards over a card-free tree', async () => {
+test('Home hero distinguishes real work and conceptual visuals', async () => {
   const html = await page('/');
   const hero = html.match(/<section[^>]*id="inicio"[\s\S]*?<\/section>/)?.[0] || '';
-  const scene = hero.match(/<div[^>]*data-hero-scene[\s\S]*?data-demo-tab/)?.[0] || '';
-  assert.ok(scene, 'hero scene');
-  const cards = [...scene.matchAll(/data-hero-card="([^"]+)"/g)].map(([, id]) => id);
-  assert.deepEqual(cards, ['restaurante', 'radio', 'logistica']);
-  for (const copy of ['Restaurante', 'Hamburguesa', '$28.000', 'Pizza', '$35.000', 'Bebidas', '$7.000', 'Radio Online', 'Logística de pallets', 'Pallets', '124', 'En tránsito', '36', 'Entregados', '88']) assert.ok(text(scene).includes(copy), copy);
-  assert.match(scene, /aria-hidden="true"/, 'decorative illustration');
+  assert.ok(hero.includes('la-lupe.webp'));
+  assert.equal((text(hero).match(/Diseño conceptual/g) || []).length, 2);
+  assert.ok(hero.includes('about-branch.webp'));
+  assert.ok(!hero.includes('data-hero-card'));
   const css = await readFile('src/components/home/Home.module.css', 'utf8');
   assert.match(css, /@keyframes cardFloat/);
   assert.match(css, /\.heroCard[^{]*\{[^}]*rotateY\(/);

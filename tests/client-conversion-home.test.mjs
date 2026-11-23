@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import ts from 'typescript';
@@ -18,7 +18,7 @@ function loader(reduced = false) {
       compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
     }).outputText;
     vm.runInNewContext(code, {
-      module, exports: module.exports,
+      module, exports: module.exports, URL, URLSearchParams,
       document: { getElementById: id => ({ scrollIntoView: options => scrolled.push({ id, options }) }) },
       window: { matchMedia: () => ({ matches: reduced }) },
       require: spec => {
@@ -28,7 +28,7 @@ function loader(reduced = false) {
         if (spec === 'lucide-react') return new Proxy({}, { get: (_, name) => `icon:${String(name)}` });
         if (spec.endsWith('.css')) return { default: new Proxy({}, { get: (_, name) => String(name) }) };
         const base = spec.startsWith('@/') ? path.resolve('src', spec.slice(2)) : path.resolve(path.dirname(target), spec);
-        const resolved = ['', '.ts', '.tsx'].map(ext => base + ext).find(file => existsSync(file));
+        const resolved = ['', '.ts', '.tsx', '/index.ts', '/index.tsx'].map(ext => base + ext).find(file => existsSync(file) && statSync(file).isFile());
         assert.ok(resolved, `module ${spec}`);
         return load(resolved);
       },
@@ -89,11 +89,11 @@ test('S3 demos preserve their identities and provide service and proposal links 
   ].entries()) {
     const card = cards[index];
     assert.equal(card.props['data-demo'], id);
-    assert.ok(text(card).includes(`Demo conceptual · ${kind}`));
+    assert.ok(text(card).includes('Simulación local'));
     assert.ok(nodes(card).some(node => typeof node.type === 'function' && node.type.name === component));
     assert.equal(byText(card, 'Ver servicio')?.props.href, `/servicios/${category}?servicio=${category}&demo=${demo}`);
-    assert.equal(byText(card, 'Solicitar una propuesta')?.props.href, `/contacto?servicio=${category}&demo=${demo}`);
-    assert.ok(links(card).some(link => link.props.href === (id === 'calculadora-de-contenedores' ? `/proyectos#equipo-${id}` : `/casos/${id}`)));
+    assert.equal(byText(card, 'Quiero una solución similar')?.props.href, `/contacto?servicio=${category}&demo=${demo}`);
+    assert.ok(text(home).includes('Esta simulación no representa funcionalidades implementadas en la web real de La Lupe.'));
   }
   assert.ok(text(home).includes('No se guardan ni se envían datos'));
 });
@@ -117,32 +117,14 @@ test('S1/S8 preserve tab selection, controlled demo panels, source links and red
   }
 });
 
-test('S3 home project evidence uses existing context, solution, authors, screenshots and available public links', () => {
+test('Home redesign features only the confirmed La Lupe project', () => {
   const { load } = loader();
-  const home = load('src/components/HomeDemos.tsx').HomeDemos();
-  const projects = load('src/data/content.ts').FEATURED_PROJECTS;
-  const { caseForProject } = load('src/data/cases.ts');
+  const home = load('src/components/home/HomeRedesign.tsx').HomeRedesign();
   const cards = nodes(home).filter(node => node.props?.['data-project-card']);
-  assert.deepEqual(cards.map(card => card.props['data-project-card']), ['equipo-la-lupe', 'equipo-emisoras-latinas']);
-  for (const card of cards) {
-    const project = projects.find(project => project.id === card.props['data-project-card']);
-    const evidence = caseForProject(project.title);
-    const copy = text(card);
-    assert.ok(copy.includes('Portafolio del equipo'));
-    assert.ok(copy.includes(evidence.context));
-    assert.ok(copy.includes(project.description));
-    assert.ok(copy.includes('Participación del equipo'));
-    for (const author of project.authors) assert.equal(byText(card, author.name)?.props.href, author.portfolio);
-    assert.ok(copy.includes('Funcionalidades entregadas'));
-    for (const feature of evidence.solution) assert.ok(copy.includes(feature));
-    const image = nodes(card).find(node => node.type === 'next/image');
-    assert.equal(image.props.src, project.image);
-    assert.ok(image.props.sizes, 'responsive image sizing');
-    assert.equal(byText(card, 'Ver proyecto')?.props.href, `/proyectos#${project.id}`);
-    const publicUrl = project.projectUrl ?? evidence.liveUrl;
-    assert.equal(byText(card, 'Visitar sitio público')?.props.href, publicUrl);
-    if (publicUrl) assert.match(byText(card, 'Visitar sitio público').props.rel, /noopener/);
-  }
+  assert.deepEqual(cards.map(card => card.props['data-project-card']), ['equipo-la-lupe']);
+  assert.equal(byText(cards[0], 'Ver proyecto')?.props.href, '/proyectos#equipo-la-lupe');
+  for (const feature of ['Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp']) assert.ok(text(cards[0]).includes(feature));
+  assert.equal(nodes(cards[0]).find(node => node.type === 'next/image').props.src, '/images/projects/la-lupe.webp');
 });
 
 test('S1/S8 keep the tree, carousel, responsive layouts, focus and reduced-motion safeguards', () => {
@@ -151,12 +133,12 @@ test('S1/S8 keep the tree, carousel, responsive layouts, focus and reduced-motio
   for (const card of ['restaurante', 'radio', 'logistica']) assert.ok(hero.includes(`data-hero-card="${card}"`));
   assert.match(hero, /prefers-reduced-motion: no-preference/);
   const page = readFileSync('src/app/page.tsx', 'utf8');
-  assert.match(page, /<Hero\s*\/>\s*<ProjectCarousel\s*\/>\s*<HomeDemos\s*\/>/);
+  assert.match(page, /<HomeRedesign\s*\/>/);
   const css = readFileSync('src/components/home/Home.module.css', 'utf8');
   assert.match(css, /\.solutionGrid\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/);
   assert.match(css, /@media[^}]*max-width:\s*1060px[\s\S]*?\.solutionGrid\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/);
   assert.match(css, /\.solutions a:focus-visible/);
   assert.match(css, /\.demoActions a:focus-visible/);
   assert.match(css, /prefers-reduced-motion: reduce/);
-  assert.ok(page.includes('Tu negocio puede vender más y trabajar mejor con el software adecuado'));
+  assert.ok(page.includes('Tu negocio puede vender más y trabajar mejor | TreesSide Developers'));
 });

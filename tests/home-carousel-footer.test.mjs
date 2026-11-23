@@ -7,22 +7,19 @@ async function home() {
   return response.text();
 }
 // S25 brought the mockup demos back next to the carousel; the original controllable carousel stays.
-test('home keeps the original controllable project carousel before the mockup demos', async () => {
+test('Home renders the seven requested sections in order without a carousel', async () => {
   const html = await home();
-  assert.ok(html.indexOf('id="carrusel"') > 0 && html.indexOf('id="carrusel"') < html.indexOf('id="demos"'), 'carousel comes before the demos');
-  const carousel = html.match(/<section id="carrusel"[\s\S]*?<\/section>/)?.[0];
-  assert.ok(carousel);
-  assert.ok(carousel.includes('Pausar carrusel'));
-  for (const id of ['equipo-la-lupe', 'equipo-emisoras-latinas', 'equipo-ocho80', 'equipo-tengoya']) {
-    assert.ok(carousel.includes(`href="/proyectos#${id}"`), id);
-  }
+  const ids = [...html.matchAll(/<section[^>]*id="([^"]+)"/g)].map(m => m[1]);
+  assert.deepEqual(ids, ['inicio', 'soluciones', 'trabajo', 'propuestas', 'demos', 'proceso-home', 'siguiente-paso']);
+  assert.ok(html.includes('data-demo-tab'));
 });
+
 test('home has one integrated footer retaining the new closing and all previous useful links', async () => {
   const html = await home();
   const footers = [...html.matchAll(/<footer\b[\s\S]*?<\/footer>/g)].map(match => match[0]);
   assert.equal(footers.length, 1);
   const footer = footers[0];
-  for (const copy of ['Lo que sigue,', 'lo construimos', 'contigo.', 'Hablemos', 'TreesSide Developers', 'Colombia', 'Todos los derechos reservados.', 'Código que construye futuro', 'correo@softzenkododevs.com', '+57 305 717 3986']) assert.ok(footer.includes(copy), copy);
+  for (const copy of ['TreesSide Developers', 'Colombia', 'Todos los derechos reservados.', 'Código que construye futuro', 'correo@softzenkododevs.com', '+57 305 717 3986']) assert.ok(footer.includes(copy), copy);
   for (const href of ['/', '/servicios', '/planes', '/proyectos', '/casos', '/nosotros', '/equipo', '/contacto', '/politica-de-datos', 'mailto:correo@softzenkododevs.com']) assert.ok(footer.includes(`href="${href}"`), href);
   assert.ok(footer.includes('https://wa.me/573057173986'));
   assert.ok(!footer.includes('site-footer'), 'the former separate footer is not appended');
