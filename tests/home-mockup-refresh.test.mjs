@@ -1,0 +1,216 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { existsSync, readFileSync, statSync } from 'node:fs';
+import path from 'node:path';
+import vm from 'node:vm';
+import ts from 'typescript';
+
+// Run the actual component functions and event handlers without HTTP or side effects.
+function harness() {
+  const cache = new Map(), states = new Map();
+  let active, cursor;
+  const jsx = (type, props) => ({ type, props });
+  const react = {
+    useState(initial) {
+      const values = states.get(active), index = cursor++;
+      if (!(index in values)) values[index] = typeof initial === 'function' ? initial() : initial;
+      return [values[index], value => { values[index] = typeof value === 'function' ? value(values[index]) : value; }];
+    },
+    useSyncExternalStore: (_subscribe, snapshot) => snapshot(),
+    useRef: value => ({ current: value }), useEffect() {},
+  };
+  function load(relative) {
+    const target = ['', '.ts', '.tsx', '/index.ts', '/index.tsx'].map(ext => path.resolve(relative + ext)).find(file => existsSync(file) && statSync(file).isFile());
+    assert.ok(target, `component exists: ${relative}`);
+    if (cache.has(target)) return cache.get(target).exports;
+    const module = { exports: {} };
+    cache.set(target, module);
+    const code = ts.transpileModule(readFileSync(target, 'utf8'), {
+      compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
+    }).outputText;
+    vm.runInNewContext(code, { module, exports: module.exports, URL, URLSearchParams, require: spec => {
+      if (spec === 'react') return react;
+      if (spec === 'react/jsx-runtime') return { jsx, jsxs: jsx, Fragment: 'fragment' };
+      if (spec === 'next/link') return { default: 'a' };
+      if (spec === 'next/image') return { default: 'img' };
+      if (spec === 'lucide-react') return new Proxy({}, { get: (_, key) => `icon:${String(key)}` });
+      if (spec.endsWith('.css')) return { default: new Proxy({}, { get: (_, key) => String(key) }) };
+      return load(spec.startsWith('@/') ? `src/${spec.slice(2)}` : path.resolve(path.dirname(target), spec));
+    } });
+    return module.exports;
+  }
+  function expand(node) {
+    if (Array.isArray(node)) return node.map(expand);
+    if (!node || typeof node !== 'object') return node;
+    if (typeof node.type === 'function') return render(node.type, node.props);
+    return { ...node, props: { ...node.props, children: expand(node.props?.children) } };
+  }
+  function render(component, props = {}) {
+    active = component; cursor = 0;
+    if (!states.has(component)) states.set(component, []);
+    return expand(component(props));
+  }
+  return { load, render };
+}
+const nodes = tree => !tree || typeof tree !== 'object' ? [] : Array.isArray(tree) ? tree.flatMap(nodes) : [tree, ...nodes(tree.props?.children)];
+const text = tree => tree == null || typeof tree === 'boolean' ? '' : typeof tree !== 'object' ? String(tree) : Array.isArray(tree) ? tree.map(text).join('') : text(tree.props?.children);
+const byId = (tree, id) => nodes(tree).find(node => node.props.id === id);
+const links = tree => nodes(tree).filter(node => node.type === 'a');
+const exactLink = (tree, label) => links(tree).find(node => text(node).trim() === label);
+function home() {
+  const ui = harness();
+  const { HomeRedesign } = ui.load('src/components/home/HomeRedesign');
+  return { ...ui, tree: ui.render(HomeRedesign) };
+}
+
+test('S1/S8 production Home uses isolated sections, not the old hero, carousel or proof strip', () => {
+  const source = readFileSync('src/app/page.tsx', 'utf8');
+  assert.match(source, /<HomeRedesign\s*\/>/);
+  assert.match(source, /<HomeClosing showClosing=\{false\}\s*\/>/);
+  assert.doesNotMatch(source, /<Hero|<ProjectCarousel|<HomeDemos/);
+  const { tree } = home();
+  assert.deepEqual(nodes(tree).filter(n => n.type === 'section').map(n => n.props.id),
+    ['inicio', 'soluciones', 'trabajo', 'propuestas', 'demos', 'proceso-home', 'siguiente-paso']);
+  assert.equal(nodes(tree).filter(n => n.type === 'h1').length, 1);
+  assert.equal(nodes(tree).filter(n => n.props['data-project-card']).length, 1);
+  assert.doesNotMatch(text(tree), /UptownHair|testimonios|proyectos entregados/i);
+});
+
+test('S2 exact hero copy, two actions, real capture and two visibly labelled concepts', () => {
+  const { tree } = home(), hero = byId(tree, 'inicio');
+  assert.equal(text(nodes(hero).find(n => n.type === 'h1')), 'Tu negocio puede vender más y trabajar mejor');
+  assert.ok(text(hero).includes('Creamos páginas web, tiendas y software a medida para ayudarte a atraer clientes, organizar tu operación y automatizar tareas'));
+  assert.deepEqual(links(hero).map(n => text(n).trim()), ['Cotizar mi proyecto', 'Ver nuestro trabajo']);
+  assert.equal(exactLink(hero, 'Cotizar mi proyecto').props.href, '/contacto');
+  assert.equal(exactLink(hero, 'Ver nuestro trabajo').props.href, '#trabajo');
+  const figures = nodes(hero).filter(n => n.type === 'figure');
+  assert.equal(figures.length, 3);
+  assert.equal(figures.filter(n => text(n).includes('Diseño conceptual')).length, 2);
+  assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/projects/la-lupe.webp'));
+  assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/mockup/about-branch.webp' && n.props.alt === ''));
+  assert.equal(nodes(hero).filter(n => n.type === 'button').length, 0, 'selectors belong with demos');
+});
+
+test('S3 three light service cards give benefits and existing service destinations', () => {
+  const { tree } = home(), section = byId(tree, 'soluciones');
+  assert.equal(text(nodes(section).find(n => n.type === 'h2')), '¿Qué necesita tu negocio?');
+  const cards = nodes(section).filter(n => n.type === 'article');
+  assert.deepEqual(cards.map(n => text(nodes(n).find(item => item.type === 'h3'))), ['Web para restaurantes', 'Tiendas virtuales', 'Software y automatización']);
+  assert.deepEqual(links(section).map(n => n.props.href), ['/servicios/restaurantes', '/servicios/ecommerce', '/servicios/automatizacion']);
+  for (const card of cards) assert.ok(nodes(card).some(n => n.type === 'p' && text(n).length > 40));
+  assert.match(text(section), /posibilidades del servicio/i);
+});
+
+test('S4 La Lupe alone is real work with confirmed features and the catalog anchor', () => {
+  const { tree } = home(), section = byId(tree, 'trabajo');
+  assert.equal(text(nodes(section).find(n => n.type === 'h2')), 'Conoce nuestro trabajo');
+  assert.equal(text(nodes(section).find(n => n.type === 'h3')), 'La Lupe');
+  assert.match(text(section), /restaurante mexicano/);
+  assert.deepEqual(nodes(section).filter(n => n.type === 'li').map(text), ['Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp']);
+  assert.equal(exactLink(section, 'Ver proyecto').props.href, '/proyectos#equipo-la-lupe');
+  assert.equal(exactLink(section, 'Quiero una web para mi negocio').props.href, '/contacto?servicio=restaurantes');
+  assert.doesNotMatch(text(section), /pedidos|reservas|pagos|paneles|Emisoras/i);
+  assert.ok(nodes(section).some(n => n.type === 'img' && n.props.src === '/images/projects/la-lupe.webp'));
+});
+
+test('S5 generic salon and ecommerce concepts are proposals, never delivered websites', () => {
+  const { tree } = home(), section = byId(tree, 'propuestas');
+  assert.equal(text(nodes(section).find(n => n.type === 'h2')), 'Así podría verse tu negocio');
+  assert.ok(text(section).includes('Explora propuestas visuales que podemos adaptar a la identidad y las necesidades de tu negocio'));
+  const cards = nodes(section).filter(n => n.type === 'article');
+  assert.equal(cards.length, 2);
+  for (const card of cards) assert.ok(text(card).includes('Diseño conceptual'));
+  assert.match(text(cards[0]), /Peluquerías y salones de belleza/);
+  assert.match(text(cards[0]), /servicios, instalaciones y profesionales/);
+  assert.match(text(cards[1]), /Comercio electrónico/);
+  assert.match(text(cards[1]), /catálogo de productos/);
+  assert.equal(exactLink(section, 'Quiero algo similar').props.href, '/contacto?servicio=sitios-web');
+  assert.equal(exactLink(section, 'Quiero una tienda virtual').props.href, '/contacto?servicio=ecommerce');
+  assert.match(text(section), /no son sitios web desarrollados/i);
+  assert.doesNotMatch(text(section), /UptownHair|Ver sitio/i);
+  assert.ok(links(section).every(n => n.props.href.startsWith('/contacto?')));
+});
+
+test('S6 selectors live in demos and preserve all three store selections, panels and contextual CTAs', () => {
+  const ui = harness(), { HomeDemos } = ui.load('src/components/HomeDemos');
+  const render = () => ui.render(HomeDemos);
+  const cards = () => nodes(render()).filter(n => n.type === 'article');
+  const tabs = () => nodes(render()).filter(n => n.props['data-demo-tab']);
+  assert.deepEqual(tabs().map(text), ['Restaurantes', 'Streaming', 'Logística']);
+  assert.deepEqual(cards().map(n => n.props['data-demo']), ['la-lupe', 'emisoras-latinas', 'calculadora-de-contenedores']);
+  assert.deepEqual(cards().filter(n => !n.props.hidden).map(n => n.props.id), ['demo-la-lupe']);
+  assert.ok(text(render()).includes('Demo interactiva · Datos de ejemplo'));
+  assert.match(text(render()), /no representa funcionalidades implementadas en la web real de La Lupe/);
+  assert.match(text(render()), /No se guardan ni se envían datos/);
+  assert.equal(nodes(render()).filter(n => n.props['data-project-card']).length, 0);
+  for (const [id, service, slug] of [['emisoras-latinas', 'streaming', 'radio'], ['calculadora-de-contenedores', 'logistica', 'logistica'], ['la-lupe', 'restaurantes', 'restaurante']]) {
+    const tab = tabs().find(n => n.props['data-demo-tab'] === id);
+    assert.equal(tab.props['aria-controls'], `demo-${id}`);
+    tab.props.onClick();
+    assert.deepEqual(cards().filter(n => !n.props.hidden).map(n => n.props['data-demo']), [id]);
+    assert.deepEqual(tabs().filter(n => n.props['aria-pressed']).map(n => n.props['data-demo-tab']), [id]);
+    const card = cards().find(n => n.props['data-demo'] === id);
+    assert.equal(exactLink(card, 'Quiero una solución similar').props.href, `/contacto?servicio=${service}&demo=${slug}`);
+    assert.equal(exactLink(card, 'Ver servicio').props.href, `/servicios/${service}?servicio=${service}&demo=${slug}`);
+  }
+});
+
+test('S7 four exact stages and compact closing CTA', () => {
+  const { tree } = home(), process = byId(tree, 'proceso-home'), closing = byId(tree, 'siguiente-paso');
+  assert.equal(text(nodes(process).find(n => n.type === 'h2')), 'Así construimos contigo');
+  assert.deepEqual(nodes(process).filter(n => n.type === 'h3').map(text), ['Descubrimos', 'Diseñamos', 'Desarrollamos', 'Lanzamos']);
+  assert.deepEqual(nodes(process).filter(n => n.type === 'p').map(text), ['necesidades, propuesta y alcance.', 'estructura y diseño para aprobación.', 'construcción y avances revisables.', 'publicación y entrega según el alcance.']);
+  assert.equal(text(nodes(closing).find(n => n.type === 'h2')), 'El próximo paso de tu negocio empieza aquí');
+  assert.equal(exactLink(closing, 'Cuéntanos tu proyecto').props.href, '/contacto');
+});
+
+test('S1/S8 footer opt-out retains every detail and default equals explicit true', () => {
+  const ui = harness(), { HomeClosing } = ui.load('src/components/home/HomeClosing');
+  const original = ui.render(HomeClosing), explicit = ui.render(HomeClosing, { showClosing: true });
+  assert.deepEqual(original, explicit);
+  assert.equal(original.props['aria-labelledby'], 'closing-title');
+  assert.ok(byId(original, 'closing-title'));
+  const compact = ui.render(HomeClosing, { showClosing: false });
+  assert.equal(byId(compact, 'closing-title'), undefined);
+  assert.ok(compact.props['aria-label']);
+  assert.equal(compact.props['aria-labelledby'], undefined);
+  const details = tree => nodes(tree).find(n => n.props.className?.includes('footerDetails'));
+  assert.deepEqual(details(compact), details(original));
+  assert.equal(nodes(compact).filter(n => n.props['data-talk-sphere'] !== undefined).length, 0);
+});
+
+test('S8 assets are existing local resources and all contact context validates at the existing boundary', () => {
+  const { tree, load } = home(), { readEnquiryContext } = load('src/lib/enquiry');
+  for (const img of nodes(tree).filter(n => n.type === 'img')) {
+    assert.ok(img.props.src.startsWith('/images/'));
+    assert.ok(existsSync(`public${img.props.src}`), img.props.src);
+    assert.doesNotMatch(img.props.src, /uptownhair|home-hero/);
+    assert.equal(typeof img.props.alt, 'string');
+  }
+  for (const link of links(tree)) {
+    const url = new URL(link.props.href, 'https://example.invalid');
+    assert.equal(url.origin, 'https://example.invalid', 'no fictional external sites');
+    if (url.pathname === '/contacto') assert.equal(readEnquiryContext(url.search).length, [...url.searchParams].length);
+  }
+  const css = readFileSync('src/components/home/HomeRedesign.module.css', 'utf8');
+  assert.match(css, /:focus-visible/);
+  assert.match(css, /prefers-reduced-motion: reduce/);
+  assert.match(css, /@media[^{}]*max-width: 1060px/);
+  assert.match(css, /@media[^{}]*max-width: 600px/);
+  assert.match(css, /minmax\(0, 1fr\)/);
+});
+
+for (const [file, name, action, expected, reset] of [
+  ['MenuQuoteDemo', 'MenuQuoteDemo', 'Agregar Flautas', 'Total: $35.900', 'Reiniciar pedido'],
+  ['RadioDemo', 'RadioDemo', 'Escuchar Vallenato', 'En vivo (simulado): Vallenato · Colombia', 'Reiniciar radio'],
+  ['LoadCalculatorDemo', 'LoadCalculatorDemo', 'Pequeña', '20 cajas por capa · 7 capas · 140 cajas · 560 kg', 'Reiniciar cálculo'],
+]) test(`PRESERVE S6 ${name} still responds and resets`, () => {
+  const ui = harness(), component = ui.load(`src/components/demos/${file}`)[name];
+  const render = () => ui.render(component), initial = text(render());
+  const click = label => {
+    const button = nodes(render()).find(n => n.type === 'button' && (n.props['aria-label'] === label || text(n) === label));
+    assert.ok(button && !button.props.disabled, label); button.props.onClick();
+  };
+  click(action); assert.ok(text(render()).includes(expected));
+  click(reset); assert.equal(text(render()), initial);
+});
