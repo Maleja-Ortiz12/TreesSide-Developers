@@ -18,6 +18,16 @@ test('Home featured project leads to its unique catalog card', async () => {
   assert.ok(!home.includes('data-carousel-item'));
 });
 
+test('S10 projects mounts the retained strip after the catalog with project anchors', async () => {
+  const catalog = await page('/proyectos');
+  assert.equal((catalog.match(/<section id="carrusel"/g) || []).length, 1);
+  assert.ok(catalog.indexOf('<h1') < catalog.indexOf('id="carrusel"'), 'catalog heading stays first');
+  assert.ok(catalog.indexOf('id="proyectos"') < catalog.indexOf('id="carrusel"'));
+  assert.ok(anchors(catalog).length > 0);
+  for (const anchor of anchors(catalog)) assert.match(anchor, /href="\/proyectos#[^"]+"/);
+  assert.ok(catalog.includes('Pausar carrusel'));
+});
+
 test('S1 the carousel lands with a native anchor load on a card that does not animate while targeted', async () => {
   // Client-side Link scrolling measured the card mid entry animation and could land past it.
   const carousel = await readFile('src/components/motion/ProjectCarousel.tsx', 'utf8');

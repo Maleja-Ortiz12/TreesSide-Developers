@@ -10,11 +10,11 @@
   font-weight: 750;
 }
 .home h3 { line-height: 1.2; letter-spacing: -.02em; }
-.home a:focus-visible, .demos :is(a, button):focus-visible {
+.home :is(a, button):focus-visible, .demos :is(a, button):focus-visible {
   outline: 3px solid #16775a;
   outline-offset: 5px;
 }
-.hero a:focus-visible, .workSection a:focus-visible, .nextStep a:focus-visible,
+.hero :is(a, button):focus-visible, .workSection a:focus-visible, .nextStep a:focus-visible,
 .demoPanel :is(a, button):focus-visible { outline-color: #8affd1; }
 .home :global(.btn), .demos :global(.btn) { white-space: normal; text-align: center; }
 .hero {
@@ -26,13 +26,13 @@
 }
 .treeAccent {
   position: absolute;
-  z-index: -1;
-  right: -4%;
-  top: 90px;
-  width: min(65%, 780px);
+  z-index: 0;
+  right: -6%;
+  top: 0;
+  width: 112%;
   height: auto;
-  opacity: .48;
-  mask-image: radial-gradient(ellipse, #000 25%, transparent 72%);
+  opacity: .85;
+  mask-image: radial-gradient(ellipse, #000 45%, transparent 75%);
   pointer-events: none;
 }
 .heroGrid {
@@ -67,16 +67,38 @@
   border-top: 1px solid #8effcd38;
   font-size: .95rem;
 }
+.collageScene { min-width: 0; padding: 16px 14px 20px; }
+.motionControl {
+  display: block;
+  margin: 12px auto 0;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid #8effcd70;
+  border-radius: 999px;
+  background: #082e21;
+  color: #d7f9e8;
+  font: inherit;
+  font-size: .8rem;
+  cursor: pointer;
+}
+.motionControl:hover { background: #124d37; }
 .collage {
   position: relative;
+  isolation: isolate;
+  perspective: 1200px;
+  --float-distance: -10px;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   grid-template-rows: repeat(21, 32px);
   align-items: start;
   min-width: 0;
-  padding-top: 16px;
+  padding-top: 64px;
 }
 .collage figure {
+  position: relative;
+  z-index: 1;
+  animation: heroFloat 12s ease-in-out infinite;
+  transform: translate3d(0, 0, var(--depth)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--roll));
   overflow: hidden;
   border-radius: 12px;
   border: 1px solid #a3d9b988;
@@ -94,11 +116,16 @@
   color: #f2fff8;
   font-size: .73rem;
 }
-.captureFrame { grid-column: 1 / 13; grid-row: 1 / 11; transform: rotate(-3deg); }
+.collage .captureFrame { grid-column: 1 / 13; grid-row: 1 / 11; --depth: 12px; --tilt-x: 3deg; --tilt-y: -5deg; --roll: -2deg; animation-delay: -2s; }
 .captureFrame figcaption > span { color: #9bffce; }
 .captureFrame img { display: block; width: 100%; height: auto; }
-.salonFrame { grid-column: 6 / 13; grid-row: 7 / 14; transform: rotate(3deg); z-index: 2; }
-.shopFrame { grid-column: 1 / 9; grid-row: 12 / 17; transform: rotate(-2deg); z-index: 3; }
+.collage .salonFrame { grid-column: 6 / 13; grid-row: 7 / 14; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 3deg; animation-delay: -6s; z-index: 2; }
+.collage .shopFrame { grid-column: 1 / 9; grid-row: 12 / 17; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -2deg; animation-delay: -10s; z-index: 3; }
+.collage[data-motion='paused'] figure { animation-play-state: paused; }
+@keyframes heroFloat {
+  0%, 100% { transform: translate3d(0, 0, var(--depth)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--roll)); }
+  50% { transform: translate3d(0, var(--float-distance), var(--depth)) rotateX(calc(var(--tilt-x) * -1)) rotateY(calc(var(--tilt-y) * .5)) rotateZ(var(--roll)); }
+}
 .shopFrame img { display: block; width: 100%; height: auto; }
 .conceptLabel {
   display: inline-flex;
@@ -191,8 +218,8 @@
   .heroGrid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .heroCopy { max-width: 660px; padding-bottom: 12px; }
   .hero h1 { font-size: clamp(2.6rem, 6vw, 4rem); }
-  .collage { width: min(100%, 680px); justify-self: center; grid-template-rows: repeat(20, 36px); }
-  .treeAccent { width: 90%; top: 25%; }
+  .collageScene { width: min(100%, 680px); justify-self: center; }
+  .collage { grid-template-rows: repeat(20, 36px); }
   .serviceGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .serviceCard:last-child { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .serviceCard:last-child .serviceImage { height: 100%; aspect-ratio: auto; object-position: center; }
@@ -209,10 +236,12 @@
   .eyebrow { font-size: .66rem; }
   .actions { align-items: stretch; flex-direction: column; }
   .actions a { width: 100%; }
-  .collage { grid-template-rows: auto auto auto; gap: 16px 0; margin-block: 22px; }
-  .captureFrame { grid-column: 1 / 13; grid-row: 1; transform: rotate(-1deg); }
-  .salonFrame { grid-column: 3 / 13; grid-row: 2; transform: rotate(2deg); }
-  .shopFrame { grid-column: 1 / 11; grid-row: 3; transform: rotate(-2deg); }
+  .collage { --float-distance: -3px; grid-template-rows: auto auto auto; gap: 22px 0; margin-block: 22px; padding-top: 40px; }
+  .treeAccent { height: 100%; object-fit: cover; }
+  .collageScene .collage figure { --depth: 6px; --tilt-x: 2deg; --tilt-y: -2deg; }
+  .collage .captureFrame { grid-column: 1 / 13; grid-row: 1; --roll: -1deg; }
+  .collage .salonFrame { grid-column: 3 / 13; grid-row: 2; --roll: 2deg; }
+  .collage .shopFrame { grid-column: 1 / 11; grid-row: 3; --roll: -2deg; }
   .collage figcaption { font-size: .65rem; padding: 7px 9px; }
   .collage .conceptLabel { font-size: .65rem; }
   .heroSignature { font-size: .85rem; }
@@ -231,5 +260,6 @@
   .nextStep { padding: 40px 0; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .motionControl { display: none; }
   .home *, .demos * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }

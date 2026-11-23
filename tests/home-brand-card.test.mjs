@@ -26,7 +26,7 @@ test('S2 home hero uses the exact business proposition and mint gradient', async
   assert.ok(primary.includes('href="/contacto"'), 'primary CTA goes to contact');
   assert.equal(text(primary), 'Cotizar mi proyecto');
   assert.ok(primary.includes('<svg'), 'arrow icon');
-  const secondary = section.match(/<a[^>]*href="#trabajo"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
+  const secondary = section.match(/<a[^>]*href="\/proyectos"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
   assert.equal(text(secondary), 'Ver nuestro trabajo');
   assert.equal((section.match(/<figure/g) || []).length, 3);
 });

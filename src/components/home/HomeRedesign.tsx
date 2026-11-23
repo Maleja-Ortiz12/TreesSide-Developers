@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight, Scissors, ShoppingBag, Workflow, Utensils } from 'lucide-react';
 import { enquiryHref } from '@/lib/enquiry';
 import { HomeDemos } from '@/components/HomeDemos';
+import { HeroCollage } from './HeroCollage';
 import styles from './HomeRedesign.module.css';
 
 const services = [
@@ -29,8 +30,9 @@ function SalonPreview() {
   </div>;
 }
 
-function HeroCollage() {
-  return <div className={styles.collage} aria-label="Una web real y dos propuestas visuales">
+function HeroArtwork() {
+  return <HeroCollage>
+    <Image className={styles.treeAccent} src="/images/mockup/about-branch.webp" alt="" aria-hidden="true" width={418} height={370} priority />
     <figure className={styles.captureFrame}>
       <figcaption>La Lupe <span>Web real</span></figcaption>
       <Image src="/images/projects/la-lupe.webp" alt="Captura real de La Lupe: presentación, menú y platos destacados" width={1200} height={833} sizes="(max-width: 600px) 90vw, (max-width: 1060px) 75vw, 42vw" priority />
@@ -43,13 +45,12 @@ function HeroCollage() {
       <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Comercio electrónico</figcaption>
       <Image src="/images/services/ecommerce-hero.webp" alt="Ilustración de una propuesta de tienda y catálogo, no un proyecto desarrollado" width={1689} height={957} sizes="(max-width: 600px) 70vw, (max-width: 1060px) 50vw, 27vw" />
     </figure>
-  </div>;
+  </HeroCollage>;
 }
 
 export function HomeRedesign() {
   return <div className={styles.home}>
     <section id="inicio" className={styles.hero} aria-labelledby="home-title">
-      <Image className={styles.treeAccent} src="/images/mockup/about-branch.webp" alt="" aria-hidden="true" width={418} height={370} priority />
       <div className={`container ${styles.heroGrid}`}>
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>TreesSide Developers · Software a tu medida</p>
@@ -57,10 +58,10 @@ export function HomeRedesign() {
           <p className={styles.heroLead}>Creamos páginas web, tiendas y software a medida para ayudarte a atraer clientes, organizar tu operación y automatizar tareas</p>
           <div className={styles.actions}>
             <Link className="btn btn-primary" href="/contacto">Cotizar mi proyecto <ArrowRight size={18} aria-hidden="true" /></Link>
-            <Link className="btn btn-secondary" href="#trabajo">Ver nuestro trabajo</Link>
+            <Link className="btn btn-secondary" href="/proyectos">Ver nuestro trabajo</Link>
           </div>
         </div>
-        <HeroCollage />
+        <HeroArtwork />
         <p className={styles.heroSignature}>Diseño, desarrollo y acompañamiento en un solo equipo.</p>
       </div>
     </section>

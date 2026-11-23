@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/metadata';
 import { SitePage } from '@/components/SitePage';
 import { ProjectsSection } from '@/components/ProjectsSection';
+import { ProjectCarousel } from '@/components/motion/ProjectCarousel';
 import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata: Metadata = pageMetadata('/proyectos', {
@@ -13,6 +14,7 @@ export default function ProjectsPage() {
   return (
     <SitePage offsetHeader={false} footer={<HomeClosing />}>
       <ProjectsSection />
+      <ProjectCarousel />
     </SitePage>
   );
 }

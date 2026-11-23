@@ -6,7 +6,7 @@ async function home() {
   assert.equal(response.status, 200);
   return response.text();
 }
-// S25 brought the mockup demos back next to the carousel; the original controllable carousel stays.
+// S10 retains the Home demos and moves the original controllable strip to /proyectos.
 test('Home renders the seven requested sections in order without a carousel', async () => {
   const html = await home();
   const ids = [...html.matchAll(/<section[^>]*id="([^"]+)"/g)].map(m => m[1]);

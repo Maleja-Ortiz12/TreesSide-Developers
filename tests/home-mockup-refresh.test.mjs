@@ -82,13 +82,94 @@ test('S2 exact hero copy, two actions, real capture and two visibly labelled con
   assert.ok(text(hero).includes('Creamos páginas web, tiendas y software a medida para ayudarte a atraer clientes, organizar tu operación y automatizar tareas'));
   assert.deepEqual(links(hero).map(n => text(n).trim()), ['Cotizar mi proyecto', 'Ver nuestro trabajo']);
   assert.equal(exactLink(hero, 'Cotizar mi proyecto').props.href, '/contacto');
-  assert.equal(exactLink(hero, 'Ver nuestro trabajo').props.href, '#trabajo');
+  assert.equal(exactLink(hero, 'Ver nuestro trabajo').props.href, '/proyectos');
   const figures = nodes(hero).filter(n => n.type === 'figure');
   assert.equal(figures.length, 3);
   assert.equal(figures.filter(n => text(n).includes('Diseño conceptual')).length, 2);
   assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/projects/la-lupe.webp'));
   assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/mockup/about-branch.webp' && n.props.alt === ''));
-  assert.equal(nodes(hero).filter(n => n.type === 'button').length, 0, 'selectors belong with demos');
+  assert.equal(nodes(hero).filter(n => n.type === 'button').length, 1, 'only the persistent motion control belongs in the hero');
+});
+
+test('S10 tree shares the relative collage layer behind all three preserved figures', () => {
+  const { tree } = home();
+  const collage = byId(tree, 'hero-collage');
+  assert.ok(collage, 'collage is the controlled motion region');
+  assert.equal(nodes(collage).filter(n => n.type === 'figure').length, 3);
+  const treeImage = nodes(collage).find(n => n.type === 'img' && n.props.src === '/images/mockup/about-branch.webp');
+  assert.ok(treeImage, 'decorative tree is inside the collage, not behind the copy');
+  assert.equal(treeImage.props['aria-hidden'], 'true');
+  const css = readFileSync('src/components/home/HomeRedesign.module.css', 'utf8');
+  assert.match(css, /\.collage\s*\{[^}]*position: relative/);
+  assert.match(css, /\.treeAccent\s*\{[^}]*z-index: 0/);
+  assert.match(css, /\.collage figure\s*\{[^}]*z-index: 1/);
+});
+
+test('S10 all three cards float slowly with staggered 3D depth, modest mobile motion and reduced-motion opt-out', () => {
+  const css = readFileSync('src/components/home/HomeRedesign.module.css', 'utf8');
+  assert.match(css, /\.collage\s*\{[^}]*perspective: 1200px/);
+  assert.match(css, /\.collage figure\s*\{[^}]*animation: heroFloat 12s ease-in-out infinite/);
+  for (const name of ['captureFrame', 'salonFrame', 'shopFrame']) {
+    assert.match(css, new RegExp(`\\.${name}\\s*\\{[^}]*--depth:`));
+    assert.match(css, new RegExp(`\\.${name}\\s*\\{[^}]*animation-delay:`));
+  }
+  assert.match(css, /@keyframes heroFloat\s*\{[\s\S]*?translate3d[\s\S]*?rotateX[\s\S]*?rotateY/);
+  assert.match(css, /data-motion='paused'[^}]*animation-play-state: paused/);
+  assert.match(css, /@media \(max-width: 600px\)[\s\S]*?--float-distance: -3px/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?animation: none !important/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.motionControl\s*\{\s*display: none/);
+});
+
+test('S10 frame delays and stacking outrank the base figure rule while mobile depth remains modest', () => {
+  const css = readFileSync('src/components/home/HomeRedesign.module.css', 'utf8');
+  // Two classes (0,2,0) outrank .collage figure (0,1,1), whose animation shorthand resets delay.
+  for (const [frame, delay, z] of [['captureFrame', '-2s', null], ['salonFrame', '-6s', 2], ['shopFrame', '-10s', 3]]) {
+    const block = css.match(new RegExp(String.raw`\.collage \.${frame}\s*\{([^}]+)\}`))?.[1];
+    assert.ok(block, `${frame} must outrank the base figure selector`);
+    assert.ok(block.includes(`animation-delay: ${delay};`));
+    if (z !== null) assert.ok(block.includes(`z-index: ${z};`));
+    // Later mobile placement rules must have equal specificity to the new desktop selectors.
+    const mobile = css.slice(css.indexOf('@media (max-width: 600px)'));
+    assert.match(mobile, new RegExp(String.raw`\.collage \.${frame}\s*\{`));
+  }
+  assert.match(css, /\.collageScene \.collage figure\s*\{ --depth: 6px; --tilt-x: 2deg; --tilt-y: -2deg;/);
+});
+
+test('S10 persistent accessible motion control pauses and resumes without changing content', () => {
+  const ui = harness(), { HeroCollage } = ui.load('src/components/home/HeroCollage');
+  const render = () => ui.render(HeroCollage, { children: 'Preserved artwork' });
+  const control = () => nodes(render()).find(n => n.type === 'button');
+  assert.equal(text(control()), 'Pausar animación');
+  assert.equal(control().props['aria-pressed'], false);
+  assert.equal(control().props['aria-controls'], 'hero-collage');
+  assert.equal(byId(render(), 'hero-collage').props['data-motion'], 'running');
+  control().props.onClick();
+  assert.equal(text(control()), 'Reanudar animación');
+  assert.equal(control().props['aria-pressed'], true);
+  assert.equal(byId(render(), 'hero-collage').props['data-motion'], 'paused');
+  assert.equal(text(byId(render(), 'hero-collage')), 'Preserved artwork');
+  control().props.onClick();
+  assert.equal(byId(render(), 'hero-collage').props['data-motion'], 'running');
+  assert.equal(text(control()), 'Pausar animación');
+});
+
+test('S10 projects retains the catalog first and mounts the unchanged carousel once afterwards', () => {
+  const code = ts.transpileModule(readFileSync('src/app/proyectos/page.tsx', 'utf8'), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
+  }).outputText;
+  const module = { exports: {} };
+  const jsx = (type, props) => ({ type, props });
+  vm.runInNewContext(code, { module, exports: module.exports, require: spec => {
+    if (spec === 'react/jsx-runtime') return { jsx, jsxs: jsx };
+    if (spec === '@/lib/metadata') return { pageMetadata: () => ({}) };
+    return new Proxy({}, { get: (_, key) => String(key) });
+  } });
+  const route = module.exports.default();
+  assert.equal(route.type, 'SitePage');
+  assert.equal(route.props.offsetHeader, false);
+  assert.equal(route.props.footer.type, 'HomeClosing');
+  assert.deepEqual(Array.from(nodes(route.props.children), n => n.type), ['ProjectsSection', 'ProjectCarousel']);
+  assert.doesNotMatch(readFileSync('src/components/home/HomeRedesign.tsx', 'utf8'), /ProjectCarousel/);
 });
 
 test('S3 three light service cards give benefits and existing service destinations', () => {
