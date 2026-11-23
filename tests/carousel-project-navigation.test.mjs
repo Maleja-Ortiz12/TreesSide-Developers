@@ -18,11 +18,11 @@ test('Home featured project leads to its unique catalog card', async () => {
   assert.ok(!home.includes('data-carousel-item'));
 });
 
-test('S10 projects mounts the retained strip after the catalog with project anchors', async () => {
+test('S11 projects mounts the retained strip before the catalog with project anchors', async () => {
   const catalog = await page('/proyectos');
   assert.equal((catalog.match(/<section id="carrusel"/g) || []).length, 1);
-  assert.ok(catalog.indexOf('<h1') < catalog.indexOf('id="carrusel"'), 'catalog heading stays first');
-  assert.ok(catalog.indexOf('id="proyectos"') < catalog.indexOf('id="carrusel"'));
+  assert.ok(catalog.indexOf('id="carrusel"') < catalog.indexOf('<h1'), 'catalog retains the only h1 after the strip');
+  assert.ok(catalog.indexOf('id="carrusel"') < catalog.indexOf('id="proyectos"'));
   assert.ok(anchors(catalog).length > 0);
   for (const anchor of anchors(catalog)) assert.match(anchor, /href="\/proyectos#[^"]+"/);
   assert.ok(catalog.includes('Pausar carrusel'));

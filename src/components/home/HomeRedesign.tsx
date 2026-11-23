@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Scissors, ShoppingBag, Workflow, Utensils } from 'lucide-react';
+import { FEATURED_PROJECTS } from '@/data/content';
 import { enquiryHref } from '@/lib/enquiry';
 import { HomeDemos } from '@/components/HomeDemos';
 import { HeroCollage } from './HeroCollage';
@@ -31,20 +32,29 @@ function SalonPreview() {
 }
 
 function HeroArtwork() {
-  return <HeroCollage>
+  const real = (id: string) => {
+    const project = FEATURED_PROJECTS.find(item => item.id === id)!;
+    return <>
+      <figcaption>{project.title} <span>Web real · Portafolio del equipo</span></figcaption>
+      <Image src={project.image} alt={`Captura real de ${project.title}, portafolio del equipo`} width={1200} height={833} sizes="(max-width: 600px) 90vw, (max-width: 1060px) 75vw, 42vw" />
+    </>;
+  };
+  const salon = <>
+    <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Peluquerías</figcaption>
+    <SalonPreview />
+  </>;
+  const shop = <>
+    <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Comercio electrónico</figcaption>
+    <Image src="/images/services/ecommerce-hero.webp" alt="Ilustración de una propuesta de tienda y catálogo, no un proyecto desarrollado" width={1689} height={957} sizes="(max-width: 600px) 70vw, (max-width: 1060px) 50vw, 27vw" />
+  </>;
+  const lupe = real('equipo-la-lupe');
+  const frames = [[lupe, salon, shop], [real('equipo-bendita-gracia'), lupe, salon]].map((artwork, index) => <div key={index} className={styles.artworkFrame}>
+    <figure className={styles.captureFrame}>{artwork[0]}</figure>
+    <figure className={styles.salonFrame}>{artwork[1]}</figure>
+    <figure className={styles.shopFrame}>{artwork[2]}</figure>
+  </div>);
+  return <HeroCollage frames={frames}>
     <Image className={styles.treeAccent} src="/images/mockup/about-branch.webp" alt="" aria-hidden="true" width={418} height={370} priority />
-    <figure className={styles.captureFrame}>
-      <figcaption>La Lupe <span>Web real</span></figcaption>
-      <Image src="/images/projects/la-lupe.webp" alt="Captura real de La Lupe: presentación, menú y platos destacados" width={1200} height={833} sizes="(max-width: 600px) 90vw, (max-width: 1060px) 75vw, 42vw" priority />
-    </figure>
-    <figure className={styles.salonFrame}>
-      <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Peluquerías</figcaption>
-      <SalonPreview />
-    </figure>
-    <figure className={styles.shopFrame}>
-      <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Comercio electrónico</figcaption>
-      <Image src="/images/services/ecommerce-hero.webp" alt="Ilustración de una propuesta de tienda y catálogo, no un proyecto desarrollado" width={1689} height={957} sizes="(max-width: 600px) 70vw, (max-width: 1060px) 50vw, 27vw" />
-    </figure>
   </HeroCollage>;
 }
 

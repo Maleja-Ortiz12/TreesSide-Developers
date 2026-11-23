@@ -80,6 +80,10 @@ try {
     await wait(`document.querySelectorAll('#hero-collage figure').length===3 && document.querySelector('#hero-collage figure').getAnimations().length>0`);
     await evaluate(`Promise.all([...document.querySelectorAll('#inicio img')].map(img=>img.decode())).then(()=>true)`);
     await layout(width, '/');
+    const frameBefore = await evaluate(`document.querySelector('#hero-collage').dataset.frame`);
+    await wait(`document.querySelector('#hero-collage').dataset.frame!==${JSON.stringify(frameBefore)}`);
+    check(`${width} artwork advances automatically`, await evaluate(`document.querySelector('#hero-collage').dataset.frame!==${JSON.stringify(frameBefore)}`), true);
+    check(`${width} every rotating card has truthful visible label`, await evaluate(`(()=>{const c=document.querySelector('#hero-collage'),labels=[...c.querySelectorAll('figcaption')];return labels.length===3 && labels.every(el=>{const r=el.getBoundingClientRect();return r.width>0 && r.height>0 && (el.textContent.includes('Diseño conceptual') || el.textContent.includes('Web real · Portafolio del equipo'));});})()`), true);
     const scene = await evaluate(`(()=>{const c=document.querySelector('#hero-collage'),tree=c.querySelector('img[aria-hidden="true"]'),figures=[...c.querySelectorAll('figure')];return {perspective:getComputedStyle(c).perspective,relative:getComputedStyle(c).position,treeInside:!!tree,treeZ:Number(getComputedStyle(tree).zIndex),treeOpacity:Number(getComputedStyle(tree).opacity),figures:figures.map(f=>({z:Number(getComputedStyle(f).zIndex),delay:getComputedStyle(f).animationDelay,transform:getComputedStyle(f).transform})),carousel:!!document.querySelector('#carrusel')};})()`);
     console.log(`SCENE ${width} ${JSON.stringify(scene)}`);
     check(`${width} tree behind all figures`, scene.treeInside && scene.figures.every(f => f.z > scene.treeZ) && scene.treeOpacity >= .7 && scene.relative === 'relative', true);
@@ -95,6 +99,14 @@ try {
     await wait(`document.querySelector('#hero-collage').dataset.motion==='paused'`);
     const paused = await evaluate(`(async()=>{const a=document.querySelector('#hero-collage').getAnimations({subtree:true});await Promise.all(a.map(x=>x.ready));const before=a.map(x=>x.currentTime);await ${frames};return {states:a.map(x=>x.playState),stable:a.every((x,i)=>x.currentTime===before[i]),pressed:document.querySelector('button[aria-controls="hero-collage"]').getAttribute('aria-pressed')};})()`);
     check(`${width} pause freezes every animation`, paused, { states: ['paused', 'paused', 'paused'], stable: true, pressed: 'true' });
+    const pausedFrame = await evaluate(`document.querySelector('#hero-collage').dataset.frame`);
+    await evaluate(`new Promise(resolve=>setTimeout(resolve,6200))`);
+    check(`${width} pause freezes content beyond one cadence`, await evaluate(`document.querySelector('#hero-collage').dataset.frame`), pausedFrame);
+    await evaluate(`document.querySelector('button[aria-label="Siguiente composición"]').click()`);
+    await wait(`document.querySelector('#hero-collage').dataset.frame!==${JSON.stringify(pausedFrame)}`);
+    await evaluate(`document.querySelector('button[aria-label="Composición anterior"]').click()`);
+    await wait(`document.querySelector('#hero-collage').dataset.frame===${JSON.stringify(pausedFrame)}`);
+    check(`${width} manual access preserves pause`, await evaluate(`document.querySelector('#hero-collage').dataset.motion`), 'paused');
     const visibilityProbe = `(()=>{const title=document.querySelector('#home-title'),r=title.getBoundingClientRect();const ancestors=[];for(let el=title;el;el=el.parentElement){const s=getComputedStyle(el);ancestors.push({tag:el.tagName,class:el.className,opacity:s.opacity,visibility:s.visibility,display:s.display,transform:s.transform});}return {scrollX,scrollY,title:{left:r.left,top:r.top,width:r.width,height:r.height},ancestors};})()`;
     console.log(`CAPTURE_BEFORE ${width} ${JSON.stringify(await evaluate(visibilityProbe))}`);
     // Off-viewport composited content is not guaranteed to be painted by captureBeyondViewport.
@@ -123,6 +135,9 @@ try {
     await cdp('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
     await evaluate(frames);
     check(`${width} reduced-motion disables all hero animation`, await evaluate(`[...document.querySelectorAll('#hero-collage figure')].map(f=>getComputedStyle(f).animationName)`), ['none', 'none', 'none']);
+    const reducedFrame = await evaluate(`document.querySelector('#hero-collage').dataset.frame`);
+    await evaluate(`new Promise(resolve=>setTimeout(resolve,6200))`);
+    check(`${width} reduced-motion freezes content`, await evaluate(`document.querySelector('#hero-collage').dataset.frame`), reducedFrame);
     check(`${width} reduced-motion hides redundant control`, await evaluate(`getComputedStyle(document.querySelector('button[aria-controls="hero-collage"]')).display`), 'none');
     await cdp('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
     check(`${width} work CTA destination`, await evaluate(`[...document.querySelectorAll('#inicio a')].find(a=>a.textContent.trim()==='Ver nuestro trabajo').getAttribute('href')`), '/proyectos');
@@ -130,7 +145,8 @@ try {
     await wait(`location.pathname==='/proyectos' && !!document.querySelector('#carrusel')`);
     check(`${width} actual CTA navigation`, await evaluate('location.pathname'), '/proyectos');
     await layout(width, '/proyectos');
-    check(`${width} catalog before strip`, await evaluate(`!!(document.querySelector('#proyectos').compareDocumentPosition(document.querySelector('#carrusel')) & Node.DOCUMENT_POSITION_FOLLOWING)`), true);
+    check(`${width} strip before catalog`, await evaluate(`!!(document.querySelector('#carrusel').compareDocumentPosition(document.querySelector('#proyectos')) & Node.DOCUMENT_POSITION_FOLLOWING)`), true);
+    check(`${width} strip clears fixed header`, await evaluate(`document.querySelector('#carrusel').getBoundingClientRect().top>=76`), true);
     await evaluate(`document.querySelector('#carrusel').scrollIntoView();document.querySelector('#carrusel button').click()`);
     await wait(`document.querySelector('#carrusel button').getAttribute('aria-pressed')==='true'`);
     check(`${width} strip pause control`, await evaluate(`document.querySelector('#carrusel button').textContent.trim()`), 'Reanudar carrusel');

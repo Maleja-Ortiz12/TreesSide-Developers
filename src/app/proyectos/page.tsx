@@ -12,9 +12,9 @@ export const metadata: Metadata = pageMetadata('/proyectos', {
 
 export default function ProjectsPage() {
   return (
-    <SitePage offsetHeader={false} footer={<HomeClosing />}>
-      <ProjectsSection />
+    <SitePage footer={<HomeClosing />}>
       <ProjectCarousel />
+      <ProjectsSection />
     </SitePage>
   );
 }

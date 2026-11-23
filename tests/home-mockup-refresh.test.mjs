@@ -6,14 +6,14 @@ import vm from 'node:vm';
 import ts from 'typescript';
 
 // Run the actual component functions and event handlers without HTTP or side effects.
-function harness() {
+function harness(frame = 0) {
   const cache = new Map(), states = new Map();
   let active, cursor;
   const jsx = (type, props) => ({ type, props });
   const react = {
     useState(initial) {
       const values = states.get(active), index = cursor++;
-      if (!(index in values)) values[index] = typeof initial === 'function' ? initial() : initial;
+      if (!(index in values)) values[index] = typeof initial === 'function' ? initial() : initial === 0 ? frame : initial;
       return [values[index], value => { values[index] = typeof value === 'function' ? value(values[index]) : value; }];
     },
     useSyncExternalStore: (_subscribe, snapshot) => snapshot(),
@@ -57,8 +57,8 @@ const text = tree => tree == null || typeof tree === 'boolean' ? '' : typeof tre
 const byId = (tree, id) => nodes(tree).find(node => node.props.id === id);
 const links = tree => nodes(tree).filter(node => node.type === 'a');
 const exactLink = (tree, label) => links(tree).find(node => text(node).trim() === label);
-function home() {
-  const ui = harness();
+function home(frame = 0) {
+  const ui = harness(frame);
   const { HomeRedesign } = ui.load('src/components/home/HomeRedesign');
   return { ...ui, tree: ui.render(HomeRedesign) };
 }
@@ -88,7 +88,20 @@ test('S2 exact hero copy, two actions, real capture and two visibly labelled con
   assert.equal(figures.filter(n => text(n).includes('Diseño conceptual')).length, 2);
   assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/projects/la-lupe.webp'));
   assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/mockup/about-branch.webp' && n.props.alt === ''));
-  assert.equal(nodes(hero).filter(n => n.type === 'button').length, 1, 'only the persistent motion control belongs in the hero');
+  assert.equal(nodes(hero).filter(n => n.type === 'button').length, 3, 'motion and manual artwork controls belong in the hero');
+});
+
+test('S11 alternate frame uses verified portfolio captures and retains a labelled generic concept', () => {
+  const hero = byId(home(1).tree, 'inicio'), figures = nodes(hero).filter(n => n.type === 'figure');
+  assert.equal(figures.length, 3);
+  assert.equal(figures.filter(n => text(n).includes('Diseño conceptual')).length, 1);
+  for (const name of ['La Lupe', 'Bendita Gracia']) {
+    const real = figures.find(n => text(n).includes(name));
+    assert.ok(real, name); assert.match(text(real), /Web real · Portafolio del equipo/);
+  }
+  assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/projects/bendita-gracia.webp'));
+  assert.doesNotMatch(figures.map(text).join(' '), /cliente|contrat|UptownHair/i);
+  assert.match(text(hero), /Peluquerías/);
 });
 
 test('S10 tree shares the relative collage layer behind all three preserved figures', () => {
@@ -135,25 +148,25 @@ test('S10 frame delays and stacking outrank the base figure rule while mobile de
   assert.match(css, /\.collageScene \.collage figure\s*\{ --depth: 6px; --tilt-x: 2deg; --tilt-y: -2deg;/);
 });
 
-test('S10 persistent accessible motion control pauses and resumes without changing content', () => {
+test('PRESERVE S10 persistent accessible motion control retains content while hydration is static', () => {
   const ui = harness(), { HeroCollage } = ui.load('src/components/home/HeroCollage');
-  const render = () => ui.render(HeroCollage, { children: 'Preserved artwork' });
-  const control = () => nodes(render()).find(n => n.type === 'button');
+  const render = () => ui.render(HeroCollage, { children: 'Preserved artwork', frames: [''] });
+  const control = () => nodes(render()).find(n => n.type === 'button' && n.props['aria-pressed'] !== undefined);
   assert.equal(text(control()), 'Pausar animación');
   assert.equal(control().props['aria-pressed'], false);
   assert.equal(control().props['aria-controls'], 'hero-collage');
-  assert.equal(byId(render(), 'hero-collage').props['data-motion'], 'running');
+  assert.equal(byId(render(), 'hero-collage').props['data-motion'], 'paused');
   control().props.onClick();
   assert.equal(text(control()), 'Reanudar animación');
   assert.equal(control().props['aria-pressed'], true);
   assert.equal(byId(render(), 'hero-collage').props['data-motion'], 'paused');
   assert.equal(text(byId(render(), 'hero-collage')), 'Preserved artwork');
   control().props.onClick();
-  assert.equal(byId(render(), 'hero-collage').props['data-motion'], 'running');
+  assert.equal(byId(render(), 'hero-collage').props['data-motion'], 'paused');
   assert.equal(text(control()), 'Pausar animación');
 });
 
-test('S10 projects retains the catalog first and mounts the unchanged carousel once afterwards', () => {
+test('S11 projects starts with the unchanged carousel before the catalog, clearing the header', () => {
   const code = ts.transpileModule(readFileSync('src/app/proyectos/page.tsx', 'utf8'), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
   }).outputText;
@@ -166,9 +179,9 @@ test('S10 projects retains the catalog first and mounts the unchanged carousel o
   } });
   const route = module.exports.default();
   assert.equal(route.type, 'SitePage');
-  assert.equal(route.props.offsetHeader, false);
+  assert.notEqual(route.props.offsetHeader, false);
   assert.equal(route.props.footer.type, 'HomeClosing');
-  assert.deepEqual(Array.from(nodes(route.props.children), n => n.type), ['ProjectsSection', 'ProjectCarousel']);
+  assert.deepEqual(Array.from(nodes(route.props.children), n => n.type), ['ProjectCarousel', 'ProjectsSection']);
   assert.doesNotMatch(readFileSync('src/components/home/HomeRedesign.tsx', 'utf8'), /ProjectCarousel/);
 });
 

@@ -68,9 +68,11 @@
   font-size: .95rem;
 }
 .collageScene { min-width: 0; padding: 16px 14px 20px; }
-.motionControl {
+.artworkFrame { display: contents; }
+.artworkControls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin-top: 12px; }
+.artworkControl, .motionControl {
   display: block;
-  margin: 12px auto 0;
+  margin: 0;
   min-height: 44px;
   padding: 8px 16px;
   border: 1px solid #8effcd70;
@@ -81,7 +83,10 @@
   font-size: .8rem;
   cursor: pointer;
 }
-.motionControl:hover { background: #124d37; }
+.artworkControl:hover, .motionControl:hover { background: #124d37; }
+.collage figure > img { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 833; object-fit: cover; object-position: top; }
+.collage .salonFrame > img { aspect-ratio: 1.35; }
+.collage .shopFrame > img { aspect-ratio: 1689 / 957; }
 .collage {
   position: relative;
   isolation: isolate;
