@@ -1,14 +1,19 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Search, Layers, TrendingUp } from 'lucide-react';
+import { ArrowRight, Search, Layers, TrendingUp, Target, Telescope } from 'lucide-react';
 import { AboutSection } from '../AboutSection';
-import { TEAM_MEMBERS } from '@/data/team';
 import styles from './About.module.css';
 
 const APPROACH = [
   { title: 'Entender antes de construir', description: 'Profundizamos en tu idea, objetivos y contexto para diseñar la mejor solución.', Icon: Search },
   { title: 'Crear con propósito', description: 'Desarrollamos software útil, sostenible y centrado en generar valor real.', Icon: Layers },
   { title: 'Crecer contigo', description: 'Revisamos contigo los avances y acordamos la entrega. La capacitación, el soporte y las mejoras posteriores dependen del alcance contratado.', Icon: TrendingUp },
+];
+const COUNTRY_GROWTH = [
+  'Acercar la tecnología a microempresas y emprendimientos, con soluciones y planes ajustados a su etapa.',
+  'Digitalizar y automatizar procesos manuales para que los negocios ganen tiempo y productividad.',
+  'Explicar cada solución y acompañar su adopción según el alcance acordado, para que el conocimiento quede en tu equipo.',
+  'Crear producto y talento desde Colombia, demostrando que podemos competir con calidad en mercados internacionales.',
 ];
 
 export function AboutMockup() {
@@ -37,15 +42,24 @@ export function AboutMockup() {
         <h3>{title}</h3><p>{description}</p>
       </article>)}
     </div>
-    <section className="container" aria-labelledby="about-team-title">
-      <h2 id="about-team-title">Las personas detrás de tu proyecto</h2>
-      <div className={styles.teamGrid}>{TEAM_MEMBERS.map(member => <article key={member.portfolio} className={styles.teamMember}>
-        <Image src={member.photo} alt={member.name} width={160} height={160} sizes="160px" />
-        <h3>{member.name}</h3><p>{member.role}</p>
-        <ul>{member.contributions.map(item => <li key={item}>{item}</li>)}</ul>
-        <a href={member.portfolio} target="_blank" rel="noopener noreferrer">Ver experiencia y proyectos</a>
-      </article>)}</div>
-      <p>Estas son las áreas de aporte de cada integrante; la propuesta define los responsables de tu proyecto y el acompañamiento contratado.</p>
+    <section id="mision-vision" className={`container ${styles.purpose}`} aria-labelledby="mission-vision-title">
+      <h2 id="mission-vision-title">Lo que nos mueve</h2>
+      <div className={styles.purposeGrid}>
+        <article className={styles.purposeCard}>
+          <Target size={34} strokeWidth={1.6} aria-hidden="true" />
+          <h3>Misión</h3>
+          <p>Crear software a la medida que esté al alcance de negocios de todos los tamaños, para que atraigan clientes, organicen su operación y automaticen tareas repetitivas con soluciones claras, útiles y sostenibles.</p>
+        </article>
+        <article className={styles.purposeCard}>
+          <Telescope size={34} strokeWidth={1.6} aria-hidden="true" />
+          <h3>Visión</h3>
+          <p>Ser un estudio de software colombiano reconocido por acompañar el crecimiento digital de microempresas, emprendimientos y empresas, y llevar soluciones creadas en Colombia a mercados internacionales.</p>
+        </article>
+      </div>
+      <div className={styles.countryGrowth}>
+        <h3>Cómo queremos impulsar el crecimiento tecnológico de Colombia</h3>
+        <ul>{COUNTRY_GROWTH.map(item => <li key={item}>{item}</li>)}</ul>
+      </div>
     </section>
     <div className="container">
       <details data-about-purpose="" className={styles.legacy}>

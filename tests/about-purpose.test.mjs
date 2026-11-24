@@ -9,10 +9,11 @@ async function page(path) {
 }
 const text = html => html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<!-- -->/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
 
-test('about page presents existing team portraits and links to full profiles on /equipo', async () => {
+// Nosotros no longer shows the team (it has its own page); see tests/about-mission-vision.test.mjs.
+test('about page links to the team page without showing team portraits', async () => {
   const html = await page('/nosotros');
   assert.ok(!/<section[^>]*id="equipo"/.test(html));
-  assert.ok(html.includes('/images/team/'), 'available team portraits on /nosotros');
+  assert.ok(!html.includes('/images/team/'), 'no team portraits on /nosotros');
   assert.ok(html.includes('href="/equipo"'), 'still links to the team page');
   const team = await page('/equipo');
   assert.ok(/<section[^>]*id="equipo"/.test(team));
@@ -30,16 +31,9 @@ test('about page states the team objective', async () => {
   ]) assert.ok(content.includes(phrase), phrase);
 });
 
-test('about page shares what each member is passionate about', async () => {
+test('member passions moved off Nosotros with the team', async () => {
   const html = await page('/nosotros');
-  const block = html.match(/<div[^>]*id="lo-que-nos-apasiona"[\s\S]*?<\/ul>/)?.[0];
-  assert.ok(block, 'passions block');
-  const content = text(block);
-  assert.ok(content.includes('Lo que nos apasiona'));
-  for (const name of ['Ronaldo Delgado Correa', 'Jorge Luis Puentes Brochero', 'María Alejandra Ortiz Páez', 'Jorge Luis Ramírez Trochez']) {
-    assert.ok(content.includes(name), name);
-  }
-  assert.equal((block.match(/<li\b/g) || []).length, 4);
+  assert.ok(!html.includes('id="lo-que-nos-apasiona"'));
 });
 
 test('about page shows the current brand only', async () => {

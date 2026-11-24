@@ -13,14 +13,14 @@ test('S20 Nosotros has the leafy mockup hero, team link and real counts',async()
   for(const value of ['Proyectos con autoría y fuentes','La Lupe consulta el desarrollo','Equipo conoce a sus integrantes'])assert.ok(stats.includes(value),value);
 });
 
-test('S20 shows three approach cards while preserving original purpose and all member passions',async()=>{
+test('S20 shows three approach cards while preserving the original purpose, without member passions',async()=>{
   const html=await page();
   for(const heading of ['Entender antes de construir','Crear con propósito','Crecer contigo'])assert.ok(text(html).includes(heading));
   const details=html.match(/<details[^>]*data-about-purpose[\s\S]*?<\/details>/)?.[0]||'';
   assert.ok(details.includes('id="sobre-nosotros"'));
-  assert.ok(details.includes('id="lo-que-nos-apasiona"'));
+  assert.ok(!details.includes('id="lo-que-nos-apasiona"'));
   for(const phrase of ['Software al alcance de todos','Automatizar lo repetitivo','Innovar con propósito','Para empresas de todo tamaño','Queremos llegar a mercados extranjeros'])assert.ok(text(details).includes(phrase),phrase);
-  for(const name of ['Ronaldo Delgado Correa','Jorge Luis Puentes Brochero','María Alejandra Ortiz Páez','Jorge Luis Ramírez Trochez'])assert.ok(text(details).includes(name),name);
+  for(const name of ['Ronaldo Delgado Correa','Jorge Luis Puentes Brochero','María Alejandra Ortiz Páez','Jorge Luis Ramírez Trochez'])assert.ok(!text(details).includes(name),name);
 });
 
 test('S20 connected process retains original steps and ends with capabilities and one integrated footer',async()=>{

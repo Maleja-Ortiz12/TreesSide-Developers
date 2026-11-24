@@ -2,10 +2,8 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { PURPOSE_PILLARS } from '@/data/content';
-import { TEAM_MEMBERS } from '@/data/team';
-import { Sparkles, Globe2, Workflow, Lightbulb, Building2, Heart, ArrowUpRight } from 'lucide-react';
+import { Sparkles, Globe2, Workflow, Lightbulb, Building2 } from 'lucide-react';
 
 export function AboutSection() {
   const getPillarIcon = (iconName: string) => {
@@ -192,30 +190,6 @@ export function AboutSection() {
           </p>
         </div>
 
-        {/* What each member is passionate about */}
-        <div id="lo-que-nos-apasiona" style={{ marginTop: '64px' }}>
-          <h3 style={{ fontSize: '1.4rem', fontWeight: 700, color: '#ffffff', marginBottom: '8px', textAlign: 'center' }}>
-            Lo que nos apasiona
-          </h3>
-          <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '26px' }}>
-            Cada integrante aporta su propia pasión al equipo.{' '}
-            <Link href="/equipo" style={{ color: 'var(--primary-cyan)' }}>
-              Conoce sus perfiles completos <ArrowUpRight size={15} aria-hidden="true" style={{ verticalAlign: 'middle' }} />
-            </Link>
-          </p>
-          <ul style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }} className="passions-grid">
-            {TEAM_MEMBERS.map(member => (
-              <li key={member.name} className="glass-card" style={{ padding: '26px 22px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <Heart size={24} color="var(--primary-green)" aria-hidden="true" />
-                <div>
-                  <strong style={{ display: 'block', color: '#ffffff', fontSize: '1.05rem' }}>{member.name}</strong>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--primary-cyan)' }}>{member.role}</span>
-                </div>
-                <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>{member.passion}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
 
       <style jsx>{`
@@ -232,9 +206,6 @@ export function AboutSection() {
           }
           .pillars-grid {
             grid-template-columns: repeat(2, 1fr) !important;
-          }
-          .passions-grid {
-            grid-template-columns: 1fr !important;
           }
         }
         @media (max-width: 540px) {

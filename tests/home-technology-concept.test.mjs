@@ -36,7 +36,12 @@ test('S1 salon inputs and output remain byte identical to the approved baseline'
   for (const [file, hash] of [
     ['scripts/home-concepts/salon.html', '9659b6396121519284c3458b36db8afc6475a0a6cc6a3ae678ec2c64dddab74b'],
     ['public/images/home-concepts/salon.webp', '48fcd7258781748d87b704d09e50e18e5589d38b6a1af56ceedf9ea823aa4a15'],
-  ]) assert.equal(createHash('sha256').update(await readFile(new URL(`../${file}`, import.meta.url))).digest('hex'), hash);
+  ]) {
+    let bytes = await readFile(new URL(`../${file}`, import.meta.url));
+    // Committed with LF; a Windows checkout with core.autocrlf rewrites the text input as CRLF.
+    if (file.endsWith('.html')) bytes = Buffer.from(bytes.toString('utf8').split(String.fromCharCode(13)).join(''), 'utf8');
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), hash);
+  }
   assert.match(composition('salon', { salon: 'SALON' }), /ALBA/);
 });
 

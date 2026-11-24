@@ -34,10 +34,10 @@ test('S1 Jorge Ramírez has a full profile on /equipo with his portfolio portrai
   assert.match(response.headers.get('content-type') || '', /image\/webp/);
 });
 
-test('S1 Jorge Ramírez shares his passion on /nosotros', async () => {
-  const html = await page('/nosotros');
-  const block = html.match(/<div[^>]*id="lo-que-nos-apasiona"[\s\S]*?<\/ul>/)?.[0];
-  assert.ok(text(block).includes(NAME));
+// The team (and each member's passion) moved off /nosotros; members are presented on /equipo.
+test('S1 Jorge Ramírez is presented on /equipo, not on /nosotros', async () => {
+  assert.ok(!text(await page('/nosotros')).includes(NAME));
+  assert.ok(text(await page('/equipo')).includes(NAME));
 });
 
 test('S3-S6 his exclusive portfolio projects are no longer published', async () => {
