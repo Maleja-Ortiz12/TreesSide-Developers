@@ -102,8 +102,8 @@ try {
       }
       if (route === '/proyectos') {
         await evaluate(`document.querySelector('.card-action').focus(); document.querySelector('.card-action').click()`);
-        const modal = await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>{const dialog=document.querySelector('[role=dialog]');resolve({open:!!dialog,focused:dialog?.contains(document.activeElement),named:!!document.getElementById(dialog?.getAttribute('aria-labelledby'))});})))`);
-        assert.deepEqual(modal,{open:true,focused:true,named:true});
+        const modal = await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>{const dialog=document.querySelector('[role=dialog]');const r=dialog?.getBoundingClientRect();resolve({open:!!dialog,focused:dialog?.contains(document.activeElement),named:!!document.getElementById(dialog?.getAttribute('aria-labelledby')),inViewport:!!r&&r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth});})))`);
+        assert.deepEqual(modal,{open:true,focused:true,named:true,inViewport:true});
         await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape'},sessionId);
         await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Escape',code:'Escape'},sessionId);
         assert.equal(await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(!document.querySelector('[role=dialog]')))))`),true);

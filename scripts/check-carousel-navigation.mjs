@@ -95,6 +95,9 @@ try {
       title: dialog ? document.getElementById(dialog.getAttribute('aria-labelledby'))?.textContent ?? null : null,
       focused: !!dialog && dialog.contains(document.activeElement),
       sameDocument: window.__sameDocument === true, scrollY: Math.round(scrollY),
+      // S1 (L6): the dialog must be visible where the user is, not rendered at the end of the page.
+      inViewport: !!dialog && (() => { const r = dialog.getBoundingClientRect(); return r.top >= 0 && r.left >= 0 && r.bottom <= innerHeight && r.right <= innerWidth; })(),
+      overlayFixed: !!dialog && getComputedStyle(dialog.parentElement).position === 'fixed',
     };
   })()`);
   const capture = async (label, width) => {
@@ -110,6 +113,8 @@ try {
     assert.equal(result.url, `/proyectos#${id}`, `${label} url`);
     assert.equal(result.title, title, `${label} dialog is named by the project title`);
     assert.equal(result.focused, true, `${label} focus moves into the dialog`);
+    assert.equal(result.overlayFixed, true, `${label} overlay is fixed to the viewport`);
+    assert.equal(result.inViewport, true, `${label} dialog is fully visible in the current viewport`);
     if (scrollBefore !== undefined) {
       assert.equal(result.sameDocument, true, `${label} opens in place, without a document load`);
       assert.ok(Math.abs(result.scrollY - scrollBefore) <= 1, `${label} page scroll stays at ${scrollBefore} (got ${result.scrollY})`);

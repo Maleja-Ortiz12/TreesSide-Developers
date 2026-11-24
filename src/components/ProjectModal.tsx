@@ -15,6 +15,8 @@ interface ProjectModalProps {
   onContactClick: () => void;
 }
 
+const OVERLAY_STYLE: React.CSSProperties = { position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(3,11,10,.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 };
+
 export function ProjectModal({ project, onClose, onContactClick }: ProjectModalProps) {
   const panel = useRef<HTMLDivElement>(null);
   const titleId = useId();
@@ -38,9 +40,9 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   };
-  // Portal to <body>: inside #proyectos a transformed ancestor turned `position: fixed` into section-relative
-  // positioning, so opening the modal scrolled the page down to it.
-  const overlay = <div className="project-overlay" onClick={onClose}>
+  // styled-jsx does not scope this root overlay (browser evidence: no jsx-* class, computed position static),
+  // so its viewport layout is inline: the modal must open where the visitor is, never at the end of the page.
+  return <BodyPortal><div className="project-overlay" style={OVERLAY_STYLE} onClick={onClose}>
     <div ref={panel} role="dialog" aria-modal={true} aria-labelledby={titleId} tabIndex={-1} onKeyDown={onKeyDown} className="project-dialog" onClick={event => event.stopPropagation()}>
       <button type="button" onClick={onClose} aria-label="Cerrar modal" className="project-close"><X size={22} aria-hidden="true" /></button>
       <div data-project-detail-media="" style={{ position: 'relative', width: '100%', aspectRatio: '16 / 10', background: '#071613' }}>
@@ -76,7 +78,12 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
         .project-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
       `}</style>
     </div>
-  </div>;
+  </div></BodyPortal>;
+}
+
+// Portal to <body>: inside #proyectos a transformed ancestor would turn `position: fixed` into
+// section-relative positioning and show the modal at the end of the catalog.
+function BodyPortal({ children }: { children: React.ReactNode }) {
   // No document during server rendering (the modal only opens client-side, but stay safe).
-  return typeof document === 'undefined' ? overlay : createPortal(overlay, document.body);
+  return typeof document === 'undefined' ? <>{children}</> : createPortal(children, document.body);
 }

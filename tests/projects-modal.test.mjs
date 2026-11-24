@@ -200,4 +200,9 @@ test('S1 modal renders over the viewport and focus moves never scroll the page',
   assert.match(source, /createPortal\([\s\S]*document\.body\)/, 'overlay is portalled to <body>');
   assert.match(source, /\(first \?\? panel\.current\)\?\.focus\(\{ preventScroll: true \}\)/);
   assert.match(source, /opener\?\.focus\(\{ preventScroll: true \}\)/);
+  // L6: styled-jsx only scopes JSX it returns; a variable-held overlay lost `position: fixed`.
+  assert.match(source, /return <BodyPortal><div className="project-overlay" style=\{OVERLAY_STYLE\}/);
+  // L7: the root overlay is not scoped by styled-jsx in the browser; its fixed viewport layout is inline.
+  assert.match(source, /OVERLAY_STYLE[^=]*= \{ position: 'fixed', inset: 0, zIndex: 200/);
+  assert.doesNotMatch(source, /const overlay = </);
 });
