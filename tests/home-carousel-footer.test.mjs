@@ -6,12 +6,12 @@ async function home() {
   assert.equal(response.status, 200);
   return response.text();
 }
-// S10 retains the Home demos and moves the original controllable strip to /proyectos.
-test('Home renders the seven requested sections in order without a carousel', async () => {
+// The original controllable strip lives on /proyectos; admin-concepts-visible-collage S10 removed the Home demos.
+test('Home renders the six requested sections in order without a carousel or demos', async () => {
   const html = await home();
   const ids = [...html.matchAll(/<section[^>]*id="([^"]+)"/g)].map(m => m[1]);
-  assert.deepEqual(ids, ['inicio', 'soluciones', 'trabajo', 'propuestas', 'demos', 'proceso-home', 'siguiente-paso']);
-  assert.ok(html.includes('data-demo-tab'));
+  assert.deepEqual(ids, ['inicio', 'soluciones', 'trabajo', 'propuestas', 'proceso-home', 'siguiente-paso']);
+  assert.ok(!html.includes('data-demo-tab'));
 });
 
 test('home has one integrated footer retaining the new closing and all previous useful links', async () => {

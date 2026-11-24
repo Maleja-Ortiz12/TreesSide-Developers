@@ -92,11 +92,9 @@ try {
         assert.equal(invalid,false,'invalid email rejected without submitting');
       }
       if (route === '/') {
-        for (const id of ['emisoras-latinas','calculadora-de-contenedores','la-lupe']) {
-          await evaluate(`document.querySelector('[data-demo-tab="${id}"]').click()`);
-          const active = await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve({pressed:document.querySelector('[data-demo-tab="${id}"]').getAttribute('aria-pressed'),visible:!document.querySelector('[data-demo="${id}"]').hidden,proposal:document.querySelector('[data-demo="${id}"] a[href^="/contacto?"]').getAttribute('href')}))))`);
-          assert.equal(active.pressed,'true'); assert.equal(active.visible,true); assert.match(active.proposal,/servicio=.*demo=/);
-        }
+        // S10: the Home no longer renders the interactive demos section.
+        const demos = await evaluate(`({section:!!document.getElementById('demos'),tabs:document.querySelectorAll('[data-demo-tab],[data-demo]').length,label:document.querySelector('main').textContent.includes('Demo interactiva')})`);
+        assert.deepEqual(demos,{section:false,tabs:0,label:false});
       }
       if (route === '/planes') {
         const selected = await evaluate(`[...document.querySelectorAll('[data-plan-preview]')].map(card=>({id:card.dataset.planPreview,href:card.querySelector('a[href^="/contacto?"]').getAttribute('href')}))`);

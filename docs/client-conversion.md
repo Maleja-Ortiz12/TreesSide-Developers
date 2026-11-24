@@ -1,6 +1,6 @@
 # Consultas con contexto y evidencia de proyectos
 
-La web conserva el árbol, la identidad verde y oscura, las demos locales y los precios y condiciones vigentes. Las consultas no equivalen a una compra ni a una aceptación del alcance.
+La web conserva el árbol, la identidad verde y oscura y los precios y condiciones vigentes. Las consultas no equivalen a una compra ni a una aceptación del alcance.
 
 ## Recorrido del visitante
 
@@ -20,7 +20,7 @@ La web conserva el árbol, la identidad verde y oscura, las demos locales y los 
 
 `src/lib/enquiry.ts` acepta únicamente identificadores presentes en los catálogos: `servicio`, `plan`, `proyecto`, `demo`. `opcion` identifica un plan existente dentro del servicio seleccionado. Valores desconocidos se ignoran; no se permite inicializar el consentimiento desde la URL. Ejemplo: `/contacto?plan=vende-online`.
 
-Las demos de restaurante, radio y logística siguen siendo simulaciones locales con datos de ejemplo, no pedidos ni reservas reales. Sus controles no se renombran para aparentar otras funcionalidades.
+Las demos interactivas de restaurante, radio y logística se retiraron del inicio (admin-concepts-visible-collage S10); `demo=restaurante|radio|logistica` se sigue aceptando para no romper enlaces existentes.
 
 ## Evidencia y datos pendientes
 

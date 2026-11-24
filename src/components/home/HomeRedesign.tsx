@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { ArrowRight, ShoppingBag, Workflow, Utensils } from 'lucide-react';
 import { FEATURED_PROJECTS } from '@/data/content';
 import { enquiryHref } from '@/lib/enquiry';
-import { HomeDemos } from '@/components/HomeDemos';
 import { HeroCollage } from './HeroCollage';
 import { ConceptShowcase } from './ConceptShowcase';
 import { AdminConceptShowcase } from './AdminConceptShowcase';
@@ -126,8 +125,6 @@ export function HomeRedesign() {
         <AdminConceptShowcase />
       </div>
     </section>
-
-    <HomeDemos />
 
     <section id="proceso-home" className={styles.lightSection} aria-labelledby="process-title">
       <div className={`container ${styles.processLayout}`}>

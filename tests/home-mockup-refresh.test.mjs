@@ -70,7 +70,7 @@ test('S1/S8 production Home uses isolated sections, not the old hero, carousel o
   assert.doesNotMatch(source, /<Hero|<ProjectCarousel|<HomeDemos/);
   const { tree } = home();
   assert.deepEqual(nodes(tree).filter(n => n.type === 'section' && n.props.id).map(n => n.props.id),
-    ['inicio', 'soluciones', 'trabajo', 'propuestas', 'demos', 'proceso-home', 'siguiente-paso']);
+    ['inicio', 'soluciones', 'trabajo', 'propuestas', 'proceso-home', 'siguiente-paso']);
   assert.equal(nodes(tree).filter(n => n.type === 'h1').length, 1);
   assert.equal(nodes(tree).filter(n => n.props['data-project-card']).length, 1);
   assert.doesNotMatch(text(tree), /UptownHair|testimonios|proyectos entregados/i);
@@ -293,28 +293,13 @@ test('S5 generic salon and ecommerce concepts are proposals, never delivered web
   assert.ok(links(section).every(n => n.props.href.startsWith('/contacto?')));
 });
 
-test('S6 selectors live in demos and preserve all three store selections, panels and contextual CTAs', () => {
-  const ui = harness(), { HomeDemos } = ui.load('src/components/HomeDemos');
-  const render = () => ui.render(HomeDemos);
-  const cards = () => nodes(render()).filter(n => n.type === 'article');
-  const tabs = () => nodes(render()).filter(n => n.props['data-demo-tab']);
-  assert.deepEqual(tabs().map(text), ['Restaurantes', 'Streaming', 'Logística']);
-  assert.deepEqual(cards().map(n => n.props['data-demo']), ['la-lupe', 'emisoras-latinas', 'calculadora-de-contenedores']);
-  assert.deepEqual(cards().filter(n => !n.props.hidden).map(n => n.props.id), ['demo-la-lupe']);
-  assert.ok(text(render()).includes('Demo interactiva · Datos de ejemplo'));
-  assert.match(text(render()), /no representa funcionalidades implementadas en la web real de La Lupe/);
-  assert.match(text(render()), /No se guardan ni se envían datos/);
-  assert.equal(nodes(render()).filter(n => n.props['data-project-card']).length, 0);
-  for (const [id, service, slug] of [['emisoras-latinas', 'streaming', 'radio'], ['calculadora-de-contenedores', 'logistica', 'logistica'], ['la-lupe', 'restaurantes', 'restaurante']]) {
-    const tab = tabs().find(n => n.props['data-demo-tab'] === id);
-    assert.equal(tab.props['aria-controls'], `demo-${id}`);
-    tab.props.onClick();
-    assert.deepEqual(cards().filter(n => !n.props.hidden).map(n => n.props['data-demo']), [id]);
-    assert.deepEqual(tabs().filter(n => n.props['aria-pressed']).map(n => n.props['data-demo-tab']), [id]);
-    const card = cards().find(n => n.props['data-demo'] === id);
-    assert.equal(exactLink(card, 'Quiero una solución similar').props.href, `/contacto?servicio=${service}&demo=${slug}`);
-    assert.equal(exactLink(card, 'Ver servicio').props.href, `/servicios/${service}?servicio=${service}&demo=${slug}`);
-  }
+// S10 (admin-concepts-visible-collage): the interactive demos section left the Home.
+test('S10 Home no longer shows the interactive demos section', () => {
+  const { tree } = home();
+  assert.equal(byId(tree, 'demos'), undefined);
+  assert.equal(nodes(tree).filter(n => n.props['data-demo'] || n.props['data-demo-tab']).length, 0);
+  assert.doesNotMatch(text(tree), /Demo interactiva|Pruébalo antes de imaginarlo|Simulación local/);
+  assert.doesNotMatch(readFileSync('src/components/home/HomeRedesign.tsx', 'utf8'), /HomeDemos|components\/demos/);
 });
 
 test('S7 four exact stages and compact closing CTA', () => {
@@ -362,17 +347,3 @@ test('S8 assets are existing local resources and all contact context validates a
   assert.match(css, /minmax\(0, 1fr\)/);
 });
 
-for (const [file, name, action, expected, reset] of [
-  ['MenuQuoteDemo', 'MenuQuoteDemo', 'Agregar Flautas', 'Total: $35.900', 'Reiniciar pedido'],
-  ['RadioDemo', 'RadioDemo', 'Escuchar Vallenato', 'En vivo (simulado): Vallenato · Colombia', 'Reiniciar radio'],
-  ['LoadCalculatorDemo', 'LoadCalculatorDemo', 'Pequeña', '20 cajas por capa · 7 capas · 140 cajas · 560 kg', 'Reiniciar cálculo'],
-]) test(`PRESERVE S6 ${name} still responds and resets`, () => {
-  const ui = harness(), component = ui.load(`src/components/demos/${file}`)[name];
-  const render = () => ui.render(component), initial = text(render());
-  const click = label => {
-    const button = nodes(render()).find(n => n.type === 'button' && (n.props['aria-label'] === label || text(n) === label));
-    assert.ok(button && !button.props.disabled, label); button.props.onClick();
-  };
-  click(action); assert.ok(text(render()).includes(expected));
-  click(reset); assert.equal(text(render()), initial);
-});

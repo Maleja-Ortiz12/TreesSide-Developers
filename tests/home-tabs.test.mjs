@@ -5,8 +5,8 @@ import path from 'node:path';
 import vm from 'node:vm';
 import ts from 'typescript';
 
-// Loads the real Hero and HomeDemos (and the data they import) with React and Next replaced by plain
-// stand-ins, so a tab click can be followed into the demos section without a browser.
+// Loads the legacy Hero (and the data it imports) with React and Next replaced by plain stand-ins,
+// so its tab scroll can be checked without a browser. The Home no longer mounts the demos (S10).
 function loader() {
   const cache = new Map();
   const scrolled = [];
@@ -45,29 +45,6 @@ function loader() {
 const nodes = tree => !tree || typeof tree !== 'object' ? [] : [tree, ...[tree.props?.children].flat(Infinity).flatMap(nodes)];
 const text = tree => tree == null || typeof tree === 'boolean' ? '' : typeof tree !== 'object' ? String(tree) : [tree.props?.children].flat(Infinity).map(text).join('');
 
-test('S9 the local demo tabs select each preserved demo panel', () => {
-  const { load, scrolled } = loader();
-  const { Hero } = load('src/components/Hero.tsx');
-  const { HomeDemos } = load('src/components/HomeDemos.tsx');
-  const tabs = () => nodes(HomeDemos()).filter(node => node.type === 'button' && node.props['data-demo-tab']);
-  const visible = () => nodes(HomeDemos()).filter(node => node.type === 'article' && node.props['data-demo'] && !node.props.hidden).map(node => node.props['data-demo']);
-  const pressed = () => tabs().filter(tab => tab.props['aria-pressed']).map(tab => text(tab).trim());
-
-  assert.deepEqual(tabs().map(tab => text(tab).trim()), ['Restaurantes', 'Streaming', 'Logística']);
-  assert.deepEqual(pressed(), ['Restaurantes']);
-  assert.deepEqual(visible(), ['la-lupe']);
-
-  for (const [label, demo] of [['Streaming', 'emisoras-latinas'], ['Logística', 'calculadora-de-contenedores'], ['Restaurantes', 'la-lupe']]) {
-    const tab = tabs().find(item => text(item).trim() === label);
-    assert.equal(tab.props['aria-controls'], `demo-${demo}`);
-    tab.props.onClick();
-    assert.deepEqual(pressed(), [label], `${label} pressed`);
-    assert.deepEqual(visible(), [demo], `${label} shows ${demo}`);
-    assert.equal(scrolled.length, 0, 'local controls do not scroll the page');
-  }
-  assert.equal(scrolled.length, 0);
-});
-
 test('S9 the tab scroll jumps instead of gliding for reduced motion', () => {
   const { load, scrolled } = loader();
   const smooth = load('src/components/Hero.tsx');
@@ -79,16 +56,12 @@ test('S9 the tab scroll jumps instead of gliding for reduced motion', () => {
   assert.match(source, /reduce\)'\)\.matches \? 'instant' : 'smooth'/);
 });
 
-test('S9 the server HTML renders the tabs with the first one pressed, each pointing at its demo', async () => {
+// admin-concepts-visible-collage S10: the interactive demos section left the Home page.
+test('S10 the server Home HTML no longer renders the demo tabs or panels', async () => {
   const response = await fetch(process.env.TEST_BASE_URL || 'http://localhost:3000', { signal: AbortSignal.timeout(20000) });
   assert.equal(response.status, 200);
   const html = await response.text();
-  const hero = html.match(/<section[^>]*id="demos"[\s\S]*?<\/section>/)?.[0] ?? '';
-  const tabs = [...hero.matchAll(/<button[^>]*data-demo-tab="([^"]+)"[^>]*>/g)];
-  assert.deepEqual(tabs.map(match => match[1]), ['la-lupe', 'emisoras-latinas', 'calculadora-de-contenedores']);
-  assert.deepEqual(tabs.map(match => match[0].includes('aria-pressed="true"')), [true, false, false]);
-  for (const [tag, id] of tabs) {
-    assert.ok(tag.includes(`aria-controls="demo-${id}"`), `${id} controls`);
-    assert.match(html, new RegExp(`<article[^>]*id="demo-${id}"`), `${id} target`);
-  }
+  assert.doesNotMatch(html, /<section[^>]*id="demos"/);
+  assert.doesNotMatch(html, /data-demo-tab=|data-demo="/);
+  assert.ok(!html.includes('Demo interactiva'), 'no interactive demo badge');
 });

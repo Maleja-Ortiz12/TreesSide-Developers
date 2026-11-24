@@ -14,7 +14,7 @@ const KINDS = { servicio: 'Servicio', plan: 'Plan', demo: 'Demo conceptual', pro
 type EnquiryKind = keyof typeof KINDS;
 export type EnquiryContext = { kind: EnquiryKind; id: string; label: string }[];
 
-// Public demo slugs already emitted by HomeDemos; titles come from the project catalog.
+// Demo slugs from the former Home demos, kept so existing `?demo=` links still resolve; titles come from the project catalog.
 const DEMO_PROJECTS: Record<string, string> = {
   restaurante: 'equipo-la-lupe',
   radio: 'equipo-emisoras-latinas',

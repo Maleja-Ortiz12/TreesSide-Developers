@@ -9,7 +9,7 @@ async function page(path) {
 }
 
 const ROUTES = [
-  { path: '/', title: /<title>Tu negocio puede vender más y trabajar mejor \| TreesSide Developers/, sections: ['inicio', 'demos', 'soluciones', 'trabajo', 'propuestas', 'proceso-home', 'siguiente-paso'] },
+  { path: '/', title: /<title>Tu negocio puede vender más y trabajar mejor \| TreesSide Developers/, sections: ['inicio', 'soluciones', 'trabajo', 'propuestas', 'proceso-home', 'siguiente-paso'] },
   { path: '/servicios', title: /<title>Servicios \| TreesSide Developers/, sections: ['servicios', 'tecnologias'] },
   { path: '/proyectos', title: /<title>Proyectos \| TreesSide Developers/, sections: ['proyectos', 'carrusel'] },
   { path: '/nosotros', title: /<title>Sobre nosotros \| TreesSide Developers/, sections: ['sobre-nosotros', 'proceso'] },

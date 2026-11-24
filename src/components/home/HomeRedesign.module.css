@@ -4,21 +4,20 @@
   color: #eefaf5;
   background: #041b14;
 }
-.home section, .demos { scroll-margin-top: 94px; }
-.home h2, .demos h2 {
+.home section { scroll-margin-top: 94px; }
+.home h2 {
   font-size: clamp(1.9rem, 3vw, 2.8rem);
   line-height: 1.13;
   letter-spacing: -.035em;
   font-weight: 750;
 }
 .home h3 { line-height: 1.2; letter-spacing: -.02em; }
-.home :is(a, button):focus-visible, .demos :is(a, button):focus-visible {
+.home :is(a, button):focus-visible {
   outline: 3px solid #16775a;
   outline-offset: 5px;
 }
-.hero :is(a, button):focus-visible, .workSection a:focus-visible, .nextStep a:focus-visible,
-.demoPanel :is(a, button):focus-visible { outline-color: #8affd1; }
-.home :global(.btn), .demos :global(.btn) { white-space: normal; text-align: center; }
+.hero :is(a, button):focus-visible, .workSection a:focus-visible, .nextStep a:focus-visible { outline-color: #8affd1; }
+.home :global(.btn) { white-space: normal; text-align: center; }
 .hero {
   position: relative;
   isolation: isolate;
@@ -227,20 +226,6 @@
 .conceptCopy p { color: #4c6257; margin-block: 14px 24px; }
 .lightButton { display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-top: auto; padding: 12px 20px; min-height: 44px; border-radius: 999px; background: #095439; color: #fff; font-weight: 600; text-decoration: none; }
 .lightButton:hover { background: #063d29; }
-.demos { background: #dff1e6; color: #132b22; padding: 52px 0; color-scheme: light; }
-.demoLayout { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.3fr); gap: 32px; align-items: center; }
-.demoIntro > p { margin-top: 18px; color: #385a49; }
-.demoIntro .demoBadge { display: inline-flex; background: #a5f1c9; color: #074b31; padding: 8px 12px; border-radius: 8px; font-size: .8rem; font-weight: 650; }
-.demoIntro .note { font-size: .85rem; }
-.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.tabs button { min-height: 44px; padding: 10px 16px; border: 1px solid #739c86; border-radius: 999px; color: #184e36; background: transparent; font: inherit; font-size: .85rem; cursor: pointer; }
-.tabs button[aria-pressed='true'] { background: #095439; color: #fff; border-color: #095439; }
-.demoPanel { padding: 20px 0; border: 1px solid #70ad8e; border-radius: 18px; color: #eefaf5; background: #08241b; color-scheme: dark; box-shadow: 0 12px 28px #144f2c1a; }
-.demoPanel[hidden] { display: none; }
-.demoLabel { margin: 0 20px 16px; color: #bce8cf; font-size: .85rem; }
-.demoActions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin: 22px 20px 0; }
-.demoActions > a:not(:global(.btn)) { color: #9bffd0; min-height: 44px; display: inline-flex; align-items: center; text-underline-offset: 4px; }
-.demoPanel button { min-height: 44px; }
 .processLayout { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 2fr); gap: 32px; align-items: start; }
 .stages { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; list-style: none; padding: 0; }
 .stages li { position: relative; min-width: 0; }
@@ -261,8 +246,7 @@
   .serviceCard:last-child .serviceImage { height: 100%; aspect-ratio: auto; object-position: center; }
   .realProject { grid-template-columns: minmax(0, 1fr); gap: 26px; }
   .projectCopy .actions { flex-direction: row; }
-  .demoLayout, .processLayout { grid-template-columns: minmax(0, 1fr); }
-  .demoIntro { max-width: 700px; }
+  .processLayout { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 600px) {
   .heroCopy { padding-top: 12px; }
@@ -281,7 +265,7 @@
   .collage figcaption { font-size: .65rem; padding: 7px 9px; }
   .collage .conceptLabel { font-size: .65rem; }
   .heroSignature { font-size: .85rem; }
-  .lightSection, .conceptsSection, .workSection, .demos { padding: 38px 0; }
+  .lightSection, .conceptsSection, .workSection { padding: 38px 0; }
   .serviceGrid, .conceptGrid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .serviceCard:last-child { display: flex; grid-column: auto; }
   .serviceCard:last-child .serviceImage { height: auto; aspect-ratio: 1.95; }
@@ -289,15 +273,13 @@
   .conceptVisual .salonPreview { aspect-ratio: auto; }
   .conceptVisual .salonBody { min-height: 184px; }
   .projectCopy .actions { flex-direction: column; }
-  .demoActions { align-items: stretch; flex-direction: column; }
-  .tabs button { flex: 1 1 auto; padding-inline: 12px; }
   .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 20px; }
   .stages li:nth-child(2)::after { display: none; }
   .nextStep { padding: 40px 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .motionControl { display: none; }
-  .home *, .demos * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .home * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
 /* S6 centring would push the CTAs below short desktop viewports; keep the copy on top there. */

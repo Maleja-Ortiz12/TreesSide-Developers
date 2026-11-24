@@ -77,32 +77,11 @@ test('S2 three business solutions explain audience, problem and capabilities, wi
   assert.equal(byText(hero, 'Ver todos los servicios')?.props.href, '/servicios');
 });
 
-test('S3 demos preserve their identities and provide service and proposal links with exact context', () => {
-  const { load } = loader();
-  const home = load('src/components/HomeDemos.tsx').HomeDemos();
-  const cards = nodes(home).filter(node => node.type === 'article' && node.props['data-demo']);
-  assert.equal(cards.length, 3);
-  for (const [index, [id, demo, category, kind, component]] of [
-    ['la-lupe', 'restaurante', 'restaurantes', 'Restaurante', 'MenuQuoteDemo'],
-    ['emisoras-latinas', 'radio', 'streaming', 'Radio', 'RadioDemo'],
-    ['calculadora-de-contenedores', 'logistica', 'logistica', 'Logística', 'LoadCalculatorDemo'],
-  ].entries()) {
-    const card = cards[index];
-    assert.equal(card.props['data-demo'], id);
-    assert.ok(text(card).includes('Simulación local'));
-    assert.ok(nodes(card).some(node => typeof node.type === 'function' && node.type.name === component));
-    assert.equal(byText(card, 'Ver servicio')?.props.href, `/servicios/${category}?servicio=${category}&demo=${demo}`);
-    assert.equal(byText(card, 'Quiero una solución similar')?.props.href, `/contacto?servicio=${category}&demo=${demo}`);
-    assert.ok(text(home).includes('Esta simulación no representa funcionalidades implementadas en la web real de La Lupe.'));
-  }
-  assert.ok(text(home).includes('No se guardan ni se envían datos'));
-});
-
-test('S1/S8 preserve tab selection, controlled demo panels, source links and reduced-motion scrolling', () => {
+// The Home demos section was removed (admin-concepts-visible-collage S10); the legacy Hero keeps its tabs.
+test('S1/S8 the legacy Hero keeps tab selection and reduced-motion scrolling', () => {
   for (const reduced of [false, true]) {
     const { load, scrolled } = loader(reduced);
     const { Hero } = load('src/components/Hero.tsx');
-    const { HomeDemos } = load('src/components/HomeDemos.tsx');
     const tabs = () => nodes(Hero()).filter(node => node.props?.['data-demo-tab']);
     assert.deepEqual(tabs().map(text), ['Restaurantes', 'Streaming', 'Logística']);
     for (const [index, id] of ['la-lupe', 'emisoras-latinas', 'calculadora-de-contenedores'].entries()) {
@@ -110,7 +89,6 @@ test('S1/S8 preserve tab selection, controlled demo panels, source links and red
       assert.equal(tab.props['aria-controls'], `demo-${id}`);
       tab.props.onClick();
       assert.deepEqual(tabs().filter(node => node.props['aria-pressed']).map(node => node.props['data-demo-tab']), [id]);
-      assert.deepEqual(nodes(HomeDemos()).filter(node => node.props?.['data-demo'] && !node.props.hidden).map(node => node.props.id), [`demo-${id}`]);
       assert.equal(scrolled.at(-1).id, 'demos');
       assert.equal(scrolled.at(-1).options.behavior, reduced ? 'instant' : 'smooth');
     }
@@ -125,6 +103,10 @@ test('Home redesign features only the confirmed La Lupe project', () => {
   assert.equal(byText(cards[0], 'Ver proyecto')?.props.href, '/proyectos#equipo-la-lupe');
   for (const feature of ['Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp']) assert.ok(text(cards[0]).includes(feature));
   assert.equal(nodes(cards[0]).find(node => node.type === 'next/image').props.src, '/images/projects/la-lupe.webp');
+  // S10 (admin-concepts-visible-collage): the Home no longer mounts the interactive demos.
+  assert.ok(!nodes(home).some(node => typeof node.type === 'function' && node.type.name === 'HomeDemos'), 'no HomeDemos');
+  assert.ok(!nodes(home).some(node => node.props?.id === 'demos' || node.props?.['data-demo']), 'no demos section');
+  assert.doesNotMatch(text(home), /Demo interactiva/);
 });
 
 test('S1/S8 keep the tree, carousel, responsive layouts, focus and reduced-motion safeguards', () => {

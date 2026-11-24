@@ -27,7 +27,8 @@ test('Home uses the requested project showcase instead of the retired strip', as
   const html = await home();
   assert.ok(!carousel(html));
   assert.ok(html.includes('id="trabajo"'));
-  assert.ok(html.indexOf('id="trabajo"') < html.indexOf('id="demos"'));
+  assert.ok(html.indexOf('id="trabajo"') < html.indexOf('id="propuestas"'));
+  assert.ok(!html.includes('id="demos"'), 'S10 the Home demos section was removed');
   assert.ok(html.includes('href="/proyectos#equipo-la-lupe"'));
 });
 
