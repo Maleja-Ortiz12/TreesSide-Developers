@@ -32,7 +32,7 @@ test('Home hero distinguishes real work and conceptual visuals', async () => {
   const html = await page('/');
   const hero = html.match(/<section[^>]*id="inicio"[\s\S]*?<\/section>/)?.[0] || '';
   assert.ok(hero.includes('la-lupe.webp'));
-  assert.equal((text(hero).match(/Diseño conceptual/g) || []).length, 2);
+  assert.equal((text(hero).match(/Vista conceptual/g) || []).length, 2);
   assert.ok(hero.includes('about-branch.webp'));
   assert.ok(!hero.includes('data-hero-card'));
   const css = await readFile('src/components/home/Home.module.css', 'utf8');

@@ -42,7 +42,7 @@ test('S9 hero artwork is the mockup tree, decorative only', async () => {
 test('S2 the proof band names portfolio evidence rather than counting projects or technologies', async () => {
   const section = hero(await home());
   assert.ok(!section.includes('data-home-stats'));
-  assert.equal((text(section).match(/Diseño conceptual/g) || []).length, 2);
+  assert.equal((text(section).match(/Vista conceptual/g) || []).length, 2);
   assert.ok(section.includes('la-lupe.webp'));
   // Preserve the earlier standalone-project regression: Bendita Gracia remains in the catalog,
   // but adding it (or any member project) no longer becomes a company-contract count on the hero.

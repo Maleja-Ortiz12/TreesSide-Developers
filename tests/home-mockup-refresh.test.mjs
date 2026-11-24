@@ -85,7 +85,7 @@ test('S2 exact hero copy, two actions, real capture and two visibly labelled con
   assert.equal(exactLink(hero, 'Ver nuestro trabajo').props.href, '/proyectos');
   const figures = nodes(hero).filter(n => n.type === 'figure');
   assert.equal(figures.length, 3);
-  assert.equal(figures.filter(n => text(n).includes('Diseño conceptual')).length, 2);
+  assert.equal(figures.filter(n => text(n).includes('Vista conceptual')).length, 2);
   assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/projects/la-lupe.webp'));
   assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/mockup/about-branch.webp' && n.props.alt === ''));
   assert.equal(nodes(hero).filter(n => n.type === 'button').length, 3, 'motion and manual artwork controls belong in the hero');
@@ -126,14 +126,33 @@ test('S12/S7 large-slot cycle covers the eligible catalog and concepts once with
       const image = nodes(figure).find(n => n.type === 'img');
       const project = catalog.find(p => p.image === image?.props.src);
       if (slot === 0) primaries.push(project?.id ?? image.props.src);
-      if (!project) { assert.match(text(figure), /Diseño conceptual/); assert.doesNotMatch(text(figure), /Portafolio del equipo/); continue; }
+      const caption = nodes(figure).find(n => n.type === 'figcaption');
+      const badges = nodes(caption).filter(n => n.type === 'span' && n.props.className === 'conceptLabel');
+      if (!project || project.imageLabel) {
+        assert.equal(badges.length, 1, 'exactly one compact badge per conceptual frame');
+        assert.equal(text(badges[0]), 'Vista conceptual');
+        assert.doesNotMatch(text(caption), /Portafolio del equipo|Diseño conceptual|No es una captura|Datos de ejemplo/);
+        assert.doesNotMatch(image.props.alt, /Captura real/);
+      }
+      if (!project) {
+        const title = {
+          '/images/home-concepts/salon.webp': 'Peluquerías',
+          '/images/home-concepts/shop.webp': 'Comercio electrónico',
+          '/images/home-concepts/salon-admin.webp': 'ALBA · Administración de empleados',
+          '/images/home-concepts/restaurant-admin.webp': 'BRASA · Pedidos, caja, cocina y equipo',
+        }[image.props.src];
+        assert.equal(text(caption), `Vista conceptual ${title}`);
+        assert.equal(image.props.style.objectFit, 'contain');
+        assert.match(image.props.alt, /fictici/);
+        continue;
+      }
       assert.ok(expected.some(p => p.id === project.id), project.id);
       assert.ok(text(figure).includes(project.title));
-      assert.match(text(figure), /Portafolio del equipo/);
+      assert.equal(text(caption), `${project.title} ${project.imageLabel ? 'Vista conceptual' : 'Portafolio del equipo'}`);
       assert.doesNotMatch(text(figure), /Web real|cliente|contrat|UptownHair/i);
       if (project.imageLabel) {
-        assert.ok(text(figure).includes(project.imageLabel));
-        assert.match(text(figure), /Diseño conceptual/);
+        assert.match(image.props.alt, /Ilustración conceptual/);
+        assert.ok(image.props.alt.includes(project.imageLabel), 'full catalog provenance remains in alt');
         assert.doesNotMatch(image.props.alt, /Captura real/);
       }
       assert.equal(image.props.style?.objectFit, project.imageFit ?? 'cover');
@@ -181,8 +200,9 @@ test('S12/S2 conceptual badges retain dark text while plain capture captions sta
   const firstCard = nodes(byId(home(6).tree, 'inicio')).find(n => n.type === 'figure');
   assert.ok(text(firstCard).includes('Calculadora de contenedores'));
   const spans = nodes(firstCard).filter(n => n.type === 'span');
-  assert.ok(spans.some(n => n.props.className === 'conceptLabel' && text(n).includes('Diseño conceptual')));
-  assert.ok(spans.some(n => !n.props.className && text(n) === 'Portafolio del equipo'), 'ordinary portfolio span retains the mint rule');
+  assert.deepEqual(spans.map(text), ['Vista conceptual']);
+  const realCard = heroFigures(0)[0];
+  assert.ok(nodes(realCard).some(n => n.type === 'span' && !n.props.className && text(n) === 'Portafolio del equipo'), 'real portfolio span retains the mint rule');
 });
 
 test('S10 all three cards float slowly with staggered 3D depth, modest mobile motion and reduced-motion opt-out', () => {
@@ -302,25 +322,40 @@ test('S5 generic salon and ecommerce concepts are proposals, never delivered web
 test('S11 admin proposals show service labels below details and retain actions, sample media and disclaimers', () => {
   const { tree } = home();
   const cards = nodes(tree).filter(n => n.type === 'article' && n.props['data-home-admin-concept']);
-  assert.equal(cards.length, 2);
+  assert.equal(cards.length, 3);
   for (const [index, id, title, detail, label, action, href] of [
     [0, 'salon-admin', 'Tu equipo, en una misma agenda', 'Empleados · Roles · Turnos · Disponibilidad', 'Panel administrativo y reservas', 'Quiero organizar mi salón', '/servicios/sistemas-de-gestion'],
     [1, 'restaurant-admin', 'De la comanda al cierre de caja', 'Pedidos · Caja · Cocina · Equipo', 'App para restaurantes', 'Quiero organizar mi restaurante', '/servicios/restaurantes'],
   ]) {
     const card = cards[index], copy = nodes(card).find(n => n.props.className === 'copy');
     assert.equal(card.props['data-home-admin-concept'], id);
-    assert.equal(text(nodes(copy).find(n => n.type === 'h4')), title);
+    assert.equal(text(nodes(copy).find(n => n.type === 'h5')), title);
     const paragraphs = nodes(copy).filter(n => n.type === 'p').map(text);
     assert.equal(paragraphs[1], detail);
     assert.equal(paragraphs[2], label);
     assert.equal(exactLink(card, action).props.href, href);
     assert.equal(links(card).length, 1);
     const image = nodes(card).find(n => n.type === 'img');
-    assert.equal(image.props.src, `/images/home-concepts/${id}.webp`);
+    assert.equal(image.props.src, `/images/home-concepts/${id}-app.webp`);
+    assert.equal(image.props.width / image.props.height, 1.5);
     assert.match(image.props.alt, /Datos de ejemplo/);
     assert.ok(text(card).includes('Diseño conceptual · Datos de ejemplo'));
   }
   assert.match(text(byId(tree, 'propuestas')), /No son funcionalidades entregadas a La Lupe ni a otro cliente/);
+});
+
+test('Pulcrivo is an illustrative cleaning/rental logistics proposal, not a delivered Luhos project', () => {
+  const card = nodes(home().tree).find(n => n.props['data-home-admin-concept'] === 'pulcrivo');
+  assert.ok(card, 'Pulcrivo proposal appears with the administrative concepts');
+  assert.match(text(card), /Logística para limpieza y alquileres/);
+  for (const term of ['ubicación', 'jornada', 'evidencias', 'implementos']) assert.ok(text(card).includes(term), term);
+  assert.equal(exactLink(card, 'Explorar logística empresarial').props.href, '/servicios/logistica');
+  assert.match(text(card), /Diseño conceptual · Datos de ejemplo/);
+  assert.doesNotMatch(text(card), /Luhos|entregado|cliente real/);
+  const image = nodes(card).find(n => n.type === 'img');
+  assert.equal(image.props.src, '/images/home-concepts/pulcrivo.webp');
+  assert.equal(image.props.width / image.props.height, 1.5);
+  assert.ok(existsSync(`public${image.props.src}`));
 });
 
 // S10 (admin-concepts-visible-collage): the interactive demos section left the Home.

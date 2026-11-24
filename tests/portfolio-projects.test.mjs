@@ -21,16 +21,16 @@ function cardFor(section, title) {
 const WITH_IMAGES = {
   Ocho80: 'ocho80', 'Radio Navidad': 'radio-navidad', Luhos: 'luhos', Gudfy: 'gudfy', Tanku: 'tanku',
   'Floraltech E-Commerce': 'floraltech', 'Atherium 3D Game': 'atherium', 'Otaku Portal': 'otaku-portal',
-  'Portfolio CMS': 'portfolio-cms', 'Dashboard BI · Superstore': 'dashboard-superstore',
-  'EDA · Renta Ciudadana': 'eda-renta-ciudadana', 'Análisis de Ventas de Cafetería': 'ventas-cafeteria',
+  'Portfolio CMS': 'portfolio-cms', 'Dashboard BI · Superstore': 'dashboard-superstore-concept',
+  'EDA · Renta Ciudadana': 'eda-renta-ciudadana-concept', 'Análisis de Ventas de Cafetería': 'ventas-cafeteria-concept',
   'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'emisoras-latinas-cover',
   'Entre Lanas y Fragancias': 'entre-lanas-y-fragancias',
   'La Lupe': 'la-lupe', 'Bendita Gracia': 'bendita-gracia',
-  'Calculadora de contenedores': 'calculadora-contenedores.svg',
-  'Libres en Cristo Jesús': 'libres-en-cristo.svg',
-  'API de Tienda + Asistente IA': 'tienda-api.svg',
-  'Sistema de gestión de inventarios': 'gestion-inventarios.svg',
-  'Aplicación de gestión agropecuaria': 'gestion-agropecuaria.svg',
+  'Calculadora de contenedores': 'calculadora-contenedores-concept',
+  'Libres en Cristo Jesús': 'libres-en-cristo-concept',
+  'API de Tienda + Asistente IA': 'tienda-api-concept',
+  'Sistema de gestión de inventarios': 'gestion-inventarios-concept',
+  'Aplicación de gestión agropecuaria': 'gestion-agropecuaria-concept',
 };
 
 test('every portfolio project is listed with its local project image or labeled conceptual cover', async () => {

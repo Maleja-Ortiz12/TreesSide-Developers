@@ -31,7 +31,7 @@ test('retained projects publish conceptual covers with provenance; unpublished p
       assert.equal(card, undefined, `${title} is no longer published (S3-S6)`);
     } else {
       assert.ok(card, title);
-      const image = `projects/${slug}.svg`;
+      const image = `projects/${slug}-concept.webp`;
       assert.ok(card.includes(encodeURIComponent(`/images/${image}`)) || card.includes(`/images/${image}`), `${title} cover`);
       assert.ok(text(card).includes(LABEL), `${title} must not pretend to be a real screenshot`);
       assert.ok(!card.includes('Imagen de marca'), `${title} no generic brand placeholder`);

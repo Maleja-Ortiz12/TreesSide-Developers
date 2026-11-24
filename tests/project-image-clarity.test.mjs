@@ -36,12 +36,12 @@ test('S18 project detail shows the complete flat image without a gradient or gla
   assert.equal(nodes(media).filter(node => node !== media && node.type !== 'Image').length, 0, 'no overlay or badge above image');
 });
 
-test('S18 Libres en Cristo uses a local vector of the existing illustration, preserving provenance', async () => {
+test('Libres en Cristo uses the uploaded conceptual WebP and retains its safe legacy vector', async () => {
   const html = await page();
   const card = html.split(/(?=<div[^>]*data-project=)/).find(value => value.includes('data-project="equipo-libres-en-cristo-jesus"'));
   assert.ok(card);
-  assert.ok(card.includes('/images/projects/libres-en-cristo.svg'));
-  assert.ok(card.includes('Ilustración conceptual'));
+  assert.ok(card.includes('/images/projects/libres-en-cristo-concept.webp'));
+  assert.ok(card.includes('Ilustración conceptual · No es una captura real'));
   const response = await fetch(new URL('/images/projects/libres-en-cristo.svg', base));
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type'), /image\/svg\+xml/);

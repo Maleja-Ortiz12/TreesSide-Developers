@@ -34,17 +34,17 @@ function HeroArtwork() {
   // Match the existing strip's eligibility, except S5 expressly excludes UptownHair.
   const projects = FEATURED_PROJECTS.filter(project => !project.experience && project.image !== '/images/treesside-logo.jpg' && project.id !== 'equipo-uptownhair');
   const real = (project: (typeof projects)[number]): HeroItem => sizes => <>
-    <figcaption>{project.title} <span>Portafolio del equipo</span>{project.imageLabel && <span className={styles.conceptLabel}>Diseño conceptual · {project.imageLabel}</span>}</figcaption>
-    <Image data-home-project={project.id} src={project.image} alt={`${project.imageLabel ? 'Ilustración conceptual' : 'Captura real'} de ${project.title}, portafolio del equipo`} style={{ objectFit: project.imageFit ?? 'cover' }} width={1200} height={833} sizes={sizes} />
+    <figcaption>{project.title} {project.imageLabel ? <span className={styles.conceptLabel}>Vista conceptual</span> : <span>Portafolio del equipo</span>}</figcaption>
+    <Image data-home-project={project.id} src={project.image} alt={`${project.imageLabel ? 'Ilustración conceptual' : 'Captura real'} de ${project.title}, portafolio del equipo${project.imageLabel ? `. ${project.imageLabel}` : ''}`} style={{ objectFit: project.imageFit ?? 'cover' }} width={1200} height={833} sizes={sizes} />
   </>;
   const concept = (src: string, caption: ReactNode, alt: string): HeroItem => sizes => <>
     <figcaption>{caption}</figcaption>
     <Image src={src} alt={alt} style={{ objectFit: 'contain' }} width={1600} height={1200} sizes={sizes} />
   </>;
-  const salon = concept('/images/home-concepts/salon.webp', <><span className={styles.conceptLabel}>Diseño conceptual</span> Peluquerías</>, 'Diseño conceptual ficticio de peluquería: inicio, servicios y móvil');
-  const shop = concept('/images/home-concepts/shop.webp', <><span className={styles.conceptLabel}>Diseño conceptual</span> Comercio electrónico</>, 'Diseño conceptual ficticio de comercio electrónico: inicio, catálogo y móvil');
+  const salon = concept('/images/home-concepts/salon.webp', <><span className={styles.conceptLabel}>Vista conceptual</span> Peluquerías</>, 'Diseño conceptual ficticio de peluquería: inicio, servicios y móvil');
+  const shop = concept('/images/home-concepts/shop.webp', <><span className={styles.conceptLabel}>Vista conceptual</span> Comercio electrónico</>, 'Diseño conceptual ficticio de comercio electrónico: inicio, catálogo y móvil');
   const admin = (id: 'salon-admin' | 'restaurant-admin', title: string) => concept(`/images/home-concepts/${id}.webp`,
-    <><span className={styles.conceptLabel}>Diseño conceptual · Datos de ejemplo</span> {title}</>,
+    <><span className={styles.conceptLabel}>Vista conceptual</span> {title}</>,
     `Propuesta ficticia: ${title}. Datos de ejemplo, no corresponde a La Lupe.`);
   const lupe = projects.find(project => project.id === 'equipo-la-lupe')!;
   const remaining = projects.filter(project => project !== lupe);

@@ -58,5 +58,8 @@ test('footer quick links and calls to action navigate to section pages', async (
 
 test('the mockup view switcher is gone from the home page', async () => {
   const home = await page('/');
-  assert.ok(!/Vista|Columna/.test(home.match(/<body[\s\S]*<\/body>/)[0].replace(/<script[\s\S]*?<\/script>/g, '')));
+  const body = home.match(/<body[\s\S]*<\/body>/)[0].replace(/<script[\s\S]*?<\/script>/g, '');
+  // The requested provenance badge is not the retired layout switcher.
+  assert.ok(body.includes('Vista conceptual'));
+  assert.ok(!/Vista|Columna/.test(body.replaceAll('Vista conceptual', '')));
 });

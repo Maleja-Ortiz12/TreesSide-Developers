@@ -135,7 +135,7 @@ try {
     const frameBefore = await evaluate(`document.querySelector('#hero-collage').dataset.frame`);
     await wait(`document.querySelector('#hero-collage').dataset.frame!==${JSON.stringify(frameBefore)}`);
     check(`${width} artwork advances automatically`, await evaluate(`document.querySelector('#hero-collage').dataset.frame!==${JSON.stringify(frameBefore)}`), true);
-    check(`${width} every rotating card has truthful visible label`, await evaluate(`(()=>{const c=document.querySelector('#hero-collage'),labels=[...c.querySelectorAll('figcaption')];return labels.length===3 && labels.every(el=>{const r=el.getBoundingClientRect();return r.width>0 && r.height>0 && (el.textContent.includes('Diseño conceptual') || el.textContent.includes('Portafolio del equipo'));});})()`), true);
+    check(`${width} every rotating card has truthful visible label`, await evaluate(`(()=>{const c=document.querySelector('#hero-collage'),labels=[...c.querySelectorAll('figcaption')];return labels.length===3 && labels.every(el=>{const r=el.getBoundingClientRect();return r.width>0 && r.height>0 && (el.textContent.includes('Vista conceptual') || el.textContent.includes('Portafolio del equipo'));});})()`), true);
     const scene = await evaluate(`(()=>{const c=document.querySelector('#hero-collage'),tree=c.querySelector('img[aria-hidden="true"]'),figures=[...c.querySelectorAll('figure')];return {perspective:getComputedStyle(c).perspective,relative:getComputedStyle(c).position,treeInside:!!tree,treeZ:Number(getComputedStyle(tree).zIndex),treeOpacity:Number(getComputedStyle(tree).opacity),figures:figures.map(f=>({z:Number(getComputedStyle(f).zIndex),delay:getComputedStyle(f).animationDelay,transform:getComputedStyle(f).transform})),carousel:!!document.querySelector('#carrusel')};})()`);
     console.log(`SCENE ${width} ${JSON.stringify(scene)}`);
     check(`${width} tree behind all figures`, scene.treeInside && scene.figures.every(f => f.z > scene.treeZ) && scene.treeOpacity >= .7 && scene.relative === 'relative', true);
@@ -201,7 +201,7 @@ try {
       }
       await evaluate(`[...document.querySelectorAll('#hero-collage figure')].forEach((f,i)=>f.getAnimations()[0].currentTime=${JSON.stringify(savedTimes)}[i])`);
       await evaluate(frames);
-      const cards = await evaluate(`([...document.querySelectorAll('#hero-collage figure')].map(f=>{const img=f.querySelector('img'),label=f.querySelector('figcaption');return {id:img?.dataset.homeProject || null,src:img?.getAttribute('src'),alt:img?.alt,text:label.textContent,visible:label.getBoundingClientRect().height>0,loaded:!img || (img.complete && img.naturalWidth>0),fit:img && getComputedStyle(img).objectFit};}))`);
+      const cards = await evaluate(`([...document.querySelectorAll('#hero-collage figure')].map(f=>{const img=f.querySelector('img'),label=f.querySelector('figcaption');return {id:img?.dataset.homeProject || null,src:img?.getAttribute('src'),alt:img?.alt,text:label.textContent,badges:[...label.querySelectorAll('span')].filter(el=>el.textContent==='Vista conceptual').map(el=>el.textContent),visible:label.getBoundingClientRect().height>0,loaded:!img || (img.complete && img.naturalWidth>0),fit:img && getComputedStyle(img).objectFit};}))`);
       check(`${width} frame ${index} three loaded visible labelled cards`, cards.length===3 && cards.every(c=>c.visible && c.loaded), true);
       const large = cardKey(cards[0]);
       largeSeen.push(large);
@@ -221,7 +221,7 @@ try {
         const luminance = channels => channels.map(v=>{const s=v/255;return s<=0.04045?s/12.92:((s+0.055)/1.055)**2.4;})
           .reduce((sum,v,i)=>sum+v*[0.2126,0.7152,0.0722][i],0);
         return [...document.querySelectorAll('#hero-collage figcaption span')]
-          .filter(el=>el.textContent.includes('Diseño conceptual')).map(el=>{
+          .filter(el=>el.textContent==='Vista conceptual').map(el=>{
             const style=getComputedStyle(el),fg=rgb(style.color),bg=rgb(style.backgroundColor);
             const a=fg && luminance(fg),b=bg && luminance(bg);
             return {text:el.textContent,color:style.color,background:style.backgroundColor,
@@ -229,10 +229,16 @@ try {
           });
       })()`);
       console.log(`CONCEPT_CONTRAST ${width} frame ${index} ${JSON.stringify(contrast)}`);
-      const expectedBadges = cards.filter(card=>card.text.includes('Diseño conceptual')).length;
+      const expectedBadges = cards.filter(card=>!card.id || expectedProjects.find(p=>p.id===card.id)?.imageLabel).length;
+      for (const card of cards) {
+        const conceptual = !card.id || !!expectedProjects.find(p=>p.id===card.id)?.imageLabel;
+        check(`${width} frame ${index} exact compact badge`, card.badges, conceptual ? ['Vista conceptual'] : []);
+        if (conceptual) check(`${width} frame ${index} no verbose conceptual caption`,
+          !/Portafolio del equipo|Diseño conceptual|No es una captura|Datos de ejemplo/.test(card.text), true);
+      }
       check(`${width} frame ${index} every conceptual badge contrast >=4.5:1`,
         contrast.length===expectedBadges && contrast.every(label=>Number.isFinite(label.ratio) && label.ratio>=4.5), true);
-      if (cards[0].id) check(`${width} frame ${index} ordinary primary portfolio span stays mint`, await evaluate(`(()=>{
+      if (cards[0].id && !expectedProjects.find(p=>p.id===cards[0].id)?.imageLabel) check(`${width} frame ${index} ordinary primary portfolio span stays mint`, await evaluate(`(()=>{
         const span=[...document.querySelector('#hero-collage figure').querySelectorAll('figcaption span')]
           .find(el=>el.textContent==='Portafolio del equipo');
         return !!span && getComputedStyle(span).color==='rgb(155, 255, 206)';
@@ -240,14 +246,14 @@ try {
       for (const card of cards) {
         if (!card.id) {
           check(`${width} frame ${index} generic concept never claims portfolio delivery`,
-            card.text.includes('Diseño conceptual') && !card.text.includes('Portafolio del equipo') && !card.alt.includes('Captura real'), true);
+            card.text.includes('Vista conceptual') && !card.text.includes('Portafolio del equipo') && !card.alt.includes('Captura real'), true);
           const imagePath = new URL(card.src, base);
           const asset = imagePath.searchParams.get('url') || imagePath.pathname;
           if (['/images/home-concepts/salon-admin.webp', '/images/home-concepts/restaurant-admin.webp'].includes(asset)) {
             if (card === cards[0]) adminSeen.push(asset);
             const title = asset.includes('salon-admin') ? 'ALBA · Administración de empleados' : 'BRASA · Pedidos, caja, cocina y equipo';
             check(`${width} frame ${index} admin artwork is a sample-data proposal, not La Lupe delivery`, {
-              title:card.text.includes(title), sample:card.text.includes('Datos de ejemplo'),
+              title:card.text === `Vista conceptual ${title}`, sample:card.alt.includes('Datos de ejemplo'),
               alt:card.alt.includes('Propuesta ficticia:') && card.alt.includes('Datos de ejemplo, no corresponde a La Lupe.'),
               fit:card.fit,
             }, {title:true,sample:true,alt:true,fit:'contain'});
@@ -262,9 +268,9 @@ try {
         check(`${width} ${card.id} title/image/label/fit`, {
           title:card.text.includes(project.title),image:imagePath.searchParams.get('url') || imagePath.pathname,
           portfolio:card.text.includes('Portafolio del equipo'),fit:card.fit,
-          provenance:!project.imageLabel || (card.text.includes(project.imageLabel) && card.text.includes('Diseño conceptual') && !card.alt.includes('Captura real')),
+          provenance:!project.imageLabel || (card.text === `${project.title} Vista conceptual` && card.alt.includes(project.imageLabel) && card.alt.includes('Ilustración conceptual') && !card.alt.includes('Captura real')),
           neutral:!card.text.includes('Web real'),
-        }, {title:true,image:project.image,portfolio:true,fit:project.imageFit || 'cover',provenance:true,neutral:true});
+        }, {title:true,image:project.image,portfolio:!project.imageLabel,fit:project.imageFit || 'cover',provenance:true,neutral:true});
       }
       await layout(width, `/ frame ${index}`);
       check(`${width} frame ${index} cards inside hero`, await evaluate(`(()=>{const h=document.querySelector('#inicio').getBoundingClientRect();return [...document.querySelectorAll('#hero-collage figure')].every(f=>{const r=f.getBoundingClientRect();return r.left>=0 && r.right<=innerWidth && r.top>=h.top && r.bottom<=h.bottom;});})()`), true);
