@@ -99,7 +99,7 @@ for (const item of covers) {
   <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#102b40"/><stop offset="1" stop-color="#060e1c"/></linearGradient><radialGradient id="light"><stop stop-color="#1e6070" stop-opacity=".42"/><stop offset="1" stop-color="#102236" stop-opacity="0"/></radialGradient></defs>
   <rect width="1200" height="750" fill="url(#bg)"/><circle cx="1000" cy="100" r="490" fill="url(#light)"/>
   <g font-family="Segoe UI, Arial, sans-serif">
-  ${text(64, 57, 'TREESSIDE  /  PORTAFOLIO', 18, C.green, 700)}
+  ${text(64, 57, 'TREESSET  /  PORTAFOLIO', 18, C.green, 700)}
   ${text(64, 121, item.title, item.title.length > 33 ? 39 : 43, C.white, 700)}
   ${text(64, 164, item.subtitle, 23, C.muted)}
   ${chip(64, 188, item.tags[0])}${chip(294, 188, item.tags[1])}
