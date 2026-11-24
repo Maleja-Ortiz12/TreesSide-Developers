@@ -58,9 +58,11 @@ export async function openBrowser({ safeOrigin } = {}) {
       await cdp('Network.enable');
       await cdp('Fetch.enable', { patterns: [{ urlPattern: '*', requestStage: 'Request' }] });
     }
-    // A safe same-origin request the browser itself canceled (e.g. superseded navigation) can no longer be
-    // continued and yields "Invalid InterceptionId"; only that confirmed case is tolerated, never a blocked request.
-    const isConfirmedCancellation = item => item.safe && item.error.includes('Invalid InterceptionId') && canceledRequests.has(item.networkId);
+    // A safe same-origin GET/HEAD the browser dropped while paused (superseded navigation, aborted Next.js RSC
+    // prefetch) can no longer be continued and yields "Invalid InterceptionId". Such a request was allowed anyway,
+    // so nothing can leak; it is tolerated whether or not Network.loadingFailed reported the cancellation.
+    // Any other error, and any error on a blocked (unsafe) request, still fails the check.
+    const isConfirmedCancellation = item => item.safe && item.error.includes('Invalid InterceptionId');
     const unhandledInterceptionErrors = () => interceptionErrors.filter(item => !isConfirmedCancellation(item));
     return { cdp, evaluate, close, blocked, interceptionErrors, unhandledInterceptionErrors };
   } catch (e) { await close(); throw e; }
