@@ -2,20 +2,20 @@
 
 Production assets for S2–S6 of `odd/tasks/home-centering-concept-mockups.md` (T2).
 
-These are locally designed and Edge-rendered interfaces using stock photographs, **not newly AI-generated photography**, delivered websites, client identities, testimonials, or performance evidence. ALBA and Arcilla are fictional proposal identities. Artwork is non-interactive; only the surrounding Home enquiry links are real actions. No real enquiry was sent.
+These are locally designed and Edge-rendered interfaces using stock photographs, **not newly AI-generated photography**, delivered websites, client identities, testimonials, or performance evidence. ALBA and TEC are fictional proposal identities (the earlier Arcilla ceramics direction is superseded). Artwork is non-interactive; only the surrounding Home enquiry links are real actions. No real enquiry was sent.
 
 ## Composition and integration
 
 - `public/images/home-concepts/salon.webp`: warm editorial salon, desktop home, services and mobile; 1600 × 1200, 121,818 bytes.
-- `public/images/home-concepts/shop.webp`: refined green/ivory ceramics store, desktop home, catalog and mobile; 1600 × 1200, 112,708 bytes.
+- `public/images/home-concepts/shop.webp`: graphite/electric-cyan technology store, desktop landing, guided audio catalog/comparison and mobile; 1600 × 1200, 113,042 bytes.
 - Each production composition has three coordinated views, photography, navigation, service/product categories and a primary visual action. No invented sales figures, reviews or client claims.
 - `ConceptShowcase.tsx` presents full uncropped compositions with persistent textual conceptual labels, accessible descriptions, fictional-identity disclosure, view labels, and the original enquiry text/destinations. Cards become single-column below 800px; artwork retains its aspect ratio.
 - Hero conceptual slots reuse these same assets without changing real-project eligibility, batch ordering, La Lupe artwork/copy, or real frames. Thumbnail images use contain rather than cropping the phone/catalog. The detailed proposal section is the primary reading surface; thumbnail microcopy is not essential content.
-- TreesSide's surrounding light section, typography, menu and shared footer are unchanged. `HomeRedesign.module.css` remains owned by the parallel centering worker.
+- TreesSide's surrounding light section, typography, menu and shared footer are unchanged. The technology revision only adjusts the hero artwork track/width in `HomeRedesign.module.css`.
 
 ## Stock provenance
 
-All three selected pages explicitly identified a free HD photo and `asset_type: photo`, `premium: false`, `plus: false` in the fetched page metadata. Downloaded images were visually inspected: salon interior with mirrors/chairs and decorative neon lettering, unbranded ceramic vases, and stacked unbranded ceramic cups. No recognizable people or commercial logos were observed. They are used only as illustrative stock, never represented as the fictional business's actual premises or merchandise.
+The three original selected pages explicitly identified a free HD photo and `asset_type: photo`, `premium: false`, `plus: false` in the fetched page metadata. Downloaded images were visually inspected: salon interior with mirrors/chairs and decorative neon lettering, unbranded ceramic vases, and stacked unbranded ceramic cups. No recognizable people or commercial logos were observed. They are used only as illustrative stock, never represented as the fictional business's actual premises or merchandise.
 
 License: [Unsplash License](https://unsplash.com/license), which permits commercial use, downloading, modification and distribution without required attribution. Attribution is retained here. The license does **not** provide model/property/trademark releases or guarantee every other right; review those separately for any future real client rollout.
 
@@ -27,6 +27,18 @@ License: [Unsplash License](https://unsplash.com/license), which permits commerc
 
 The proposed Ela De Pure skincare pages (`lGxeKOA6aps`, `aTyW35_SeOI`) were fetched but not used: their descriptions explicitly identify branded products and their recent studio imagery was not an appropriate basis for an unbranded photographic proposal. Two short plant-photo URLs and a search API returned no usable page data; the accessible public pottery search provided the alternatives above. No sibling-repository business assets were accessed or reused. Source metadata and visual inspection are evidence of photographic stock classification, not forensic proof of camera provenance.
 
+## Technology revision — S1–S2 (`technology-concept-jorge-projects.md`, T1)
+
+TEC uses an independent `technology-shop.mjs` template, not the salon's editorial layout: search-led header, category navigation, side index, product showcase and a catalog filter rail with connection-comparison table. Mobile stacks search, categories, product and action. The table is explicitly a general buying guide, **not** fabricated specifications for the photographed item. There are no fictional product brands, prices, client claims or performance figures. The same licensed headphone photograph is used across the three coordinated views; Gaming/Accessories are navigation directions, not invented photographed inventory. This remains static illustrative artwork, not a functional shop.
+
+New stock: `public/images/home-concepts/tech-stock.webp`, photographer **C D-X (@cdx2)**. Exact page: https://unsplash.com/photos/PDX_a_82obo (title: “Flatlay photography of wireless headphones”). Exact download: https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1600&q=85&fit=max&fm=jpg . License: https://unsplash.com/license . Both page and license returned HTTP 200; the page explicitly says “Free to use under the Unsplash License” and its metadata identifies `asset_type: photo`, `premium: false`, `plus: false`, and C D-X. The rendered photograph was visually inspected: black headphones on yellow, no people or recognizable commercial logos observed. No sibling assets or image generation were used. An attempted public search endpoint returned a browser-check HTML page rather than JSON; it supplied no assets.
+
+Shop-only reproduction: `node scripts/render-home-concepts.mjs --concept shop`. `--concept salon` selects only the original salon; omitting the option retains the default salon+shop pair. Selection filters source downloads and both HTML/capture write loops; capture logic itself is unchanged. Invalid/missing selector values fail before writes. Do not run the default full render when salon byte preservation is required. The default download-only mode and both composition calls are tested without rerendering salon.
+
+The hero now uses its entire artwork track instead of a viewport-height width clamp, with .85:1.25 grid tracks. At 1440px, the existing 1200px container minus 48px horizontal padding and 32px gap yields about 667px for the scene, versus the previous 468px at 768px height and 600px at 900px height. These are CSS geometry calculations, not fresh application-browser measurements. Intrinsic height, grid centering, header/rail accounting, tablet/mobile rules, controls, pause and reduced-motion behavior remain unchanged; short viewports may use natural document flow. Fresh integrated centering/rotation checks remain parent-owned because the existing preview is stale.
+
+Salon SHA-256 preservation is pinned in the dedicated test: HTML `9659b6396121519284c3458b36db8afc6475a0a6cc6a3ae678ec2c64dddab74b`; WebP `48fcd7258781748d87b704d09e50e18e5589d38b6a1af56ceedf9ea823aa4a15`. The stock/render inputs are self-contained. Existing vases/mug stock and historical evidence below are retained, not deleted.
+
 ## Reproduction
 
 From the repository root, with existing Node, sharp and installed Microsoft Edge:
@@ -37,7 +49,7 @@ node scripts/render-home-concepts.mjs
 node --test tests/home-concept-mockups.test.mjs
 ```
 
-`--download-only` retrieves missing stock and optimizes it to WebP. Existing local stock is reused, so normal rerenders need no external network. `scripts/home-concepts/template.mjs` generates the checked-in, self-contained `salon.html` and `shop.html` inputs with embedded base64 photographs and system fonts: no remote images, fonts or runtime requests. These are the actual inputs captured for the production assets, not separate approval artboards.
+`--download-only` retrieves missing stock and optimizes it to WebP. Existing local stock is reused, so normal rerenders need no external network. `scripts/home-concepts/template.mjs` (delegating shop to `technology-shop.mjs`) generates the checked-in, self-contained `salon.html` and `shop.html` inputs with embedded base64 photographs and system fonts: no remote images, fonts or runtime requests. These are the actual inputs captured for the production assets, not separate approval artboards.
 
 The renderer opens its own headless Edge/CDP instance on an OS-selected port, uses a fresh OS-temp browser profile, renders file URLs at 1600 × 1200, waits for image/font decoding, captures PNG in memory and encodes WebP using existing sharp. Set `EDGE_PATH` if Edge is installed elsewhere. It closes its socket and stops its own browser; it prints the profile path for parent-owned cleanup. It does not use the site's server, `.next`, or the parent's preview browser. Runtime JSX uses local production images only.
 

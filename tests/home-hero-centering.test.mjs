@@ -32,12 +32,13 @@ test('S1 collage height follows actual overlapping card extents, including wrapp
   assert.match(collage, /grid-template-rows: auto;/);
   assert.doesNotMatch(collage, /aspect-ratio:|grid-template-rows: repeat\(/);
   assert.match(collage, /padding-block: 20px 24px/);
-  assert.match(rule(desktop, 'collageScene'), /100svh - 300px/);
+  assert.match(rule(desktop, 'collageScene'), /width: min\(100%, calc\(100svh - 210px\)\)/);
   for (const frame of ['captureFrame', 'salonFrame', 'shopFrame']) {
     assert.match(rule(desktop, `collage .${frame}`), /grid-row: 1;/);
   }
-  assert.match(rule(desktop, 'collage .salonFrame'), /margin-top: 48%/);
-  assert.match(rule(desktop, 'collage .shopFrame'), /margin-top: 56%/);
+  // Separate lower tracks keep both captions readable instead of stacking their heights.
+  assert.match(rule(desktop, 'collage .salonFrame'), /grid-column: 7 \/ 13;.*margin-top: 45%/);
+  assert.match(rule(desktop, 'collage .shopFrame'), /grid-column: 1 \/ 7;.*margin-top: 45%/);
   assert.match(rule(mobile, 'collageScene .collage figure'), /margin-top: 0/);
 });
 

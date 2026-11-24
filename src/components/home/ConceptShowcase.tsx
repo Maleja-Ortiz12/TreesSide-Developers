@@ -6,7 +6,7 @@ import styles from './ConceptShowcase.module.css';
 
 const concepts = [
   { id: 'salon', title: 'Peluquerías y salones de belleza', identity: 'ALBA · estudio de cabello', views: 'Inicio · Servicios · Móvil', description: 'Una propuesta de cómo podrían mostrarse tus servicios, instalaciones y profesionales, con el estilo de tu negocio.', action: 'Quiero algo similar', href: enquiryHref({ servicio: 'sitios-web' }), alt: 'Propuesta ficticia ALBA: inicio editorial con fotografía de salón, servicios de corte, color y cuidado, y versión móvil.' },
-  { id: 'shop', title: 'Comercio electrónico', identity: 'Arcilla · objetos para casa', views: 'Inicio · Catálogo · Móvil', description: 'Una propuesta visual de tienda y catálogo de productos para explorar cómo presentar lo que vendes.', action: 'Quiero una tienda virtual', href: enquiryHref({ servicio: 'ecommerce' }), alt: 'Propuesta ficticia Arcilla: inicio con fotografía de cerámicas, catálogo de jarrones y tazas, y tienda en móvil.' },
+  { id: 'shop', title: 'Comercio electrónico', identity: 'TEC · tecnología cotidiana', views: 'Inicio · Catálogo · Móvil', description: 'Una propuesta visual de tienda y catálogo de productos para explorar cómo presentar lo que vendes.', action: 'Quiero una tienda virtual', href: enquiryHref({ servicio: 'ecommerce' }), alt: 'Propuesta ficticia TEC: tienda tecnológica grafito y cian con auriculares de stock, búsqueda y categorías, catálogo con guía de conexiones y versión móvil.' },
 ];
 
 export function ConceptShowcase() {

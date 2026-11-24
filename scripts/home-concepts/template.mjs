@@ -1,5 +1,7 @@
 // Self-contained HTML used to capture the actual Home production assets.
+import { technologyShop } from './technology-shop.mjs';
 export function composition(kind, photos) {
+  if (kind === 'shop') return technologyShop(photos);
   const salon = kind === 'salon';
   const brand = salon ? 'ALBA' : 'arcilla';
   const image = salon ? photos.salon : photos.vases;
