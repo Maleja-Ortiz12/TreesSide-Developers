@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Scissors, ShoppingBag, Workflow, Utensils } from 'lucide-react';
+import { ArrowRight, ShoppingBag, Workflow, Utensils } from 'lucide-react';
 import { FEATURED_PROJECTS } from '@/data/content';
 import { enquiryHref } from '@/lib/enquiry';
 import { HomeDemos } from '@/components/HomeDemos';
 import { HeroCollage } from './HeroCollage';
+import { ConceptShowcase } from './ConceptShowcase';
 import styles from './HomeRedesign.module.css';
 
 const services = [
@@ -19,18 +20,6 @@ const stages = [
   ['Lanzamos', 'publicación y entrega según el alcance.'],
 ];
 
-// An unbranded, non-interactive visual proposal — not a capture of a delivered salon website.
-function SalonPreview() {
-  return <div className={styles.salonPreview} role="img" aria-label="Propuesta visual genérica de un salón: servicios, instalaciones y profesionales">
-    <div className={styles.salonMasthead}><strong>Estudio de belleza</strong><Scissors size={22} aria-hidden="true" /></div>
-    <div className={styles.salonBody}>
-      <div><span className={styles.salonEyebrow}>Tu estilo, tu espacio</span><strong>Un momento<br />para ti.</strong><p>Corte · Color · Cuidado</p></div>
-      <div className={styles.mirror} aria-hidden="true"><Scissors size={52} strokeWidth={1} /></div>
-    </div>
-    <div className={styles.salonStrip}><span>Servicios</span><span>El salón</span><span>Nuestro equipo</span></div>
-  </div>;
-}
-
 function HeroArtwork() {
   // Match the existing strip's eligibility, except S5 expressly excludes UptownHair.
   const projects = FEATURED_PROJECTS.filter(project => !project.experience && project.image !== '/images/treesside-logo.jpg' && project.id !== 'equipo-uptownhair');
@@ -40,11 +29,11 @@ function HeroArtwork() {
   </>;
   const salon = <>
     <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Peluquerías</figcaption>
-    <SalonPreview />
+    <Image src="/images/home-concepts/salon.webp" alt="Diseño conceptual ficticio de peluquería: inicio, servicios y móvil" style={{ aspectRatio: '4 / 3', objectFit: 'contain' }} width={1600} height={1200} sizes="(max-width: 600px) 70vw, 35vw" />
   </>;
   const shop = <>
     <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Comercio electrónico</figcaption>
-    <Image src="/images/services/ecommerce-hero.webp" alt="Ilustración de una propuesta de tienda y catálogo, no un proyecto desarrollado" width={1689} height={957} sizes="(max-width: 600px) 70vw, (max-width: 1060px) 50vw, 27vw" />
+    <Image src="/images/home-concepts/shop.webp" alt="Diseño conceptual ficticio de comercio electrónico: inicio, catálogo y móvil" style={{ aspectRatio: '4 / 3', objectFit: 'contain' }} width={1600} height={1200} sizes="(max-width: 600px) 70vw, (max-width: 1060px) 50vw, 27vw" />
   </>;
   const lupe = projects.find(project => project.id === 'equipo-la-lupe')!;
   // Preserve the first paint; batch remaining projects in three slots without repeats.
@@ -125,28 +114,7 @@ export function HomeRedesign() {
       <div className="container">
         <h2 id="concepts-title">Así podría verse tu negocio</h2>
         <p className={styles.sectionLead}>Explora propuestas visuales que podemos adaptar a la identidad y las necesidades de tu negocio</p>
-        <div className={styles.conceptGrid}>
-          <article className={styles.conceptCard}>
-            <div className={styles.conceptVisual}><span className={styles.conceptLabel}>Diseño conceptual</span><SalonPreview /></div>
-            <div className={styles.conceptCopy}>
-              <h3>Peluquerías y salones de belleza</h3>
-              <p>Una propuesta de cómo podrían mostrarse tus servicios, instalaciones y profesionales, con el estilo de tu negocio.</p>
-              <Link className={styles.lightButton} href={enquiryHref({ servicio: 'sitios-web' })}>Quiero algo similar <ArrowRight size={18} aria-hidden="true" /></Link>
-            </div>
-          </article>
-          <article className={styles.conceptCard}>
-            <div className={styles.conceptVisual}>
-              <span className={styles.conceptLabel}>Diseño conceptual</span>
-              <Image src="/images/services/ecommerce-hero.webp" alt="Imagen ilustrativa de una propuesta de comercio electrónico" width={1689} height={957} sizes="(max-width: 600px) 90vw, 45vw" />
-            </div>
-            <div className={styles.conceptCopy}>
-              <h3>Comercio electrónico</h3>
-              <p>Una propuesta visual de tienda y catálogo de productos para explorar cómo presentar lo que vendes.</p>
-              <Link className={styles.lightButton} href={enquiryHref({ servicio: 'ecommerce' })}>Quiero una tienda virtual <ArrowRight size={18} aria-hidden="true" /></Link>
-            </div>
-          </article>
-        </div>
-        <p className={styles.caption}>Son propuestas ilustrativas: no son sitios web desarrollados ni casos de clientes.</p>
+        <ConceptShowcase />
       </div>
     </section>
 

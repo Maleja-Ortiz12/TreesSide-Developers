@@ -1,0 +1,16 @@
+.showcase { display: grid; gap: 2rem; margin-top: 2.5rem; }
+.card { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(240px, 1fr); overflow: hidden; border: 1px solid #ccd1c1; border-radius: 20px; background: #fffef8; color: #132b22; }
+.visual { margin: 0; min-width: 0; background: #e5d9cd; }
+.visual img { display: block; width: 100%; height: auto; }
+.label { padding: .7rem 1.25rem; background: #f4efe5; color: #342f28; font-weight: 700; font-size: .875rem; }
+.label span { font-weight: 400; }
+.copy { padding: clamp(1.25rem, 2.7vw, 2.75rem); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.copy h3 { font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.2; margin: .6rem 0 1rem; }
+.copy p { line-height: 1.65; }
+.copy .identity { text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; margin: 0; color: #4c6257; }
+.copy .views { margin: 0 0 .5rem; color: #4c6257; font-size: .875rem; }
+.action { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; border: 1px solid #294e40; border-radius: 8px; color: #fff; background: #294e40; padding: .8rem 1rem; min-height: 44px; margin-top: .75rem; font-weight: 600; text-decoration: none; }
+.action:hover { background: #173b2e; }
+.action:focus-visible { outline: 3px solid #c9d88d; outline-offset: 4px; }
+.caption { font-size: .875rem; color: #4c6257; line-height: 1.6; max-width: 80ch; margin: 0; }
+@media (max-width: 800px) { .card { grid-template-columns: minmax(0,1fr); } .copy { padding: 1.5rem; } .label { font-size: .8rem; } }
