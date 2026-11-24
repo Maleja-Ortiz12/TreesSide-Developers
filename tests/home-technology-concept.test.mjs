@@ -47,7 +47,7 @@ test('S1 local production technology asset is decoded, full sized, and truthfull
   assert.ok(html.includes('TEC /')); assert.doesNotMatch(html, /src="https?:/);
   const jsx = await read('src/components/home/ConceptShowcase.tsx');
   assert.ok(jsx.includes('TEC · tecnología cotidiana'));
-  for (const text of ['Quiero una tienda virtual', "servicio: 'ecommerce'", 'ficticias']) assert.ok(jsx.includes(text));
+  for (const text of ['Quiero una tienda virtual', "href: '/servicios/marketplaces'", 'ficticias']) assert.ok(jsx.includes(text));
 });
 
 // S9 cascade model from the authored desktop CSS: untransformed resting boxes of

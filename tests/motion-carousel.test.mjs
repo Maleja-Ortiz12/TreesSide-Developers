@@ -29,7 +29,7 @@ test('Home uses the requested project showcase instead of the retired strip', as
   assert.ok(html.includes('id="trabajo"'));
   assert.ok(html.indexOf('id="trabajo"') < html.indexOf('id="propuestas"'));
   assert.ok(!html.includes('id="demos"'), 'S10 the Home demos section was removed');
-  assert.ok(html.includes('href="/proyectos#equipo-la-lupe"'));
+  assert.ok(html.includes('href="/proyectos"'));
 });
 
 test('the retained strip helper fills wide screens without changing ordering', async () => {

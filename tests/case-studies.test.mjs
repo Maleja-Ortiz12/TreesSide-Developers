@@ -58,11 +58,8 @@ test('S2 cases remain reachable from the integrated footer and project modal, wi
   const home = await page('/');
   const footer = home.match(/<footer[\s\S]*?<\/footer>/)?.[0] ?? '';
   assert.ok(footer.includes('href="/casos"'), 'footer link');
-  // S14 restores the moving strip; all case studies stay linked from /casos and project detail.
-  for (const slug of ['la-lupe']) {
-    assert.ok(home.includes(`href="/proyectos#equipo-${slug}"`), `laptop ${slug}`);
-  }
-  // S25 brought the demos back; each names its case study.
+  // Home's "Ver proyectos" now opens the complete catalog; cases remain on the index and modal.
+  assert.match(home, /<a[^>]*href="\/proyectos"[^>]*>[\s\S]*?Ver proyectos/);
   const caseIndex = await page('/casos');
   for (const slug of ['la-lupe', 'emisoras-latinas']) assert.ok(caseIndex.includes(`href="/casos/${slug}"`), `demo links case ${slug}`);
   const modal = await readFile('src/components/ProjectModal.tsx', 'utf8');

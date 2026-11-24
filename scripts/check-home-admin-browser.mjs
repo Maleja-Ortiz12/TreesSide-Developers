@@ -25,7 +25,7 @@ try {
     check(`${width} two separate admin concepts after original concepts`, await evaluate(`(()=>{const s=document.querySelector('#propuestas');return s?.querySelectorAll('[data-home-admin-concept]').length===2 && !!s.querySelector('[data-home-concept="salon"]') && !!s.querySelector('[data-home-concept="shop"]') && !!(s.querySelector('[data-home-concept="shop"]').compareDocumentPosition(s.querySelector('[data-home-admin-concept]'))&Node.DOCUMENT_POSITION_FOLLOWING)})()`));
     check(`${width} La Lupe confirmed features only`, await evaluate(`JSON.stringify([...document.querySelectorAll('[data-project-card="equipo-la-lupe"] li')].map(e=>e.textContent))===JSON.stringify(['Presentación del restaurante','Menú','Platos destacados','Contacto por WhatsApp'])`));
     check(`${width} explicit non-client disclosure`, await evaluate(`document.querySelector('#propuestas').textContent.includes('No son funcionalidades entregadas a La Lupe')`));
-    for (const [id, service] of [['salon-admin', 'automatizacion'], ['restaurant-admin', 'restaurantes']]) {
+    for (const [id, service] of [['salon-admin', 'sistemas-de-gestion'], ['restaurant-admin', 'restaurantes']]) {
       const m = await evaluate(`(async()=>{
         const card=document.querySelector('[data-home-admin-concept="${id}"]'), img=card.querySelector('img'), label=card.querySelector('figcaption');
         card.scrollIntoView({behavior:'instant',block:'start'});
@@ -39,7 +39,7 @@ try {
       check(`${width} ${id} decoded original, contain, 4:3`, m.original[0] === 1600 && m.original[1] === 1200 && m.fit === 'contain' && Math.abs(m.image.width / m.image.height - 4 / 3) < .01);
       check(`${width} ${id} no horizontal overflow or artwork clipping`, m.overflow === 0 && m.card.left >= 0 && m.card.right <= width + 1 && m.image.left >= m.figure.left && m.image.right <= m.figure.right && m.image.bottom <= m.figure.bottom);
       check(`${width} ${id} persistent visible sample label`, m.labelVisible && m.labelText === 'Diseño conceptual · Datos de ejemplo' && m.label.top >= 76 && m.label.bottom <= height);
-      check(`${width} ${id} contextual contact and descriptive alt`, m.href === `/contacto?servicio=${service}` && m.alt.includes('Datos de ejemplo'));
+      check(`${width} ${id} service destination and descriptive alt`, m.href === `/servicios/${service}` && m.alt.includes('Datos de ejemplo'));
       const { data } = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
       await writeFile(join(scratch, `${id}-${width}.png`), Buffer.from(data, 'base64'));
     }

@@ -257,19 +257,25 @@ test('S3 three light service cards give benefits and existing service destinatio
   const { tree } = home(), section = byId(tree, 'soluciones');
   assert.equal(text(nodes(section).find(n => n.type === 'h2')), '¿Qué necesita tu negocio?');
   const cards = nodes(section).filter(n => n.type === 'article');
-  assert.deepEqual(cards.map(n => text(nodes(n).find(item => item.type === 'h3'))), ['Web para restaurantes', 'Tiendas virtuales', 'Software y automatización']);
-  assert.deepEqual(links(section).map(n => n.props.href), ['/servicios/restaurantes', '/servicios/ecommerce', '/servicios/automatizacion']);
+  assert.deepEqual(cards.map(n => text(nodes(n).find(item => item.type === 'h3'))), ['Web para tu negocio', 'Tiendas virtuales', 'Software y automatización']);
+  assert.deepEqual(links(section).map(n => n.props.href), ['/servicios/sitios-web', '/servicios/ecommerce', '/servicios/automatizacion']);
+  assert.equal(cards[0].props['data-home-solution'], 'sitios-web');
+  const image = nodes(cards[0]).find(n => n.type === 'img');
+  assert.equal(image.props.src, '/images/services/sitios-web-hero.webp');
+  assert.equal(image.props.alt, 'Ilustración conceptual de una página web para negocios');
+  assert.ok(nodes(cards[0]).some(n => n.type === 'icon:Globe'));
+  assert.ok(text(cards[0]).includes('Haz que encuentren tu negocio, conozcan tus servicios y te contacten fácilmente.'));
   for (const card of cards) assert.ok(nodes(card).some(n => n.type === 'p' && text(n).length > 40));
   assert.match(text(section), /posibilidades del servicio/i);
 });
 
-test('S4 La Lupe alone is real work with confirmed features and the catalog anchor', () => {
+test('S4/S11 La Lupe alone is real work with confirmed features and the projects CTA', () => {
   const { tree } = home(), section = byId(tree, 'trabajo');
   assert.equal(text(nodes(section).find(n => n.type === 'h2')), 'Conoce nuestro trabajo');
   assert.equal(text(nodes(section).find(n => n.type === 'h3')), 'La Lupe');
   assert.match(text(section), /restaurante mexicano/);
   assert.deepEqual(nodes(section).filter(n => n.type === 'li').map(text), ['Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp']);
-  assert.equal(exactLink(section, 'Ver proyecto').props.href, '/proyectos#equipo-la-lupe');
+  assert.equal(exactLink(section, 'Ver proyectos').props.href, '/proyectos');
   assert.equal(exactLink(section, 'Quiero una web para mi negocio').props.href, '/contacto?servicio=restaurantes');
   assert.doesNotMatch(text(section), /pedidos|reservas|pagos|paneles|Emisoras/i);
   assert.ok(nodes(section).some(n => n.type === 'img' && n.props.src === '/images/projects/la-lupe.webp'));
@@ -286,11 +292,35 @@ test('S5 generic salon and ecommerce concepts are proposals, never delivered web
   assert.match(text(cards[0]), /servicios, instalaciones y profesionales/);
   assert.match(text(cards[1]), /Comercio electrónico/);
   assert.match(text(cards[1]), /catálogo de productos/);
-  assert.equal(exactLink(section, 'Quiero algo similar').props.href, '/contacto?servicio=sitios-web');
-  assert.equal(exactLink(section, 'Quiero una tienda virtual').props.href, '/contacto?servicio=ecommerce');
+  assert.equal(exactLink(section, 'Quiero algo similar').props.href, '/servicios/sitios-web');
+  assert.equal(exactLink(section, 'Quiero una tienda virtual').props.href, '/servicios/marketplaces');
   assert.match(text(section), /no son sitios web desarrollados/i);
   assert.doesNotMatch(text(section), /UptownHair|Ver sitio/i);
-  assert.ok(links(section).every(n => n.props.href.startsWith('/contacto?')));
+  assert.ok(links(section).every(n => n.props.href.startsWith('/servicios/')));
+});
+
+test('S11 admin proposals show service labels below details and retain actions, sample media and disclaimers', () => {
+  const { tree } = home();
+  const cards = nodes(tree).filter(n => n.type === 'article' && n.props['data-home-admin-concept']);
+  assert.equal(cards.length, 2);
+  for (const [index, id, title, detail, label, action, href] of [
+    [0, 'salon-admin', 'Tu equipo, en una misma agenda', 'Empleados · Roles · Turnos · Disponibilidad', 'Panel administrativo y reservas', 'Quiero organizar mi salón', '/servicios/sistemas-de-gestion'],
+    [1, 'restaurant-admin', 'De la comanda al cierre de caja', 'Pedidos · Caja · Cocina · Equipo', 'App para restaurantes', 'Quiero organizar mi restaurante', '/servicios/restaurantes'],
+  ]) {
+    const card = cards[index], copy = nodes(card).find(n => n.props.className === 'copy');
+    assert.equal(card.props['data-home-admin-concept'], id);
+    assert.equal(text(nodes(copy).find(n => n.type === 'h4')), title);
+    const paragraphs = nodes(copy).filter(n => n.type === 'p').map(text);
+    assert.equal(paragraphs[1], detail);
+    assert.equal(paragraphs[2], label);
+    assert.equal(exactLink(card, action).props.href, href);
+    assert.equal(links(card).length, 1);
+    const image = nodes(card).find(n => n.type === 'img');
+    assert.equal(image.props.src, `/images/home-concepts/${id}.webp`);
+    assert.match(image.props.alt, /Datos de ejemplo/);
+    assert.ok(text(card).includes('Diseño conceptual · Datos de ejemplo'));
+  }
+  assert.match(text(byId(tree, 'propuestas')), /No son funcionalidades entregadas a La Lupe ni a otro cliente/);
 });
 
 // S10 (admin-concepts-visible-collage): the interactive demos section left the Home.

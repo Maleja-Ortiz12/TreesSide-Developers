@@ -105,10 +105,10 @@ try {
       && decodeURIComponent(real.image).includes('/images/projects/la-lupe.webp')
       && real.alt === 'Web real de La Lupe, restaurante mexicano: presentación y platos destacados'
       && JSON.stringify(real.features) === JSON.stringify(['Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp'])
-      && JSON.stringify(real.actions) === JSON.stringify([['Ver proyecto', '/proyectos#equipo-la-lupe'], ['Quiero una web para mi negocio', '/contacto?servicio=restaurantes']]));
+      && JSON.stringify(real.actions) === JSON.stringify([['Ver proyectos', '/proyectos'], ['Quiero una web para mi negocio', '/contacto?servicio=restaurantes']]));
     await evaluate(`scrollTo({top:scrollY+document.querySelector('#propuestas').getBoundingClientRect().top-90,behavior:'instant'});${settle}`);
     await screenshot(`concepts-${width}-section`);
-    for (const [id, action, service] of [['salon', 'Quiero algo similar', 'sitios-web'], ['shop', 'Quiero una tienda virtual', 'ecommerce']]) {
+    for (const [id, action, service] of [['salon', 'Quiero algo similar', 'sitios-web'], ['shop', 'Quiero una tienda virtual', 'marketplaces']]) {
       const m = await evaluate(`(async()=>{
         const card=document.querySelector('[data-home-concept="${id}"]'),img=card.querySelector('img');
         // Decode before positioning, then use one explicit instant scroll. Numeric scrollBy
@@ -130,7 +130,7 @@ try {
       check(`${width} ${id} decoded original 1600x1200 and displayed image 4:3`, m.decoded && m.natural[0] > 0 && m.natural[1] > 0 && m.original[0] === 1600 && m.original[1] === 1200 && Math.abs(m.image.width / m.image.height - 4 / 3) < .01);
       check(`${width} ${id} card/image bounds without crop or horizontal overflow`, m.overflow === 0 && m.card.left >= 0 && m.card.right <= width + 1 && within(m.image, m.figure) && within(m.figure, m.card) && m.image.top >= 76 && m.image.bottom <= height);
       check(`${width} ${id} conceptual label visible with fictional disclosure`, m.labelText.includes('Diseño conceptual') && m.labelText.includes('Propuesta ficticia') && m.labelDisplay !== 'none' && m.labelVisibility === 'visible' && Number(m.labelOpacity) > 0 && m.label.top >= 76 && m.label.bottom <= height && m.label.left >= 0 && m.label.right <= width);
-      check(`${width} ${id} original CTA text/path/query`, m.action === action && m.href === `/contacto?servicio=${service}`);
+      check(`${width} ${id} CTA text and service destination`, m.action === action && m.href === `/servicios/${service}`);
       await screenshot(`concepts-${width}-${id}-composition`);
     }
   }

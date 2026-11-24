@@ -100,7 +100,7 @@ test('Home redesign features only the confirmed La Lupe project', () => {
   const home = load('src/components/home/HomeRedesign.tsx').HomeRedesign();
   const cards = nodes(home).filter(node => node.props?.['data-project-card']);
   assert.deepEqual(cards.map(card => card.props['data-project-card']), ['equipo-la-lupe']);
-  assert.equal(byText(cards[0], 'Ver proyecto')?.props.href, '/proyectos#equipo-la-lupe');
+  assert.equal(byText(cards[0], 'Ver proyectos')?.props.href, '/proyectos');
   for (const feature of ['Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp']) assert.ok(text(cards[0]).includes(feature));
   assert.equal(nodes(cards[0]).find(node => node.type === 'next/image').props.src, '/images/projects/la-lupe.webp');
   // S10 (admin-concepts-visible-collage): the Home no longer mounts the interactive demos.

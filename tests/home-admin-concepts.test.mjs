@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import sharp from 'sharp';
 const read = path => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
-test('additive admin concepts: labels, scope, contextual contacts and full artwork', async () => {
+test('additive admin concepts: labels, scope, service discovery and full artwork', async () => {
   const component = await read('src/components/home/AdminConceptShowcase.tsx');
-  for (const text of ['salon-admin', 'restaurant-admin', 'ALBA', 'BRASA', 'Diseño conceptual · Datos de ejemplo', 'No son funcionalidades entregadas a La Lupe', 'automatizacion', 'restaurantes']) assert.ok(component.includes(text), text);
+  for (const text of ['salon-admin', 'restaurant-admin', 'ALBA', 'BRASA', 'Diseño conceptual · Datos de ejemplo', 'No son funcionalidades entregadas a La Lupe', 'sistemas-de-gestion', 'restaurantes', 'Panel administrativo y reservas', 'App para restaurantes']) assert.ok(component.includes(text), text);
   assert.match(component, /width=\{1600\} height=\{1200\}/);
   assert.match(await read('src/components/home/AdminConceptShowcase.module.css'), /object-fit: contain/);
   const home = await read('src/components/home/HomeRedesign.tsx');

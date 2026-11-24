@@ -11,9 +11,9 @@ async function page(path) {
 const anchors = html => [...(html.match(/<section id="carrusel"[\s\S]*?<\/section>/)?.[0] ?? '')
   .matchAll(/<a[^>]*data-carousel-item[^>]*>[\s\S]*?<\/a>/g)].map(m => m[0]);
 
-test('Home featured project leads to its unique catalog card', async () => {
+test('Home featured work leads to the projects page, retaining its unique catalog card', async () => {
   const [home, catalog] = await Promise.all([page('/'), page('/proyectos')]);
-  assert.ok(home.includes('href="/proyectos#equipo-la-lupe"'));
+  assert.ok(home.includes('href="/proyectos"'));
   assert.equal((catalog.match(/id="equipo-la-lupe"/g) || []).length, 1);
   assert.ok(!home.includes('data-carousel-item'));
 });

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, ShoppingBag, Workflow, Utensils } from 'lucide-react';
+import { ArrowRight, ShoppingBag, Workflow, Globe } from 'lucide-react';
 import { FEATURED_PROJECTS } from '@/data/content';
 import { enquiryHref } from '@/lib/enquiry';
 import { HeroCollage } from './HeroCollage';
@@ -10,7 +10,7 @@ import { AdminConceptShowcase } from './AdminConceptShowcase';
 import styles from './HomeRedesign.module.css';
 
 const services = [
-  { slug: 'restaurantes', title: 'Web para restaurantes', Icon: Utensils, image: '/images/projects/la-lupe.webp', alt: 'Captura real de la web de La Lupe', benefit: 'Haz que encuentren tu restaurante, conozcan tu menú y te contacten fácilmente.' },
+  { slug: 'sitios-web', title: 'Web para tu negocio', Icon: Globe, image: '/images/services/sitios-web-hero.webp', alt: 'Ilustración conceptual de una página web para negocios', benefit: 'Haz que encuentren tu negocio, conozcan tus servicios y te contacten fácilmente.' },
   { slug: 'ecommerce', title: 'Tiendas virtuales', Icon: ShoppingBag, image: '/images/services/ecommerce-hero.webp', alt: 'Ilustración conceptual de una tienda virtual', benefit: 'Acerca tus productos a más clientes con un catálogo organizado y una tienda a tu medida.' },
   { slug: 'automatizacion', title: 'Software y automatización', Icon: Workflow, image: '/images/services/automatizacion-hero.webp', alt: 'Ilustración conceptual de herramientas conectadas', benefit: 'Conecta tus herramientas, organiza la operación y dedica menos tiempo a tareas repetitivas.' },
 ];
@@ -109,7 +109,7 @@ export function HomeRedesign() {
             <p>La Lupe es un restaurante mexicano. Su web acerca la identidad del restaurante y su cocina a quienes quieren conocerlo.</p>
             <ul>{['Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp'].map(feature => <li key={feature}>{feature}</li>)}</ul>
             <div className={styles.actions}>
-              <Link href="/proyectos#equipo-la-lupe" className="btn btn-primary">Ver proyecto <ArrowRight size={18} aria-hidden="true" /></Link>
+              <Link href="/proyectos" className="btn btn-primary">Ver proyectos <ArrowRight size={18} aria-hidden="true" /></Link>
               <Link href={enquiryHref({ servicio: 'restaurantes' })} className="btn btn-secondary">Quiero una web para mi negocio</Link>
             </div>
           </div>

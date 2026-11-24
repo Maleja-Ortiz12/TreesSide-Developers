@@ -28,7 +28,9 @@ test('Home showcases only confirmed real La Lupe work with a flat capture', asyn
   const card = cards[0][0];
   for (const label of ['La Lupe', 'restaurante mexicano', 'Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp']) assert.ok(plain(card).includes(label), label);
   assert.ok(card.includes('/images/projects/la-lupe.webp'));
-  assert.ok(card.includes('href="/proyectos#equipo-la-lupe"'));
+  assert.ok(card.includes('href="/proyectos"'));
+  assert.ok(plain(card).includes('Ver proyectos'));
+  assert.ok(!card.includes('href="/proyectos#equipo-la-lupe"'));
   const css = readFileSync('src/components/home/Home.module.css', 'utf8');
   assert.doesNotMatch(css, /\.laptop \{[^}]*rotate\(/);
 });
