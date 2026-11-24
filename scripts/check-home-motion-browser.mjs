@@ -7,6 +7,21 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import ts from 'typescript';
 
+// Conservative rotated bounding boxes deliberately count corner overlap too.
+// This does not depend on z-index or viewport hit-testing of scrolled-off cards.
+function occlusionProbe() {
+  const figures = [...document.querySelectorAll('#hero-collage figure')];
+  const intersection = (a, b) => Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left))
+    * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+  return figures.map((figure, index) => {
+    const image = figure.querySelector('img').getBoundingClientRect();
+    const caption = figure.querySelector('figcaption').getBoundingClientRect();
+    const others = figures.filter(f => f !== figure).map(f => f.getBoundingClientRect());
+    const area = image.width * image.height;
+    return { index, imageUncovered: area > 0 ? Math.max(0, 1 - others.reduce((sum, r) => sum + intersection(image, r), 0) / area) : 0,
+      captionUncovered: caption.width > 0 && caption.height > 0 && others.every(r => intersection(caption, r) === 0) };
+  });
+}
 // Read the same source catalog as the server, independently of rendered frame contents.
 function loadCatalog(file) {
   const module = { exports: {} };
@@ -20,7 +35,22 @@ function loadCatalog(file) {
 }
 const expectedProjects = Array.from(loadCatalog('src/data/content.ts').FEATURED_PROJECTS)
   .filter(p => !p.experience && p.image !== '/images/treesside-logo.jpg' && p.id !== 'equipo-uptownhair');
-const frameCount = 1 + Math.ceil((expectedProjects.length - 1) / 3);
+// Discover the rendered domain through public manual controls. Portfolio
+// batching does not count appended conceptual frames (such as administration).
+async function walkPublicFrames({ readIndex, next, visit }, maxFrames = 32) {
+  const first = await readIndex();
+  const seen = new Set();
+  let index = first;
+  for (let step = 0; step < maxFrames; step++) {
+    assert.ok(!seen.has(index), `Public composition repeated before wrapping: ${index}`);
+    seen.add(index);
+    await visit(index);
+    await next(index);
+    index = await readIndex();
+    if (index === first) return seen.size;
+  }
+  throw Error(`Public composition cycle did not wrap within ${maxFrames} frames`);
+}
 
 // Standalone CDP check: installed Edge, no packages, build or real enquiries.
 // All browser state/evidence lives outside the repository. Keep screenshots for visual review.
@@ -126,10 +156,35 @@ try {
     await wait(`document.querySelector('#hero-collage').dataset.frame===${JSON.stringify(pausedFrame)}`);
     check(`${width} manual access preserves pause`, await evaluate(`document.querySelector('#hero-collage').dataset.motion`), 'paused');
     // Exhaust the cycle while paused via public controls, not six-second sleeps per frame.
-    const seen = [];
-    for (let step = 0; step < frameCount; step++) {
-      const index = Number(await evaluate(`document.querySelector('#hero-collage').dataset.frame`));
+    const seen = [], adminSeen = [];
+    const cycleLength = await walkPublicFrames({
+      readIndex: () => evaluate(`document.querySelector('#hero-collage').dataset.frame`),
+      next: async previous => {
+        await evaluate(`document.querySelector('button[aria-label="Siguiente composición"]').click()`);
+        await wait(`document.querySelector('#hero-collage').dataset.frame!==${JSON.stringify(previous)}`);
+      },
+      visit: async frame => {
+      const index = Number(frame);
       await evaluate(`Promise.all([...document.querySelectorAll('#hero-collage img')].map(img=>img.decode())).then(()=>true)`);
+      // Seek the real staggered timeline, including 0/half-cycle and each
+      // card's local extrema (negative delays are -2s/-6s/-10s). Do not
+      // synchronize the cards: mixed up/down positions can overlap more.
+      // Public pause is retained; restore times after measuring every frame.
+      const savedTimes = await evaluate(`[...document.querySelectorAll('#hero-collage figure')].map(f=>f.getAnimations()[0].currentTime)`);
+      for (const phase of [0, 2000, 4000, 6000, 8000, 10000]) {
+        await evaluate(`[...document.querySelectorAll('#hero-collage figure')].forEach(f=>{f.getAnimations()[0].currentTime=${phase};})`);
+        await evaluate(frames);
+        const coverage = await evaluate(`(${occlusionProbe.toString()})()`);
+        console.log(`OCCLUSION ${width} frame ${index} phase ${phase} ${JSON.stringify(coverage)}`);
+        check(`${width} frame ${index} phase ${phase} primary >=90%, others >=70%, captions uncovered`,
+          coverage.length===3 && coverage.every((c,i)=>c.imageUncovered >= (i===0 ? .9 : .7) && c.captionUncovered), true);
+        check(`${width} frame ${index} phase ${phase} bounds and controls`, await evaluate(`(()=>{
+          const hero=document.querySelector('#inicio').getBoundingClientRect(),controls=document.querySelector('button[aria-label="Siguiente composición"]').parentElement.getBoundingClientRect();
+          return [...document.querySelectorAll('#hero-collage figure')].every(f=>{const r=f.getBoundingClientRect();return r.left>=0 && r.right<=document.documentElement.clientWidth && r.top>=hero.top && r.bottom<=hero.bottom && r.bottom<=controls.top;});
+        })()`), true);
+      }
+      await evaluate(`[...document.querySelectorAll('#hero-collage figure')].forEach((f,i)=>f.getAnimations()[0].currentTime=${JSON.stringify(savedTimes)}[i])`);
+      await evaluate(frames);
       const cards = await evaluate(`([...document.querySelectorAll('#hero-collage figure')].map(f=>{const img=f.querySelector('img'),label=f.querySelector('figcaption');return {id:img?.dataset.homeProject || null,src:img?.getAttribute('src'),alt:img?.alt,text:label.textContent,visible:label.getBoundingClientRect().height>0,loaded:!img || (img.complete && img.naturalWidth>0),fit:img && getComputedStyle(img).objectFit};}))`);
       check(`${width} frame ${index} three loaded visible labelled cards`, cards.length===3 && cards.every(c=>c.visible && c.loaded), true);
       // Job21 checked text/geometry only: mint-on-mint badges still passed all 394 checks.
@@ -156,13 +211,28 @@ try {
       const expectedBadges = cards.filter(card=>card.text.includes('Diseño conceptual')).length;
       check(`${width} frame ${index} every conceptual badge contrast >=4.5:1`,
         contrast.length===expectedBadges && contrast.every(label=>Number.isFinite(label.ratio) && label.ratio>=4.5), true);
-      check(`${width} frame ${index} ordinary primary portfolio span stays mint`, await evaluate(`(()=>{
+      if (cards[0].id) check(`${width} frame ${index} ordinary primary portfolio span stays mint`, await evaluate(`(()=>{
         const span=[...document.querySelector('#hero-collage figure').querySelectorAll('figcaption span')]
           .find(el=>el.textContent==='Portafolio del equipo');
         return !!span && getComputedStyle(span).color==='rgb(155, 255, 206)';
       })()`), true);
       for (const card of cards) {
-        if (!card.id) { check(`${width} frame ${index} generic concept`, card.text.includes('Diseño conceptual'), true); continue; }
+        if (!card.id) {
+          check(`${width} frame ${index} generic concept never claims portfolio delivery`,
+            card.text.includes('Diseño conceptual') && !card.text.includes('Portafolio del equipo') && !card.alt.includes('Captura real'), true);
+          const imagePath = new URL(card.src, base);
+          const asset = imagePath.searchParams.get('url') || imagePath.pathname;
+          if (['/images/home-concepts/salon-admin.webp', '/images/home-concepts/restaurant-admin.webp'].includes(asset)) {
+            adminSeen.push(asset);
+            const title = asset.includes('salon-admin') ? 'ALBA · Administración de empleados' : 'BRASA · Pedidos, caja, cocina y equipo';
+            check(`${width} frame ${index} admin artwork is a sample-data proposal, not La Lupe delivery`, {
+              title:card.text.includes(title), sample:card.text.includes('Datos de ejemplo'),
+              alt:card.alt.includes('Propuesta ficticia:') && card.alt.includes('Datos de ejemplo, no corresponde a La Lupe.'),
+              fit:card.fit,
+            }, {title:true,sample:true,alt:true,fit:'contain'});
+          }
+          continue;
+        }
         seen.push(card.id);
         const project = expectedProjects.find(p=>p.id===card.id);
         check(`${width} frame ${index} eligible ${card.id}`, !!project, true);
@@ -180,9 +250,11 @@ try {
       const rect = await evaluate(`(()=>{const r=document.querySelector('#inicio').getBoundingClientRect();return {x:0,y:scrollY+r.top,width:innerWidth,height:r.height,scale:1};})()`);
       const shot = await cdp('Page.captureScreenshot', {format:'png',captureBeyondViewport:width<=1060,...(width<=1060?{clip:rect}:{})});
       await writeFile(path.join(output, `${width}-home-frame-${index}.png`), Buffer.from(shot.data,'base64'));
-      await evaluate(`document.querySelector('button[aria-label="Siguiente composición"]').click()`);
-      await wait(`Number(document.querySelector('#hero-collage').dataset.frame)===${(index + 1) % frameCount}`);
-    }
+      },
+    });
+    console.log(`PUBLIC_FRAME_COUNT ${width} ${cycleLength}`);
+    check(`${width} both administrative concepts exactly once`, adminSeen.sort(),
+      ['/images/home-concepts/restaurant-admin.webp', '/images/home-concepts/salon-admin.webp']);
     check(`${width} every eligible project exactly once`, seen.sort(), expectedProjects.map(p=>p.id).sort());
     check(`${width} full cycle wraps and stays paused`, await evaluate(`({frame:document.querySelector('#hero-collage').dataset.frame,motion:document.querySelector('#hero-collage').dataset.motion})`), {frame:pausedFrame,motion:'paused'});
     const visibilityProbe = `(()=>{const title=document.querySelector('#home-title'),r=title.getBoundingClientRect();const ancestors=[];for(let el=title;el;el=el.parentElement){const s=getComputedStyle(el);ancestors.push({tag:el.tagName,class:el.className,opacity:s.opacity,visibility:s.visibility,display:s.display,transform:s.transform});}return {scrollX,scrollY,title:{left:r.left,top:r.top,width:r.width,height:r.height},ancestors};})()`;
@@ -197,9 +269,15 @@ try {
     const heroRect = await evaluate(`(()=>{const r=document.querySelector('#inicio').getBoundingClientRect();return {x:0,y:scrollY+r.top,width:innerWidth,height:r.height,scale:1};})()`);
     // Edge differential: beyond-viewport capture loses the desktop composited main layer,
     // with both default GPU and --disable-gpu; viewport capture preserves it in both modes.
-    // Desktop's entire collage/control fits the viewport; retain full-hero captures on mobile/tablet.
+    // S3 now prioritizes unobscured enlarged artwork over first-viewport fit.
+    // Keep the viewport title-pixel proof (Edge compositing limitation above),
+    // plus full-hero evidence when natural flow extends below the viewport.
     const viewportCapture = width > 1060;
-    if (viewportCapture) check(`${width} viewport capture includes every card and motion control`, await evaluate(`(()=>{const elements=[...document.querySelectorAll('#hero-collage figure'),document.querySelector('button[aria-controls="hero-collage"]')];return elements.every(el=>{const r=el.getBoundingClientRect();return r.left>=0 && r.right<=innerWidth && r.top>=0 && r.bottom<=innerHeight;});})()`), true);
+    console.log(`VIEWPORT_FIT ${width} ${await evaluate(`(()=>{const elements=[...document.querySelectorAll('#hero-collage figure'),document.querySelector('button[aria-controls="hero-collage"]')];return elements.every(el=>{const r=el.getBoundingClientRect();return r.left>=0 && r.right<=innerWidth && r.top>=0 && r.bottom<=innerHeight;});})()`)}`);
+    if (viewportCapture && heroRect.height > 1000) {
+      const full = await cdp('Page.captureScreenshot', { format:'png', captureBeyondViewport:true, clip:heroRect });
+      await writeFile(path.join(output, `${width}-home-hero-full.png`), Buffer.from(full.data,'base64'));
+    }
     const shot = await cdp('Page.captureScreenshot', { format: 'png', captureBeyondViewport: !viewportCapture, ...(!viewportCapture ? { clip: heroRect } : {}) });
     await writeFile(path.join(output, `${width}-home-hero.png`), Buffer.from(shot.data, 'base64'));
     // Verify the screenshot itself, not just the DOM: the title region must contain bright text.

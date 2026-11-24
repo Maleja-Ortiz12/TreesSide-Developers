@@ -27,18 +27,20 @@ test('S1 desktop centers the whole grid in the viewport remaining below the exis
   assert.match(rule(desktop, 'heroCopy'), /padding-block: 12px/);
 });
 
-test('S1 collage height follows actual overlapping card extents, including wrapped captions', () => {
+test('S3 desktop uses compact two-tier tracks with a stagger below the uncovered primary', () => {
   const collage = rule(desktop, 'collage');
-  assert.match(collage, /grid-template-rows: auto;/);
+  assert.match(collage, /grid-template-rows: auto auto;/);
+  assert.match(collage, /gap: 32px 32px/);
   assert.doesNotMatch(collage, /aspect-ratio:|grid-template-rows: repeat\(/);
   assert.match(collage, /padding-block: 20px 24px/);
-  assert.match(rule(desktop, 'collageScene'), /width: min\(100%, calc\(100svh - 210px\)\)/);
-  for (const frame of ['captureFrame', 'salonFrame', 'shopFrame']) {
-    assert.match(rule(desktop, `collage .${frame}`), /grid-row: 1;/);
+  assert.match(rule(desktop, 'collageScene'), /width: min\(100%, 610px\)/);
+  for (const [frame, row] of [['captureFrame', 1], ['salonFrame', 2], ['shopFrame', 2]]) {
+    assert.ok(rule(desktop, `collage .${frame}`).includes(`grid-row: ${row};`));
   }
-  // Separate lower tracks keep both captions readable instead of stacking their heights.
-  assert.match(rule(desktop, 'collage .salonFrame'), /grid-column: 7 \/ 13;.*margin-top: 45%/);
-  assert.match(rule(desktop, 'collage .shopFrame'), /grid-column: 1 \/ 7;.*margin-top: 45%/);
+  assert.match(rule(desktop, 'collage .salonFrame'), /grid-column: 7 \/ 13;.*margin-top: 16px/);
+  assert.match(rule(desktop, 'collage .shopFrame'), /grid-column: 1 \/ 7/);
+  assert.doesNotMatch(rule(desktop, 'collage .captureFrame'), /margin-top:/);
+  assert.match(rule(desktop, 'heroGrid'), /align-items: start/);
   assert.match(rule(mobile, 'collageScene .collage figure'), /margin-top: 0/);
 });
 
@@ -52,6 +54,32 @@ test('S1 tablet/mobile start promptly and allow natural content height, includin
   assert.match(rule(mobile, 'collage'), /grid-template-rows: auto auto auto/);
   assert.match(rule(mobile, 'collage'), /padding-top: 16px/);
   assert.doesNotMatch(css, /overflow-y: hidden|max-height:/);
+});
+
+test('S3/S4 motion checker visits the full public cycle including appended admin frames', async () => {
+  const source = readFileSync('scripts/check-home-motion-browser.mjs', 'utf8');
+  const helper = source.match(/async function walkPublicFrames\([\s\S]*?\n\}/)?.[0];
+  assert.ok(helper, 'checker must discover public frames rather than infer a catalog-only count');
+  const { runInNewContext } = await import('node:vm');
+  const walk = runInNewContext(`(${helper})`, { assert });
+  const rendered = ['portfolio0', 'portfolio1', 'portfolio2', 'portfolio3', 'portfolio4', 'portfolio5', 'portfolio6', 'admin'];
+  let index = 3;
+  const visited = [];
+  const callbacks = {
+    readIndex: async () => String(index),
+    next: async () => { index = (index + 1) % rendered.length; },
+    visit: async id => visited.push(rendered[Number(id)]),
+  };
+  assert.equal(await walk(callbacks), 8);
+  assert.equal(index, 3, 'returns to the initial public composition');
+  assert.deepEqual([...visited].sort(), [...rendered].sort());
+  rendered.pop();
+  visited.length = 0;
+  index = 3;
+  assert.equal(await walk(callbacks), 7, 'preserves the previous portfolio-only cycle');
+  assert.deepEqual([...visited].sort(), [...rendered].sort());
+  await assert.rejects(walk({ ...callbacks, readIndex: async () => String(index++), next: async () => {} }, 10), /did not wrap within 10 frames/);
+  assert.doesNotMatch(source, /const frameCount =|% frameCount/);
 });
 
 test('S5 existing 3D, tree, pause, conceptual contrast and mobile card geometry remain intact', () => {

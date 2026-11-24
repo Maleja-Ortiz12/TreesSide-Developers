@@ -6,6 +6,21 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
+// Conservative transformed bounding-box intersections: even overlapping rotated
+// corners count as occlusion, independent of z-index and off-viewport painting.
+function occlusionProbe() {
+  const figures = [...document.querySelectorAll('#hero-collage figure')];
+  const intersection = (a, b) => Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left))
+    * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+  return figures.map((figure, index) => {
+    const image = figure.querySelector('img').getBoundingClientRect();
+    const caption = figure.querySelector('figcaption').getBoundingClientRect();
+    const others = figures.filter(f => f !== figure).map(f => f.getBoundingClientRect());
+    const area = image.width * image.height;
+    return { index, imageUncovered: area > 0 ? Math.max(0, 1 - others.reduce((sum, r) => sum + intersection(image, r), 0) / area) : 0,
+      captionUncovered: caption.width > 0 && caption.height > 0 && others.every(r => intersection(caption, r) === 0) };
+  });
+}
 const base = process.env.TEST_BASE_URL;
 assert.ok(base, 'Set TEST_BASE_URL to the fresh parent-owned preview, not an old snapshot');
 const executable = process.env.BROWSER_EXECUTABLE || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
@@ -68,6 +83,34 @@ try {
     await evaluate(`new Promise((resolve,reject)=>{const end=performance.now()+15000;function tick(){if(document.readyState==='complete' && document.querySelector('#home-title'))resolve(true);else if(performance.now()>end)reject(Error('Home load timeout'));else requestAnimationFrame(tick);}tick();})`);
     await evaluate(`document.fonts.ready.then(()=>Promise.all([...document.querySelectorAll('#inicio img')].map(img=>img.decode()))).then(()=>true)`);
     await evaluate(`Promise.all([...document.querySelectorAll('[data-reveal="first"]')].flatMap(el=>el.getAnimations()).map(a=>a.finished.catch(()=>{}))).then(()=>true)`);
+    await evaluate(`document.querySelector('button[aria-controls="hero-collage"]').click()`);
+    const firstFrame = await evaluate(`document.querySelector('#hero-collage').dataset.frame`);
+    let wrapped = false;
+    for (let step = 0; step < 20; step++) {
+      await evaluate(`Promise.all([...document.querySelectorAll('#hero-collage img')].map(img=>img.decode())).then(()=>true)`);
+      const index = await evaluate(`document.querySelector('#hero-collage').dataset.frame`);
+      const coverage = await evaluate(`(${occlusionProbe.toString()})()`);
+      console.log(`OCCLUSION ${width}x${height} frame ${index} ${JSON.stringify(coverage)}`);
+      check(`${width}x${height} frame ${index} primary >=90%, others >=70%, captions uncovered`,
+        coverage.length === 3 && coverage.every((c, i) => c.imageUncovered >= (i === 0 ? .9 : .7) && c.captionUncovered));
+      if (width > 1060) {
+        const compact = await evaluate(`(()=>{
+          const figures=[...document.querySelectorAll('#hero-collage figure')].map(f=>f.getBoundingClientRect());
+          return {height:document.querySelector('#inicio').getBoundingClientRect().height,
+            mainWidth:document.querySelector('#hero-collage figure img').getBoundingClientRect().width,
+            lowerBelow:figures.slice(1).every(r=>r.top>=figures[0].bottom),
+            lowerStagger:Math.abs(figures[1].top-figures[2].top)};
+        })()`);
+        console.log(`COMPACT ${width}x${height} frame ${index} ${JSON.stringify(compact)}`);
+        check(`${width}x${height} frame ${index} desktop hero <=1100px`, compact.height <= 1100);
+        check(`${width}x${height} frame ${index} primary remains 550–660px wide`, compact.mainWidth >= 550 && compact.mainWidth <= 660);
+        check(`${width}x${height} frame ${index} two lower cards share a gently staggered tier`, compact.lowerBelow && compact.lowerStagger <= 48);
+      }
+      await evaluate(`document.querySelector('button[aria-label="Siguiente composición"]').click()`);
+      await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))`);
+      if (await evaluate(`document.querySelector('#hero-collage').dataset.frame`) === firstFrame) { wrapped = true; break; }
+    }
+    check(`${width}x${height} all frames checked`, wrapped);
     const m = await evaluate(`(()=>{
       scrollTo({top:0,left:0,behavior:'instant'});
       const rect=el=>{const r=el.getBoundingClientRect();return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,height:r.height};};
@@ -86,10 +129,12 @@ try {
     check(`${width}x${height} cards clear controls and controls clear signature`, m.cards.every(r => r.bottom <= m.controls.top) && m.controls.bottom <= m.signature.top);
     if (width > 1060) {
       check(`${width}x${height} rail accounted once`, m.rail === 116 && m.grid.left >= 116);
+      check(`${width}x${height} actions in first viewport`, m.actions.bottom <= height);
       if (height >= 768) {
-        check(`${width}x${height} full composition fits`, m.hero.bottom <= height + 1);
-        check(`${width}x${height} complete grid vertically balanced`, Math.abs((m.grid.top - 76) - (height - m.grid.bottom)) <= 2);
-        check(`${width}x${height} actions in first viewport`, m.actions.bottom <= height);
+        // S3 supersedes strict all-controls-fit: preserve the enlarged image,
+        // report the tradeoff explicitly, and require balanced natural flow.
+        console.log(`VIEWPORT_FIT ${width}x${height} ${m.hero.bottom <= height + 1}; hero bottom ${m.hero.bottom}`);
+        check(`${width}x${height} complete grid balanced within natural hero`, Math.abs((m.grid.top - m.hero.top) - (m.hero.bottom - m.grid.bottom)) <= 2);
       }
     } else {
       check(`${width}x${height} no large top gap`, m.copy.top - 76 <= 48);

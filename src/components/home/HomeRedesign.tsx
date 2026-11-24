@@ -6,6 +6,7 @@ import { enquiryHref } from '@/lib/enquiry';
 import { HomeDemos } from '@/components/HomeDemos';
 import { HeroCollage } from './HeroCollage';
 import { ConceptShowcase } from './ConceptShowcase';
+import { AdminConceptShowcase } from './AdminConceptShowcase';
 import styles from './HomeRedesign.module.css';
 
 const services = [
@@ -43,6 +44,11 @@ function HeroArtwork() {
     const batch = remaining.slice(index, index + 3).map(real);
     compositions.push([...batch, salon, shop].slice(0, 3));
   }
+  const admin = (id: 'salon-admin' | 'restaurant-admin', title: string) => <>
+    <figcaption><span className={styles.conceptLabel}>Diseño conceptual · Datos de ejemplo</span> {title}</figcaption>
+    <Image src={`/images/home-concepts/${id}.webp`} alt={`Propuesta ficticia: ${title}. Datos de ejemplo, no corresponde a La Lupe.`} style={{ aspectRatio: '4 / 3', objectFit: 'contain' }} width={1600} height={1200} sizes="(max-width: 600px) 90vw, (max-width: 1060px) 75vw, 42vw" />
+  </>;
+  compositions.push([admin('salon-admin', 'ALBA · Administración de empleados'), admin('restaurant-admin', 'BRASA · Pedidos, caja, cocina y equipo'), shop]);
   const frames = compositions.map((artwork, index) => <div key={index} className={styles.artworkFrame}>
     <figure className={styles.captureFrame}>{artwork[0]}</figure>
     <figure className={styles.salonFrame}>{artwork[1]}</figure>
@@ -115,6 +121,7 @@ export function HomeRedesign() {
         <h2 id="concepts-title">Así podría verse tu negocio</h2>
         <p className={styles.sectionLead}>Explora propuestas visuales que podemos adaptar a la identidad y las necesidades de tu negocio</p>
         <ConceptShowcase />
+        <AdminConceptShowcase />
       </div>
     </section>
 

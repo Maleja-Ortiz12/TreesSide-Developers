@@ -69,7 +69,7 @@ test('S1/S8 production Home uses isolated sections, not the old hero, carousel o
   assert.match(source, /<HomeClosing showClosing=\{false\}\s*\/>/);
   assert.doesNotMatch(source, /<Hero|<ProjectCarousel|<HomeDemos/);
   const { tree } = home();
-  assert.deepEqual(nodes(tree).filter(n => n.type === 'section').map(n => n.props.id),
+  assert.deepEqual(nodes(tree).filter(n => n.type === 'section' && n.props.id).map(n => n.props.id),
     ['inicio', 'soluciones', 'trabajo', 'propuestas', 'demos', 'proceso-home', 'siguiente-paso']);
   assert.equal(nodes(tree).filter(n => n.type === 'h1').length, 1);
   assert.equal(nodes(tree).filter(n => n.props['data-project-card']).length, 1);
@@ -255,7 +255,7 @@ test('S5 generic salon and ecommerce concepts are proposals, never delivered web
   const { tree } = home(), section = byId(tree, 'propuestas');
   assert.equal(text(nodes(section).find(n => n.type === 'h2')), 'Así podría verse tu negocio');
   assert.ok(text(section).includes('Explora propuestas visuales que podemos adaptar a la identidad y las necesidades de tu negocio'));
-  const cards = nodes(section).filter(n => n.type === 'article');
+  const cards = nodes(section).filter(n => n.type === 'article' && n.props['data-home-concept']);
   assert.equal(cards.length, 2);
   for (const card of cards) assert.ok(text(card).includes('Diseño conceptual'));
   assert.match(text(cards[0]), /Peluquerías y salones de belleza/);

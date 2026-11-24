@@ -44,7 +44,7 @@
 .heroGrid {
   display: grid;
   grid-template-columns: minmax(0, .85fr) minmax(0, 1.25fr);
-  align-items: center;
+  align-items: start;
   gap: 12px 32px;
 }
 .heroCopy { padding-block: 12px; }
@@ -75,9 +75,9 @@
 }
 .collageScene {
   min-width: 0;
-  /* Larger than the former height - 300px scene, while leaving room for the
-     complete grid: copy, captions, controls and signature (558px at 768 high). */
-  width: min(100%, calc(100svh - 210px));
+  /* Keep the primary large on short screens; the two smaller cards share
+     a lower tier so visibility does not require an oversized vertical stack. */
+  width: min(100%, 610px);
   justify-self: center;
   padding: 12px 14px;
 }
@@ -107,10 +107,10 @@
   --float-distance: -10px;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  /* The two lower cards share a tier, not cumulative vertical staggering.
-     The intrinsic row still includes every caption; short screens can scroll. */
-  grid-template-rows: auto;
-  gap: 0 16px;
+  /* Two intrinsic tiers include wrapped captions. Vertical clearance protects
+     the primary; horizontal clearance protects both rotated lower captions. */
+  grid-template-rows: auto auto;
+  gap: 32px 32px;
   align-items: start;
   min-width: 0;
   /* Reserve the transformed corners above controls, not just untransformed boxes. */
@@ -141,8 +141,8 @@
 .collage .captureFrame { grid-column: 1 / 13; grid-row: 1; --depth: 12px; --tilt-x: 3deg; --tilt-y: -5deg; --roll: -2deg; animation-delay: -2s; }
 .captureFrame figcaption > span:not(.conceptLabel) { color: #9bffce; }
 .captureFrame img { display: block; width: 100%; height: auto; }
-.collage .salonFrame { grid-column: 7 / 13; grid-row: 1; margin-top: 45%; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 3deg; animation-delay: -6s; z-index: 2; }
-.collage .shopFrame { grid-column: 1 / 7; grid-row: 1; margin-top: 45%; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -2deg; animation-delay: -10s; z-index: 3; }
+.collage .salonFrame { grid-column: 7 / 13; grid-row: 2; margin-top: 16px; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 3deg; animation-delay: -6s; z-index: 2; }
+.collage .shopFrame { grid-column: 1 / 7; grid-row: 2; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -2deg; animation-delay: -10s; z-index: 3; }
 .collage[data-motion='paused'] figure { animation-play-state: paused; }
 @keyframes heroFloat {
   0%, 100% { transform: translate3d(0, 0, var(--depth)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--roll)); }

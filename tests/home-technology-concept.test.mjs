@@ -50,31 +50,34 @@ test('S1 local production technology asset is decoded, full sized, and truthfull
   for (const text of ['Quiero una tienda virtual', "servicio: 'ecommerce'", 'ficticias']) assert.ok(jsx.includes(text));
 });
 
-test('S2 larger collage budgets the whole centered grid at 1440×768 and 1440×900', async () => {
+test('S3 two-tier enlarged collage budgets at most 1100px desktop hero height', async () => {
   const css = await read('src/components/home/HomeRedesign.module.css');
   const desktop = css.split('@media (max-width: 1060px)')[0];
-  const widthOffset = Number(desktop.match(/width: min\(100%, calc\(100svh - (\d+)px\)\)/)?.[1]);
-  assert.ok(Number.isFinite(widthOffset), 'scene width must leave room for controls and signature');
+  const widthCap = Number(desktop.match(/width: min\(100%, (\d+)px\)/)?.[1]);
+  assert.equal(widthCap, 610, 'scene size follows available width, not short viewport height');
   assert.doesNotMatch(desktop, /100svh - 300px/);
   assert.match(desktop, /minmax\(0, \.85fr\) minmax\(0, 1\.25fr\)/);
-  assert.match(desktop, /grid-column: 7 \/ 13; grid-row: 1; margin-top: 45%/);
-  assert.match(desktop, /grid-column: 1 \/ 7; grid-row: 1; margin-top: 45%/);
-  // Server-free layout budget, not a substitute for browser measurement.
-  // Preserve the observed 433.375px copy and 53.3125px signature from job-38.
+  assert.match(desktop, /grid-column: 7 \/ 13; grid-row: 2; margin-top: 16px;/);
+  assert.match(desktop, /grid-column: 1 \/ 7; grid-row: 2;/);
+  assert.doesNotMatch(desktop, /margin-top: 45%/);
+  // Server-free intrinsic budget, not a replacement for transformed browser
+  // bounds/occlusion. Reserve wrapped captions: 72px primary, 86px secondary.
+  // The former tiny scene was 468px at 768 high and 600px at 900 high.
   const track = (1200 - 48 - 32) * 1.25 / 2.1;
-  for (const height of [768, 900]) {
-    const scene = Math.min(track, height - widthOffset);
+  const collage = desktop.match(/\.collage \{([^}]+)\}/)?.[1] || '';
+  for (const height of [600, 768, 900]) {
+    const scene = Math.min(track, widthCap);
     assert.ok(scene > Math.min(620, height - 300), `${height}: larger than the previous scene`);
-    const inner = scene - 28; // existing scene inline padding
-    const caption = 72; // allow wrapped labels in all rotation slots
-    const primary = inner * 833 / 1200 + caption + 2;
-    const secondary = inner / 2;
-    const lower = secondary * .45 + secondary * .75 + caption + 2;
-    assert.ok(secondary * .45 > caption, 'lower cards clear the primary caption');
-    const artwork = Math.max(primary, lower) + 44 + 24 + 12 + 44;
-    const grid = Math.max(433.375, artwork) + 12 + 53.3125;
-    const room = height - 76 - 2 * Math.max(16, Math.min(32, height * .03));
-    assert.ok(grid <= room, `${height}: complete grid budget ${grid} fits ${room}`);
+    const primaryWidth = scene - 28;
+    assert.ok(primaryWidth >= 550 && primaryWidth <= 660, `${height}: main artwork stays large`);
+    const gap = Number(collage.match(/gap: (\d+)px \d+px;/)?.[1]);
+    const horizontalGap = Number(collage.match(/gap: \d+px (\d+)px;/)?.[1]);
+    const stagger = Number(desktop.match(/grid-row: 2; margin-top: (\d+)px/)?.[1]);
+    const primary = primaryWidth * .75 + 72 + 2;
+    const lower = (primaryWidth - horizontalGap) / 2 * .75 + 86 + 2 + stagger;
+    const hero = primary + gap + lower + 44 + 24 + 12 + 44 + 12 + 53.3125
+      + 2 * Math.max(16, Math.min(32, height * .03));
+    assert.ok(hero <= 1100, `${height}: compact intrinsic hero budget ${hero} exceeds 1100`);
   }
   assert.match(css, /\[data-motion='paused'\] figure/);
   assert.match(css, /prefers-reduced-motion: reduce/);
