@@ -27,20 +27,29 @@ test('S1 desktop centers the whole grid in the viewport remaining below the exis
   assert.match(rule(desktop, 'heroCopy'), /padding-block: 12px/);
 });
 
-test('S3/S6 desktop uses compact two-tier tracks centred against the copy, small cards raised but uncovered', () => {
+test('S3/S6/S8 desktop uses compact two-tier tracks centred against the copy, small cards partly over the large card', () => {
   const collage = rule(desktop, 'collage');
   assert.match(collage, /grid-template-rows: auto auto;/);
   assert.match(collage, /gap: 14px 28px/);
   assert.doesNotMatch(collage, /aspect-ratio:|grid-template-rows: repeat\(/);
-  assert.match(collage, /padding-block: 20px 24px/);
+  // S8: tighter vertical padding recovers height for laptop first viewports.
+  assert.match(collage, /padding-block: 12px 18px/);
+  assert.match(rule(desktop, 'collageScene'), /padding: 12px 14px/);
   assert.match(rule(desktop, 'collageScene'), /width: min\(100%, 610px\)/);
   for (const [frame, row] of [['captureFrame', 1], ['salonFrame', 2], ['shopFrame', 2]]) {
     assert.ok(rule(desktop, `collage .${frame}`).includes(`grid-row: ${row};`));
   }
   assert.match(rule(desktop, 'collage .salonFrame'), /grid-column: 7 \/ 13;/);
-  for (const frame of ['salonFrame', 'shopFrame']) assert.doesNotMatch(rule(desktop, `collage .${frame}`), /margin-top:/);
+  // S8: both small slots rise by the same amount over the bottom of the large card
+  // (desktop and tablet); they stay above it via z-index, the large card does not move.
+  const raise = ['salonFrame', 'shopFrame'].map(frame => rule(desktop, `collage .${frame}`).match(/grid-row: 2; margin-top: (-?\d+)px;/)?.[1]);
+  assert.deepEqual(raise, ['-72', '-72']);
+  assert.doesNotMatch(tablet, /margin-top:/, 'tablet keeps the desktop partial overlap');
+  assert.match(rule(desktop, 'collage figure'), /z-index: 1;/);
+  assert.match(rule(desktop, 'collage .salonFrame'), /z-index: 2;/);
+  assert.match(rule(desktop, 'collage .shopFrame'), /z-index: 3;/);
   assert.match(rule(desktop, 'collage .shopFrame'), /grid-column: 1 \/ 7/);
-  assert.doesNotMatch(rule(desktop, 'collage .captureFrame'), /margin-top:/);
+  assert.doesNotMatch(rule(desktop, 'collage .captureFrame'), /margin-top:|z-index:/);
   assert.match(rule(desktop, 'heroGrid'), /align-items: center/);
   // Short desktop viewports (1440x600) keep the copy and CTAs in the first viewport.
   assert.match(css, /@media \(min-width: 1061px\) and \(height <= 720px\) \{\s*\.heroGrid \{ align-items: start; \}\s*\}/);

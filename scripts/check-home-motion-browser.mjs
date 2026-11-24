@@ -8,15 +8,19 @@ import vm from 'node:vm';
 import ts from 'typescript';
 
 // Conservative rotated bounding boxes deliberately count corner overlap too.
-// This does not depend on z-index or viewport hit-testing of scrolled-off cards.
+// S8: the small cards intentionally sit over the primary's bottom, so only
+// figures painted above (higher z-index, or later in DOM at equal z) cover.
+// No viewport hit-testing of scrolled-off cards.
 function occlusionProbe() {
   const figures = [...document.querySelectorAll('#hero-collage figure')];
+  const z = figures.map(f => Number.parseInt(getComputedStyle(f).zIndex, 10) || 0);
   const intersection = (a, b) => Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left))
     * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
   return figures.map((figure, index) => {
     const image = figure.querySelector('img').getBoundingClientRect();
     const caption = figure.querySelector('figcaption').getBoundingClientRect();
-    const others = figures.filter(f => f !== figure).map(f => f.getBoundingClientRect());
+    const others = figures.filter((f, j) => j !== index && (z[j] > z[index] || (z[j] === z[index] && j > index)))
+      .map(f => f.getBoundingClientRect());
     const area = image.width * image.height;
     return { index, imageUncovered: area > 0 ? Math.max(0, 1 - others.reduce((sum, r) => sum + intersection(image, r), 0) / area) : 0,
       captionUncovered: caption.width > 0 && caption.height > 0 && others.every(r => intersection(caption, r) === 0) };
@@ -181,8 +185,8 @@ try {
         await evaluate(frames);
         const coverage = await evaluate(`(${occlusionProbe.toString()})()`);
         console.log(`OCCLUSION ${width} frame ${index} phase ${phase} ${JSON.stringify(coverage)}`);
-        check(`${width} frame ${index} phase ${phase} primary >=90%, others >=70%, captions uncovered`,
-          coverage.length===3 && coverage.every((c,i)=>c.imageUncovered >= (i===0 ? .9 : .7) && c.captionUncovered), true);
+        check(`${width} frame ${index} phase ${phase} primary >=80%, others >=70%, captions uncovered`,
+          coverage.length===3 && coverage.every((c,i)=>c.imageUncovered >= (i===0 ? .8 : .7) && c.captionUncovered), true);
         check(`${width} frame ${index} phase ${phase} bounds and controls`, await evaluate(`(()=>{
           const hero=document.querySelector('#inicio').getBoundingClientRect(),controls=document.querySelector('button[aria-label="Siguiente composición"]').parentElement.getBoundingClientRect();
           return [...document.querySelectorAll('#hero-collage figure')].every(f=>{const r=f.getBoundingClientRect();return r.left>=0 && r.right<=document.documentElement.clientWidth && r.top>=hero.top && r.bottom<=hero.bottom && r.bottom<=controls.top;});

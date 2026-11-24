@@ -57,9 +57,8 @@ test('S3 two-tier enlarged collage budgets at most 1100px desktop hero height', 
   assert.equal(widthCap, 610, 'scene size follows available width, not short viewport height');
   assert.doesNotMatch(desktop, /100svh - 300px/);
   assert.match(desktop, /minmax\(0, \.85fr\) minmax\(0, 1\.25fr\)/);
-  assert.match(desktop, /grid-column: 7 \/ 13; grid-row: 2;/);
-  assert.doesNotMatch(desktop, /grid-row: 2; margin-top:/);
-  assert.match(desktop, /grid-column: 1 \/ 7; grid-row: 2;/);
+  assert.match(desktop, /grid-column: 7 \/ 13; grid-row: 2; margin-top: -72px;/);
+  assert.match(desktop, /grid-column: 1 \/ 7; grid-row: 2; margin-top: -72px;/);
   assert.doesNotMatch(desktop, /margin-top: 45%/);
   // Server-free intrinsic budget, not a replacement for transformed browser
   // bounds/occlusion. Reserve wrapped captions: 72px primary, 86px secondary.
@@ -73,7 +72,7 @@ test('S3 two-tier enlarged collage budgets at most 1100px desktop hero height', 
     assert.ok(primaryWidth >= 550 && primaryWidth <= 660, `${height}: main artwork stays large`);
     const gap = Number(collage.match(/gap: (\d+)px \d+px;/)?.[1]);
     const horizontalGap = Number(collage.match(/gap: \d+px (\d+)px;/)?.[1]);
-    const stagger = Number(desktop.match(/grid-row: 2; margin-top: (\d+)px/)?.[1] ?? 0);
+    const stagger = Number(desktop.match(/grid-row: 2; margin-top: (-?\d+)px/)?.[1] ?? 0);
     const primary = primaryWidth * .75 + 72 + 2;
     const lower = (primaryWidth - horizontalGap) / 2 * .75 + 86 + 2 + stagger;
     const hero = primary + gap + lower + 44 + 24 + 12 + 44 + 12 + 53.3125
@@ -82,4 +81,30 @@ test('S3 two-tier enlarged collage budgets at most 1100px desktop hero height', 
   }
   assert.match(css, /\[data-motion='paused'\] figure/);
   assert.match(css, /prefers-reduced-motion: reduce/);
+});
+
+test('S8 partial overlap brings the full collage scene into common laptop first viewports at the same size', async () => {
+  const css = await read('src/components/home/HomeRedesign.module.css');
+  const desktop = css.split('@media (max-width: 1060px)')[0];
+  const block = selector => desktop.match(new RegExp(`\\.${selector} \\{([^}]+)\\}`))?.[1] || '';
+  const collage = block('collage');
+  const rowGap = Number(collage.match(/gap: (\d+)px \d+px;/)?.[1]);
+  const [padTop, padBottom] = collage.match(/padding-block: (\d+)px (\d+)px;/)?.slice(1).map(Number) || [NaN, NaN];
+  const scenePad = Number(block('collageScene').match(/padding: (\d+)px \d+px;/)?.[1]);
+  const raises = [...desktop.matchAll(/grid-row: 2; margin-top: (-?\d+)px;/g)].map(m => Number(m[1]));
+  assert.equal(raises.length, 2, 'both small slots are raised');
+  assert.equal(raises[0], raises[1], 'both small slots share one overlap');
+  // Parent L12 frame-0 measurements at the 610px scene cap (primary ~582px wide):
+  // large figure 461 (caption ~57 on top), small row 233, controls margin 12 + 44.
+  const large = 461, caption = 57, small = 233, controls = 12 + 44;
+  const overlap = -raises[0] - rowGap;
+  assert.ok(overlap > 0, 'small cards sit a little over the large card');
+  assert.ok(overlap <= large * .2, `overlap ${overlap}px stays within 20% of the large card`);
+  assert.ok(overlap < large - caption - 300, 'the large caption and most of its artwork stay uncovered');
+  const scene = scenePad + padTop + large + rowGap + small + raises[0] + padBottom + controls + scenePad;
+  const bottomAt = height => 76 + height * .03 + scene;
+  assert.ok(bottomAt(864) <= 864 - 8, `1536x864 scene bottom ${bottomAt(864)} inside the first viewport`);
+  assert.ok(bottomAt(1080) <= 1080, '1920x1080 scene inside the first viewport');
+  // 1366x768 keeps the large size: the residual overflow is reported, not hidden.
+  assert.ok(bottomAt(768) - 768 < 90, `1366x768 residual overflow ${bottomAt(768) - 768}px`);
 });

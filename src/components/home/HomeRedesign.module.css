@@ -77,7 +77,8 @@
 .collageScene {
   min-width: 0;
   /* Keep the primary large on short screens; the two smaller cards share
-     a lower tier so visibility does not require an oversized vertical stack. */
+     a lower tier that rises a little over the primary (S8) so the whole scene
+     fits common laptop first viewports without shrinking the artwork. */
   width: min(100%, 610px);
   justify-self: center;
   padding: 12px 14px;
@@ -108,16 +109,16 @@
   --float-distance: -10px;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  /* Two intrinsic tiers include wrapped captions. The small cards sit close
-     below the primary: soft rolls and opposite float directions keep their
-     transformed corners and captions clear of it; horizontal clearance
-     protects both lower captions. */
+  /* Two intrinsic tiers include wrapped captions. S8: the small cards rise
+     72px (58px over the primary after the 14px row gap, about 13% of its
+     height) and paint above it; the primary caption on top stays uncovered.
+     Horizontal clearance protects both lower captions. */
   grid-template-rows: auto auto;
   gap: 14px 28px;
   align-items: start;
   min-width: 0;
   /* Reserve the transformed corners above controls, not just untransformed boxes. */
-  padding-block: 20px 24px;
+  padding-block: 12px 18px;
 }
 .collage figure {
   position: relative;
@@ -144,10 +145,10 @@
 .collage .captureFrame { grid-column: 1 / 13; grid-row: 1; --depth: 12px; --tilt-x: 3deg; --tilt-y: -5deg; --roll: -1deg; animation-delay: -2s; }
 .captureFrame figcaption > span:not(.conceptLabel) { color: #9bffce; }
 .captureFrame img { display: block; width: 100%; height: auto; }
-/* Small cards drift slightly down while the primary drifts up, so the close
-   tiers move apart rather than together. */
-.collage .salonFrame { grid-column: 7 / 13; grid-row: 2; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 1deg; --float-direction: -.6; animation-delay: -6s; z-index: 2; }
-.collage .shopFrame { grid-column: 1 / 7; grid-row: 2; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -1deg; --float-direction: -.6; animation-delay: -10s; z-index: 3; }
+/* Small cards drift slightly down while the primary drifts up, so the
+   overlap never grows past its resting 58px. Mobile resets margin-top to 0. */
+.collage .salonFrame { grid-column: 7 / 13; grid-row: 2; margin-top: -72px; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 1deg; --float-direction: -.6; animation-delay: -6s; z-index: 2; }
+.collage .shopFrame { grid-column: 1 / 7; grid-row: 2; margin-top: -72px; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -1deg; --float-direction: -.6; animation-delay: -10s; z-index: 3; }
 .collage[data-motion='paused'] figure { animation-play-state: paused; }
 @keyframes heroFloat {
   0%, 100% { transform: translate3d(0, 0, var(--depth)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--roll)); }
