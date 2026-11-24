@@ -40,18 +40,13 @@ test('S1 Jorge Ramírez shares his passion on /nosotros', async () => {
   assert.ok(text(block).includes(NAME));
 });
 
-test('S2 his portfolio projects are listed with local cover images', async () => {
+test('S3-S6 his exclusive portfolio projects are no longer published', async () => {
   const cards = await projectCards();
-  for (const [title, slug] of [['TengoYa', 'tengoya'], ['CarWeb', 'carweb'], ['Histech', 'histech'], ['Robot Alejo 2.0', 'robot-alejo']]) {
-    const [card] = cardFor(cards, title);
-    assert.ok(card, title);
-    assert.ok(card.includes(`%2Fimages%2Fprojects%2F${slug}.webp`) || card.includes(`/images/projects/${slug}.webp`), `image ${title}`);
+  const team = text(await page('/equipo'));
+  for (const title of ['TengoYa', 'CarWeb', 'Histech', 'Gametroz', 'Fundación Propósito Posible', 'ALTiora Inmobiliaria', 'CV Automatic']) {
+    assert.equal(cardFor(cards, title).length, 0, title);
+    assert.ok(!team.includes(title), title);
   }
-  const [pega] = cardFor(cards, 'Migración Pega → UiPath');
-  assert.ok(pega, 'Pega migration');
-  assert.ok(pega.includes('migracion-pega-uipath.svg'));
-  assert.ok(pega.includes('Ilustración conceptual'));
-  assert.ok(pega.includes('No es una captura real'));
 });
 
 test('S3 shared projects are a single card crediting both members', async () => {
@@ -67,11 +62,12 @@ test('S3 shared projects are a single card crediting both members', async () => 
   assert.ok(!cards.some(card => card.includes('>Christmas Radio Navidad</h3>')));
 });
 
-test('S4 his employer work is marked as work experience', async () => {
+test('S3-S6 his exclusive employer work is no longer published', async () => {
   const cards = await projectCards();
+  const team = text(await page('/equipo'));
   for (const title of ['Robot Alejo 2.0', 'Migración Pega → UiPath']) {
-    const [card] = cardFor(cards, title);
-    assert.ok(text(card).includes('Experiencia laboral'), title);
+    assert.equal(cardFor(cards, title).length, 0, title);
+    assert.ok(!team.includes(title), title);
   }
 });
 

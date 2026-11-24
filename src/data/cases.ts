@@ -57,27 +57,6 @@ export const CASE_STUDIES: CaseStudy[] = [
       'La navegación organiza el acceso a las emisoras.',
     ],
   },
-  {
-    slug: 'tengoya',
-    project: 'TengoYa',
-    summary: 'Marketplace nacional que conecta profesionales verificados con clientes de todo Colombia por WhatsApp.',
-    context: 'TengoYa es un marketplace nacional de servicios locales en Colombia.',
-    challenge: [
-      'Conectar a los clientes con profesionales confiables cerca de ellos.',
-      'Llegar a todo el país, no solo a las ciudades principales.',
-      'Que el contacto sea inmediato, sin formularios largos.',
-    ],
-    solution: [
-      'Marketplace de servicios locales con profesionales verificados.',
-      'Contacto directo con cada profesional por WhatsApp.',
-      'Arquitectura SEO y AEO para aparecer en búsquedas locales y en asistentes de IA.',
-    ],
-    technologies: ['Next.js', 'SEO', 'AEO'],
-    results: [
-      'Directorio de servicios locales organizado por ubicación.',
-      'Clientes y profesionales se contactan directo por WhatsApp.',
-    ],
-  },
 ];
 
 export const caseForProject = (title: string) => CASE_STUDIES.find(item => item.project === title);

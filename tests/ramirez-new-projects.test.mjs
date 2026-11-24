@@ -10,47 +10,26 @@ const projects = [
   ['CV Automatic', 'https://cvautomatic.online', 'cv-automatic'],
 ];
 
-test('the four supplied projects appear once with Jorge Ramírez attribution and their live links', async () => {
+test('S3-S6 the four exclusive projects no longer publish cards or live links', async () => {
   const response = await fetch(new URL('/proyectos', base));
   assert.equal(response.status, 200);
   const html = await response.text();
   const section = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0];
   assert.ok(section);
-  const cards = section.split(/(?=<div[^>]*data-project=)/).slice(1);
   const scripts = [...html.matchAll(/<script[^>]*src="([^"]+)"/g)].map(match => match[1]);
   const bundles = (await Promise.all(scripts.map(async src => {
     const response = await fetch(new URL(src.replace(/&amp;/g, '&'), base));
     assert.equal(response.status, 200);
     return response.text();
   }))).join('\n');
-  for (const [title, url] of projects) {
-    const matches = cards.filter(card => card.includes(`>${title}</h3>`));
-    assert.equal(matches.length, 1, title);
-    const [card] = matches;
-    // The catalog is imported by the client-side detail modal.
-    assert.ok(bundles.includes(url), `${title} live URL in served catalog bundle`);
-    assert.ok(!card.includes('Experiencia laboral'), `${title} portfolio work`);
-  }
-  assert.ok(!section.includes('https://gametroz.online/https://gametroz.online/'));
-});
-
-test('the four supplied projects use their local site screenshots as covers', async () => {
-  const response = await fetch(new URL('/proyectos', base));
-  assert.equal(response.status, 200);
-  const section = (await response.text()).match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0];
-  assert.ok(section);
-  const cards = section.split(/(?=<div[^>]*data-project=)/).slice(1);
-  for (const [title, , slug] of projects) {
-    const card = cards.find(item => item.includes(`>${title}</h3>`));
-    assert.ok(card, title);
-    assert.ok(card.includes(`%2Fimages%2Fprojects%2F${slug}.webp`) || card.includes(`/images/projects/${slug}.webp`), `${title} screenshot cover`);
-    assert.ok(!card.includes('treesside-logo.jpg'), `${title} brand fallback`);
-    assert.ok(!card.includes('Imagen de marca'), `${title} brand notice`);
-    assert.ok(!card.includes('Ilustración conceptual'), `${title} conceptual notice`);
+  for (const [title, url, slug] of projects) {
+    assert.ok(!section.includes(`>${title}</h3>`), title);
+    assert.ok(!section.includes(`data-project="equipo-${slug}"`), slug);
+    assert.ok(!bundles.includes(url), `${title} live URL no longer in served catalog bundle`);
   }
 });
 
-test('the four screenshot covers are served as real WebP images', async () => {
+test('unpublished screenshot assets remain available as real WebP images', async () => {
   for (const [title, , slug] of projects) {
     const response = await fetch(new URL(`/images/projects/${slug}.webp`, base));
     assert.equal(response.status, 200, title);

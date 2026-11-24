@@ -180,9 +180,9 @@ test('category pages are in the sitemap; unknown categories are 404', async () =
   assert.equal((await get('/servicios/no-existe')).status, 404);
 });
 
-test('Proyectos stays as it was: no sector pages or submenu', async () => {
+test('Proyectos retains its 23 published cards without sector pages or submenu', async () => {
   const { html } = await get('/proyectos');
   assert.ok(!html.includes('Subcategorías de proyectos'));
   assert.equal((await get('/proyectos/restaurantes')).status, 404);
-  assert.equal((html.match(/data-project="/g) || []).length, 32);
+  assert.equal((html.match(/data-project="/g) || []).length, 23);
 });

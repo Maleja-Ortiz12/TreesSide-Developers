@@ -25,16 +25,12 @@ const WITH_IMAGES = {
   'EDA · Renta Ciudadana': 'eda-renta-ciudadana', 'Análisis de Ventas de Cafetería': 'ventas-cafeteria',
   'Dimension Shift': 'dimension-shift', UptownHair: 'uptownhair', 'Emisoras Latinas': 'emisoras-latinas-cover',
   'Entre Lanas y Fragancias': 'entre-lanas-y-fragancias',
-  TengoYa: 'tengoya', CarWeb: 'carweb', Histech: 'histech', 'Robot Alejo 2.0': 'robot-alejo',
   'La Lupe': 'la-lupe', 'Bendita Gracia': 'bendita-gracia',
   'Calculadora de contenedores': 'calculadora-contenedores.svg',
   'Libres en Cristo Jesús': 'libres-en-cristo.svg',
   'API de Tienda + Asistente IA': 'tienda-api.svg',
   'Sistema de gestión de inventarios': 'gestion-inventarios.svg',
   'Aplicación de gestión agropecuaria': 'gestion-agropecuaria.svg',
-  'Migración Pega → UiPath': 'migracion-pega-uipath.svg',
-  Gametroz: 'gametroz', 'Fundación Propósito Posible': 'fundacion-proposito-posible',
-  'ALTiora Inmobiliaria': 'altiora-inmobiliaria', 'CV Automatic': 'cv-automatic',
 };
 
 test('every portfolio project is listed with its local project image or labeled conceptual cover', async () => {
@@ -47,7 +43,7 @@ test('every portfolio project is listed with its local project image or labeled 
     assert.ok(card.includes(encodeURIComponent(`/images/${image}`)) || card.includes(`/images/${image}`), `image: ${title}`);
     assert.ok(!card.includes('Imagen de marca'), `brand placeholder on ${title}`);
   }
-  assert.equal(Object.keys(WITH_IMAGES).length, 32);
+  assert.equal(Object.keys(WITH_IMAGES).length, 23);
   assert.equal((section.match(/data-project=/g) || []).length, Object.keys(WITH_IMAGES).length);
 });
 

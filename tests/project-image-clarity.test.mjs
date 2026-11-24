@@ -56,5 +56,5 @@ test('S18 the featured carousel has an explicit connection into the catalog bran
   const html = await page();
   assert.match(html, /data-featured-connector=""[^>]*aria-hidden="true"/);
   assert.ok(html.includes('catalog-tree'));
-  assert.equal((html.match(/data-project="/g) || []).length, 32);
+  assert.equal((html.match(/data-project="/g) || []).length, 23);
 });

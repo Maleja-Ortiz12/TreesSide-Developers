@@ -10,7 +10,7 @@ async function page(path) {
 }
 const meta = (html, attr, name) => html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`))?.[1];
 const PAGES = [
-  '/', '/servicios', '/planes', '/proyectos', '/casos', '/casos/la-lupe', '/casos/emisoras-latinas', '/casos/tengoya',
+  '/', '/servicios', '/planes', '/proyectos', '/casos', '/casos/la-lupe', '/casos/emisoras-latinas',
   '/nosotros', '/equipo', '/contacto', '/politica-de-datos',
 ];
 
@@ -30,11 +30,13 @@ test('S4 every page shares and canonicalizes its own URL, keeping the shared Ope
 });
 
 test('S4 not-found pages do not canonicalize to the home page', async () => {
-  const response = await fetch(new URL('/casos/no-existe', base), { signal: AbortSignal.timeout(30000) });
-  assert.equal(response.status, 404);
-  const html = await response.text();
-  assert.doesNotMatch(html, /<link rel="canonical"/);
-  assert.doesNotMatch(html, /<meta property="og:url"/);
+  for (const path of ['/casos/no-existe', '/casos/tengoya']) {
+    const response = await fetch(new URL(path, base), { signal: AbortSignal.timeout(30000) });
+    assert.equal(response.status, 404, path);
+    const html = await response.text();
+    assert.doesNotMatch(html, /<link rel="canonical"/);
+    assert.doesNotMatch(html, /<meta property="og:url"/);
+  }
 });
 
 test('S4 the X card title and description match each page', async () => {

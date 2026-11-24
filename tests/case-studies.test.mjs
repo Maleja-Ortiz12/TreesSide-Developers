@@ -15,7 +15,6 @@ const plain = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').repla
 const CASES = [
   { slug: 'la-lupe', title: 'La Lupe', authors: 'María Alejandra Ortiz Páez y Ronaldo Delgado Correa', image: 'la-lupe', facts: ['menú', 'WhatsApp', 'catering'], live: 'https://lalupe.co/' },
   { slug: 'emisoras-latinas', title: 'Emisoras Latinas', authors: 'María Alejandra Ortiz Páez y Jorge Luis Ramírez Trochez', image: 'emisoras-latinas-cover', facts: ['Directorio de emisoras', 'reproductor'] },
-  { slug: 'tengoya', title: 'TengoYa', authors: 'Jorge Luis Ramírez Trochez', image: 'tengoya', facts: ['Directorio de servicios locales', 'WhatsApp'] },
 ];
 
 test('S2 each case study tells context, challenge, solution, technologies and results with the real authors', async () => {
@@ -42,11 +41,14 @@ test('S2 case studies make no unpublished claims: every number comes from the pr
   for (const number of numbers) assert.ok(team.includes(number), `number ${number} is not in the catalog`);
 });
 
-test('S2 the case index lists the three cases, unknown slugs are 404, and the sitemap includes them', async () => {
+test('S4 the case index and sitemap retain shared cases but exclude TengoYa', async () => {
   const index = await page('/casos');
   for (const item of CASES) assert.ok(index.includes(`href="/casos/${item.slug}"`), `index ${item.slug}`);
   assert.equal((await get('/casos/no-existe')).status, 404);
+  assert.equal((await get('/casos/tengoya')).status, 404);
+  assert.ok(!index.includes('href="/casos/tengoya"'));
   const sitemap = await page('/sitemap.xml');
+  assert.ok(!sitemap.includes('/casos/tengoya'));
   for (const path of ['/casos', ...CASES.map(item => `/casos/${item.slug}`)]) {
     assert.ok(sitemap.includes(`<loc>https://treesside-developers.malejawork12.workers.dev${path}</loc>`), `sitemap ${path}`);
   }
@@ -69,6 +71,6 @@ test('S2 cases remain reachable from the integrated footer and project modal, wi
 
 test('S2 case claims borrowed from another project are not published', async () => {
   const cases = await readFile('src/data/cases.ts', 'utf8');
-  const emisoras = cases.slice(cases.indexOf("slug: 'emisoras-latinas'"), cases.indexOf("slug: 'tengoya'"));
+  const emisoras = cases.slice(cases.indexOf("slug: 'emisoras-latinas'"));
   assert.doesNotMatch(emisoras, /sin registro|cualquier dispositivo/i, 'only Radio Navidad is published as "sin registro" and "cualquier dispositivo"');
 });

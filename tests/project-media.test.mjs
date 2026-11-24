@@ -5,11 +5,11 @@ import sharp from 'sharp';
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
 const vectors = ['calculadora-contenedores', 'libres-en-cristo', 'tienda-api', 'gestion-inventarios', 'gestion-agropecuaria', 'migracion-pega-uipath'];
 
-test('S19 all 32 cards use complete original media rather than small mockup crops', async () => {
+test('S19 all 23 published cards use complete original media rather than small mockup crops', async () => {
   const response = await fetch(`${base}/proyectos`); assert.equal(response.status, 200);
   const html = await response.text();
   const cards = html.split(/(?=<div[^>]*data-project=)/).slice(1);
-  assert.equal(cards.length, 32);
+  assert.equal(cards.length, 23);
   for (const card of cards) {
     const image = card.match(/<img\b[^>]*>/)?.[0] || '';
     assert.ok(image.includes('/images/projects/'), 'canonical local image');

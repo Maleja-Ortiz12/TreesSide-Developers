@@ -56,21 +56,21 @@ test('S4 each card names its filter group next to its real category', async () =
   const group = title => text(card(title)).match(/class="[^"]*card-group[^"]*">([^<]*)</)?.[1]?.replace(/&amp;/g, '&');
   assert.equal(group('La Lupe'), 'Restaurantes · Sitios web');
   assert.equal(group('Atherium 3D Game'), 'Juegos · Videojuegos');
-  assert.equal(group('Gametroz'), 'Juegos · Sitios web');
   assert.equal(group('Ocho80'), 'Juegos · Tiempo real');
   assert.equal(group('Dashboard BI · Superstore'), 'Datos · Análisis de datos');
   assert.equal(group('Floraltech E-Commerce'), 'E-commerce · Web & E-Commerce');
   assert.equal(group('Gudfy'), 'E-commerce · Web & E-Commerce');
   // Projects outside the four groups appear only under Todos and show just their category.
   assert.equal(group('Luhos'), 'Sistemas de gestión');
-  assert.equal(group('TengoYa'), 'Marketplaces');
+  assert.equal(card('TengoYa'), '');
+  assert.equal(card('Gametroz'), '');
 });
 
 test('S8 cards stay compact while the detail modal keeps every author, portfolio and experience note', async () => {
   const html = await projectsPage();
   const section = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)?.[0] ?? '';
   const cards = section.split(/(?=<div[^>]*data-project=)/).slice(1);
-  assert.equal(cards.length, 32);
+  assert.equal(cards.length, 23);
   for (const card of cards) assert.ok(!card.includes('Ver portafolio de '), 'portfolio links live in the modal');
   // The modal reads the catalog shipped to the browser, so its data must be in the served bundles.
   const scripts = [...html.matchAll(/<script[^>]*src="([^"]+)"/g)].map(match => match[1]);

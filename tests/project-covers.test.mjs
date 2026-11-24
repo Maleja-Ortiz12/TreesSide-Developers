@@ -21,17 +21,21 @@ async function page(path) {
   return response.text();
 }
 
-test('every previously uncovered project has its own locally served conceptual cover and visible provenance', async () => {
+test('retained projects publish conceptual covers with provenance; unpublished project assets remain available', async () => {
   const html = await page('/proyectos');
   const section = html.match(/<section id="proyectos"[\s\S]*?<\/section>/)[0];
   const cards = section.split(/(?=<div[^>]*data-project=)/);
   for (const [title, slug] of COVERS) {
     const card = cards.find(item => item.includes(`>${title}</h3>`));
-    assert.ok(card, title);
-    const image = `projects/${slug}.svg`;
-    assert.ok(card.includes(encodeURIComponent(`/images/${image}`)) || card.includes(`/images/${image}`), `${title} cover`);
-    assert.ok(text(card).includes(LABEL), `${title} must not pretend to be a real screenshot`);
-    assert.ok(!card.includes('Imagen de marca'), `${title} no generic brand placeholder`);
+    if (title === 'Migración Pega → UiPath') {
+      assert.equal(card, undefined, `${title} is no longer published (S3-S6)`);
+    } else {
+      assert.ok(card, title);
+      const image = `projects/${slug}.svg`;
+      assert.ok(card.includes(encodeURIComponent(`/images/${image}`)) || card.includes(`/images/${image}`), `${title} cover`);
+      assert.ok(text(card).includes(LABEL), `${title} must not pretend to be a real screenshot`);
+      assert.ok(!card.includes('Imagen de marca'), `${title} no generic brand placeholder`);
+    }
     const response = await fetch(new URL(`/images/projects/${slug}.webp`, base));
     assert.equal(response.status, 200, slug);
     assert.match(response.headers.get('content-type'), /image\/webp/);

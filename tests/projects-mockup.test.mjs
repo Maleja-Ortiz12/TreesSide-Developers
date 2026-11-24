@@ -20,8 +20,8 @@ test('S17 projects uses the new mockup hero without changing the requested filte
 test('S17 every project keeps its canonical anchor and image inside a laptop', async () => {
   const html = await page();
   const cards = html.split(/(?=<div[^>]*data-project=)/).slice(1);
-  assert.equal(cards.length, 32);
-  assert.equal((html.match(/data-project-laptop/g) ?? []).length, 32);
+  assert.equal(cards.length, 23);
+  assert.equal((html.match(/data-project-laptop/g) ?? []).length, 23);
   for (const card of cards) {
     const id = card.match(/data-project="([^"]+)"/)?.[1];
     assert.ok(card.includes(`id="${id}"`), id);
