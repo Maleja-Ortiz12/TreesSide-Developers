@@ -49,7 +49,7 @@ export function enquiryMessage(message: string, context: EnquiryContext) {
 export function enquiryWhatsAppUrl(context: EnquiryContext, draft: { mensaje: string; necesidad?: string }) {
   if (!context.length && !draft.mensaje && !draft.necesidad) return CONTACT_INFO.whatsappUrl;
   const url = new URL(CONTACT_INFO.whatsappUrl);
-  const greeting = url.searchParams.get('text') ?? 'Hola TreesSide Developers';
+  const greeting = url.searchParams.get('text') ?? 'Hola TreesSet Developers';
   const message = [greeting, draft.necesidad, draft.mensaje].filter(Boolean).join('\n\n');
   url.searchParams.set('text', enquiryMessage(message, context));
   return url.toString();

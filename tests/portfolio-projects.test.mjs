@@ -63,7 +63,7 @@ test('project images are served locally as nonempty WebP or vector files', async
   }
 });
 
-test('employer projects are shown as member work experience, never as TreesSide projects', async () => {
+test('employer projects are shown as member work experience, never as TreesSet projects', async () => {
   const section = await projectsSection();
   for (const title of ['Luhos', 'Gudfy', 'Tanku']) {
     const card = cardFor(section, title);

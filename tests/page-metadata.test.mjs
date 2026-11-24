@@ -15,14 +15,21 @@ const PAGES = [
 ];
 
 test('S4 every page shares and canonicalizes its own URL, keeping the shared Open Graph data', async () => {
-  for (const path of PAGES) {
+  const sitemap = await page('/sitemap.xml');
+  const paths = new Set([...PAGES, '/servicios/streaming-y-redes', ...[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, url]) => new URL(url).pathname)]);
+  for (const path of paths) {
     const html = await page(path);
     const url = path === '/' ? SITE : `${SITE}${path}`;
     assert.equal(meta(html, 'property', 'og:url'), url, `${path} og:url`);
     assert.match(html, new RegExp(`<link rel="canonical" href="${url.replace(/\//g, '\\/')}"`), `${path} canonical`);
     const title = html.match(/<title>([^<]*)<\/title>/)?.[1];
+    assert.match(title, /TreesSet Developers$/, `${path} branded title`);
+    const body = html.match(/<body[\s\S]*<\/body>/)?.[0].replace(/<script[\s\S]*?<\/script>/g, '') ?? '';
+    assert.match(body, /TreesSet/, `${path} visible brand`);
+    assert.match(body, /href="mailto:treessetcorp@gmail.com"/, `${path} email`);
+    assert.doesNotMatch(body, /TreesSide|TREESSIDE|correo@softzenkododevs\.com/, `${path} no old human-facing identity`);
     assert.equal(meta(html, 'property', 'og:title'), title, `${path} og:title matches the page title`);
-    assert.equal(meta(html, 'property', 'og:site_name'), 'TreesSide Developers', `${path} site name`);
+    assert.equal(meta(html, 'property', 'og:site_name'), 'TreesSet Developers', `${path} site name`);
     assert.equal(meta(html, 'property', 'og:locale'), 'es_CO', `${path} locale`);
     assert.equal(meta(html, 'property', 'og:image'), `${SITE}/images/treesside-share.png`, `${path} og:image on the public domain`);
     assert.equal(meta(html, 'name', 'twitter:image'), `${SITE}/images/treesside-share.png`, `${path} twitter:image on the public domain`);

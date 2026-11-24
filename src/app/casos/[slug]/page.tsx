@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const item = CASE_STUDIES.find(entry => entry.slug === slug);
   if (!item) return {};
   return pageMetadata(`/casos/${item.slug}`, {
-    title: `Caso de proyecto: ${item.project} | TreesSide Developers`,
+    title: `Caso de proyecto: ${item.project} | TreesSet Developers`,
     description: item.summary,
   });
 }
@@ -41,7 +41,7 @@ export default async function CaseStudyPage({ params }: Params) {
             <span className="kicker">CASO DE PROYECTO · {project?.category.toUpperCase()}</span>
             <h1>{item.project}</h1>
             <p className={styles.summary}>{item.summary}</p>
-            {project && <p>{projectEvidenceLabel(project)}. La autoría no implica un contrato de TreesSide Developers.</p>}
+            {project && <p>{projectEvidenceLabel(project)}. La autoría no implica un contrato de TreesSet Developers.</p>}
             {project?.owner && <p className={styles.authors}>Desarrollado por {project.owner}</p>}
             {(project?.projectUrl || item.liveUrl) && (
               <a href={project?.projectUrl || item.liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">

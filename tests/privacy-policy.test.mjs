@@ -12,11 +12,11 @@ const plain = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').repla
 test('S3 the personal data policy page carries the minimum content of Ley 1581 de 2012', async () => {
   const html = await page('/politica-de-datos');
   assert.match(html, /<h1[^>]*>Política de tratamiento de datos personales<\/h1>/);
-  assert.match(html, /<title>[^<]*Política de tratamiento de datos[^<]*TreesSide[^<]*<\/title>/);
+  assert.match(html, /<title>[^<]*Política de tratamiento de datos[^<]*TreesSet[^<]*<\/title>/);
   const text = plain(html);
   for (const required of [
-    'Ley 1581 de 2012', 'Decreto 1377 de 2013', 'TreesSide Developers',
-    'correo@softzenkododevs.com', '+57 305 717 3986',
+    'Ley 1581 de 2012', 'Decreto 1377 de 2013', 'TreesSet Developers',
+    'treessetcorp@gmail.com', '+57 305 717 3986',
     'Finalidad', 'conocer, actualizar y rectificar', 'revocar la autorización', 'solicitar la supresión',
     'diez (10) días hábiles', 'cinco (5) días hábiles', 'quince (15) días hábiles', 'ocho (8) días hábiles', 'dos (2) meses', 'Superintendencia de Industria y Comercio',
     'Formspree', 'Estados Unidos', 'Fecha de entrada en vigencia: 24 de octubre de 2026',

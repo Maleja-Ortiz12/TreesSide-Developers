@@ -6,7 +6,7 @@ export const streamingYRedes: ServiceCategory = {
   slug: 'streaming-y-redes',
   label: 'Streaming y redes sociales',
   icon: Radio,
-  metaTitle: 'Streaming web y gestión de redes sociales | TreesSide Developers',
+  metaTitle: 'Streaming web y gestión de redes sociales | TreesSet Developers',
   metaDescription: 'Soluciones de streaming y gestión de redes sociales: reproductor web en vivo o bajo demanda, estrategia, calendario y producción de contenido para tus redes.',
   hero: {
     title: 'Tu contenido merece',

@@ -13,7 +13,7 @@ for (const path of ['/', '/equipo']) {
     const html = await page(path);
     const header = html.match(/<header\b[\s\S]*?<\/header>/)?.[0];
     assert.ok(header);
-    assert.ok(header.includes('TreesSide') && header.includes('Developers'), 'Brand is present');
+    assert.ok(header.includes('TreesSet') && header.includes('Developers'), 'Brand is present');
     assert.ok(header.includes('Abrir menú'), 'Mobile menu is available');
     for (const href of ['/', '/servicios', '/proyectos', '/nosotros', '/equipo', '/contacto']) {
       assert.ok(header.includes(`href="${href}"`), href);

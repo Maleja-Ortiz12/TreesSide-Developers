@@ -123,7 +123,7 @@ test('social keeps the actual mockup art on tilting 3D stages', async () => {
 
 test('social has its own metadata and canonical URL', async () => {
   const { html } = await page();
-  assert.ok(html.includes('<title>Marca, fotografía y presencia digital | TreesSide Developers</title>'));
+  assert.ok(html.includes('<title>Marca, fotografía y presencia digital | TreesSet Developers</title>'));
   assert.ok(html.includes(`rel="canonical" href="${site}${path}"`));
   assert.ok(html.includes(`property="og:url" content="${site}${path}"`));
   assert.match(html, /<meta name="description" content="Estrategia, contenido visual y presencia digital[^"]{60,}"/);

@@ -12,7 +12,7 @@ La web conserva el árbol, la identidad verde y oscura y los precios y condicion
 ## Configuración única
 
 - `src/data/content.ts` → `CONTACT_INFO`: correo, teléfono, WhatsApp y ubicación; `SITE_URL`: dirección pública vigente.
-- Correo actual: **correo@softzenkododevs.com**. Es de la marca anterior; queda **pendiente confirmar** su vigencia y recepción con el responsable. No se cambió ni se inventó un reemplazo. Este trabajo no comprueba la entrega de correo.
+- Correo actual indicado por el responsable: **treessetcorp@gmail.com**, centralizado en `CONTACT_INFO.email`. Queda **pendiente confirmar** la recepción; este cambio no comprueba la entrega de correo ni redirige el buzón de Formspree, que se configura en el proveedor.
 - `NEXT_PUBLIC_FORMSPREE_FORM_ID`: se conserva el mecanismo actual. Sin un ID válido, el formulario informa que no está conectado y ofrece canales alternativos; no simula envíos.
 - No se modificaron dominio, DNS ni servicios externos. No se publicaron cambios.
 
@@ -25,7 +25,7 @@ Las demos interactivas de restaurante, radio y logística se retiraron del inici
 ## Evidencia y datos pendientes
 
 - Solo un campo `client` explícito identifica un proyecto para cliente. Bendita Gracia ya lo contiene; su participación individual está pendiente de confirmar.
-- Los proyectos de portafolios no prueban contratos de TreesSide Developers: se identifican como proyectos personales del equipo. Las experiencias de empleo se distinguen como trabajo para otra empresa.
+- Los proyectos de portafolios no prueban contratos de TreesSet Developers: se identifican como proyectos personales del equipo. Las experiencias de empleo se distinguen como trabajo para otra empresa.
 - Los casos muestran contexto, funcionalidades y autoría existentes. No se añadieron testimonios, cifras de ventas ni resultados comerciales. Las cifras de tráfico/cobertura sin evidencia en los casos se sustituyeron por funciones verificables en su contenido.
 - Confirmar con los integrantes cuáles proyectos de sus portafolios fueron contratos de clientes, la entidad contratante, responsabilidades específicas y permiso de publicación antes de reclasificarlos.
 - Las imágenes conceptuales conservan su aviso; no se presentan como capturas reales. Floraltech conserva la aclaración de pagos simulados.

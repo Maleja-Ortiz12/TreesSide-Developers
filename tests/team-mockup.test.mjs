@@ -30,7 +30,7 @@ test('S21 four overview cards show each real photo and short summary, with compl
 
 test('S21 team keeps work attribution and ends with collaboration and one integrated closing',async()=>{
   const html=await page();
-  for(const phrase of ['Distintas ideas.','Soluciones conectadas.','Trabajamos de forma colaborativa','Estos trabajos no se presentan como proyectos de TreesSide Developers.'])assert.ok(text(html).includes(phrase),phrase);
+  for(const phrase of ['Distintas ideas.','Soluciones conectadas.','Trabajamos de forma colaborativa','Estos trabajos no se presentan como proyectos de TreesSet Developers.'])assert.ok(text(html).includes(phrase),phrase);
   const footers=[...html.matchAll(/<footer\b[\s\S]*?<\/footer>/g)].map(([footer])=>footer);
   assert.equal(footers.length,1);
   for(const copy of ['Lo que sigue,','Hablemos','Política de datos'])assert.ok(footers[0].includes(copy));

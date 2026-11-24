@@ -29,9 +29,9 @@ test('S4 the home page publishes Organization structured data with the real cont
   const data = JSON.parse(raw);
   assert.equal(data['@context'], 'https://schema.org');
   assert.equal(data['@type'], 'Organization');
-  assert.equal(data.name, 'TreesSide Developers');
+  assert.equal(data.name, 'TreesSet Developers');
   assert.equal(data.url, SITE);
-  assert.equal(data.email, 'correo@softzenkododevs.com');
+  assert.equal(data.email, 'treessetcorp@gmail.com');
   assert.equal(data.telephone, '+57 305 717 3986');
   assert.equal(data.address.addressCountry, 'CO');
   assert.ok(!('sameAs' in data), 'no social profiles yet');

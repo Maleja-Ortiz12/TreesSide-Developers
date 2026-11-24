@@ -8,8 +8,8 @@ import { Reveal } from '@/components/motion/Reveal';
 import styles from './page.module.css';
 
 export const metadata: Metadata = pageMetadata('/equipo', {
-  title: 'Nuestro equipo | TreesSide Developers',
-  description: 'Conoce a los integrantes de TreesSide Developers: sus habilidades, formación, proyectos y portafolios profesionales.',
+  title: 'Nuestro equipo | TreesSet Developers',
+  description: 'Conoce a los integrantes de TreesSet Developers: sus habilidades, formación, proyectos y portafolios profesionales.',
 });
 
 export default function TeamPage() {

@@ -65,7 +65,7 @@ export function AboutSection() {
               lineHeight: 1.75,
               maxWidth: '560px'
             }}>
-              En <strong style={{ color: '#ffffff' }}>TreesSide Developers</strong> creamos software que esté al alcance de todos y que ayude a automatizar los procesos manuales repetitivos. Queremos innovar y acompañar desde microempresas y pequeños emprendimientos hasta grandes empresas, para que Colombia sea un país más tecnológico y productivo. Queremos llegar a mercados extranjeros, conectar con nuevas necesidades y seguir innovando y creciendo junto a empresas de otros países.
+              En <strong style={{ color: '#ffffff' }}>TreesSet Developers</strong> creamos software que esté al alcance de todos y que ayude a automatizar los procesos manuales repetitivos. Queremos innovar y acompañar desde microempresas y pequeños emprendimientos hasta grandes empresas, para que Colombia sea un país más tecnológico y productivo. Queremos llegar a mercados extranjeros, conectar con nuevas necesidades y seguir innovando y creciendo junto a empresas de otros países.
             </p>
           </div>
 
@@ -95,7 +95,7 @@ export function AboutSection() {
               }}>
                 <Image
                   src="/images/treesside-logo.webp"
-                  alt="TreesSide Developers Cyber Tree Logo"
+                  alt="TreesSet Developers Cyber Tree Logo"
                   fill
                   style={{ objectFit: 'cover' }}
                 />
@@ -109,7 +109,7 @@ export function AboutSection() {
                   display: 'inline-flex',
                   alignItems: 'center'
                 }}>
-                  <span style={{ color: 'var(--primary-green)' }}>TreesSide</span>
+                  <span style={{ color: 'var(--primary-green)' }}>TreesSet</span>
                   <span style={{ color: 'var(--primary-cyan)', marginLeft: '6px' }}>Developers</span>
                 </span>
               </div>

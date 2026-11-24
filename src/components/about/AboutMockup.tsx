@@ -26,7 +26,7 @@ export function AboutMockup() {
       <li><Link href="/casos/la-lupe"><strong>La Lupe</strong> consulta el desarrollo</Link></li>
       <li><Link href="/equipo"><strong>Equipo</strong> conoce a sus integrantes</Link></li>
     </ul>
-    <div className="container"><p>La experiencia se respalda con proyectos revisables. Los proyectos personales y los realizados como empleados de otras empresas no se presentan como contratos de TreesSide Developers.</p></div>
+    <div className="container"><p>La experiencia se respalda con proyectos revisables. Los proyectos personales y los realizados como empleados de otras empresas no se presentan como contratos de TreesSet Developers.</p></div>
     <div className={`container ${styles.approach}`}>
       <div className={styles.intro}>
         <h2>Código que construye <span className="text-gradient">futuro.</span></h2>

@@ -78,7 +78,7 @@ try {
       assert.equal(metrics.h1, 1, `${width} ${route}: one primary heading`);
       assert.equal(metrics.overflow.length, 0, `${width} ${route}: visible controls fit`);
       assert.equal(metrics.broken.length, 0, `${width} ${route}: images loaded`);
-      assert.match(metrics.title, /TreesSide Developers/);
+      assert.match(metrics.title, /TreesSet Developers/);
       if (['/', '/nosotros', '/planes'].includes(route)) {
         // Full-page screenshots do not scroll: explicitly decode lazy images for honest visual evidence.
         await evaluate(`Promise.all([...document.querySelectorAll('main img')].map(img => { img.loading='eager'; return img.decode().catch(()=>{}); })).then(()=>true)`);

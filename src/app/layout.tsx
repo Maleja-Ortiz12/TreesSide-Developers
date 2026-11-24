@@ -11,10 +11,10 @@ const mono = JetBrains_Mono({ subsets: ['latin'], display: 'swap', variable: '--
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'TreesSide Developers | Web, tiendas y software para tu negocio',
+  title: 'TreesSet Developers | Web, tiendas y software para tu negocio',
   description: 'Páginas web, tiendas virtuales y software a medida para recibir clientes, organizar tu negocio y automatizar tareas. Conoce nuestros proyectos y solicita una propuesta.',
   keywords: [
-    'TreesSide Developers',
+    'TreesSet Developers',
     'Desarrollo de Software',
     'Desarrollo Web',
     'Colombia',
@@ -25,16 +25,16 @@ export const metadata: Metadata = {
     'Power BI',
     'Software a medida'
   ],
-  authors: [{ name: 'TreesSide Developers' }],
+  authors: [{ name: 'TreesSet Developers' }],
   openGraph: {
     ...BASE_OPEN_GRAPH,
-    title: 'TreesSide Developers | Web, tiendas y software para tu negocio',
+    title: 'TreesSet Developers | Web, tiendas y software para tu negocio',
     description: 'Desarrollo de software a medida, aplicaciones web, soluciones cloud e inteligencia de negocios.',
     images: [SHARE_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'TreesSide Developers | Web, tiendas y software para tu negocio',
+    title: 'TreesSet Developers | Web, tiendas y software para tu negocio',
     description: 'Desarrollo de software a medida, aplicaciones web, soluciones cloud e inteligencia de negocios.',
     images: [SHARE_IMAGE.url],
   },
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 const ORGANIZATION = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'TreesSide Developers',
+  name: 'TreesSet Developers',
   url: SITE_URL,
   logo: `${SITE_URL}/images/treesside-logo.jpg`,
   email: CONTACT_INFO.email,

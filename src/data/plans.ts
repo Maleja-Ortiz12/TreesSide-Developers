@@ -161,6 +161,6 @@ export const formatPlanPrice = (value: number) => `$${value.toString().replace(/
 /** Contact only, not a checkout or acceptance of the final scope. */
 export function planWhatsAppUrl(plan: CommercialPlan) {
   const url = new URL(CONTACT_INFO.whatsappUrl);
-  url.searchParams.set('text', `Hola TreesSide Developers, quiero cotizar el plan ${plan.name}, desde ${formatPlanPrice(plan.price)} COP. Me gustaría confirmar el alcance, los costos adicionales y el plazo para mi negocio.`);
+  url.searchParams.set('text', `Hola TreesSet Developers, quiero cotizar el plan ${plan.name}, desde ${formatPlanPrice(plan.price)} COP. Me gustaría confirmar el alcance, los costos adicionales y el plazo para mi negocio.`);
   return url.toString();
 }

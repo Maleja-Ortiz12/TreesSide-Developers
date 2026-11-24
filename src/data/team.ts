@@ -87,7 +87,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     skills: ['React', 'NestJS', 'Laravel', 'Flutter', 'Unity / C#', 'PostgreSQL'],
     portfolio: 'https://portafolio-bay-tau.vercel.app/',
     contributions: [
-      'Desarrollo de gran parte del sitio web de TreesSide Developers.',
+      'Desarrollo de gran parte del sitio web de TreesSet Developers.',
       'Desarrollo de proyectos web con React, NestJS y Laravel, y aplicaciones móviles con Flutter.',
       'Creación de videojuegos con Unity y C#.',
       'Experiencia práctica en monitoreo de alertas de seguridad, documentación y automatización de reportes.',

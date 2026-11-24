@@ -7,7 +7,7 @@ export const redesSociales: ServiceCategory = {
   slug: 'redes-sociales',
   label: 'Redes sociales, marketing y marca',
   icon: Megaphone,
-  metaTitle: 'Marca, fotografía y presencia digital | TreesSide Developers',
+  metaTitle: 'Marca, fotografía y presencia digital | TreesSet Developers',
   metaDescription: 'Estrategia, contenido visual y presencia digital para tu negocio: gestión de redes sociales, marketing digital, fotografía, identidad de marca y diseño de piezas.',
   hero: {
     title: 'Haz que tu marca se vea, se entienda y',

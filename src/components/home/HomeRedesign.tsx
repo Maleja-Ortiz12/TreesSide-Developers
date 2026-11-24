@@ -65,7 +65,7 @@ export function HomeRedesign() {
     <section id="inicio" className={styles.hero} aria-labelledby="home-title">
       <div className={`container ${styles.heroGrid}`}>
         <div className={styles.heroCopy}>
-          <p className={styles.eyebrow}>TreesSide Developers · Software a tu medida</p>
+          <p className={styles.eyebrow}>TreesSet Developers · Software a tu medida</p>
           <h1 id="home-title">Tu negocio puede vender más y <span>trabajar mejor</span></h1>
           <p className={styles.heroLead}>Creamos páginas web, tiendas y software a medida para ayudarte a atraer clientes, organizar tu operación y automatizar tareas</p>
           <div className={styles.actions}>

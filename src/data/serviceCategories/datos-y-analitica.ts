@@ -6,7 +6,7 @@ export const datosYAnalitica: ServiceCategory = {
   slug: 'datos-y-analitica',
   label: 'Datos y analítica',
   icon: ChartColumn,
-  metaTitle: 'Datos, BI y analítica para tu negocio | TreesSide Developers',
+  metaTitle: 'Datos, BI y analítica para tu negocio | TreesSet Developers',
   metaDescription: 'Transformamos tus datos en información clara: limpieza de datos, BI, exploración y reportes. Planes Diagnóstico de datos, Dashboard de negocio y Analítica continua.',
   hero: {
     title: 'Tus datos tienen historias.',

@@ -6,7 +6,7 @@ export const logistica: ServiceCategory = {
   slug: 'logistica',
   label: 'Logística empresarial',
   icon: Truck,
-  metaTitle: 'Software de logística empresarial | TreesSide Developers',
+  metaTitle: 'Software de logística empresarial | TreesSet Developers',
   metaDescription: 'Software para calcular cargas, controlar inventarios, gestionar flujos operativos y generar reportes de tu operación logística, con orden, trazabilidad y control.',
   hero: {
     badge: 'Logística empresarial',

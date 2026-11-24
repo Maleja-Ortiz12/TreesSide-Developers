@@ -6,7 +6,7 @@ export const reservasYCitas: ServiceCategory = {
   slug: 'reservas-y-citas',
   label: 'Reservas y citas',
   icon: CalendarCheck,
-  metaTitle: 'Agendas y reservas en línea | TreesSide Developers',
+  metaTitle: 'Agendas y reservas en línea | TreesSet Developers',
   metaDescription: 'Implementamos agendas y reservas en línea para organizar tus servicios, profesionales y horarios. Planes Agenda digital, Agenda administrable y Reservas conectadas.',
   hero: {
     badge: 'Reservas y citas',

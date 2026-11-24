@@ -6,7 +6,7 @@ export const sistemasDeGestion: ServiceCategory = {
   slug: 'sistemas-de-gestion',
   label: 'Sistemas de gestión',
   icon: Layers,
-  metaTitle: 'Sistemas de gestión a medida | TreesSide Developers',
+  metaTitle: 'Sistemas de gestión a medida | TreesSet Developers',
   metaDescription: 'Diseñamos sistemas de gestión modulares para tu operación: registros, procesos, roles y reportes. Planes Módulo esencial, Gestión conectada y Plataforma a medida.',
   hero: {
     title: 'Una operación conectada.',

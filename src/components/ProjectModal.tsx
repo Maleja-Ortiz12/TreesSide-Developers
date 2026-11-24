@@ -56,7 +56,7 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
         {evidence && <><h3>Contexto o necesidad</h3><p>{evidence.context}</p></>}
         <h3>Solución desarrollada</h3><p>{project.detailedDescription || project.description}</p>
         <h3>Participación del equipo</h3>
-        {project.experience && <p>Producto de otra empresa en el que participó como empleado. No es un contrato de TreesSide Developers.</p>}
+        {project.experience && <p>Producto de otra empresa en el que participó como empleado. No es un contrato de TreesSet Developers.</p>}
         {project.authors?.length ? <ul>{project.authors.map(author => <li key={author.portfolio}><a href={author.portfolio} target="_blank" rel="noopener noreferrer">{author.name} · Portafolio del autor <ExternalLink size={14} aria-hidden="true" /></a></li>)}</ul> : <p>{project.owner || 'La participación individual y sus responsabilidades están pendientes de confirmar.'}</p>}
         {project.client && <p>Cliente: {project.client}</p>}
         {project.year && project.year !== 'No especificado' && <p>Año: {project.year}</p>}

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 /** Open Graph fields every page shares; Next replaces (does not merge) a parent openGraph object. */
 export const BASE_OPEN_GRAPH = {
-  siteName: 'TreesSide Developers',
+  siteName: 'TreesSet Developers',
   locale: 'es_CO',
   type: 'website',
 } as const;
@@ -13,7 +13,7 @@ export const SHARE_IMAGE = {
   type: 'image/png',
   width: 1200,
   height: 630,
-  alt: 'TreesSide Developers · Transformamos ideas en soluciones digitales',
+  alt: 'TreesSet Developers · Transformamos ideas en soluciones digitales',
 };
 
 /** Page metadata whose canonical and share URL point to the page itself instead of the home page. */

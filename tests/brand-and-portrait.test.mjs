@@ -11,16 +11,16 @@ async function get(path) {
 
 for (const path of ['/nosotros', '/equipo']) {
   const hasTeam = path === '/equipo';
-  test(`${path} shows TreesSide with Developers as its own subtitle`, async () => {
+  test(`${path} shows TreesSet with Developers as its own subtitle`, async () => {
     const html = await (await get(path)).text();
     const header = html.match(/<header\b[\s\S]*?<\/header>/)?.[0];
     assert.ok(header);
-    assert.match(header, /<span[^>]*>TreesSide<\/span>/);
+    assert.match(header, /<span[^>]*>TreesSet<\/span>/);
     assert.match(header, /<span[^>]*>Developers<\/span>/);
     assert.ok(header.includes('flex-direction:column'));
     assert.ok(header.includes('src="/images/treesside-logo.webp"'), 'Updated logo artwork');
     assert.ok(!html.includes('src="/images/logo.jpg"'), 'Do not render old logo artwork');
-    assert.match(html, /<title>[^<]*TreesSide Developers/);
+    assert.match(html, /<title>[^<]*TreesSet Developers/);
     assert.ok(!html.includes('SoftZenkodoDevs'));
     assert.ok(html.includes('href="/equipo"'));
     if (!hasTeam) return;
@@ -44,5 +44,5 @@ test('Jorge portrait keeps the original vertical composition instead of a square
 
 test('contact page keeps the current email contact rather than inventing a replacement', async () => {
   const html = await (await get('/contacto')).text();
-  assert.ok(html.includes('correo@softzenkododevs.com'));
+  assert.ok(html.includes('treessetcorp@gmail.com'));
 });

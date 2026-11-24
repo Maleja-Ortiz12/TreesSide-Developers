@@ -172,9 +172,9 @@ test('S8 every existing service template/custom layout/plan carries a validated 
   }
 });
 
-test('S7 existing email stays centralized and pending confirmation is documented; metadata keeps full brand', () => {
-  const h = harness(); assert.equal(h.load('src/data/content.ts').CONTACT_INFO.email, 'correo@softzenkododevs.com');
-  const doc = readFileSync('docs/client-conversion.md', 'utf8'); assert.match(doc, /correo@softzenkododevs\.com/); assert.match(doc, /pendiente|confirmar/i);
-  const layout = readFileSync('src/app/layout.tsx', 'utf8'); assert.match(layout, /email: CONTACT_INFO.email/); assert.match(layout, /TreesSide Developers/);
-  assert.doesNotMatch(readFileSync('src/components/ProjectsSection.tsx', 'utf8'), /Catálogo de TreesSide y/);
+test('S7 requested email stays centralized and pending confirmation is documented; metadata keeps full brand', () => {
+  const h = harness(); assert.equal(h.load('src/data/content.ts').CONTACT_INFO.email, 'treessetcorp@gmail.com');
+  const doc = readFileSync('docs/client-conversion.md', 'utf8'); assert.match(doc, /treessetcorp@gmail\.com/); assert.match(doc, /pendiente|confirmar/i);
+  const layout = readFileSync('src/app/layout.tsx', 'utf8'); assert.match(layout, /email: CONTACT_INFO.email/); assert.match(layout, /TreesSet Developers/);
+  assert.doesNotMatch(readFileSync('src/components/ProjectsSection.tsx', 'utf8'), /Catálogo de TreesSet y/);
 });

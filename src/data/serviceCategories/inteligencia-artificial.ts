@@ -6,7 +6,7 @@ export const inteligenciaArtificial: ServiceCategory = {
   slug: 'inteligencia-artificial',
   label: 'Inteligencia artificial y APIs',
   icon: Sparkles,
-  metaTitle: 'Inteligencia artificial y APIs | TreesSide Developers',
+  metaTitle: 'Inteligencia artificial y APIs | TreesSet Developers',
   metaDescription: 'Diseñamos e implementamos asistentes, automatizaciones y APIs que conectan tu información y tus sistemas: API a medida, Asistente conectado y Solución inteligente.',
   hero: {
     title: 'Conecta tus sistemas.',

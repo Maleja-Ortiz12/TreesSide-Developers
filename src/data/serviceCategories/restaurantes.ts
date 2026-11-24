@@ -7,7 +7,7 @@ export const restaurantes: ServiceCategory = {
   slug: 'restaurantes',
   label: 'Restaurantes',
   icon: UtensilsCrossed,
-  metaTitle: 'Software y web para restaurantes | TreesSide Developers',
+  metaTitle: 'Software y web para restaurantes | TreesSet Developers',
   metaDescription: 'Soluciones digitales para restaurantes: web y carta, pedidos, cocina, caja e inventarios. Planes Presencia digital, Ventas en línea y Gestión integral.',
   hero: {
     title: 'Tu restaurante,',

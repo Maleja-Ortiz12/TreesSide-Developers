@@ -101,7 +101,7 @@ export function TeamGallery() {
                         className={styles.portrait} style={{ objectFit: member.photoFit ?? 'cover' }} loading="lazy" />
                     </div>
                     <span className={styles.photoShine} aria-hidden="true" />
-                    <span className={styles.number}>{String(index + 1).padStart(2, '0')} / TREESSIDE</span>
+                    <span className={styles.number}>{String(index + 1).padStart(2, '0')} / TREESSET</span>
                   </div>
                   <div data-team-avatar="" aria-hidden="true" className={styles.avatar}>
                     <Image src={member.photo} alt="" width={160} height={160} className={styles.avatarPhoto} loading="lazy" />
@@ -152,7 +152,7 @@ export function TeamGallery() {
           <p>Trabajamos de forma colaborativa, uniendo ideas, criterios y visión para transformar necesidades en software que funciona en el mundo real.</p>
         </div>
         <div className={styles.bottom}>
-          <p>Experiencia, formación y proyectos personales según los portafolios de cada integrante. Estos trabajos no se presentan como proyectos de TreesSide Developers.</p>
+          <p>Experiencia, formación y proyectos personales según los portafolios de cada integrante. Estos trabajos no se presentan como proyectos de TreesSet Developers.</p>
           <Link href="/contacto" className="btn btn-secondary">Construyamos tu próxima idea <ArrowUpRight size={18} aria-hidden="true" /></Link>
         </div>
       </div>

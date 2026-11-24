@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
 import { SITE_URL } from '@/data/content';
 
-export const alt = 'TreesSide Developers · Transformamos ideas en soluciones digitales';
+export const alt = 'TreesSet Developers · Transformamos ideas en soluciones digitales';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -27,7 +27,7 @@ export default async function OpengraphImage() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 18, fontSize: 30, color: '#00f5a0', letterSpacing: 4 }}>
           <div style={{ width: 18, height: 18, borderRadius: 9, background: '#00f5a0' }} />
-          TREESSIDE DEVELOPERS
+          TREESSET DEVELOPERS
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, width: 640 }}>
           <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1.05, color: '#ffffff' }}>Transformamos ideas</div>

@@ -15,7 +15,7 @@ test('S1 contact page shows the real phone and WhatsApp, never the placeholder',
   const html = await page('/contacto');
   assert.ok(html.includes('+57 305 717 3986'));
   assert.ok(html.includes(`href="${WHATSAPP}`));
-  assert.ok(html.includes('correo@softzenkododevs.com'));
+  assert.ok(html.includes('treessetcorp@gmail.com'));
   assert.ok(!html.includes('300 123 4567') && !html.includes('573001234567'));
 });
 
@@ -25,15 +25,15 @@ test('S1 no page links to placeholder social profiles; the footer offers email a
     assert.doesNotMatch(html, /href="https:\/\/(github|linkedin|youtube|x)\.com\/?"/, `${path} placeholder social link`);
     const foot = footer(html);
     assert.ok(!foot.includes('Síguenos'), `${path} social column removed`);
-    assert.ok(foot.includes('href="mailto:correo@softzenkododevs.com"'), `${path} footer email`);
+    assert.ok(foot.includes('href="mailto:treessetcorp@gmail.com"'), `${path} footer email`);
     assert.ok(foot.includes(`href="${WHATSAPP}`), `${path} footer WhatsApp`);
   }
   const content = await readFile('src/data/content.ts', 'utf8');
   assert.ok(!content.includes('socials'), 'no social placeholders in data');
 });
 
-test('S1 brand is TreesSide in titles; the real domain stays as the site URL', async () => {
+test('S1 brand is TreesSet in titles; the real domain stays as the site URL', async () => {
   const html = await page('/');
-  assert.match(html, /<title>[^<]*TreesSide[^<]*<\/title>/);
+  assert.match(html, /<title>[^<]*TreesSet[^<]*<\/title>/);
   assert.ok(!/<title>[^<]*SoftZenkodo/i.test(html));
 });

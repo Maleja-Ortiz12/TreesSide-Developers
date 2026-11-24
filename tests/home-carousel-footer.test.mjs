@@ -19,8 +19,8 @@ test('home has one integrated footer retaining the new closing and all previous 
   const footers = [...html.matchAll(/<footer\b[\s\S]*?<\/footer>/g)].map(match => match[0]);
   assert.equal(footers.length, 1);
   const footer = footers[0];
-  for (const copy of ['TreesSide Developers', 'Colombia', 'Todos los derechos reservados.', 'Código que construye futuro', 'correo@softzenkododevs.com', '+57 305 717 3986']) assert.ok(footer.includes(copy), copy);
-  for (const href of ['/', '/servicios', '/planes', '/proyectos', '/casos', '/nosotros', '/equipo', '/contacto', '/politica-de-datos', 'mailto:correo@softzenkododevs.com']) assert.ok(footer.includes(`href="${href}"`), href);
+  for (const copy of ['TreesSet Developers', 'Colombia', 'Todos los derechos reservados.', 'Código que construye futuro', 'treessetcorp@gmail.com', '+57 305 717 3986']) assert.ok(footer.includes(copy), copy);
+  for (const href of ['/', '/servicios', '/planes', '/proyectos', '/casos', '/nosotros', '/equipo', '/contacto', '/politica-de-datos', 'mailto:treessetcorp@gmail.com']) assert.ok(footer.includes(`href="${href}"`), href);
   assert.ok(footer.includes('https://wa.me/573057173986'));
   assert.ok(!footer.includes('site-footer'), 'the former separate footer is not appended');
 });

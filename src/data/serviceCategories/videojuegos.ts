@@ -6,7 +6,7 @@ export const videojuegos: ServiceCategory = {
   slug: 'videojuegos',
   label: 'Videojuegos',
   icon: Gamepad2,
-  metaTitle: 'Desarrollo de videojuegos | TreesSide Developers',
+  metaTitle: 'Desarrollo de videojuegos | TreesSet Developers',
   metaDescription: 'Diseñamos y desarrollamos experiencias de juego interactivas: prototipos, juegos web y experiencias a la medida, con una visión creativa y técnica.',
   hero: {
     badge: 'Servicio de Videojuegos',

@@ -6,8 +6,8 @@ import { ProjectCarousel } from '@/components/motion/ProjectCarousel';
 import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata: Metadata = pageMetadata('/proyectos', {
-  title: 'Proyectos | TreesSide Developers',
-  description: 'Proyectos de TreesSide Developers y de los integrantes del equipo: aplicaciones web, móviles, videojuegos y automatizaciones.',
+  title: 'Proyectos | TreesSet Developers',
+  description: 'Proyectos de TreesSet Developers y de los integrantes del equipo: aplicaciones web, móviles, videojuegos y automatizaciones.',
 });
 
 export default function ProjectsPage() {

@@ -6,7 +6,7 @@ export const infraestructura: ServiceCategory = {
   slug: 'infraestructura',
   label: 'Infraestructura',
   icon: Server,
-  metaTitle: 'Infraestructura tecnológica y nube | TreesSide Developers',
+  metaTitle: 'Infraestructura tecnológica y nube | TreesSet Developers',
   metaDescription: 'Diseñamos, implementamos y operamos la infraestructura que tu software necesita: servidores en la nube, redes seguras, despliegues con dominio y respaldo continuo.',
   hero: {
     badge: 'Infraestructura',

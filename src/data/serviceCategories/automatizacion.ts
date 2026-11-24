@@ -6,7 +6,7 @@ export const automatizacion: ServiceCategory = {
   slug: 'automatizacion',
   label: 'Automatización empresarial',
   icon: Workflow,
-  metaTitle: 'Automatización empresarial de procesos | TreesSide Developers',
+  metaTitle: 'Automatización empresarial de procesos | TreesSet Developers',
   metaDescription: 'Automatizaciones que conectan tus herramientas, procesan información y ejecutan tareas de forma confiable: RPA, integraciones, documentos y ejecuciones.',
   hero: {
     badge: 'Automatización empresarial',

@@ -32,7 +32,7 @@ export async function sendContact(
         email: data.correo,
         mensaje: data.mensaje,
         ...(data.necesidad?.trim() ? { necesidad: data.necesidad.trim() } : {}),
-        _subject: `Nuevo mensaje de ${data.nombre} desde el sitio de TreesSide Developers`,
+        _subject: `Nuevo mensaje de ${data.nombre} desde el sitio de TreesSet Developers`,
         consentimiento: `Acepta la política de tratamiento de datos personales (${new Date().toISOString()})`,
       }),
     });

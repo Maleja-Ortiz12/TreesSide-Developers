@@ -6,7 +6,7 @@ export const agropecuario: ServiceCategory = {
   slug: 'agropecuario',
   label: 'Soluciones agropecuarias',
   icon: Sprout,
-  metaTitle: 'Software para la gestión agropecuaria | TreesSide Developers',
+  metaTitle: 'Software para la gestión agropecuaria | TreesSet Developers',
   metaDescription: 'Soluciones de software para registrar, organizar y gestionar la operación agropecuaria de tu finca: cultivos, ganadería, gastos, inventarios y reportes a tu medida.',
   hero: {
     title: 'Tecnología que entiende lo que pasa',

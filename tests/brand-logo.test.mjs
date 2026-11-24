@@ -4,12 +4,12 @@ import { readFile } from 'node:fs/promises';
 import sharp from 'sharp';
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
 
-test('S27 the header shows the new tree mark with the TreesSide / DEVELOPERS wordmark on every page', async () => {
+test('S27 the header shows the new tree mark with the TreesSet / DEVELOPERS wordmark on every page', async () => {
   for (const path of ['/', '/servicios', '/proyectos', '/nosotros', '/equipo', '/contacto']) {
     const response = await fetch(`${base}${path}`); assert.equal(response.status, 200);
     const header = (await response.text()).match(/<header\b[\s\S]*?<\/header>/)?.[0] || '';
     assert.ok(header.includes('src="/images/treesside-logo.webp"'), `${path} logo`);
-    assert.match(header, /<span[^>]*>TreesSide<\/span>/);
+    assert.match(header, /<span[^>]*>TreesSet<\/span>/);
     assert.match(header, /<span[^>]*text-transform:uppercase[^>]*>Developers<\/span>/, `${path} DEVELOPERS styled like the logo`);
     assert.match(header, /<span[^>]*color:#82cb8c[^>]*>Developers<\/span>/i, `${path} DEVELOPERS green`);
   }

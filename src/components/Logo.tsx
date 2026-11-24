@@ -57,7 +57,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
         }}>
           <Image
             src="/images/treesside-logo.webp"
-            alt="TreesSide Developers Cyber Tree Logo"
+            alt="TreesSet Developers Cyber Tree Logo"
             width={width}
             height={height}
             priority
@@ -88,7 +88,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
       }}>
         <Image
           src="/images/treesside-logo.webp"
-          alt="TreesSide Developers Logo"
+          alt="TreesSet Developers Logo"
           width={width}
           height={height}
           style={{
@@ -110,7 +110,7 @@ export function Logo({ size = 'md', showText = true, className = '' }: LogoProps
           lineHeight: 1.15,
           userSelect: 'none'
         }}>
-          <span style={{ color: '#ffffff', textShadow: '0 0 18px rgba(62, 240, 168, 0.25)' }}>TreesSide</span>
+          <span style={{ color: '#ffffff', textShadow: '0 0 18px rgba(62, 240, 168, 0.25)' }}>TreesSet</span>
           {/* Matches the updated logo: spaced green capitals under the white name. */}
           <span style={{
             color: '#82cb8c',

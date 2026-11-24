@@ -8,7 +8,7 @@ import { ServiceCategories } from '@/components/services/ServiceCategories';
 import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata: Metadata = pageMetadata('/servicios', {
-  title: 'Servicios | TreesSide Developers',
+  title: 'Servicios | TreesSet Developers',
   description: 'Servicios de desarrollo web, bases de datos, soluciones cloud y aplicaciones a medida, junto con las tecnologías que usamos.',
 });
 

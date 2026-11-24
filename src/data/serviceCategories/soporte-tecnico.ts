@@ -6,7 +6,7 @@ export const soporteTecnico: ServiceCategory = {
   slug: 'soporte-tecnico',
   label: 'Servicio técnico',
   icon: Wrench,
-  metaTitle: 'Servicio técnico y soporte de equipos | TreesSide Developers',
+  metaTitle: 'Servicio técnico y soporte de equipos | TreesSet Developers',
   metaDescription: 'Diagnóstico, mantenimiento, configuración y soporte de tus equipos, remoto o presencial, con una atención clara, profesional y orientada a la solución.',
   hero: {
     badge: 'Servicio técnico',

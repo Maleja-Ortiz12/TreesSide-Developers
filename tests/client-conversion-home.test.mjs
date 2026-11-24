@@ -122,5 +122,5 @@ test('S1/S8 keep the tree, carousel, responsive layouts, focus and reduced-motio
   assert.match(css, /\.solutions a:focus-visible/);
   assert.match(css, /\.demoActions a:focus-visible/);
   assert.match(css, /prefers-reduced-motion: reduce/);
-  assert.ok(page.includes('Tu negocio puede vender más y trabajar mejor | TreesSide Developers'));
+  assert.ok(page.includes('Tu negocio puede vender más y trabajar mejor | TreesSet Developers'));
 });

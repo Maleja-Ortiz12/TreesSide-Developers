@@ -171,7 +171,7 @@ export function TechStackSection() {
             }}>
               <Image
                 src="/images/treesside-logo.webp"
-                alt="Cyber Tree TreesSide Developers"
+                alt="Cyber Tree TreesSet Developers"
                 width={100}
                 height={100}
                 style={{ objectFit: 'cover', width: '100%', height: '100%' }}

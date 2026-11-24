@@ -8,7 +8,7 @@ test('Alejandra is a software developer credited for much of the website, not so
   assert.ok(profile);
   assert.match(profile, /role: 'Desarrolladora de Software'/);
   assert.doesNotMatch(profile, /Junior|Creadora de este sitio|Creación y desarrollo del sitio/);
-  assert.match(profile, /Desarrollo de gran parte del sitio web de TreesSide Developers\./);
+  assert.match(profile, /Desarrollo de gran parte del sitio web de TreesSet Developers\./);
   for (const retained of ['Flutter', 'Unity', 'ciberseguridad', 'portafolio-bay-tau.vercel.app', 'Dimension Shift', 'UptownHair', 'La Lupe']) {
     assert.ok(profile.includes(retained), retained);
   }

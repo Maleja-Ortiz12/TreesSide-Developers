@@ -11,7 +11,7 @@ These are locally designed and Edge-rendered interfaces using stock photographs,
 - Each production composition has three coordinated views, photography, navigation, service/product categories and a primary visual action. No invented sales figures, reviews or client claims.
 - `ConceptShowcase.tsx` presents full uncropped compositions with persistent textual conceptual labels, accessible descriptions, fictional-identity disclosure, view labels, and the original enquiry text/destinations. Cards become single-column below 800px; artwork retains its aspect ratio.
 - Hero conceptual slots reuse these same assets without changing real-project eligibility, batch ordering, La Lupe artwork/copy, or real frames. Thumbnail images use contain rather than cropping the phone/catalog. The detailed proposal section is the primary reading surface; thumbnail microcopy is not essential content.
-- TreesSide's surrounding light section, typography, menu and shared footer are unchanged. The technology revision only adjusts the hero artwork track/width in `HomeRedesign.module.css`.
+- TreesSet's surrounding light section, typography, menu and shared footer are unchanged. The technology revision only adjusts the hero artwork track/width in `HomeRedesign.module.css`.
 
 ## Stock provenance
 

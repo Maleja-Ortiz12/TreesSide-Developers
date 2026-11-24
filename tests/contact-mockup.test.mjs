@@ -18,7 +18,7 @@ test('S22 contact uses the mockup hero, sprout art, WhatsApp call and location',
   assert.ok(html.includes('/images/mockup/contact-tree.webp'));
   assert.ok(text(html).includes('Cuéntanos tu idea.'));
   assert.match(html, /<a[^>]*href="https:\/\/wa\.me\/573057173986[^"]*"[^>]*>[\s\S]*?Prefiero hablar por WhatsApp/);
-  for (const value of ['+57 305 717 3986', 'correo@softzenkododevs.com', 'Colombia']) assert.ok(text(html).includes(value), value);
+  for (const value of ['+57 305 717 3986', 'treessetcorp@gmail.com', 'Colombia']) assert.ok(text(html).includes(value), value);
 });
 
 test('S22 the form keeps real fields, consent and honeypot and adds an optional need from real services', async () => {

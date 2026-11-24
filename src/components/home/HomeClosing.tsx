@@ -31,11 +31,11 @@ export function HomeClosing({ showClosing = true }: { showClosing?: boolean } = 
             <span>Hablemos <ArrowUpRight size={30} aria-hidden="true" /></span>
           </Link>
         </div>
-        <span className={styles.outline} aria-hidden="true">TreesSide</span>
+        <span className={styles.outline} aria-hidden="true">TreesSet</span>
       </div>}
       <div className={`container ${styles.footerDetails}`}>
         <div className={styles.footerBrand}>
-          <strong>TreesSide Developers · {CONTACT_INFO.location}</strong>
+          <strong>TreesSet Developers · {CONTACT_INFO.location}</strong>
           <p>Desarrollamos soluciones de software a medida con tecnologías modernas y enfoque en calidad y escalabilidad.</p>
         </div>
         <nav className={styles.footerLinks} aria-label="Enlaces rápidos">
@@ -46,7 +46,7 @@ export function HomeClosing({ showClosing = true }: { showClosing?: boolean } = 
           <a href={CONTACT_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer">WhatsApp {CONTACT_INFO.phone}</a>
         </div>
         <div className={styles.footerLegal}>
-          <p>© 2025 TreesSide Developers. Todos los derechos reservados. · <Link href="/politica-de-datos">Política de datos</Link></p>
+          <p>© 2025 TreesSet Developers. Todos los derechos reservados. · <Link href="/politica-de-datos">Política de datos</Link></p>
           <span>Código que construye futuro</span>
         </div>
       </div>

@@ -9,11 +9,11 @@ async function page(path) {
 }
 
 const ROUTES = [
-  { path: '/', title: /<title>Tu negocio puede vender más y trabajar mejor \| TreesSide Developers/, sections: ['inicio', 'soluciones', 'trabajo', 'propuestas', 'proceso-home', 'siguiente-paso'] },
-  { path: '/servicios', title: /<title>Servicios \| TreesSide Developers/, sections: ['servicios', 'tecnologias'] },
-  { path: '/proyectos', title: /<title>Proyectos \| TreesSide Developers/, sections: ['proyectos', 'carrusel'] },
-  { path: '/nosotros', title: /<title>Sobre nosotros \| TreesSide Developers/, sections: ['sobre-nosotros', 'proceso'] },
-  { path: '/contacto', title: /<title>Contacto \| TreesSide Developers/, sections: ['contacto'] },
+  { path: '/', title: /<title>Tu negocio puede vender más y trabajar mejor \| TreesSet Developers/, sections: ['inicio', 'soluciones', 'trabajo', 'propuestas', 'proceso-home', 'siguiente-paso'] },
+  { path: '/servicios', title: /<title>Servicios \| TreesSet Developers/, sections: ['servicios', 'tecnologias'] },
+  { path: '/proyectos', title: /<title>Proyectos \| TreesSet Developers/, sections: ['proyectos', 'carrusel'] },
+  { path: '/nosotros', title: /<title>Sobre nosotros \| TreesSet Developers/, sections: ['sobre-nosotros', 'proceso'] },
+  { path: '/contacto', title: /<title>Contacto \| TreesSet Developers/, sections: ['contacto'] },
 ];
 const ALL_SECTIONS = ['soluciones', 'trabajo', 'propuestas', 'proceso-home', 'siguiente-paso', 'inicio', 'demos', 'carrusel', 'servicios', 'tecnologias', 'proyectos', 'sobre-nosotros', 'equipo', 'proceso', 'contacto'];
 

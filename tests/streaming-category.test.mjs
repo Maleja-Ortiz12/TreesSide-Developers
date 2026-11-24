@@ -101,7 +101,7 @@ test('streaming keeps the actual mockup art on tilting 3D stages', async () => {
 
 test('streaming has its own metadata and canonical URL', async () => {
   const { html } = await page();
-  assert.ok(html.includes('<title>Plataformas de streaming a tu medida | TreesSide Developers</title>'));
+  assert.ok(html.includes('<title>Plataformas de streaming a tu medida | TreesSet Developers</title>'));
   assert.ok(html.includes(`rel="canonical" href="${site}${path}"`));
   assert.ok(html.includes(`property="og:url" content="${site}${path}"`));
   assert.match(html, /<meta name="description" content="Creamos plataformas web para emisoras[^"]{60,}"/);

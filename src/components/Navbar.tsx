@@ -47,7 +47,7 @@ export function Navbar() {
   return (
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
       <div className="header-row">
-        <Link href="/" aria-label="TreesSide Developers, ir al inicio" style={{ textDecoration: 'none' }}>
+        <Link href="/" aria-label="TreesSet Developers, ir al inicio" style={{ textDecoration: 'none' }}>
           <Logo size="md" showText={true} />
         </Link>
 

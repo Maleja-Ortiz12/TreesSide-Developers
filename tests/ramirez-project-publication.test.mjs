@@ -86,7 +86,7 @@ test('S5-S6 shared aliases retain both credits and all member identities, skills
   for (const member of members.filter(member => member !== ramirez)) {
     for (const project of member.projects) assert.ok(catalog.some(item => item.title === (project.sameAs ?? project.name) && item.authors.some(author => author.name === member.name)), project.name);
   }
-  assert.equal(load('src/data/content.ts').CONTACT_INFO.email, 'correo@softzenkododevs.com');
+  assert.equal(load('src/data/content.ts').CONTACT_INFO.email, 'treessetcorp@gmail.com');
 });
 
 test('S3-S6 public catalog, member view, Home frames and carousel inputs no longer publish excluded projects', () => {

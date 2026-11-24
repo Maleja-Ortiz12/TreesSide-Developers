@@ -6,7 +6,7 @@ export const sitiosWeb: ServiceCategory = {
   slug: 'sitios-web',
   label: 'Webs corporativas e institucionales',
   icon: Building2,
-  metaTitle: 'Sitios web corporativos e institucionales | TreesSide Developers',
+  metaTitle: 'Sitios web corporativos e institucionales | TreesSet Developers',
   metaDescription: 'Diseñamos y desarrollamos sitios web corporativos e institucionales que comunican tu propósito y presentan tus servicios, con una experiencia clara y administrable.',
   hero: {
     title: 'Una presencia digital',

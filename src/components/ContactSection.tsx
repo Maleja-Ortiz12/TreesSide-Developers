@@ -80,7 +80,7 @@ function ContactForm({ context }: { context: EnquiryContext }) {
             <div className={styles.sent} role="status">
               <CheckCircle2 size={44} aria-hidden="true" />
               <h3>¡Mensaje enviado con éxito!</h3>
-              <p>Gracias por escribirnos. Nuestro equipo en TreesSide Developers revisará tu requerimiento y te contactará para aclarar las necesidades y definir el siguiente paso.</p>
+              <p>Gracias por escribirnos. Nuestro equipo en TreesSet Developers revisará tu requerimiento y te contactará para aclarar las necesidades y definir el siguiente paso.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className={styles.form}>
@@ -114,7 +114,7 @@ function ContactForm({ context }: { context: EnquiryContext }) {
                 <input type="checkbox" required checked={formData.consent}
                   onChange={(e) => setFormData({ ...formData, consent: e.target.checked })} />
                 <span>
-                  Autorizo a TreesSide Developers a tratar mis datos personales para responder a mi mensaje, según la{' '}
+                  Autorizo a TreesSet Developers a tratar mis datos personales para responder a mi mensaje, según la{' '}
                   <Link href="/politica-de-datos">política de tratamiento de datos</Link>.
                 </span>
               </label>

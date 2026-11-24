@@ -7,7 +7,7 @@ import { FaqSection } from '@/components/FaqSection';
 import { HomeClosing } from '@/components/home/HomeClosing';
 
 export const metadata: Metadata = pageMetadata('/contacto', {
-  title: 'Contacto | TreesSide Developers',
+  title: 'Contacto | TreesSet Developers',
   description: 'Cuéntanos tu idea y construyamos juntos tu próximo proyecto de software.',
 });
 

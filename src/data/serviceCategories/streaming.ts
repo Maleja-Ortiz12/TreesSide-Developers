@@ -7,7 +7,7 @@ export const streaming: ServiceCategory = {
   slug: 'streaming',
   label: 'Streaming',
   icon: Radio,
-  metaTitle: 'Plataformas de streaming a tu medida | TreesSide Developers',
+  metaTitle: 'Plataformas de streaming a tu medida | TreesSet Developers',
   metaDescription: 'Creamos plataformas web para emisoras, audio y video en vivo o bajo demanda: reproductores web, directorios y programación, administración de contenido e integraciones.',
   hero: {
     title: 'Tu señal. Tu plataforma.',

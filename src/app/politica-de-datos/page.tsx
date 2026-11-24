@@ -5,8 +5,8 @@ import { CONTACT_INFO } from '@/data/content';
 import styles from './page.module.css';
 
 export const metadata: Metadata = pageMetadata('/politica-de-datos', {
-  title: 'Política de tratamiento de datos personales | TreesSide Developers',
-  description: 'Cómo TreesSide Developers recolecta, usa y protege los datos personales que recibe a través de su sitio web, conforme a la Ley 1581 de 2012.',
+  title: 'Política de tratamiento de datos personales | TreesSet Developers',
+  description: 'Cómo TreesSet Developers recolecta, usa y protege los datos personales que recibe a través de su sitio web, conforme a la Ley 1581 de 2012.',
 });
 
 const EFFECTIVE_DATE = '24 de octubre de 2026';
@@ -19,12 +19,12 @@ export default function PrivacyPolicyPage() {
         <h1>Política de tratamiento de datos personales</h1>
         <p className={styles.lead}>
           En cumplimiento de la Ley 1581 de 2012, el Decreto 1377 de 2013 (compilado en el Decreto 1074 de 2015) y demás
-          normas concordantes, TreesSide Developers informa cómo trata los datos personales que recibe a través de este sitio web.
+          normas concordantes, TreesSet Developers informa cómo trata los datos personales que recibe a través de este sitio web.
         </p>
 
         <h2>1. Responsable del tratamiento</h2>
         <ul>
-          <li><strong>Nombre:</strong> TreesSide Developers</li>
+          <li><strong>Nombre:</strong> TreesSet Developers</li>
           <li><strong>Domicilio:</strong> {CONTACT_INFO.location}</li>
           <li><strong>Correo electrónico:</strong> <a href={`mailto:${CONTACT_INFO.email}`}>{CONTACT_INFO.email}</a></li>
           <li><strong>Teléfono / WhatsApp:</strong> {CONTACT_INFO.phone}</li>
@@ -64,7 +64,7 @@ export default function PrivacyPolicyPage() {
 
         <h2>6. Atención de consultas y reclamos</h2>
         <p>
-          El equipo de TreesSide Developers atiende las solicitudes sobre datos personales en{' '}
+          El equipo de TreesSet Developers atiende las solicitudes sobre datos personales en{' '}
           <a href={`mailto:${CONTACT_INFO.email}`}>{CONTACT_INFO.email}</a>. Indica tu nombre, el correo con el que nos
           escribiste y lo que solicitas.
         </p>

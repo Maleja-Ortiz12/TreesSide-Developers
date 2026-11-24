@@ -6,7 +6,7 @@ export const marketplaces: ServiceCategory = {
   slug: 'marketplaces',
   label: 'Marketplaces',
   icon: Store,
-  metaTitle: 'Desarrollo de marketplaces a la medida | TreesSide Developers',
+  metaTitle: 'Desarrollo de marketplaces a la medida | TreesSet Developers',
   metaDescription: 'Desarrollamos marketplaces a la medida para que vendedores y compradores publiquen, exploren y gestionen su intercambio en un mismo lugar, con roles e integraciones.',
   hero: {
     badge: 'Marketplaces',
