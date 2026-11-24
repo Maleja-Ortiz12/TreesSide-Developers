@@ -110,5 +110,5 @@ try {
       }
     }
   }
-  console.log('CONVERSION_BROWSER_PASS: navigation, responsive, plan context, validation, demo tabs and dialog; zero real enquiries');
+  console.log('CONVERSION_BROWSER_PASS: navigation, responsive, plan context, validation, no Home demos and dialog; zero real enquiries');
 } finally { clearTimeout(deadline); ws?.close(); browser.kill(); }
