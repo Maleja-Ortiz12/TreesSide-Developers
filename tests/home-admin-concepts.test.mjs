@@ -10,12 +10,13 @@ test('additive admin concepts: labels, scope, contextual contacts and full artwo
   assert.match(await read('src/components/home/AdminConceptShowcase.module.css'), /object-fit: contain/);
   const home = await read('src/components/home/HomeRedesign.tsx');
   assert.match(home, /<ConceptShowcase \/>\s*<AdminConceptShowcase \/>/);
-  assert.match(home, /compositions.push\(\[admin\('salon-admin'/);
+  // S7: both admin concepts join the single promotion list after the portfolio.
+  assert.match(home, /\.\.\.remaining\.map\(real\),\s*admin\('salon-admin', [^)]*\), admin\('restaurant-admin', /);
   assert.ok(!component.includes('data-home-project'));
 });
 test('real La Lupe claims, public concepts and project coverage remain', async () => {
   const home = await read('src/components/home/HomeRedesign.tsx');
-  for (const text of ['Captura real de la web de La Lupe', "['Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp']", '/images/projects/la-lupe.webp', '/images/home-concepts/salon.webp', '/images/home-concepts/shop.webp', 'remaining.slice(index, index + 3).map(real)']) assert.ok(home.includes(text), text);
+  for (const text of ['Captura real de la web de La Lupe', "['Presentación del restaurante', 'Menú', 'Platos destacados', 'Contacto por WhatsApp']", '/images/projects/la-lupe.webp', '/images/home-concepts/salon.webp', '/images/home-concepts/shop.webp', '[real(lupe), salon, shop, ...remaining.map(real)']) assert.ok(home.includes(text), text);
 });
 test('locally rendered optimized admin assets have desktop and mobile detail', async () => {
   for (const id of ['salon-admin', 'restaurant-admin']) {

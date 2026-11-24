@@ -27,20 +27,23 @@ test('S1 desktop centers the whole grid in the viewport remaining below the exis
   assert.match(rule(desktop, 'heroCopy'), /padding-block: 12px/);
 });
 
-test('S3 desktop uses compact two-tier tracks with a stagger below the uncovered primary', () => {
+test('S3/S6 desktop uses compact two-tier tracks centred against the copy, small cards raised but uncovered', () => {
   const collage = rule(desktop, 'collage');
   assert.match(collage, /grid-template-rows: auto auto;/);
-  assert.match(collage, /gap: 32px 32px/);
+  assert.match(collage, /gap: 14px 28px/);
   assert.doesNotMatch(collage, /aspect-ratio:|grid-template-rows: repeat\(/);
   assert.match(collage, /padding-block: 20px 24px/);
   assert.match(rule(desktop, 'collageScene'), /width: min\(100%, 610px\)/);
   for (const [frame, row] of [['captureFrame', 1], ['salonFrame', 2], ['shopFrame', 2]]) {
     assert.ok(rule(desktop, `collage .${frame}`).includes(`grid-row: ${row};`));
   }
-  assert.match(rule(desktop, 'collage .salonFrame'), /grid-column: 7 \/ 13;.*margin-top: 16px/);
+  assert.match(rule(desktop, 'collage .salonFrame'), /grid-column: 7 \/ 13;/);
+  for (const frame of ['salonFrame', 'shopFrame']) assert.doesNotMatch(rule(desktop, `collage .${frame}`), /margin-top:/);
   assert.match(rule(desktop, 'collage .shopFrame'), /grid-column: 1 \/ 7/);
   assert.doesNotMatch(rule(desktop, 'collage .captureFrame'), /margin-top:/);
-  assert.match(rule(desktop, 'heroGrid'), /align-items: start/);
+  assert.match(rule(desktop, 'heroGrid'), /align-items: center/);
+  // Short desktop viewports (1440x600) keep the copy and CTAs in the first viewport.
+  assert.match(css, /@media \(min-width: 1061px\) and \(height <= 720px\) \{\s*\.heroGrid \{ align-items: start; \}\s*\}/);
   assert.match(rule(mobile, 'collageScene .collage figure'), /margin-top: 0/);
 });
 
@@ -90,6 +93,7 @@ test('S5 existing 3D, tree, pause, conceptual contrast and mobile card geometry 
   assert.match(css, /color: #073526;\s+background: #a0f3cd/);
   for (const delay of ['-2s', '-6s', '-10s']) assert.ok(css.includes(`animation-delay: ${delay}`));
   assert.match(mobile, /\.collage \.captureFrame \{ grid-column: 1 \/ 13; grid-row: 1;/);
-  assert.match(mobile, /\.collage \.salonFrame \{ grid-column: 3 \/ 13; grid-row: 2;/);
-  assert.match(mobile, /\.collage \.shopFrame \{ grid-column: 1 \/ 11; grid-row: 3;/);
+  // S7: mobile stacks in DOM order, so the next promoted (left) card follows the primary.
+  assert.match(mobile, /\.collage \.shopFrame \{ grid-column: 1 \/ 11; grid-row: 2;/);
+  assert.match(mobile, /\.collage \.salonFrame \{ grid-column: 3 \/ 13; grid-row: 3;/);
 });

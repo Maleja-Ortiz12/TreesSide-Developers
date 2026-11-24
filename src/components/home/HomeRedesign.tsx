@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ShoppingBag, Workflow, Utensils } from 'lucide-react';
@@ -21,38 +22,39 @@ const stages = [
   ['Lanzamos', 'publicación y entrega según el alcance.'],
 ];
 
+// Each artwork renders its own truthful caption in whichever slot it occupies.
+type HeroItem = (sizes: string) => ReactNode;
+// DOM order is large slot, then left and right small slots (mobile stacks them in this order).
+const HERO_SLOTS = [
+  ['captureFrame', '(max-width: 600px) 90vw, (max-width: 1060px) 75vw, 42vw'],
+  ['shopFrame', '(max-width: 600px) 80vw, (max-width: 1060px) 50vw, 27vw'],
+  ['salonFrame', '(max-width: 600px) 80vw, (max-width: 1060px) 50vw, 27vw'],
+] as const;
+
 function HeroArtwork() {
   // Match the existing strip's eligibility, except S5 expressly excludes UptownHair.
   const projects = FEATURED_PROJECTS.filter(project => !project.experience && project.image !== '/images/treesside-logo.jpg' && project.id !== 'equipo-uptownhair');
-  const real = (project: (typeof projects)[number]) => <>
+  const real = (project: (typeof projects)[number]): HeroItem => sizes => <>
     <figcaption>{project.title} <span>Portafolio del equipo</span>{project.imageLabel && <span className={styles.conceptLabel}>Diseño conceptual · {project.imageLabel}</span>}</figcaption>
-    <Image data-home-project={project.id} src={project.image} alt={`${project.imageLabel ? 'Ilustración conceptual' : 'Captura real'} de ${project.title}, portafolio del equipo`} style={{ objectFit: project.imageFit ?? 'cover' }} width={1200} height={833} sizes="(max-width: 600px) 90vw, (max-width: 1060px) 75vw, 42vw" />
+    <Image data-home-project={project.id} src={project.image} alt={`${project.imageLabel ? 'Ilustración conceptual' : 'Captura real'} de ${project.title}, portafolio del equipo`} style={{ objectFit: project.imageFit ?? 'cover' }} width={1200} height={833} sizes={sizes} />
   </>;
-  const salon = <>
-    <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Peluquerías</figcaption>
-    <Image src="/images/home-concepts/salon.webp" alt="Diseño conceptual ficticio de peluquería: inicio, servicios y móvil" style={{ aspectRatio: '4 / 3', objectFit: 'contain' }} width={1600} height={1200} sizes="(max-width: 600px) 70vw, 35vw" />
+  const concept = (src: string, caption: ReactNode, alt: string): HeroItem => sizes => <>
+    <figcaption>{caption}</figcaption>
+    <Image src={src} alt={alt} style={{ aspectRatio: '4 / 3', objectFit: 'contain' }} width={1600} height={1200} sizes={sizes} />
   </>;
-  const shop = <>
-    <figcaption><span className={styles.conceptLabel}>Diseño conceptual</span> Comercio electrónico</figcaption>
-    <Image src="/images/home-concepts/shop.webp" alt="Diseño conceptual ficticio de comercio electrónico: inicio, catálogo y móvil" style={{ aspectRatio: '4 / 3', objectFit: 'contain' }} width={1600} height={1200} sizes="(max-width: 600px) 70vw, (max-width: 1060px) 50vw, 27vw" />
-  </>;
+  const salon = concept('/images/home-concepts/salon.webp', <><span className={styles.conceptLabel}>Diseño conceptual</span> Peluquerías</>, 'Diseño conceptual ficticio de peluquería: inicio, servicios y móvil');
+  const shop = concept('/images/home-concepts/shop.webp', <><span className={styles.conceptLabel}>Diseño conceptual</span> Comercio electrónico</>, 'Diseño conceptual ficticio de comercio electrónico: inicio, catálogo y móvil');
+  const admin = (id: 'salon-admin' | 'restaurant-admin', title: string) => concept(`/images/home-concepts/${id}.webp`,
+    <><span className={styles.conceptLabel}>Diseño conceptual · Datos de ejemplo</span> {title}</>,
+    `Propuesta ficticia: ${title}. Datos de ejemplo, no corresponde a La Lupe.`);
   const lupe = projects.find(project => project.id === 'equipo-la-lupe')!;
-  // Preserve the first paint; batch remaining projects in three slots without repeats.
-  const compositions = [[real(lupe), salon, shop]];
   const remaining = projects.filter(project => project !== lupe);
-  for (let index = 0; index < remaining.length; index += 3) {
-    const batch = remaining.slice(index, index + 3).map(real);
-    compositions.push([...batch, salon, shop].slice(0, 3));
-  }
-  const admin = (id: 'salon-admin' | 'restaurant-admin', title: string) => <>
-    <figcaption><span className={styles.conceptLabel}>Diseño conceptual · Datos de ejemplo</span> {title}</figcaption>
-    <Image src={`/images/home-concepts/${id}.webp`} alt={`Propuesta ficticia: ${title}. Datos de ejemplo, no corresponde a La Lupe.`} style={{ aspectRatio: '4 / 3', objectFit: 'contain' }} width={1600} height={1200} sizes="(max-width: 600px) 90vw, (max-width: 1060px) 75vw, 42vw" />
-  </>;
-  compositions.push([admin('salon-admin', 'ALBA · Administración de empleados'), admin('restaurant-admin', 'BRASA · Pedidos, caja, cocina y equipo'), shop]);
-  const frames = compositions.map((artwork, index) => <div key={index} className={styles.artworkFrame}>
-    <figure className={styles.captureFrame}>{artwork[0]}</figure>
-    <figure className={styles.salonFrame}>{artwork[1]}</figure>
-    <figure className={styles.shopFrame}>{artwork[2]}</figure>
+  // S7: one ordered list; every 6 s the left small card is promoted to the large
+  // slot, so each item is large exactly once per cycle. First paint is unchanged.
+  const items = [real(lupe), salon, shop, ...remaining.map(real),
+    admin('salon-admin', 'ALBA · Administración de empleados'), admin('restaurant-admin', 'BRASA · Pedidos, caja, cocina y equipo')];
+  const frames = items.map((_, index) => <div key={index} className={styles.artworkFrame}>
+    {HERO_SLOTS.map(([slot, sizes], offset) => <figure key={slot} className={styles[slot]}>{items[(index + offset) % items.length](sizes)}</figure>)}
   </div>);
   return <HeroCollage frames={frames}>
     <Image className={styles.treeAccent} src="/images/mockup/about-branch.webp" alt="" aria-hidden="true" width={418} height={370} priority />

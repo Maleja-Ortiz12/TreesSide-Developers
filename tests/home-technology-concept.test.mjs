@@ -57,7 +57,8 @@ test('S3 two-tier enlarged collage budgets at most 1100px desktop hero height', 
   assert.equal(widthCap, 610, 'scene size follows available width, not short viewport height');
   assert.doesNotMatch(desktop, /100svh - 300px/);
   assert.match(desktop, /minmax\(0, \.85fr\) minmax\(0, 1\.25fr\)/);
-  assert.match(desktop, /grid-column: 7 \/ 13; grid-row: 2; margin-top: 16px;/);
+  assert.match(desktop, /grid-column: 7 \/ 13; grid-row: 2;/);
+  assert.doesNotMatch(desktop, /grid-row: 2; margin-top:/);
   assert.match(desktop, /grid-column: 1 \/ 7; grid-row: 2;/);
   assert.doesNotMatch(desktop, /margin-top: 45%/);
   // Server-free intrinsic budget, not a replacement for transformed browser
@@ -72,7 +73,7 @@ test('S3 two-tier enlarged collage budgets at most 1100px desktop hero height', 
     assert.ok(primaryWidth >= 550 && primaryWidth <= 660, `${height}: main artwork stays large`);
     const gap = Number(collage.match(/gap: (\d+)px \d+px;/)?.[1]);
     const horizontalGap = Number(collage.match(/gap: \d+px (\d+)px;/)?.[1]);
-    const stagger = Number(desktop.match(/grid-row: 2; margin-top: (\d+)px/)?.[1]);
+    const stagger = Number(desktop.match(/grid-row: 2; margin-top: (\d+)px/)?.[1] ?? 0);
     const primary = primaryWidth * .75 + 72 + 2;
     const lower = (primaryWidth - horizontalGap) / 2 * .75 + 86 + 2 + stagger;
     const hero = primary + gap + lower + 44 + 24 + 12 + 44 + 12 + 53.3125

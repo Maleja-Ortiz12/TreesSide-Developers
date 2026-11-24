@@ -44,7 +44,8 @@
 .heroGrid {
   display: grid;
   grid-template-columns: minmax(0, .85fr) minmax(0, 1.25fr);
-  align-items: start;
+  /* S6: centre the artwork group vertically against the hero copy. */
+  align-items: center;
   gap: 12px 32px;
 }
 .heroCopy { padding-block: 12px; }
@@ -97,9 +98,9 @@
   cursor: pointer;
 }
 .artworkControl:hover, .motionControl:hover { background: #124d37; }
+/* Items rotate through every slot, so both small slots share this ratio;
+   conceptual artwork keeps its own inline 4 / 3 ratio. */
 .collage figure > img { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 833; object-fit: cover; object-position: top; }
-.collage .salonFrame > img { aspect-ratio: 1.35; }
-.collage .shopFrame > img { aspect-ratio: 1689 / 957; }
 .collage {
   position: relative;
   isolation: isolate;
@@ -107,10 +108,12 @@
   --float-distance: -10px;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  /* Two intrinsic tiers include wrapped captions. Vertical clearance protects
-     the primary; horizontal clearance protects both rotated lower captions. */
+  /* Two intrinsic tiers include wrapped captions. The small cards sit close
+     below the primary: soft rolls and opposite float directions keep their
+     transformed corners and captions clear of it; horizontal clearance
+     protects both lower captions. */
   grid-template-rows: auto auto;
-  gap: 32px 32px;
+  gap: 14px 28px;
   align-items: start;
   min-width: 0;
   /* Reserve the transformed corners above controls, not just untransformed boxes. */
@@ -138,15 +141,17 @@
   color: #f2fff8;
   font-size: .73rem;
 }
-.collage .captureFrame { grid-column: 1 / 13; grid-row: 1; --depth: 12px; --tilt-x: 3deg; --tilt-y: -5deg; --roll: -2deg; animation-delay: -2s; }
+.collage .captureFrame { grid-column: 1 / 13; grid-row: 1; --depth: 12px; --tilt-x: 3deg; --tilt-y: -5deg; --roll: -1deg; animation-delay: -2s; }
 .captureFrame figcaption > span:not(.conceptLabel) { color: #9bffce; }
 .captureFrame img { display: block; width: 100%; height: auto; }
-.collage .salonFrame { grid-column: 7 / 13; grid-row: 2; margin-top: 16px; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 3deg; animation-delay: -6s; z-index: 2; }
-.collage .shopFrame { grid-column: 1 / 7; grid-row: 2; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -2deg; animation-delay: -10s; z-index: 3; }
+/* Small cards drift slightly down while the primary drifts up, so the close
+   tiers move apart rather than together. */
+.collage .salonFrame { grid-column: 7 / 13; grid-row: 2; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 1deg; --float-direction: -.6; animation-delay: -6s; z-index: 2; }
+.collage .shopFrame { grid-column: 1 / 7; grid-row: 2; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -1deg; --float-direction: -.6; animation-delay: -10s; z-index: 3; }
 .collage[data-motion='paused'] figure { animation-play-state: paused; }
 @keyframes heroFloat {
   0%, 100% { transform: translate3d(0, 0, var(--depth)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--roll)); }
-  50% { transform: translate3d(0, var(--float-distance), var(--depth)) rotateX(calc(var(--tilt-x) * -1)) rotateY(calc(var(--tilt-y) * .5)) rotateZ(var(--roll)); }
+  50% { transform: translate3d(0, calc(var(--float-distance) * var(--float-direction, 1)), var(--depth)) rotateX(calc(var(--tilt-x) * -1)) rotateY(calc(var(--tilt-y) * .5)) rotateZ(var(--roll)); }
 }
 .shopFrame img { display: block; width: 100%; height: auto; }
 .conceptLabel {
@@ -260,8 +265,9 @@
   .treeAccent { height: 100%; object-fit: cover; }
   .collageScene .collage figure { --depth: 6px; --tilt-x: 2deg; --tilt-y: -2deg; margin-top: 0; }
   .collage .captureFrame { grid-column: 1 / 13; grid-row: 1; --roll: -1deg; }
-  .collage .salonFrame { grid-column: 3 / 13; grid-row: 2; --roll: 2deg; }
-  .collage .shopFrame { grid-column: 1 / 11; grid-row: 3; --roll: -2deg; }
+  /* Stack in DOM order: the next card to be promoted sits right below the primary. */
+  .collage .shopFrame { grid-column: 1 / 11; grid-row: 2; --roll: -2deg; }
+  .collage .salonFrame { grid-column: 3 / 13; grid-row: 3; --roll: 2deg; }
   .collage figcaption { font-size: .65rem; padding: 7px 9px; }
   .collage .conceptLabel { font-size: .65rem; }
   .heroSignature { font-size: .85rem; }
@@ -282,4 +288,9 @@
 @media (prefers-reduced-motion: reduce) {
   .motionControl { display: none; }
   .home *, .demos * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* S6 centring would push the CTAs below short desktop viewports; keep the copy on top there. */
+@media (min-width: 1061px) and (height <= 720px) {
+  .heroGrid { align-items: start; }
 }

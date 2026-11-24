@@ -91,37 +91,46 @@ test('S2 exact hero copy, two actions, real capture and two visibly labelled con
   assert.equal(nodes(hero).filter(n => n.type === 'button').length, 3, 'motion and manual artwork controls belong in the hero');
 });
 
-test('S11/S12 alternate frame batches portfolio captures instead of repeating La Lupe', () => {
-  const hero = byId(home(1).tree, 'inicio'), figures = nodes(hero).filter(n => n.type === 'figure');
-  assert.equal(figures.length, 3);
-  for (const name of ['Bendita Gracia', 'Ocho80', 'Radio Navidad']) {
-    const real = figures.find(n => text(n).includes(name));
-    assert.ok(real, name); assert.match(text(real), /Portafolio del equipo/);
+// S7 (admin-concepts-visible-collage): a sliding window over one ordered list.
+const SLOT_ORDER = ['captureFrame', 'shopFrame', 'salonFrame'];
+const CONCEPT_ASSETS = ['/images/home-concepts/salon.webp', '/images/home-concepts/shop.webp',
+  '/images/home-concepts/salon-admin.webp', '/images/home-concepts/restaurant-admin.webp'];
+function eligibleCatalog() {
+  const { FEATURED_PROJECTS: catalog } = home().load('src/data/content');
+  const expected = Array.from(catalog).filter(p => !p.experience && p.image !== '/images/treesside-logo.jpg' && p.id !== 'equipo-uptownhair');
+  return { catalog, expected, total: expected.length + CONCEPT_ASSETS.length };
+}
+const heroFigures = frame => nodes(byId(home(frame).tree, 'hero-collage')).filter(n => n.type === 'figure');
+const figureSrc = figure => nodes(figure).find(n => n.type === 'img')?.props.src;
+
+test('S7 every composition promotes the first small card into the large slot', () => {
+  const { total } = eligibleCatalog();
+  const frames = Array.from({ length: total }, (_, frame) => heroFigures(frame));
+  assert.deepEqual(frames[0].map(figureSrc), ['/images/projects/la-lupe.webp', ...CONCEPT_ASSETS.slice(0, 2)], 'first paint keeps La Lupe large with the salon and shop concepts');
+  for (let frame = 0; frame < total; frame++) {
+    const current = frames[frame], next = frames[(frame + 1) % total];
+    assert.deepEqual(current.map(f => f.props.className), SLOT_ORDER, `frame ${frame}: large slot first, then left and right small slots`);
+    assert.equal(figureSrc(next[0]), figureSrc(current[1]), `frame ${frame}: left small card becomes the next large card`);
+    assert.equal(figureSrc(next[1]), figureSrc(current[2]), `frame ${frame}: right small card moves to the left`);
   }
-  assert.ok(nodes(hero).some(n => n.type === 'img' && n.props.src === '/images/projects/bendita-gracia.webp'));
-  assert.doesNotMatch(figures.map(text).join(' '), /cliente|contrat|UptownHair|La Lupe/i);
+  assert.equal(new Set(frames.map(f => figureSrc(f[0]))).size, total, 'each item is large exactly once per cycle');
 });
 
-test('S12 rotation covers the eligible catalog once with truthful media and no nonprojects', () => {
-  const { load } = home(), { FEATURED_PROJECTS: catalog } = load('src/data/content');
-  const expected = Array.from(catalog).filter(p => !p.experience && p.image !== '/images/treesside-logo.jpg' && p.id !== 'equipo-uptownhair');
-  const count = 1 + Math.ceil((expected.length - 1) / 3), seen = [];
-  const covered = Array.from({ length: count }, (_, frame) => nodes(byId(home(frame).tree, 'inicio'))
-    .filter(n => n.type === 'img').map(n => catalog.find(p => p.image === n.props.src)?.id)).flat().filter(Boolean);
-  assert.deepEqual([...new Set(covered)].sort(), expected.map(p => p.id).sort(), 'all eligible project IDs must appear');
-  for (let frame = 0; frame < count; frame++) {
-    const hero = byId(home(frame).tree, 'inicio');
-    const figures = nodes(hero).filter(n => n.type === 'figure');
+test('S12/S7 large-slot cycle covers the eligible catalog and concepts once with truthful media', () => {
+  const { catalog, expected, total } = eligibleCatalog();
+  const primaries = [];
+  for (let frame = 0; frame < total; frame++) {
+    const figures = heroFigures(frame);
     assert.equal(figures.length, 3);
-    for (const figure of figures) {
+    for (const [slot, figure] of figures.entries()) {
       const image = nodes(figure).find(n => n.type === 'img');
       const project = catalog.find(p => p.image === image?.props.src);
-      if (!project) { assert.match(text(figure), /Diseño conceptual/); continue; }
-      seen.push(project.id);
+      if (slot === 0) primaries.push(project?.id ?? image.props.src);
+      if (!project) { assert.match(text(figure), /Diseño conceptual/); assert.doesNotMatch(text(figure), /Portafolio del equipo/); continue; }
       assert.ok(expected.some(p => p.id === project.id), project.id);
       assert.ok(text(figure).includes(project.title));
       assert.match(text(figure), /Portafolio del equipo/);
-      assert.doesNotMatch(text(figure), /Web real/);
+      assert.doesNotMatch(text(figure), /Web real|cliente|contrat|UptownHair/i);
       if (project.imageLabel) {
         assert.ok(text(figure).includes(project.imageLabel));
         assert.match(text(figure), /Diseño conceptual/);
@@ -131,8 +140,7 @@ test('S12 rotation covers the eligible catalog once with truthful media and no n
       assert.ok(existsSync(`public${image.props.src}`), project.id);
     }
   }
-  assert.deepEqual([...new Set(seen)].sort(), expected.map(p => p.id).sort(), 'all eligible project IDs must appear');
-  assert.equal(seen.length, expected.length, 'no duplicate projects across the cycle');
+  assert.deepEqual([...primaries].sort(), [...expected.map(p => p.id), ...CONCEPT_ASSETS].sort(), 'every eligible project and concept is large exactly once');
 });
 
 test('S10 tree shares the relative collage layer behind all three preserved figures', () => {
@@ -156,7 +164,9 @@ test('S12/S2 conceptual badges retain dark text while plain capture captions sta
     'mint caption color must explicitly exclude conceptual badges');
   assert.equal(/\.captureFrame figcaption > span\s*\{/.test(css), false);
   assert.match(css, /\.conceptLabel\s*\{[^}]*color: #073526;[^}]*background: #a0f3cd;/);
-  const firstCard = nodes(byId(home(2).tree, 'inicio')).find(n => n.type === 'figure');
+  // S7 frame 6 promotes Calculadora de contenedores (labelled illustration) to the large slot.
+  const firstCard = nodes(byId(home(6).tree, 'inicio')).find(n => n.type === 'figure');
+  assert.ok(text(firstCard).includes('Calculadora de contenedores'));
   const spans = nodes(firstCard).filter(n => n.type === 'span');
   assert.ok(spans.some(n => n.props.className === 'conceptLabel' && text(n).includes('Diseño conceptual')));
   assert.ok(spans.some(n => !n.props.className && text(n) === 'Portafolio del equipo'), 'ordinary portfolio span retains the mint rule');

@@ -5,7 +5,8 @@ The independent `AdminConceptShowcase` follows the existing public-site proposal
 - **ALBA** retains the fictional salon identity. Role identifiers A1–A4 avoid personal records; employee roles, shifts, availability and an appointment schedule appear alongside a mobile professional agenda.
 - **BRASA · cocina de barrio** is a separate fictional restaurant, unrelated to La Lupe. Open orders, kitchen tickets, a partial cash-register summary in COP and staff stations share illustrative data. Cash reconciles: 180,000 cash + 300,000 card = 480,000 sales; 100,000 opening float + 180,000 cash − 0 outgoings = 280,000 expected cash.
 - Both assets and their persistent DOM captions say **Diseño conceptual · Datos de ejemplo**. The component explicitly disclaims functionality delivered to La Lupe. Existing La Lupe proof, ALBA public-site views and TEC artwork are not replaced.
-- An additional conceptual hero frame exposes ALBA administration, BRASA administration and the existing technology store. No portfolio records or eligibility filters change; the initial frame and all existing project batches remain.
+- ALBA administration and BRASA administration join the end of the hero's single rotation list (La Lupe, ALBA public site, TEC store, remaining eligible projects, then both admin concepts). Every 6 s the left small card is promoted to the large slot, the right small card moves left and the next item enters, so each item is large exactly once per cycle. No portfolio records or eligibility filters change; the initial frame stays La Lupe with the two public concepts.
+- In `#propuestas` both public and administrative proposal cards place a smaller image column beside the copy (`minmax(0, 1.15fr) minmax(280px, 1fr)`), stacking in one column at 800px or less.
 - CTAs use existing contextual contact routes; no fake website, transaction or backend interaction is introduced.
 
 ## Reproduce assets

@@ -136,8 +136,9 @@ try {
     console.log(`SCENE ${width} ${JSON.stringify(scene)}`);
     check(`${width} tree behind all figures`, scene.treeInside && scene.figures.every(f => f.z > scene.treeZ) && scene.treeOpacity >= .7 && scene.relative === 'relative', true);
     check(`${width} perspective`, scene.perspective, '1200px');
-    check(`${width} intended stagger delays`, scene.figures.map(f => f.delay), ['-2s', '-6s', '-10s']);
-    check(`${width} intended figure stacking`, scene.figures.map(f => f.z), [1, 2, 3]);
+    // DOM order is large (captureFrame), left small (shopFrame), right small (salonFrame).
+    check(`${width} intended stagger delays`, scene.figures.map(f => f.delay), ['-2s', '-10s', '-6s']);
+    check(`${width} intended figure stacking`, scene.figures.map(f => f.z), [1, 3, 2]);
     check(`${width} 3D transforms`, scene.figures.every(f => f.transform.startsWith('matrix3d(')), true);
     check(`${width} carousel absent Home`, scene.carousel, false);
     check(`${width} cards stay inside hero bounds`, await evaluate(`(()=>{const hero=document.querySelector('#inicio').getBoundingClientRect();return [...document.querySelectorAll('#hero-collage figure')].every(f=>{const r=f.getBoundingClientRect();return r.left>=0 && r.right<=document.documentElement.clientWidth && r.top>=hero.top && r.bottom<=hero.bottom;});})()`), true);
@@ -156,7 +157,11 @@ try {
     await wait(`document.querySelector('#hero-collage').dataset.frame===${JSON.stringify(pausedFrame)}`);
     check(`${width} manual access preserves pause`, await evaluate(`document.querySelector('#hero-collage').dataset.motion`), 'paused');
     // Exhaust the cycle while paused via public controls, not six-second sleeps per frame.
-    const seen = [], adminSeen = [];
+    // S7: count only the large-slot item per frame; each visited frame's large card
+    // must be the previous visited frame's left small card (wrapping at the end).
+    const seen = [], adminSeen = [], largeSeen = [];
+    const cardKey = card => card.id || new URL(card.src, base).searchParams.get('url') || new URL(card.src, base).pathname;
+    let firstLarge = null, previousLeft = null, previousIndex = null;
     const cycleLength = await walkPublicFrames({
       readIndex: () => evaluate(`document.querySelector('#hero-collage').dataset.frame`),
       next: async previous => {
@@ -187,6 +192,11 @@ try {
       await evaluate(frames);
       const cards = await evaluate(`([...document.querySelectorAll('#hero-collage figure')].map(f=>{const img=f.querySelector('img'),label=f.querySelector('figcaption');return {id:img?.dataset.homeProject || null,src:img?.getAttribute('src'),alt:img?.alt,text:label.textContent,visible:label.getBoundingClientRect().height>0,loaded:!img || (img.complete && img.naturalWidth>0),fit:img && getComputedStyle(img).objectFit};}))`);
       check(`${width} frame ${index} three loaded visible labelled cards`, cards.length===3 && cards.every(c=>c.visible && c.loaded), true);
+      const large = cardKey(cards[0]);
+      largeSeen.push(large);
+      if (previousLeft === null) firstLarge = large;
+      else check(`${width} frame ${index} promotes frame ${previousIndex} left small card`, large, previousLeft);
+      previousLeft = cardKey(cards[1]); previousIndex = index;
       // Job21 checked text/geometry only: mint-on-mint badges still passed all 394 checks.
       // Use computed colors after the cascade, not authored CSS tokens or screenshot presence.
       const contrast = await evaluate(`(()=>{
@@ -223,7 +233,7 @@ try {
           const imagePath = new URL(card.src, base);
           const asset = imagePath.searchParams.get('url') || imagePath.pathname;
           if (['/images/home-concepts/salon-admin.webp', '/images/home-concepts/restaurant-admin.webp'].includes(asset)) {
-            adminSeen.push(asset);
+            if (card === cards[0]) adminSeen.push(asset);
             const title = asset.includes('salon-admin') ? 'ALBA · Administración de empleados' : 'BRASA · Pedidos, caja, cocina y equipo';
             check(`${width} frame ${index} admin artwork is a sample-data proposal, not La Lupe delivery`, {
               title:card.text.includes(title), sample:card.text.includes('Datos de ejemplo'),
@@ -233,7 +243,7 @@ try {
           }
           continue;
         }
-        seen.push(card.id);
+        if (card === cards[0]) seen.push(card.id);
         const project = expectedProjects.find(p=>p.id===card.id);
         check(`${width} frame ${index} eligible ${card.id}`, !!project, true);
         if (!project) continue;
@@ -253,6 +263,8 @@ try {
       },
     });
     console.log(`PUBLIC_FRAME_COUNT ${width} ${cycleLength}`);
+    check(`${width} first frame promotes the last frame's left small card`, firstLarge, previousLeft);
+    check(`${width} every item is large exactly once per cycle`, new Set(largeSeen).size === cycleLength && largeSeen.length === cycleLength, true);
     check(`${width} both administrative concepts exactly once`, adminSeen.sort(),
       ['/images/home-concepts/restaurant-admin.webp', '/images/home-concepts/salon-admin.webp']);
     check(`${width} every eligible project exactly once`, seen.sort(), expectedProjects.map(p=>p.id).sort());

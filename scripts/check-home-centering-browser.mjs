@@ -86,7 +86,8 @@ try {
     await evaluate(`document.querySelector('button[aria-controls="hero-collage"]').click()`);
     const firstFrame = await evaluate(`document.querySelector('#hero-collage').dataset.frame`);
     let wrapped = false;
-    for (let step = 0; step < 20; step++) {
+    // S7 promotion cycle: one frame per eligible project plus four concepts.
+    for (let step = 0; step < 40; step++) {
       await evaluate(`Promise.all([...document.querySelectorAll('#hero-collage img')].map(img=>img.decode())).then(()=>true)`);
       const index = await evaluate(`document.querySelector('#hero-collage').dataset.frame`);
       const coverage = await evaluate(`(${occlusionProbe.toString()})()`);
