@@ -50,61 +50,102 @@ test('S1 local production technology asset is decoded, full sized, and truthfull
   for (const text of ['Quiero una tienda virtual', "servicio: 'ecommerce'", 'ficticias']) assert.ok(jsx.includes(text));
 });
 
-test('S3 two-tier enlarged collage budgets at most 1100px desktop hero height', async () => {
+// S9 cascade model from the authored desktop CSS: untransformed resting boxes of
+// the large (captureFrame), right-middle (shopFrame) and below-left (salonFrame)
+// cards. Browser checkers verify the transformed boxes; this is a server-free budget.
+function cascade(css, captions) {
+  const desktop = css.split('@media (max-width: 1060px)')[0].replace(/\/\*[\s\S]*?\*\//g, '');
+  const block = selector => desktop.match(new RegExp(`\.${selector} \{([^}]+)\}`))?.[1] || '';
+  const sceneWidth = Number(block('collageScene').match(/width: min\(100%, (\d+)px\)/)?.[1]);
+  const [scenePadY, scenePadX] = block('collageScene').match(/padding: (\d+)px (\d+)px;/).slice(1).map(Number);
+  const collage = block('collage');
+  const columns = Number(collage.match(/grid-template-columns: repeat\((\d+), minmax\(0, 1fr\)\);/)?.[1]);
+  const [rowGap, columnGap] = collage.match(/gap: (\d+)px (\d+)(?:px)?;/).slice(1).map(Number);
+  const [padTop, padBottom] = collage.match(/padding-block: (\d+)px (\d+)px;/).slice(1).map(Number);
+  const [ratioW, ratioH] = block('collage figure > img').match(/aspect-ratio: (\d+) \/ (\d+);/).slice(1).map(Number);
+  const inner = sceneWidth - 2 * scenePadX;
+  const column = (inner - (columns - 1) * columnGap) / columns;
+  const card = (slot, caption) => {
+    const [start, end] = block(`collage .${slot}`).match(/grid-column: (\d+) \/ (\d+);/).slice(1).map(Number);
+    const left = (start - 1) * (column + columnGap), width = (end - start) * column + (end - start - 1) * columnGap;
+    return { left, right: left + width, width, caption, image: width * ratioH / ratioW, height: caption + width * ratioH / ratioW + 2 };
+  };
+  const large = { ...card('captureFrame', captions[0]), top: 0 };
+  large.bottom = large.height;
+  const shop = card('shopFrame', captions[1]), salon = card('salonFrame', captions[2]);
+  const raise = Number(block('collage .shopFrame').match(/margin-top: (-?\d+)%;/)?.[1]) / 100;
+  salon.top = large.bottom + rowGap; salon.bottom = salon.top + salon.height;
+  shop.top = large.bottom + rowGap + raise * shop.width; shop.bottom = shop.top + shop.height;
+  const overlapX = (a, b) => Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+  // Share of a card's image area under a card painted above it (z: large 1, shop 2, salon 3).
+  const covered = (below, above) => overlapX(below, above) / below.width
+    * Math.max(0, Math.min(below.bottom, above.bottom) - Math.max(below.top + below.caption, above.top)) / below.image;
+  const content = Math.max(large.bottom, shop.bottom, salon.bottom);
+  const controls = 12 + 44;
+  const scene = scenePadY + padTop + content + padBottom + controls + scenePadY;
+  return { sceneWidth, inner, columnGap, large, shop, salon, raise, covered, scene };
+}
+// Hero grid = max(copy, scene) + row gap 12 + signature (14 + 25.3 + 14).
+function firstView(scene, height) {
+  const pad = Math.max(16, Math.min(32, height * .03)), available = height - 76 - 2 * pad;
+  const grid = scene + 12 + 53.3125;
+  const top = 76 + pad + Math.max(0, (available - grid) / 2);
+  return { sceneBottom: top + scene, gridFits: grid <= available };
+}
+
+test('S3/S9 cascade keeps the large card largest and budgets at most 1100px desktop hero height', async () => {
   const css = await read('src/components/home/HomeRedesign.module.css');
   const desktop = css.split('@media (max-width: 1060px)')[0];
   const widthCap = Number(desktop.match(/width: min\(100%, (\d+)px\)/)?.[1]);
-  assert.equal(widthCap, 610, 'scene size follows available width, not short viewport height');
+  assert.equal(widthCap, 588, 'scene size follows available width, not short viewport height');
   assert.doesNotMatch(desktop, /100svh - 300px/);
   assert.match(desktop, /minmax\(0, \.85fr\) minmax\(0, 1\.25fr\)/);
-  assert.match(desktop, /grid-column: 7 \/ 13; grid-row: 2; margin-top: -72px;/);
-  assert.match(desktop, /grid-column: 1 \/ 7; grid-row: 2; margin-top: -72px;/);
   assert.doesNotMatch(desktop, /margin-top: 45%/);
-  // Server-free intrinsic budget, not a replacement for transformed browser
-  // bounds/occlusion. Reserve wrapped captions: 72px primary, 86px secondary.
-  // The former tiny scene was 468px at 768 high and 600px at 900 high.
+  // The scene fits the collage column of the 1200px container.
   const track = (1200 - 48 - 32) * 1.25 / 2.1;
-  const collage = desktop.match(/\.collage \{([^}]+)\}/)?.[1] || '';
+  assert.ok(widthCap <= track, `${widthCap} fits the ${track}px collage column`);
+  // Reserve wrapped captions: 72px primary, 86px secondary.
+  const model = cascade(css, [72, 86, 86]);
+  assert.equal(model.columnGap, 0, 'cards overlap through their column spans');
+  assert.ok(model.large.width >= 340, `large card ${model.large.width}px stays large`);
+  assert.ok(model.large.width > model.salon.width && model.large.width > model.shop.width, 'large card is the widest');
   for (const height of [600, 768, 900]) {
-    const scene = Math.min(track, widthCap);
-    assert.ok(scene > Math.min(620, height - 300), `${height}: larger than the previous scene`);
-    const primaryWidth = scene - 28;
-    assert.ok(primaryWidth >= 550 && primaryWidth <= 660, `${height}: main artwork stays large`);
-    const gap = Number(collage.match(/gap: (\d+)px \d+px;/)?.[1]);
-    const horizontalGap = Number(collage.match(/gap: \d+px (\d+)px;/)?.[1]);
-    const stagger = Number(desktop.match(/grid-row: 2; margin-top: (-?\d+)px/)?.[1] ?? 0);
-    const primary = primaryWidth * .75 + 72 + 2;
-    const lower = (primaryWidth - horizontalGap) / 2 * .75 + 86 + 2 + stagger;
-    const hero = primary + gap + lower + 44 + 24 + 12 + 44 + 12 + 53.3125
-      + 2 * Math.max(16, Math.min(32, height * .03));
+    const hero = model.scene + 12 + 53.3125 + 2 * Math.max(16, Math.min(32, height * .03));
     assert.ok(hero <= 1100, `${height}: compact intrinsic hero budget ${hero} exceeds 1100`);
   }
   assert.match(css, /\[data-motion='paused'\] figure/);
   assert.match(css, /prefers-reduced-motion: reduce/);
 });
 
-test('S8 partial overlap brings the full collage scene into common laptop first viewports at the same size', async () => {
+test('S9 reference cascade keeps every caption and most artwork visible and fits laptop first viewports', async () => {
   const css = await read('src/components/home/HomeRedesign.module.css');
-  const desktop = css.split('@media (max-width: 1060px)')[0];
-  const block = selector => desktop.match(new RegExp(`\\.${selector} \\{([^}]+)\\}`))?.[1] || '';
-  const collage = block('collage');
-  const rowGap = Number(collage.match(/gap: (\d+)px \d+px;/)?.[1]);
-  const [padTop, padBottom] = collage.match(/padding-block: (\d+)px (\d+)px;/)?.slice(1).map(Number) || [NaN, NaN];
-  const scenePad = Number(block('collageScene').match(/padding: (\d+)px \d+px;/)?.[1]);
-  const raises = [...desktop.matchAll(/grid-row: 2; margin-top: (-?\d+)px;/g)].map(m => Number(m[1]));
-  assert.equal(raises.length, 2, 'both small slots are raised');
-  assert.equal(raises[0], raises[1], 'both small slots share one overlap');
-  // Parent L12 frame-0 measurements at the 610px scene cap (primary ~582px wide):
-  // large figure 461 (caption ~57 on top), small row 233, controls margin 12 + 44.
-  const large = 461, caption = 57, small = 233, controls = 12 + 44;
-  const overlap = -raises[0] - rowGap;
-  assert.ok(overlap > 0, 'small cards sit a little over the large card');
-  assert.ok(overlap <= large * .2, `overlap ${overlap}px stays within 20% of the large card`);
-  assert.ok(overlap < large - caption - 300, 'the large caption and most of its artwork stay uncovered');
-  const scene = scenePad + padTop + large + rowGap + small + raises[0] + padBottom + controls + scenePad;
-  const bottomAt = height => 76 + height * .03 + scene;
-  assert.ok(bottomAt(864) <= 864 - 8, `1536x864 scene bottom ${bottomAt(864)} inside the first viewport`);
-  assert.ok(bottomAt(1080) <= 1080, '1920x1080 scene inside the first viewport');
-  // 1366x768 keeps the large size: the residual overflow is reported, not hidden.
-  assert.ok(bottomAt(768) - 768 < 90, `1366x768 residual overflow ${bottomAt(768) - 768}px`);
+  // Frame 0: La Lupe caption without badge (one line), concept captions with one badge line.
+  const frame0 = cascade(css, [44, 48, 48]);
+  const { large, shop, salon, covered } = frame0;
+  // Right-middle card: left edge right of the large card's centre, top inside its lower half.
+  assert.ok(shop.left > (large.left + large.right) / 2, `shop left ${shop.left}`);
+  assert.ok(shop.top >= large.bottom * .5 && shop.top <= large.bottom * .7, `shop top ${shop.top} of ${large.bottom}`);
+  assert.ok(shop.right <= frame0.inner + .01, 'right card stays inside the collage');
+  // Below-left card starts right under the large card and touches the right card.
+  assert.ok(salon.top >= large.bottom * .9, `salon top ${salon.top} vs large bottom ${large.bottom}`);
+  assert.ok(salon.left < shop.left && salon.right >= shop.left, 'below-left card reaches the right card');
+  // Captions sit at card tops: nothing painted above them reaches them.
+  assert.ok(shop.top >= large.caption, 'large caption uncovered');
+  assert.ok(shop.top + shop.caption <= salon.top, 'right caption uncovered');
+  // Area-based occlusion budget below the browser thresholds (80% / 70%), leaving
+  // room for 3D-transformed bounding boxes; also with wrapped captions.
+  for (const model of [frame0, cascade(css, [72, 86, 86])]) {
+    const largeCovered = model.covered(model.large, model.shop) + model.covered(model.large, model.salon);
+    assert.ok(largeCovered <= .15, `large card covered ${largeCovered}`);
+    assert.ok(model.covered(model.shop, model.salon) <= .15, `right card covered ${model.covered(model.shop, model.salon)}`);
+  }
+  assert.ok(covered(large, shop) > 0, 'the right card does sit over the large card');
+  // First viewports: copy and scene incl. controls at 1366x768; everything incl. the
+  // signature at 1536x864 and 1920x1080.
+  const laptop = firstView(frame0.scene, 768);
+  assert.ok(laptop.sceneBottom <= 768, `1366x768 scene bottom ${laptop.sceneBottom}`);
+  for (const height of [864, 1080]) {
+    const view = firstView(frame0.scene, height);
+    assert.ok(view.gridFits && view.sceneBottom <= height, `${height}: scene bottom ${view.sceneBottom}`);
+  }
 });

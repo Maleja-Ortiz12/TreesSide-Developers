@@ -40,7 +40,7 @@ function HeroArtwork() {
   </>;
   const concept = (src: string, caption: ReactNode, alt: string): HeroItem => sizes => <>
     <figcaption>{caption}</figcaption>
-    <Image src={src} alt={alt} style={{ aspectRatio: '4 / 3', objectFit: 'contain' }} width={1600} height={1200} sizes={sizes} />
+    <Image src={src} alt={alt} style={{ objectFit: 'contain' }} width={1600} height={1200} sizes={sizes} />
   </>;
   const salon = concept('/images/home-concepts/salon.webp', <><span className={styles.conceptLabel}>Diseño conceptual</span> Peluquerías</>, 'Diseño conceptual ficticio de peluquería: inicio, servicios y móvil');
   const shop = concept('/images/home-concepts/shop.webp', <><span className={styles.conceptLabel}>Diseño conceptual</span> Comercio electrónico</>, 'Diseño conceptual ficticio de comercio electrónico: inicio, catálogo y móvil');

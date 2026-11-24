@@ -27,29 +27,35 @@ test('S1 desktop centers the whole grid in the viewport remaining below the exis
   assert.match(rule(desktop, 'heroCopy'), /padding-block: 12px/);
 });
 
-test('S3/S6/S8 desktop uses compact two-tier tracks centred against the copy, small cards partly over the large card', () => {
+test('S9 desktop/tablet compose the reference cascade centred against the copy', () => {
   const collage = rule(desktop, 'collage');
+  assert.match(collage, /grid-template-columns: repeat\(12, minmax\(0, 1fr\)\);/);
   assert.match(collage, /grid-template-rows: auto auto;/);
-  assert.match(collage, /gap: 14px 28px/);
+  // Cards overlap through their column spans (no column gap); the short row gap keeps
+  // the below-left card right under the large one.
+  assert.match(collage, /gap: 8px 0;/);
   assert.doesNotMatch(collage, /aspect-ratio:|grid-template-rows: repeat\(/);
-  // S8: tighter vertical padding recovers height for laptop first viewports.
   assert.match(collage, /padding-block: 12px 18px/);
   assert.match(rule(desktop, 'collageScene'), /padding: 12px 14px/);
-  assert.match(rule(desktop, 'collageScene'), /width: min\(100%, 610px\)/);
-  for (const [frame, row] of [['captureFrame', 1], ['salonFrame', 2], ['shopFrame', 2]]) {
-    assert.ok(rule(desktop, `collage .${frame}`).includes(`grid-row: ${row};`));
-  }
-  assert.match(rule(desktop, 'collage .salonFrame'), /grid-column: 7 \/ 13;/);
-  // S8: both small slots rise by the same amount over the bottom of the large card
-  // (desktop and tablet); they stay above it via z-index, the large card does not move.
-  const raise = ['salonFrame', 'shopFrame'].map(frame => rule(desktop, `collage .${frame}`).match(/grid-row: 2; margin-top: (-?\d+)px;/)?.[1]);
-  assert.deepEqual(raise, ['-72', '-72']);
-  assert.doesNotMatch(tablet, /margin-top:/, 'tablet keeps the desktop partial overlap');
+  assert.match(rule(desktop, 'collageScene'), /width: min\(100%, 588px\)/);
+  // Large screen on top (item i), next item right-middle over its lower-right corner
+  // (item i+1), following item below-left (item i+2).
+  const capture = rule(desktop, 'collage .captureFrame'), shop = rule(desktop, 'collage .shopFrame'), salon = rule(desktop, 'collage .salonFrame');
+  assert.match(capture, /grid-column: 1 \/ 9; grid-row: 1;/);
+  assert.match(shop, /grid-column: 7 \/ 13; grid-row: 2; margin-top: -44%;/);
+  assert.match(salon, /grid-column: 1 \/ 8; grid-row: 2;/);
+  assert.doesNotMatch(salon, /margin-top:/);
+  assert.doesNotMatch(capture, /margin-top:|z-index:/);
+  assert.doesNotMatch(tablet, /margin-top:|\.collage \.(captureFrame|shopFrame|salonFrame)/, 'tablet keeps the desktop cascade');
+  // Every caption sits at its card top, so each later slot paints above the earlier one.
   assert.match(rule(desktop, 'collage figure'), /z-index: 1;/);
-  assert.match(rule(desktop, 'collage .salonFrame'), /z-index: 2;/);
-  assert.match(rule(desktop, 'collage .shopFrame'), /z-index: 3;/);
-  assert.match(rule(desktop, 'collage .shopFrame'), /grid-column: 1 \/ 7/);
-  assert.doesNotMatch(rule(desktop, 'collage .captureFrame'), /margin-top:|z-index:/);
+  assert.match(shop, /z-index: 2;/);
+  assert.match(salon, /z-index: 3;/);
+  // Uniform ~16:10 screen frames in every slot.
+  assert.match(rule(desktop, 'collage figure > img'), /aspect-ratio: 16 \/ 10;/);
+  // Centred signature between two thin rules, as in the reference.
+  assert.match(rule(desktop, 'heroSignature'), /display: flex;/);
+  assert.match(css, /\.heroSignature::before, \.heroSignature::after \{[^}]*height: 1px;/);
   assert.match(rule(desktop, 'heroGrid'), /align-items: center/);
   // Short desktop viewports (1440x600) keep the copy and CTAs in the first viewport.
   assert.match(css, /@media \(min-width: 1061px\) and \(height <= 720px\) \{\s*\.heroGrid \{ align-items: start; \}\s*\}/);

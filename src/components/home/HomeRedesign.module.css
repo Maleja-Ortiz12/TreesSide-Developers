@@ -68,18 +68,21 @@
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 28px; }
 .heroSignature {
   grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 18px;
   text-align: center;
   color: #cde4d7;
   padding: 14px 0;
-  border-top: 1px solid #8effcd38;
   font-size: .95rem;
 }
+/* Thin rules on both sides of the centred signature (S9 reference). */
+.heroSignature::before, .heroSignature::after { content: ''; flex: 1 1 0; min-width: 20px; height: 1px; background: #8effcd38; }
 .collageScene {
   min-width: 0;
-  /* Keep the primary large on short screens; the two smaller cards share
-     a lower tier that rises a little over the primary (S8) so the whole scene
-     fits common laptop first viewports without shrinking the artwork. */
-  width: min(100%, 610px);
+  /* S9: compact reference cascade sized so copy, cascade and controls fit
+     common laptop first viewports (1366x768) beside the centred copy. */
+  width: min(100%, 588px);
   justify-self: center;
   padding: 12px 14px;
 }
@@ -99,9 +102,10 @@
   cursor: pointer;
 }
 .artworkControl:hover, .motionControl:hover { background: #124d37; }
-/* Items rotate through every slot, so both small slots share this ratio;
-   conceptual artwork keeps its own inline 4 / 3 ratio. */
-.collage figure > img { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 833; object-fit: cover; object-position: top; }
+/* S9: items rotate through every slot, so every card shares one ~16:10 screen
+   frame; real captures keep their own inline fit (cover from the top or contain),
+   concepts are contained on the card background. */
+.collage figure > img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
 .collage {
   position: relative;
   isolation: isolate;
@@ -109,12 +113,13 @@
   --float-distance: -10px;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  /* Two intrinsic tiers include wrapped captions. S8: the small cards rise
-     72px (58px over the primary after the 14px row gap, about 13% of its
-     height) and paint above it; the primary caption on top stays uncovered.
-     Horizontal clearance protects both lower captions. */
+  /* S9 reference cascade in two intrinsic tiers (wrapped captions included):
+     large screen on top (8/12), the next item right-middle (6/12) rising over
+     the large card's lower-right corner, the following item below-left (7/12)
+     right under the large card. Cards overlap through their column spans, so
+     there is no column gap. */
   grid-template-rows: auto auto;
-  gap: 14px 28px;
+  gap: 8px 0;
   align-items: start;
   min-width: 0;
   /* Reserve the transformed corners above controls, not just untransformed boxes. */
@@ -142,13 +147,17 @@
   color: #f2fff8;
   font-size: .73rem;
 }
-.collage .captureFrame { grid-column: 1 / 13; grid-row: 1; --depth: 12px; --tilt-x: 3deg; --tilt-y: -5deg; --roll: -1deg; animation-delay: -2s; }
+.collage .captureFrame { grid-column: 1 / 9; grid-row: 1; --depth: 12px; --tilt-x: 3deg; --tilt-y: -5deg; --roll: -1deg; animation-delay: -2s; }
 .captureFrame figcaption > span:not(.conceptLabel) { color: #9bffce; }
 .captureFrame img { display: block; width: 100%; height: auto; }
-/* Small cards drift slightly down while the primary drifts up, so the
-   overlap never grows past its resting 58px. Mobile resets margin-top to 0. */
-.collage .salonFrame { grid-column: 7 / 13; grid-row: 2; margin-top: -72px; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 1deg; --float-direction: -.6; animation-delay: -6s; z-index: 2; }
-.collage .shopFrame { grid-column: 1 / 7; grid-row: 2; margin-top: -72px; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -1deg; --float-direction: -.6; animation-delay: -10s; z-index: 3; }
+/* The right card rises by 44% of its own width (percentage margins resolve
+   against the grid area width), so it covers a constant share of the large
+   image (about a quarter of its width over half its height) whatever the
+   captions. Every caption sits at its card top and each later slot paints
+   above the earlier one, so no caption is covered. Small cards drift slightly
+   down while the primary drifts up. Mobile resets margin-top to 0. */
+.collage .shopFrame { grid-column: 7 / 13; grid-row: 2; margin-top: -44%; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -1deg; --float-direction: -.6; animation-delay: -10s; z-index: 2; }
+.collage .salonFrame { grid-column: 1 / 8; grid-row: 2; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 1deg; --float-direction: -.6; animation-delay: -6s; z-index: 3; }
 .collage[data-motion='paused'] figure { animation-play-state: paused; }
 @keyframes heroFloat {
   0%, 100% { transform: translate3d(0, 0, var(--depth)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--roll)); }

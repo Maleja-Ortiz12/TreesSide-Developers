@@ -143,6 +143,19 @@ test('S12/S7 large-slot cycle covers the eligible catalog and concepts once with
   assert.deepEqual([...primaries].sort(), [...expected.map(p => p.id), ...CONCEPT_ASSETS].sort(), 'every eligible project and concept is large exactly once');
 });
 
+test('S9 every hero slot uses the uniform card frame; captures keep their fit and concepts stay complete', () => {
+  const { catalog, total } = eligibleCatalog();
+  for (let frame = 0; frame < total; frame++) {
+    for (const figure of heroFigures(frame)) {
+      const image = nodes(figure).find(n => n.type === 'img');
+      assert.equal(image.props.style?.aspectRatio, undefined, `frame ${frame}: ${image.props.src} follows the shared CSS frame ratio`);
+      if (!catalog.some(p => p.image === image.props.src)) assert.equal(image.props.style?.objectFit, 'contain', `frame ${frame}: ${image.props.src} is shown complete`);
+    }
+  }
+  const css = readFileSync('src/components/home/HomeRedesign.module.css', 'utf8');
+  assert.match(css, /\.collage figure > img \{[^}]*aspect-ratio: 16 \/ 10;[^}]*object-position: top;/);
+});
+
 test('S10 tree shares the relative collage layer behind all three preserved figures', () => {
   const { tree } = home();
   const collage = byId(tree, 'hero-collage');
@@ -190,7 +203,8 @@ test('S10 all three cards float slowly with staggered 3D depth, modest mobile mo
 test('S10 frame delays and stacking outrank the base figure rule while mobile depth remains modest', () => {
   const css = readFileSync('src/components/home/HomeRedesign.module.css', 'utf8');
   // Two classes (0,2,0) outrank .collage figure (0,1,1), whose animation shorthand resets delay.
-  for (const [frame, delay, z] of [['captureFrame', '-2s', null], ['salonFrame', '-6s', 2], ['shopFrame', '-10s', 3]]) {
+  // S9: the below-left slot (salonFrame) paints above the right-middle slot (shopFrame).
+  for (const [frame, delay, z] of [['captureFrame', '-2s', null], ['salonFrame', '-6s', 3], ['shopFrame', '-10s', 2]]) {
     const block = css.match(new RegExp(String.raw`\.collage \.${frame}\s*\{([^}]+)\}`))?.[1];
     assert.ok(block, `${frame} must outrank the base figure selector`);
     assert.ok(block.includes(`animation-delay: ${delay};`));

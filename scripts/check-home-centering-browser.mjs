@@ -7,9 +7,9 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 // Conservative transformed bounding-box intersections: even overlapping rotated
-// corners count as occlusion, independent of off-viewport painting. S8: the small
-// cards intentionally sit over the primary's bottom, so only figures painted above
-// (higher z-index, or later in DOM at equal z) count as covering.
+// corners count as occlusion, independent of off-viewport painting. S9 cascade: the
+// right card intentionally sits over the large card's lower-right corner, so only
+// figures painted above (higher z-index, or later in DOM at equal z) count as covering.
 function occlusionProbe() {
   const figures = [...document.querySelectorAll('#hero-collage figure')];
   const z = figures.map(f => Number.parseInt(getComputedStyle(f).zIndex, 10) || 0);
@@ -81,7 +81,7 @@ try {
   await cdp('Network.enable');
   await cdp('Network.setBlockedURLs', { urls: ['*formspree.io*', '*wa.me*', '*api.whatsapp.com*'] });
   await cdp('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
-  // S8 adds common laptop/desktop viewports: 1366x768 is measured and logged only.
+  // S8/S9 common laptop/desktop viewports: 1366x768, 1536x864 and 1920x1080 must fit.
   for (const [width, height] of [[390, 844], [768, 1024], [1440, 900], [1440, 768], [1440, 600], [1366, 768], [1536, 864], [1920, 1080]]) {
     await cdp('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: width < 600 });
     await cdp('Page.navigate', { url: new URL('/', base).href });
@@ -99,24 +99,31 @@ try {
       console.log(`OCCLUSION ${width}x${height} frame ${index} ${JSON.stringify(coverage)}`);
       check(`${width}x${height} frame ${index} primary >=80%, others >=70%, captions uncovered`,
         coverage.length === 3 && coverage.every((c, i) => c.imageUncovered >= (i === 0 ? .8 : .7) && c.captionUncovered));
-      if (width > 1060) {
+      if (width > 600) {
+        // S9 reference cascade (desktop and tablet): large card on top, next item
+        // right-middle over its lower-right corner, following item below-left.
         const compact = await evaluate(`(()=>{
-          const figures=[...document.querySelectorAll('#hero-collage figure')].map(f=>f.getBoundingClientRect());
-          const caption=document.querySelector('#hero-collage figure figcaption').getBoundingClientRect();
+          const rect=r=>({left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height});
+          const figures=[...document.querySelectorAll('#hero-collage figure')].map(f=>rect(f.getBoundingClientRect()));
+          const hero=document.querySelector('#inicio').getBoundingClientRect();
           const scene=document.querySelector('#hero-collage').parentElement.getBoundingClientRect();
-          return {height:document.querySelector('#inicio').getBoundingClientRect().height,
-            mainWidth:document.querySelector('#hero-collage figure img').getBoundingClientRect().width,
-            belowCaption:figures.slice(1).every(r=>r.top>=caption.bottom),
-            overlap:Math.max(0,...figures.slice(1).map(r=>figures[0].bottom-r.top)),largeHeight:figures[0].height,
-            lowerStagger:Math.abs(figures[1].top-figures[2].top),sceneTop:scene.top,sceneBottom:scene.bottom};
+          return {height:hero.height,heroTop:hero.top,heroBottom:hero.bottom,client:document.documentElement.clientWidth,figures,
+            imageWidths:[...document.querySelectorAll('#hero-collage figure img')].map(img=>img.getBoundingClientRect().width),
+            sceneTop:scene.top,sceneBottom:scene.bottom};
         })()`);
         console.log(`COMPACT ${width}x${height} frame ${index} ${JSON.stringify(compact)}`);
-        check(`${width}x${height} frame ${index} desktop hero <=1100px`, compact.height <= 1100);
-        check(`${width}x${height} frame ${index} primary remains 550–660px wide`, compact.mainWidth >= 550 && compact.mainWidth <= 660);
-        // S8: small cards rise a little over the large card, never past its caption.
-        check(`${width}x${height} frame ${index} small cards start below the large caption and overlap <=20% of it`,
-          compact.belowCaption && compact.overlap <= compact.largeHeight * .2);
-        check(`${width}x${height} frame ${index} two lower cards share a gently staggered tier`, compact.lowerStagger <= 48);
+        const [large, right, belowLeft] = compact.figures;
+        check(`${width}x${height} frame ${index} right card starts right of the large card's centre, inside its lower half`,
+          right.left > (large.left + large.right) / 2 && right.top >= large.top + large.height / 2 && right.top < large.bottom);
+        check(`${width}x${height} frame ${index} below-left card starts at or below 90% of the large card`,
+          belowLeft.top >= large.top + large.height * .9 && belowLeft.left < right.left);
+        check(`${width}x${height} frame ${index} cascade inside hero and viewport bounds`,
+          compact.figures.every(r => r.left >= 0 && r.right <= compact.client && r.top >= compact.heroTop && r.bottom <= compact.heroBottom));
+        if (width > 1060) {
+          check(`${width}x${height} frame ${index} desktop hero <=1100px`, compact.height <= 1100);
+          check(`${width}x${height} frame ${index} primary is the widest card and at least 340px wide`,
+            compact.imageWidths[0] >= 340 && compact.imageWidths.slice(1).every(w => w < compact.imageWidths[0]));
+        }
       }
       await evaluate(`document.querySelector('button[aria-label="Siguiente composición"]').click()`);
       await evaluate(`new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))`);
@@ -142,10 +149,10 @@ try {
     if (width > 1060) {
       check(`${width}x${height} rail accounted once`, m.rail === 116 && m.grid.left >= 116);
       check(`${width}x${height} actions in first viewport`, m.actions.bottom <= height);
-      // S8: copy and collage scene (incl. controls) read as centred in the first view.
+      // S8/S9: copy and collage scene (incl. controls) read as centred in the first view.
       const centreGap = Math.abs((m.copy.top + m.copy.bottom) / 2 - (m.scene.top + m.scene.bottom) / 2);
-      console.log(`S8_FIT ${width}x${height} copy/scene centre gap ${centreGap}; scene ${m.scene.top}…${m.scene.bottom}; overflow ${Math.max(0, m.scene.bottom - height)}`);
-      if ((width === 1536 && height === 864) || (width === 1920 && height === 1080)) {
+      console.log(`S8_FIT ${width}x${height} copy/scene centre gap ${centreGap}; scene ${m.scene.top}…${m.scene.bottom}; overflow ${Math.max(0, m.scene.bottom - height)}; signature bottom ${m.signature.bottom}`);
+      if ((width === 1366 && height === 768) || (width === 1536 && height === 864) || (width === 1920 && height === 1080)) {
         check(`${width}x${height} copy centred against the collage scene within 40px`, centreGap <= 40);
         check(`${width}x${height} collage scene incl. controls inside first viewport`, m.scene.top >= 76 && m.scene.bottom <= height);
       }

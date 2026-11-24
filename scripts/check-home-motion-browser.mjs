@@ -8,8 +8,8 @@ import vm from 'node:vm';
 import ts from 'typescript';
 
 // Conservative rotated bounding boxes deliberately count corner overlap too.
-// S8: the small cards intentionally sit over the primary's bottom, so only
-// figures painted above (higher z-index, or later in DOM at equal z) cover.
+// S9 cascade: the right card intentionally sits over the large card's lower-right
+// corner, so only figures painted above (higher z-index, or later in DOM at equal z) cover.
 // No viewport hit-testing of scrolled-off cards.
 function occlusionProbe() {
   const figures = [...document.querySelectorAll('#hero-collage figure')];
@@ -140,9 +140,10 @@ try {
     console.log(`SCENE ${width} ${JSON.stringify(scene)}`);
     check(`${width} tree behind all figures`, scene.treeInside && scene.figures.every(f => f.z > scene.treeZ) && scene.treeOpacity >= .7 && scene.relative === 'relative', true);
     check(`${width} perspective`, scene.perspective, '1200px');
-    // DOM order is large (captureFrame), left small (shopFrame), right small (salonFrame).
+    // DOM order is large (captureFrame), next item right-middle (shopFrame), following item below-left (salonFrame).
     check(`${width} intended stagger delays`, scene.figures.map(f => f.delay), ['-2s', '-10s', '-6s']);
-    check(`${width} intended figure stacking`, scene.figures.map(f => f.z), [1, 3, 2]);
+    // S9: each later slot paints above the earlier one, so every top caption stays uncovered.
+    check(`${width} intended figure stacking`, scene.figures.map(f => f.z), [1, 2, 3]);
     check(`${width} 3D transforms`, scene.figures.every(f => f.transform.startsWith('matrix3d(')), true);
     check(`${width} carousel absent Home`, scene.carousel, false);
     check(`${width} cards stay inside hero bounds`, await evaluate(`(()=>{const hero=document.querySelector('#inicio').getBoundingClientRect();return [...document.querySelectorAll('#hero-collage figure')].every(f=>{const r=f.getBoundingClientRect();return r.left>=0 && r.right<=document.documentElement.clientWidth && r.top>=hero.top && r.bottom<=hero.bottom;});})()`), true);
@@ -190,6 +191,12 @@ try {
         check(`${width} frame ${index} phase ${phase} bounds and controls`, await evaluate(`(()=>{
           const hero=document.querySelector('#inicio').getBoundingClientRect(),controls=document.querySelector('button[aria-label="Siguiente composición"]').parentElement.getBoundingClientRect();
           return [...document.querySelectorAll('#hero-collage figure')].every(f=>{const r=f.getBoundingClientRect();return r.left>=0 && r.right<=document.documentElement.clientWidth && r.top>=hero.top && r.bottom<=hero.bottom && r.bottom<=controls.top;});
+        })()`), true);
+        // S9 reference cascade on desktop/tablet; mobile keeps the simple stack.
+        if (width > 600) check(`${width} frame ${index} phase ${phase} cascade: right card over the large card's lower right, next card below-left`, await evaluate(`(()=>{
+          const [large,right,belowLeft]=[...document.querySelectorAll('#hero-collage figure')].map(f=>f.getBoundingClientRect());
+          return right.left>(large.left+large.right)/2 && right.top>=large.top+large.height/2 && right.top<large.bottom
+            && belowLeft.top>=large.top+large.height*.9 && belowLeft.left<right.left;
         })()`), true);
       }
       await evaluate(`[...document.querySelectorAll('#hero-collage figure')].forEach((f,i)=>f.getAnimations()[0].currentTime=${JSON.stringify(savedTimes)}[i])`);
