@@ -1,4 +1,6 @@
 .home {
+  /* Public Home uses SitePage offsetHeader={false}; reserve its header exactly once. */
+  padding-top: 76px;
   color: #eefaf5;
   background: #041b14;
 }
@@ -21,7 +23,11 @@
   position: relative;
   isolation: isolate;
   overflow: clip;
-  padding-top: 124px;
+  /* .home owns the header offset; body already owns the desktop rail. */
+  display: grid;
+  align-items: center;
+  min-height: calc(100svh - 76px);
+  padding-block: clamp(16px, 3svh, 32px);
   background: radial-gradient(ellipse at 80% 60%, #12664966, transparent 62%), #031b13;
 }
 .treeAccent {
@@ -39,9 +45,9 @@
   display: grid;
   grid-template-columns: minmax(0, .95fr) minmax(0, 1.15fr);
   align-items: center;
-  gap: 20px 32px;
+  gap: 12px 32px;
 }
-.heroCopy { padding-block: 22px 40px; }
+.heroCopy { padding-block: 12px; }
 .eyebrow {
   color: #8dffd0;
   font-size: .73rem;
@@ -63,11 +69,17 @@
   grid-column: 1 / -1;
   text-align: center;
   color: #cde4d7;
-  padding: 22px 0;
+  padding: 14px 0;
   border-top: 1px solid #8effcd38;
   font-size: .95rem;
 }
-.collageScene { min-width: 0; padding: 16px 14px 20px; }
+.collageScene {
+  min-width: 0;
+  /* Bound the artwork on shorter desktops without scaling text or controls. */
+  width: min(100%, clamp(360px, calc(100svh - 300px), 620px));
+  justify-self: center;
+  padding: 12px 14px;
+}
 .artworkFrame { display: contents; }
 .artworkControls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin-top: 12px; }
 .artworkControl, .motionControl {
@@ -94,10 +106,13 @@
   --float-distance: -10px;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-rows: repeat(21, 32px);
+  /* One intrinsic row measures the tallest card + its stagger, including captions.
+     Percentage margins follow each card's width; no fixed height can clip content. */
+  grid-template-rows: auto;
   align-items: start;
   min-width: 0;
-  padding-top: 64px;
+  /* Reserve the transformed corners above controls, not just untransformed boxes. */
+  padding-block: 20px 24px;
 }
 .collage figure {
   position: relative;
@@ -121,11 +136,11 @@
   color: #f2fff8;
   font-size: .73rem;
 }
-.collage .captureFrame { grid-column: 1 / 13; grid-row: 1 / 11; --depth: 12px; --tilt-x: 3deg; --tilt-y: -5deg; --roll: -2deg; animation-delay: -2s; }
+.collage .captureFrame { grid-column: 1 / 13; grid-row: 1; --depth: 12px; --tilt-x: 3deg; --tilt-y: -5deg; --roll: -2deg; animation-delay: -2s; }
 .captureFrame figcaption > span:not(.conceptLabel) { color: #9bffce; }
 .captureFrame img { display: block; width: 100%; height: auto; }
-.collage .salonFrame { grid-column: 6 / 13; grid-row: 7 / 14; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 3deg; animation-delay: -6s; z-index: 2; }
-.collage .shopFrame { grid-column: 1 / 9; grid-row: 12 / 17; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -2deg; animation-delay: -10s; z-index: 3; }
+.collage .salonFrame { grid-column: 6 / 13; grid-row: 1; margin-top: 48%; --depth: 30px; --tilt-x: -3deg; --tilt-y: 5deg; --roll: 3deg; animation-delay: -6s; z-index: 2; }
+.collage .shopFrame { grid-column: 1 / 9; grid-row: 1; margin-top: 56%; --depth: 22px; --tilt-x: 3deg; --tilt-y: -4deg; --roll: -2deg; animation-delay: -10s; z-index: 3; }
 .collage[data-motion='paused'] figure { animation-play-state: paused; }
 @keyframes heroFloat {
   0%, 100% { transform: translate3d(0, 0, var(--depth)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) rotateZ(var(--roll)); }
@@ -219,12 +234,11 @@
 .nextStep { padding: 48px 0; text-align: center; background: radial-gradient(ellipse at 50% 100%, #12694499, transparent 75%), #04281c; }
 .nextStep h2 { max-width: 850px; margin: 0 auto 26px; }
 @media (max-width: 1060px) {
-  .hero { padding-top: 112px; }
+  .hero { min-height: auto; padding-block: 24px; }
   .heroGrid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .heroCopy { max-width: 660px; padding-bottom: 12px; }
   .hero h1 { font-size: clamp(2.6rem, 6vw, 4rem); }
   .collageScene { width: min(100%, 680px); justify-self: center; }
-  .collage { grid-template-rows: repeat(20, 36px); }
   .serviceGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .serviceCard:last-child { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .serviceCard:last-child .serviceImage { height: 100%; aspect-ratio: auto; object-position: center; }
@@ -234,16 +248,15 @@
   .demoIntro { max-width: 700px; }
 }
 @media (max-width: 600px) {
-  .hero { padding-top: 106px; }
   .heroCopy { padding-top: 12px; }
   .hero h1 { font-size: clamp(2.4rem, 9.5vw, 3.5rem); }
   .heroLead { font-size: 1rem; }
   .eyebrow { font-size: .66rem; }
   .actions { align-items: stretch; flex-direction: column; }
   .actions a { width: 100%; }
-  .collage { --float-distance: -3px; grid-template-rows: auto auto auto; gap: 22px 0; margin-block: 22px; padding-top: 40px; }
+  .collage { --float-distance: -3px; grid-template-rows: auto auto auto; gap: 22px 0; margin-block: 12px; padding-top: 16px; }
   .treeAccent { height: 100%; object-fit: cover; }
-  .collageScene .collage figure { --depth: 6px; --tilt-x: 2deg; --tilt-y: -2deg; }
+  .collageScene .collage figure { --depth: 6px; --tilt-x: 2deg; --tilt-y: -2deg; margin-top: 0; }
   .collage .captureFrame { grid-column: 1 / 13; grid-row: 1; --roll: -1deg; }
   .collage .salonFrame { grid-column: 3 / 13; grid-row: 2; --roll: 2deg; }
   .collage .shopFrame { grid-column: 1 / 11; grid-row: 3; --roll: -2deg; }
