@@ -5,7 +5,7 @@ import type { ServiceCategory } from '@/data/serviceCategories/types';
 import { FEATURED_PROJECTS } from '@/data/content';
 import { ProjectImage } from '@/components/ProjectImage';
 import { SectorNav } from './SectorNav';
-import { CategoryPlans } from './CategoryPlans';
+import { PlansLink } from '../PlansLink';
 import styles from './CustomLayouts.module.css';
 
 const starts = [
@@ -60,7 +60,7 @@ export function RestaurantLayout({ category }: { category: ServiceCategory }) {
         </div>
         <p className={styles.caption}>Vista conceptual</p>
       </section>
-      <CategoryPlans serviceSlug={category.slug} plans={category.plans} />
+      <PlansLink />
       <section aria-labelledby="modes-title" className={styles.section}>
         <h2 id="modes-title">El sistema completo, <span>a tu manera.</span></h2>
         <div className={styles.modes}>

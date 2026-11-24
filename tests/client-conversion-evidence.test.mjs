@@ -145,19 +145,22 @@ test('S3 cases retain functional evidence without unsupported traffic or commerc
   }
 });
 
-test('S8 every existing service template/custom layout/plan carries a validated service slug and preserves scope', async () => {
+test('S8 every existing service template/custom layout carries a validated service slug and links plans to /planes', async () => {
   const h = harness(), { SERVICE_CATEGORIES, LEGACY_SERVICE_CATEGORIES } = h.load('src/data/serviceCategories/index.ts');
   const { CUSTOM_LAYOUTS } = h.load('src/components/services/layouts/index.ts');
+  // Expand nested function components (layouts, shared blocks) so their links are visible to the assertions.
+  const expand = tree => !tree || typeof tree !== 'object' ? tree : Array.isArray(tree) ? tree.map(expand)
+    : typeof tree.type === 'function' && tree.type.name !== 'ProjectImage' ? expand(tree.type(tree.props))
+    : { ...tree, props: { ...tree.props, children: [tree.props?.children].flat(Infinity).map(expand) } };
   for (const category of [...SERVICE_CATEGORIES, ...LEGACY_SERVICE_CATEGORIES]) {
     let tree = await h.load('src/app/servicios/[categoria]/page.tsx').default({ params: Promise.resolve({ categoria: category.slug }) });
     if (CUSTOM_LAYOUTS[category.slug]) tree = CUSTOM_LAYOUTS[category.slug]({ category });
-    const planNode = nodes(tree).find(node => typeof node.type === 'function' && node.type.name === 'CategoryPlans');
-    if (planNode) tree = [tree, planNode.type(planNode.props)].map(tree => ({ type: 'Fragment', props: { children: tree } }));
-    const root = { type: 'Fragment', props: { children: tree } };
+    const root = expand({ type: 'Fragment', props: { children: tree } });
     assert.ok(contactLinks(root).length, category.slug);
     for (const link of contactLinks(root)) assert.equal(new URL(link.props.href, 'http://test').searchParams.get('servicio'), category.slug, category.slug);
-    assert.match(text(root), /Consultar este plan/);
-    for (const plan of category.plans.items) { assert.ok(text(root).includes(plan.name)); assert.ok(text(root).includes(plan.summary)); }
+    assert.doesNotMatch(text(root), /Consultar este plan/, category.slug);
+    for (const plan of category.plans.items) assert.ok(!text(root).includes(plan.summary), `${category.slug}: ${plan.name}`);
+    assert.ok(links(root).some(link => link.props.href === '/planes' && text(link).trim() === 'Ver planes'), `${category.slug}: Ver planes`);
   }
   const cards = h.load('src/components/ServicesSection.tsx').ServicesSection();
   const serviceCategory = h.load('src/data/serviceCategories/index.ts').serviceCategory;

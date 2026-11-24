@@ -1,0 +1,10 @@
+.block { display: flex; flex-wrap: wrap; align-items: center; gap: 1.1rem 1.6rem; margin-top: clamp(2.6rem, 5vw, 3.3rem); padding: 1.4rem 1.8rem; border: 1px solid #a9ffdc45; border-radius: 20px; background: linear-gradient(110deg, #0f3527cc, #071a14ee); box-shadow: inset 0 1px #b6ffdd26; scroll-margin-top: 6rem; }
+.icon { flex: none; color: var(--primary-green); }
+.copy { flex: 1 1 280px; min-width: 0; }
+/* Doubled selectors win over each page's own heading rules (alignment, margins, sizes). */
+.block .copy h2 { margin: 0; color: #fff; font-size: clamp(1.3rem, 2vw, 1.7rem); line-height: 1.2; letter-spacing: -.02em; text-align: left; }
+.block .copy p { margin: .4rem 0 0; color: #c8dbd2; font-size: .95rem; line-height: 1.5; }
+.block :global(.btn) { flex: none; }
+@media (max-width: 560px) {
+  .block { flex-direction: column; align-items: flex-start; padding: 1.2rem; }
+}

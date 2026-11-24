@@ -88,23 +88,4 @@
  .offerGrid { grid-template-columns: 1fr; } .offerCard { min-height: 210px; } .offerCard img { object-position: center 40%; } .reference { gap: 1.5rem; }
  .exploration { grid-template-columns: 1fr; } .exploration img { aspect-ratio: 2; } .gameCta { padding: 1.3rem; gap: 1rem; }
 }
-.plansLead { margin: -.5rem 0 1.5rem !important; max-width: 850px; }
-.planGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
-.planCard { display: flex; flex-direction: column; gap: .85rem; min-width: 0; padding: 1.4rem; border: 1px solid #5ff4c455; border-radius: 18px; background: linear-gradient(145deg, #13392e, #061a14 65%); box-shadow: 0 8px 0 #03120e, 0 18px 35px #0007, inset 0 1px #b6ffdd35; transition: transform .25s ease; }
-.planCard[data-featured] { border-color: var(--mint); box-shadow: 0 8px 0 #093d2b, 0 0 28px #5ff4c41c; }
-.planHeading { display: flex; gap: .8rem; align-items: center; }
-.planHeading svg, .planCard > strong, .planCard li svg { color: var(--mint); flex-shrink: 0; }
-.planHeading h3 { font-family: inherit; font-size: 1.25rem; }
-.planCard p, .planCard li, .planCard strong { font-size: .88rem; }
-.planBadge { align-self: flex-start; padding: .25rem .55rem; border-radius: 20px; border: 1px solid #5ff4c455; color: #c4f4e0; font-size: .7rem; }
-.planCard ul, .planNotes { list-style: none; margin: 0; padding: 0; }
-.planCard li, .planNotes li { display: flex; gap: .5rem; align-items: flex-start; line-height: 1.6; margin-bottom: .45rem; }
-.planCard li svg, .planNotes svg { margin-top: .25rem; flex-shrink: 0; }
-.planModes { padding-top: .7rem; border-top: 1px solid #5ff4c433; }
-.planModes p { margin-top: .7rem; }
-.planQuote { display: flex; justify-content: center; align-items: center; gap: .6rem; background: #5ff4c41f; color: #e7fff4; border: 1px solid #5ff4c477; border-radius: 10px; padding: .7rem; margin-top: auto; font-weight: 700; text-decoration: none; }
-.planQuote:hover { background: #5ff4c43d; }
-.planQuote:focus-visible { outline: 2px solid var(--mint); outline-offset: 4px; }
-.planNotes { display: grid; gap: .5rem; margin-top: 1.3rem; font-size: .85rem; color: #c8dbd2; }
-@media (max-width: 900px) { .planGrid { grid-template-columns: 1fr; } }
-@media (prefers-reduced-motion: reduce) { .heroStage, .artStage, .planCard, .startCard { transform: none !important; transition: none; } }
+@media (prefers-reduced-motion: reduce) { .heroStage, .artStage, .startCard { transform: none !important; transition: none; } }

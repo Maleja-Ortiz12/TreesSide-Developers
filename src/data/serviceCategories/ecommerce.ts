@@ -7,7 +7,7 @@ export const ecommerce: ServiceCategory = {
   label: 'E-commerce',
   icon: ShoppingCart,
   metaTitle: 'Desarrollo de tiendas online y e-commerce | TreesSet Developers',
-  metaDescription: 'Desarrollamos tu tienda online: catálogo, compra y pagos, pedidos e inventario en un solo lugar. Conocé los planes Catálogo digital, Tienda online y Comercio a medida.',
+  metaDescription: 'Desarrollamos tu tienda online: catálogo, compra y pagos, pedidos e inventario en un solo lugar.',
   hero: {
     title: 'Tu tienda, conectada con',
     highlight: 'tu negocio.',

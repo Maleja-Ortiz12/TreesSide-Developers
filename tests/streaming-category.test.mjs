@@ -14,7 +14,8 @@ const textOf = markup => markup.replace(/<!--[\s\S]*?-->|<\/?(?:strong|em|b|span
 const section = (html, id) => html.match(new RegExp(`<section[^>]*id="${id}"[\\s\\S]*?<\\/section>`))?.[0] ?? '';
 
 // Copy from Images/Plataformas de streaming a tu medida-1 mockup actualizado.png.
-const HEADINGS = ['Capacidades de nuestra solución de streaming', 'Vista conceptual', 'Planes propuestos', 'Nuestro proceso de trabajo', 'Demos una plataforma a tu contenido.'];
+// S1 (services-without-plans): the plan cards moved to /planes; a short block links there instead.
+const HEADINGS = ['Capacidades de nuestra solución de streaming', 'Vista conceptual', '¿Buscas un plan?', 'Nuestro proceso de trabajo', 'Demos una plataforma a tu contenido.'];
 const CAPABILITIES = ['Reproductores web', 'Directorios y programación', 'Administración de contenido', 'Integraciones'];
 const PLANS = [
   ['Reproductor esencial', 'Página de streaming y reproductor conectado a una fuente acordada.'],
@@ -68,20 +69,19 @@ test('streaming sections keep the mockup order, labels and copy', async () => {
   for (const anchor of [...rendered.matchAll(/href="#([^"]+)"/g)].map(match => match[1])) assert.ok(rendered.includes(`id="${anchor}"`), anchor);
 });
 
-test('streaming plans: three one-time plans priced "Por cotizar" with support and external-cost notes', async () => {
+test('streaming shows no plan cards and links to /planes with "Ver planes"', async () => {
   const { rendered } = await page();
-  const plans = section(rendered, 'planes');
-  assert.match(plans, /aria-labelledby="/, 'labelled plans section');
-  const text = textOf(plans);
-  for (const [name, summary] of PLANS) assert.ok(text.includes(name) && text.includes(summary), name);
-  assert.equal((plans.match(/<article\b/g) || []).length, 3);
-  assert.equal((plans.match(/Pago único/g) || []).length, 3);
-  assert.equal((plans.match(/Por cotizar/g) || []).length, 3);
-  assert.equal((plans.match(/<a\b[^>]*href="\/contacto\?servicio=[^"]+"/g) || []).length, 3, 'one contact link per plan');
-  assert.equal((plans.match(/data-tilt=""/g) || []).length, 3, 'three 3D plan cards');
-  assert.ok(text.includes(SUPPORT), 'recurring support bar');
-  assert.ok(text.includes(EXTERNAL), 'external-cost note');
-  assert.ok(!/\$\s?\d/.test(text), 'no invented prices');
+  for (const id of ['planes', 'planes-title']) assert.ok(!rendered.includes(`id="${id}"`), `no #${id}`);
+  const text = textOf(rendered);
+  for (const [name, summary] of PLANS) assert.ok(!text.includes(name) && !text.includes(summary), name);
+  for (const value of ['Consultar este plan', 'Por cotizar', 'Pago único', SUPPORT, EXTERNAL]) assert.ok(!text.includes(value), value);
+  assert.ok(!/href="\/contacto\?[^"]*opcion=/.test(rendered), 'no plan enquiry links');
+  const block = section(rendered, 'ver-planes');
+  assert.match(block, /aria-labelledby="/, 'labelled plans link block');
+  const links = [...rendered.matchAll(/<a\b[^>]*href="\/planes"[^>]*>[\s\S]*?<\/a>/g)].map(([link]) => link).filter(link => textOf(link) === 'Ver planes');
+  assert.equal(links.length, 1, 'one "Ver planes" link');
+  assert.ok(block.includes(links[0]), 'link inside its block');
+  assert.ok(!/\$\s?\d/.test(textOf(block)), 'no invented prices');
 });
 
 test('streaming keeps the actual mockup art on tilting 3D stages', async () => {

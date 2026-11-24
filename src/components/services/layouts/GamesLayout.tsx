@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Gamepad2, Boxes, MousePointerClick, Settings, Brush, SlidersHorizontal, Lightbulb, Layers, Code2, FlaskConical, ArrowRight } from 'lucide-react';
 import type { ServiceCategory } from '@/data/serviceCategories/types';
 import { SectorNav } from './SectorNav';
-import { CategoryPlans } from './CategoryPlans';
+import { PlansLink } from '../PlansLink';
 import styles from './CustomLayouts.module.css';
 
 const offers = [
@@ -43,7 +43,7 @@ export function GamesLayout({ category }: { category: ServiceCategory }) {
           <ul className={styles.mechanicsList}>{mechanics.map(({ icon: Icon, title, text }) => <li key={title}><Icon size={30} aria-hidden="true" /><div><h3>{title}</h3><p>{text}</p></div></li>)}</ul>
         </div>
       </section>
-      <CategoryPlans serviceSlug={category.slug} plans={category.plans} />
+      <PlansLink />
       <section className={styles.section} aria-labelledby="process-title">
         <h2 id="process-title">Nuestro proceso de desarrollo.</h2>
         <ol className={`${styles.steps} ${styles.gameSteps}`}>{steps.map(({ icon: Icon, title, text }) => <li key={title}><Icon size={30} aria-hidden="true" /><h3>{title}</h3><p>{text}</p></li>)}</ol>

@@ -1,15 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Radio, Settings } from 'lucide-react';
+import { ArrowRight, Radio } from 'lucide-react';
 import type { ServiceCategory } from '@/data/serviceCategories/types';
+import { PlansLink } from '../PlansLink';
 import { SectorNav } from './SectorNav';
 import styles from './StreamingLayout.module.css';
 
 /** Streaming page following its updated mockup; the shared HomeClosing footer comes from the parent SitePage. */
 export function StreamingLayout({ category }: { category: ServiceCategory }) {
-  const { hero, offers, concept, plans, process, cta } = category;
-  const [support, external] = plans.notes;
-  const [supportLabel, supportText] = support.split(/:\s/);
+  const { hero, offers, concept, process, cta } = category;
   return (
     <div className={`${styles.root} container`}>
       <SectorNav slug={category.slug} label={category.label} />
@@ -41,23 +40,7 @@ export function StreamingLayout({ category }: { category: ServiceCategory }) {
         </div>
       </section>
 
-      <section id="planes" aria-labelledby="planes-title" className={styles.section}>
-        <h2 id="planes-title" className={styles.trailing}>{plans.title}</h2>
-        <div className={styles.planGrid}>
-          {plans.items.map(({ icon: Icon, name, summary, billing }, index) => (
-            <article key={name} className={styles.plan} data-tilt="">
-              <div className={styles.planHead}><Icon size={34} strokeWidth={1.6} aria-hidden="true" /><h3 id={`plan-${index}`}>{name}</h3></div>
-              <p>{summary}</p>
-              <div className={styles.price}>
-                <span>{billing}</span>
-                <Link href={`/contacto?servicio=${category.slug}&opcion=${encodeURIComponent(name)}`} aria-describedby={`plan-${index}`}>Consultar este plan · Por cotizar</Link>
-              </div>
-            </article>
-          ))}
-        </div>
-        <p className={styles.support}><Settings size={26} aria-hidden="true" /><span><strong>{supportLabel}:</strong> {supportText}</span></p>
-        <p className={styles.external}>{external}</p>
-      </section>
+      <PlansLink />
 
       <section id="proceso" aria-labelledby="proceso-title" className={styles.section}>
         <h2 id="proceso-title" className={styles.trailing}>{process.title}</h2>

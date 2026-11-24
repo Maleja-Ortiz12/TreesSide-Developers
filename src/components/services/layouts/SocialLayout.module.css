@@ -30,18 +30,7 @@
 .concept { margin-top: 2.6rem; }
 .concept figure { margin: 0; }
 
-.planGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 1.3rem; }
-.plan { display: flex; flex-direction: column; gap: .9rem; min-width: 0; padding: 1.2rem 1.3rem 1.3rem; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(145deg, #13392e, #061a14 65%); box-shadow: 0 8px 0 #03120e, 0 18px 35px #0007, inset 0 1px #b6ffdd35; transition: transform .25s ease; }
-.planHead { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; }
-.planHead svg { flex-shrink: 0; color: var(--mint); }
-.planHead h3 { font-size: 1.1rem; }
-.badge { margin-left: auto; padding: .22rem .7rem; border: 1px solid #5ff4c488; border-radius: 999px; background: #0d3a2c; color: #dff5ec; font-size: .72rem; font-weight: 500; white-space: nowrap; }
-.plan > p { font-size: .92rem; }
-.quote { margin-top: auto; padding: .55rem; border: 2px solid #5ff4c4aa; border-radius: 999px; background: #020c09; color: var(--mint); font-size: 1.25rem; font-weight: 700; text-align: center; text-decoration: none; box-shadow: 0 0 18px #5ff4c422; transition: background .2s ease; }
-.quote:hover { background: #5ff4c41f; }
-.quote:focus-visible, .ctaButton:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
-.root .note { display: flex; align-items: flex-start; justify-content: center; gap: .6rem; max-width: 880px; margin: 1.1rem auto 0; font-size: .84rem; }
-.note svg { flex-shrink: 0; margin-top: .1rem; color: #dbe9e3; }
+.ctaButton:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
 
 .steps { list-style: none; padding: 0 2.5rem; margin: 1.3rem 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3rem; }
 .steps li { position: relative; }
@@ -68,7 +57,6 @@
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; }
   .heroStage img { mask-image: none; }
-  .planGrid { grid-template-columns: 1fr; }
   .offers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 700px) {
@@ -79,6 +67,5 @@
   .root h1 { font-size: 2.3rem; }
   .offers, .steps { grid-template-columns: 1fr; gap: .8rem; }
   .arrow { display: none; }
-  .badge { margin-left: 0; white-space: normal; }
 }
-@media (prefers-reduced-motion: reduce) { .heroStage, .artStage, .plan { transform: none !important; transition: none; } .quote, .ctaButton { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .heroStage, .artStage { transform: none !important; transition: none; } .ctaButton { transition: none; } }

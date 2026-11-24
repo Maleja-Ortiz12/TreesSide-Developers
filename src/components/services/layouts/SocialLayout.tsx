@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Info, MessageCircle } from 'lucide-react';
+import { ArrowRight, MessageCircle } from 'lucide-react';
 import type { ServiceCategory } from '@/data/serviceCategories/types';
+import { PlansLink } from '../PlansLink';
 import { SectorNav } from './SectorNav';
 import styles from './SocialLayout.module.css';
 
@@ -9,7 +10,7 @@ const ART = '/images/services/redes-sociales';
 
 /** Social media page following its updated mockup; the shared HomeClosing footer comes from the parent SitePage. */
 export function SocialLayout({ category }: { category: ServiceCategory }) {
-  const { hero, offers, concept, plans, process, cta } = category;
+  const { hero, offers, concept, process, cta } = category;
   // The mockup highlights the closing words of the CTA ("tu marca.").
   const [, ctaLead = cta.title, ctaHighlight] = cta.title.match(/^(.*)\s(tu marca\.)$/) ?? [];
   return (
@@ -47,23 +48,7 @@ export function SocialLayout({ category }: { category: ServiceCategory }) {
         </figure>
       </section>
 
-      <section id="planes" aria-labelledby="planes-title" className={styles.section}>
-        <h2 id="planes-title" className={styles.underlined}>{plans.title}</h2>
-        <div className={styles.planGrid}>
-          {plans.items.map(({ icon: Icon, name, badge, summary }, index) => (
-            <article key={name} className={styles.plan} data-tilt="">
-              <div className={styles.planHead}>
-                <Icon size={30} strokeWidth={1.6} aria-hidden="true" />
-                <h3 id={`plan-redes-${index}`}>{name}</h3>
-                {badge && <span className={styles.badge}>{badge}</span>}
-              </div>
-              <p>{summary}</p>
-              <Link href={`/contacto?servicio=${category.slug}&opcion=${encodeURIComponent(name)}`} className={styles.quote} aria-describedby={`plan-redes-${index}`}>Consultar este plan · Por cotizar</Link>
-            </article>
-          ))}
-        </div>
-        {plans.notes.map(note => <p key={note} className={styles.note}><Info size={18} aria-hidden="true" /><span>{note}</span></p>)}
-      </section>
+      <PlansLink />
 
       <section id="proceso" aria-labelledby="proceso-title" className={styles.section}>
         <h2 id="proceso-title" className={styles.underlined}>{process.title}</h2>

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, ArrowRight, Check, Info, MessageCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MessageCircle } from 'lucide-react';
 import { FEATURED_PROJECTS } from '@/data/content';
 import { SERVICE_CATEGORIES, LEGACY_SERVICE_CATEGORIES, serviceCategory } from '@/data/serviceCategories';
 import { pageMetadata } from '@/lib/metadata';
@@ -11,6 +11,7 @@ import { SitePage } from '@/components/SitePage';
 import { ProjectImage } from '@/components/ProjectImage';
 import { HomeClosing } from '@/components/home/HomeClosing';
 import { CUSTOM_LAYOUTS } from '@/components/services/layouts';
+import { PlansLink } from '@/components/services/PlansLink';
 import styles from './category.module.css';
 
 type Props = { params: Promise<{ categoria: string }> };
@@ -34,7 +35,7 @@ export default async function ServiceCategoryPage({ params }: Props) {
       </SitePage>
     );
   }
-  const { hero, offers, flow, concept, plans, references, process, cta, icon: Icon } = category;
+  const { hero, offers, flow, concept, references, process, cta, icon: Icon } = category;
   const projects = references ? FEATURED_PROJECTS.filter(project => references.projectIds.includes(project.id)) : [];
 
   return (
@@ -102,41 +103,7 @@ export default async function ServiceCategoryPage({ params }: Props) {
             </div>
           </section>
 
-          <section aria-labelledby="plans-title" className={styles.plans}>
-            <div className={styles.sectionHead}>
-              <h2 id="plans-title">{plans.title}</h2>
-              <p>{plans.lead}</p>
-            </div>
-            <div className={styles.planGrid}>
-              {plans.items.map(({ icon: PlanIcon, ...plan }) => (
-                <article key={plan.name} className={styles.plan} data-featured={plan.featured || undefined}>
-                  <div className={styles.planHead}>
-                    <PlanIcon size={30} strokeWidth={1.6} aria-hidden="true" />
-                    <div>
-                      {plan.eyebrow && <p className={styles.planEyebrow}>{plan.eyebrow}</p>}
-                      <h3>{plan.name}</h3>
-                    </div>
-                    {plan.badge && <span className={styles.planBadge}>{plan.badge}</span>}
-                  </div>
-                  <p className={styles.planSummary}>{plan.summary}</p>
-                  <p className={styles.planLabel}>{plan.scopeLabel ?? 'Alcance'}:</p>
-                  <ul>{plan.scope.map(item => <li key={item}><Check size={16} aria-hidden="true" />{item}</li>)}</ul>
-                  {plan.modes && (
-                    <div className={styles.modes}>
-                      <p className={styles.planLabel}>Modalidades de contratación:</p>
-                      {plan.modes.map(mode => <p key={mode.title}><strong>{mode.title}</strong> {mode.text}</p>)}
-                    </div>
-                  )}
-                  {plan.billing && <p className={styles.billing}><span>Tipo de facturación</span> {plan.billing}</p>}
-                  <p className={styles.price}>Por cotizar</p>
-                  <Link href={`/contacto?servicio=${category.slug}&opcion=${encodeURIComponent(plan.name)}`} className="btn btn-secondary">Consultar este plan</Link>
-                </article>
-              ))}
-            </div>
-            <ul className={styles.notes}>
-              {plans.notes.map(note => <li key={note}><Info size={16} aria-hidden="true" />{note}</li>)}
-            </ul>
-          </section>
+          <PlansLink />
 
           {references && projects.length > 0 && (
             <section aria-labelledby="references-title" className={styles.references}>

@@ -6,7 +6,20 @@ const get = async path => {
   const response = await fetch(`${base}${path}`);
   return { status: response.status, html: await response.text() };
 };
-// slug → [breadcrumb label, fragment of the mockup headline, first plan name]
+// S1 (services-without-plans): visible page body only, without <head> metadata or React Flight payloads.
+const bodyOf = html => html.replace(/^[\s\S]*?<body\b/, '').replace(/<script\b[\s\S]*?<\/script>/g, '');
+const plansLinks = html => [...bodyOf(html).matchAll(/<a\b[^>]*href="\/planes"[^>]*>[\s\S]*?<\/a>/g)]
+  .filter(([link]) => link.replace(/<!--[\s\S]*?-->|<[^>]+>/g, '').trim() === 'Ver planes');
+const assertNoPlans = (html, plans = []) => {
+  const body = bodyOf(html);
+  for (const id of ['planes', 'plans-title', 'planes-title']) assert.ok(!body.includes(`id="${id}"`), `no #${id} section`);
+  assert.ok(!body.includes('Consultar este plan'), 'no "Consultar este plan"');
+  assert.ok(!body.includes('Por cotizar'), 'no plan prices');
+  assert.ok(!/href="\/contacto\?[^"]*opcion=/.test(body), 'no plan enquiry links');
+  for (const plan of plans) assert.ok(!body.includes(plan), `no plan card: ${plan}`);
+  assert.equal(plansLinks(html).length, 1, 'one visible "Ver planes" link to /planes');
+};
+// slug → [breadcrumb label, fragment of the mockup headline, first former plan name (now only on /planes)]
 const CATEGORIES = {
   ecommerce: ['E-commerce', 'Tu tienda, conectada', 'Catálogo digital'],
   'sistemas-de-gestion': ['Sistemas de gestión', 'Una operación conectada.', 'Módulo esencial'],
@@ -34,8 +47,7 @@ for (const [slug, [label, headline, firstPlan]] of Object.entries(CATEGORIES)) {
     assert.ok(crumbs.includes('href="/"') && crumbs.includes('href="/servicios"') && crumbs.includes(label), 'breadcrumb');
     const back = (html.match(/<a\b[^>]*href="\/servicios#categorias"[^>]*>[\s\S]*?<\/a>/) || [''])[0];
     assert.ok(back.replace(/<[^>]+>/g, '').includes('Volver a servicios'), 'back link');
-    assert.ok(html.includes(firstPlan), firstPlan);
-    assert.ok((html.match(/Por cotizar/g) || []).length >= 3, 'three plans priced "Por cotizar"');
+    assertNoPlans(html, [firstPlan]);
     assert.ok(html.includes('Vista conceptual'));
     for (const art of ['hero', 'concept']) assert.ok(html.includes(`src="/images/services/${slug}-${art}.webp"`), art);
     assert.ok(html.includes('href="/contacto"'));
@@ -110,9 +122,8 @@ for (const [slug, page] of Object.entries(CUSTOM)) {
     assert.equal((html.match(/id="closing-title"/g) || []).length, 1, 'one shared closing footer');
     assert.ok(html.includes(`property="og:url" content="${site}/servicios/${slug}"`));
     assert.match(html, /<meta name="description" content="[^"]{60,}"/);
+    assertNoPlans(html);
     if (slug === 'videojuegos') {
-      const renderedPlans = html.match(/<section[^>]*id="planes"[\s\S]*?<\/section>/)?.[0] ?? '';
-      assert.equal((renderedPlans.match(/Por cotizar/g) || []).length, 3, 'three visible backup plans in games');
       for (const art of ['islas', 'cueva', 'portal']) assert.ok(html.includes(`/images/services/videojuegos/${art}.webp`), art);
     }
     const assets = [...new Set([...html.matchAll(/src="(\/images\/services\/[^"?]+\.webp)"/g)].map(match => match[1]))];
@@ -138,9 +149,10 @@ test('restaurant preserves the updated mockup images with AI enhancement, not ol
   }
 });
 
+// S1: the former backup plans now live only on /planes. 'Presencia digital' and 'Ventas en línea' stay as restaurant starting-point cards.
 const BACKUP_PLANS = {
   restaurantes: {
-    names: ['Presencia digital', 'Ventas en línea', 'Gestión integral'],
+    names: ['Gestión integral'],
     billing: 'Implementación (pago único)',
     scope: ['Sitio web de tu restaurante.', 'Carta digital (platos, precios y categorías).', 'Información de sedes y horarios.', 'Botón de contacto por WhatsApp.', 'Todo lo del Plan 1.', 'Panel de productos y gestión de la carta.', 'Pedidos en línea (para domicilio o recoger).', 'Integración con pasarela de pagos.', 'Toma de pedidos (mesas, meseros o en línea).', 'Envío de pedidos a cocina y bar (comandas).', 'Caja y control de ventas.', 'Inventarios (insumos, existencias y consumo).', 'Administración (carta, usuarios, reportes operativos).', 'Uso continuo del sistema, con actualizaciones y soporte.', 'Implementación a la medida, según el alcance acordado.', 'Infraestructura, mantenimiento y servicios externos según alcance.'],
   },
@@ -151,15 +163,13 @@ const BACKUP_PLANS = {
   },
 };
 for (const [slug, expected] of Object.entries(BACKUP_PLANS)) {
-  test(`${slug} includes all backup plans with their original scopes and billing`, async () => {
+  test(`${slug} no longer renders its backup plans and links to /planes instead`, async () => {
     const { status, html } = await get(`/servicios/${slug}`);
     assert.equal(status, 200);
-    const section = html.match(/<section[^>]*id="planes"[\s\S]*?<\/section>/)?.[0] ?? '';
-    const text = section.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-    for (const value of [...expected.names, expected.billing, ...expected.scope, 'El alcance, los entregables y los costos externos se acuerdan antes de iniciar.']) assert.ok(text.includes(value), value);
-    assert.equal((section.match(/Por cotizar/g) || []).length, 3);
-    assert.equal((section.match(/data-tilt=""/g) || []).length, 3, 'three 3D plan cards');
-    assert.equal((section.match(/href="\/contacto\?servicio=[^"]+"/g) || []).length, 3, 'one contact link per plan');
+    const text = bodyOf(html).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ');
+    for (const value of [...expected.names, expected.billing, ...expected.scope, 'El alcance, los entregables y los costos externos se acuerdan antes de iniciar.']) assert.ok(!text.includes(value), value);
+    assertNoPlans(html);
+    assert.ok(/href="\/contacto\?servicio=[^"]+"/.test(html), 'service enquiries kept');
   });
 }
 

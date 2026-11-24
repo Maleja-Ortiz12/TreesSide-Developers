@@ -5,7 +5,7 @@ La web conserva el árbol, la identidad verde y oscura y los precios y condicion
 ## Recorrido del visitante
 
 1. Inicio presenta webs para restaurantes, tiendas virtuales y software a medida y automatización.
-2. Servicios conserva sus páginas y alcances existentes; cada llamada a consultar identifica el servicio y, en sus tarjetas, el plan de ese servicio.
+2. Servicios conserva sus páginas y alcances existentes; cada llamada a consultar identifica el servicio. Las páginas de servicio no muestran planes: enlazan a Planes con “Ver planes”.
 3. Planes mantiene los valores desde $500.000, $900.000, $1.490.000 y $3.490.000 COP, sus exclusiones y costos recurrentes. “Consultar este plan” abre el formulario con la selección.
 4. Contacto muestra la selección sin reemplazar el mensaje ni aceptar el consentimiento por el visitante. El contexto acompaña el mensaje de Formspree o el enlace de WhatsApp.
 

@@ -7,7 +7,7 @@ export const reservasYCitas: ServiceCategory = {
   label: 'Reservas y citas',
   icon: CalendarCheck,
   metaTitle: 'Agendas y reservas en línea | TreesSet Developers',
-  metaDescription: 'Implementamos agendas y reservas en línea para organizar tus servicios, profesionales y horarios. Planes Agenda digital, Agenda administrable y Reservas conectadas.',
+  metaDescription: 'Implementamos agendas y reservas en línea para organizar tus servicios, profesionales y horarios.',
   hero: {
     badge: 'Reservas y citas',
     title: 'Cada cita en',

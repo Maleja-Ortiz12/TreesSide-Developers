@@ -16,7 +16,8 @@ const h3s = markup => [...markup.matchAll(/<h3\b[^>]*>([\s\S]*?)<\/h3>/g)].map((
 // Copy from Images/Marca, fotografía y presencia digital-2 redes mockup actualizado.png.
 const H1 = 'Haz que tu marca se vea, se entienda y conecte.';
 const LEAD = 'Estrategia, contenido visual y presencia digital para mostrar mejor lo que hace tu negocio.';
-const HEADINGS = ['¿Qué hacemos por tu marca?', 'Planes propuestos', 'Nuestro proceso', 'Démosle una presencia clara a tu marca.'];
+// S1 (services-without-plans): the plan cards moved to /planes; a short block links there instead.
+const HEADINGS = ['¿Qué hacemos por tu marca?', '¿Buscas un plan?', 'Nuestro proceso', 'Démosle una presencia clara a tu marca.'];
 const OFFERS = [
   ['Gestión de redes sociales', 'Estrategia, calendario, programación de contenido y manejo de comunidad dentro del alcance acordado.'],
   ['Marketing digital', 'Campañas con objetivos, configuración de publicidad y reporte de resultados.'],
@@ -55,10 +56,10 @@ test('social sections keep the mockup order and copy, with no invented concept h
   const own = h2s.filter(({ id }) => id !== 'closing-title');
   assert.deepEqual(own.map(({ text }) => text), HEADINGS, 'only the mockup headings, in order');
   for (const { id, text } of own) assert.match(rendered, new RegExp(`<section[^>]*aria-labelledby="${id}"`), `${text} labels its section`);
-  const ids = ['social-title', 'que-hacemos', 'vista-conceptual', 'planes', 'proceso', 'contacto-redes', 'closing-title'];
+  const ids = ['social-title', 'que-hacemos', 'vista-conceptual', 'ver-planes', 'proceso', 'contacto-redes', 'closing-title'];
   const order = ids.map(id => rendered.indexOf(`id="${id}"`));
   assert.ok(order.every(index => index >= 0), `all sections present: ${ids.filter((_, i) => order[i] < 0)}`);
-  assert.deepEqual([...order].sort((a, b) => a - b), order, 'hero, offers, concept, plans, process, CTA, shared closing');
+  assert.deepEqual([...order].sort((a, b) => a - b), order, 'hero, offers, concept, plans link, process, CTA, shared closing');
 
   const offers = section(rendered, 'que-hacemos');
   assert.equal((offers.match(/<li\b/g) || []).length, 5, 'five offer cards');
@@ -86,22 +87,19 @@ test('social sections keep the mockup order and copy, with no invented concept h
   for (const anchor of [...rendered.matchAll(/href="#([^"]+)"/g)].map(match => match[1])) assert.ok(rendered.includes(`id="${anchor}"`), anchor);
 });
 
-test('social plans: three cards with their billing badges, summaries, "Por cotizar" and the scope note', async () => {
+test('social shows no plan cards and links to /planes with "Ver planes"', async () => {
   const { rendered } = await page();
-  const plans = section(rendered, 'planes');
-  assert.match(plans, /aria-labelledby="/, 'labelled plans section');
-  assert.equal((plans.match(/<article\b/g) || []).length, 3, 'three rendered plan cards');
-  assert.deepEqual(h3s(plans), PLANS.map(([name]) => name));
-  const cards = [...plans.matchAll(/<article\b[\s\S]*?<\/article>/g)].map(([card]) => textOf(card));
-  PLANS.forEach(([name, badge, summary], index) => {
-    for (const part of [name, badge, summary, 'Por cotizar']) assert.ok(cards[index].includes(part), `${name}: ${part}`);
-  });
-  assert.equal((plans.match(/Por cotizar/g) || []).length, 3);
-  assert.equal((plans.match(/<a\b[^>]*href="\/contacto\?servicio=[^"]+"/g) || []).length, 3, 'one contact link per plan');
-  assert.equal((plans.match(/data-tilt=""/g) || []).length, 3, 'three 3D plan cards');
-  assert.ok(!/<ul\b|Incluye/.test(plans.replace(/<p[^>]*class="[^"]*note[^"]*"[\s\S]*?<\/p>/, '')), 'no invented Includes bullets');
-  assert.ok(textOf(plans).includes(NOTE), 'qualification note');
-  assert.ok(!/\$\s?\d/.test(textOf(plans)), 'no invented prices');
+  for (const id of ['planes', 'planes-title']) assert.ok(!rendered.includes(`id="${id}"`), `no #${id}`);
+  const text = textOf(rendered);
+  for (const [name, badge, summary] of PLANS) for (const part of [name, badge, summary]) assert.ok(!text.includes(part), `${name}: ${part}`);
+  for (const value of ['Consultar este plan', 'Por cotizar', NOTE]) assert.ok(!text.includes(value), value);
+  assert.ok(!/href="\/contacto\?[^"]*opcion=/.test(rendered), 'no plan enquiry links');
+  const block = section(rendered, 'ver-planes');
+  assert.match(block, /aria-labelledby="/, 'labelled plans link block');
+  const links = [...rendered.matchAll(/<a\b[^>]*href="\/planes"[^>]*>[\s\S]*?<\/a>/g)].map(([link]) => link).filter(link => textOf(link) === 'Ver planes');
+  assert.equal(links.length, 1, 'one "Ver planes" link');
+  assert.ok(block.includes(links[0]), 'link inside its block');
+  assert.ok(!/\$\s?\d/.test(textOf(block)), 'no invented prices');
 });
 
 test('social keeps the actual mockup art on tilting 3D stages', async () => {
