@@ -1,4 +1,4 @@
-// Production compositions: node scripts/render-home-concepts.mjs [--download-only]
+// Production compositions: node scripts/render-home-concepts.mjs [--concept shop|salon] [--download-only]
 import { mkdir, readFile, writeFile, mkdtemp } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -11,12 +11,17 @@ import { composition } from './home-concepts/template.mjs';
 const root = resolve(import.meta.dirname, '..');
 const assets = join(root, 'public/images/home-concepts');
 const inputs = join(root, 'scripts/home-concepts');
+const selectionIndex = process.argv.indexOf('--concept');
+const selected = selectionIndex < 0 ? null : process.argv[selectionIndex + 1];
+if (selectionIndex >= 0 && !['salon', 'shop'].includes(selected)) throw new Error('--concept requires shop or salon');
+const concepts = selected ? [selected] : ['salon', 'shop'];
 await mkdir(assets, { recursive: true });
-const sources = {
+const sourceUrls = {
   salon: 'https://images.unsplash.com/photo-1637777277435-3c44f82fd0c9?w=1600&q=85&fit=max&fm=jpg',
-  vases: 'https://images.unsplash.com/photo-1631125915902-d8abe9225ff2?w=1600&q=85&fit=max&fm=jpg',
-  mug: 'https://images.unsplash.com/photo-1590422749897-47036da0b0ff?w=1000&q=85&fit=max&fm=jpg',
+  tech: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1600&q=85&fit=max&fm=jpg',
 };
+const sources = Object.fromEntries(concepts.flatMap(name => name === 'salon' ? ['salon'] : ['tech'])
+  .map(name => [name, sourceUrls[name]]));
 for (const [name, url] of Object.entries(sources)) {
   const file = join(assets, `${name}-stock.webp`);
   if (!existsSync(file)) {
@@ -28,7 +33,7 @@ for (const [name, url] of Object.entries(sources)) {
 if (process.argv.includes('--download-only')) process.exit(0);
 const photos = Object.fromEntries(await Promise.all(Object.keys(sources).map(async name => [name,
   `data:image/webp;base64,${(await readFile(join(assets, `${name}-stock.webp`))).toString('base64')}`])));
-for (const name of ['salon', 'shop']) await writeFile(join(inputs, `${name}.html`), composition(name, photos));
+for (const name of concepts) await writeFile(join(inputs, `${name}.html`), composition(name, photos));
 const edge = process.env.EDGE_PATH || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
 if (!existsSync(edge)) throw new Error('Set EDGE_PATH to the installed Edge executable');
 const profile = await mkdtemp(join(tmpdir(), 'home-concepts-edge-'));
@@ -58,7 +63,7 @@ try {
     const timer = setTimeout(() => { pending.delete(id); fail(new Error(`CDP timeout: ${method}`)); }, 20000);
     pending.set(id, { ok, fail, timer }); socket.send(JSON.stringify({ id, method, params, sessionId }));
   });
-  for (const name of ['salon', 'shop']) {
+  for (const name of concepts) {
     const { targetId } = await send('Target.createTarget', { url: 'about:blank' });
     const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
     await send('Emulation.setDeviceMetricsOverride', { width: 1600, height: 1200, deviceScaleFactor: 1, mobile: false }, sessionId);
