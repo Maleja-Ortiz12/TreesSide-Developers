@@ -29,6 +29,7 @@ function harness() {
       compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
     }).outputText;
     vm.runInNewContext(code, { module, exports: module.exports, URL, URLSearchParams, require: spec => {
+      if (spec === 'react-dom') return { createPortal: node => node }; // modal portals to <body>; render in place for the harness
       if (spec === 'react') return { useState: value => [value, () => {}], useRef: () => ({ current: null }), useEffect: () => {}, useId: () => 'title' };
       if (spec === 'react/jsx-runtime') return { jsx, jsxs: jsx, Fragment: 'Fragment' };
       if (spec === 'next/link' || spec === 'next/image') return { default: spec };

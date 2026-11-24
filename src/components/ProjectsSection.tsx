@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { ProjectImage } from './ProjectImage';
 import { useRouter } from 'next/navigation';
@@ -23,6 +23,8 @@ function ProjectIcon({ project }: { project: Project }) {
   const Icon = PROJECT_ICONS[project.id] ?? Monitor;
   return <Icon size={30} strokeWidth={1.6} aria-hidden="true" />;
 }
+/** Published project named by a `#<id>` fragment (carousel, Home and service links); unknown ids match nothing. */
+const projectFromHash = (hash: string) => FEATURED_PROJECTS.find(project => `#${project.id}` === hash) ?? null;
 
 
 export function ProjectsSection() {
@@ -36,6 +38,22 @@ export function ProjectsSection() {
   const openProject = (project: Project) => {
     // Do not enlarge the small conceptual laptop crop when the original project image is available.
     setSelectedProject(FEATURED_PROJECTS.find(original => original.id === project.id) ?? project);
+  };
+  // `/proyectos#<id>` opens that project's detail on arrival and on every fragment change (carousel clicks, Back and
+  // Forward); a fragment that names no published project closes it.
+  useEffect(() => {
+    const linked = projectFromHash(window.location.hash);
+    if (linked) setSelectedProject(linked);
+    const sync = () => setSelectedProject(projectFromHash(window.location.hash));
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
+  }, []);
+  const closeProject = () => {
+    // Drops the fragment without a new history entry, so the same project can be opened again.
+    if (selectedProject && window.location.hash === `#${selectedProject.id}`) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    setSelectedProject(null);
   };
 
   return (
@@ -130,7 +148,7 @@ export function ProjectsSection() {
 
       <ProjectModal
         project={selectedProject}
-        onClose={() => setSelectedProject(null)}
+        onClose={closeProject}
         onContactClick={goToContact}
       />
 

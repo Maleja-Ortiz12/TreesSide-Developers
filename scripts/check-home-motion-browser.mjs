@@ -334,11 +334,12 @@ try {
     await evaluate(`document.querySelector('#carrusel button').click()`);
     await wait(`document.querySelector('#carrusel button').getAttribute('aria-pressed')==='false'`);
     check(`${width} strip resume control`, await evaluate(`document.querySelector('#carrusel button').textContent.trim()`), 'Pausar carrusel');
-    const href = await evaluate(`document.querySelector('#carrusel a[data-carousel-item]:not([aria-hidden="true"])').getAttribute('href')`);
+    // A strip card opens its project modal in place: same document, URL fragment, no scroll to the catalog card.
+    const item = await evaluate(`(()=>{const a=document.querySelector('#carrusel a[data-carousel-item]:not([aria-hidden="true"])');window.__stripSameDocument=true;return {href:a.getAttribute('href'),title:a.querySelector('strong').textContent,scrollY:Math.round(scrollY)};})()`);
     await evaluate(`document.querySelector('#carrusel a[data-carousel-item]:not([aria-hidden="true"])').click()`);
-    await wait(`location.pathname+location.hash===${JSON.stringify(href)} && !!document.getElementById(location.hash.slice(1))`);
-    check(`${width} actual strip catalog anchor`, await evaluate(`({destination:location.pathname+location.hash,unique:document.querySelectorAll('[id="'+location.hash.slice(1)+'"]').length})`), { destination: href, unique: 1 });
-    await layout(width, '/proyectos#catalog-card');
+    await wait(`!!document.querySelector('[role=dialog]')`);
+    check(`${width} actual strip project modal`, await evaluate(`(()=>{const d=document.querySelector('[role=dialog]');return {destination:location.pathname+location.hash,title:document.getElementById(d.getAttribute('aria-labelledby'))?.textContent,sameDocument:window.__stripSameDocument===true,scrollY:Math.round(scrollY),unique:document.querySelectorAll('[id="'+location.hash.slice(1)+'"]').length};})()`), { destination: item.href, title: item.title, sameDocument: true, scrollY: item.scrollY, unique: 1 });
+    await layout(width, '/proyectos#project-modal');
   }
   console.log(`HOME_MOTION_BROWSER ${checks - failures.length}/${checks} checks passed; zero real enquiries`);
   if (failures.length) { console.error(`FAILURES ${JSON.stringify(failures)}`); process.exitCode = 1; }

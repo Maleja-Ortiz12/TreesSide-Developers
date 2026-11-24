@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useId, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { ProjectImage } from './ProjectImage';
 import { Project } from '@/data/content';
 import Link from 'next/link';
@@ -21,8 +22,8 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
     if (!project) return;
     const opener = document.activeElement as HTMLElement | null;
     const first = panel.current?.querySelectorAll<HTMLElement>('a[href], button, [tabindex="0"]')[0];
-    (first ?? panel.current)?.focus();
-    return () => opener?.focus();
+    (first ?? panel.current)?.focus({ preventScroll: true });
+    return () => opener?.focus({ preventScroll: true });
   }, [project]);
   if (!project) return null;
   const evidence = caseForProject(project.title);
@@ -37,7 +38,9 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   };
-  return <div className="project-overlay" onClick={onClose}>
+  // Portal to <body>: inside #proyectos a transformed ancestor turned `position: fixed` into section-relative
+  // positioning, so opening the modal scrolled the page down to it.
+  const overlay = <div className="project-overlay" onClick={onClose}>
     <div ref={panel} role="dialog" aria-modal={true} aria-labelledby={titleId} tabIndex={-1} onKeyDown={onKeyDown} className="project-dialog" onClick={event => event.stopPropagation()}>
       <button type="button" onClick={onClose} aria-label="Cerrar modal" className="project-close"><X size={22} aria-hidden="true" /></button>
       <div data-project-detail-media="" style={{ position: 'relative', width: '100%', aspectRatio: '16 / 10', background: '#071613' }}>
@@ -74,4 +77,6 @@ export function ProjectModal({ project, onClose, onContactClick }: ProjectModalP
       `}</style>
     </div>
   </div>;
+  // No document during server rendering (the modal only opens client-side, but stay safe).
+  return typeof document === 'undefined' ? overlay : createPortal(overlay, document.body);
 }

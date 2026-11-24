@@ -3,7 +3,8 @@ import { spawn } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-// Optional local public-UI check: a click or Enter on a home carousel card lands on that project's catalog card.
+// Optional local public-UI check: a click or Enter on a /proyectos carousel card opens that project's modal in place
+// (no document load, no scroll); Escape and Back close it, and direct `/proyectos#<id>` links open it.
 // Uses an installed Chromium/Edge, not an extra package. WIDTHS=390,1440 picks the viewports.
 const browserPath = process.env.BROWSER_EXECUTABLE || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
@@ -16,7 +17,7 @@ const browser = spawn(browserPath, [
   '--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check', '--remote-debugging-port=0',
   `--user-data-dir=${path.join(output, 'profile')}`, 'about:blank',
 ], { stdio: ['ignore', 'ignore', 'pipe'] });
-const deadline = setTimeout(() => { console.error('BROWSER_CHECK_TIMEOUT'); browser.kill(); process.exit(1); }, Number(process.env.CHECK_MS || 26000));
+const deadline = setTimeout(() => { console.error('BROWSER_CHECK_TIMEOUT'); browser.kill(); process.exit(1); }, Number(process.env.CHECK_MS || 45000));
 let ws;
 try {
   const address = await new Promise((resolve, reject) => {
@@ -65,7 +66,7 @@ try {
     await send('Page.navigate', { url }, sessionId);
     await loaded;
   };
-  // Waits (bounded) until React has hydrated the carousel links, so the click goes through client navigation.
+  // Waits (bounded) until React has hydrated the carousel links, so the click reaches the in-place handler.
   const hydrated = () => evaluate(`new Promise((resolve, reject) => {
     const until = Date.now() + 8000;
     (function poll() {
@@ -75,60 +76,65 @@ try {
       setTimeout(poll, 50);
     })();
   })`);
-  // Waits (bounded) for the URL, the target card, and the smooth hash scroll to settle, then measures.
-  const landing = id => evaluate(`new Promise((resolve, reject) => {
-    const until = Date.now() + 8000;
-    let last = null, still = 0;
-    (function frame() {
-      const card = document.getElementById(${JSON.stringify(id)});
-      if (location.pathname === '/proyectos' && location.hash === '#${id}' && card) {
-        // Settled means neither the page scroll nor the card's own position (layout, entry animation) still moves.
-        const now = scrollY + ':' + Math.round(card.getBoundingClientRect().top);
-        still = last === now ? still + 1 : 0;
-        last = now;
-      }
-      if (still >= 20) {
-        const rect = card.getBoundingClientRect();
-        return resolve({
-          url: location.pathname + location.hash, title: card.querySelector('h3')?.textContent,
-          top: Math.round(rect.top), bottom: Math.round(rect.bottom), viewport: innerHeight,
-          header: Math.round(document.querySelector('header').getBoundingClientRect().bottom),
-          modal: [...document.querySelectorAll('div')].some(el => { const s = getComputedStyle(el); return s.position === 'fixed' && s.zIndex === '200'; }),
-        });
-      }
-      if (Date.now() > until) return reject(new Error('no settled landing on #${id}: ' + location.href));
-      requestAnimationFrame(frame);
+  // Waits (bounded) until a browser-side condition holds.
+  const until = (condition, label) => evaluate(`new Promise((resolve, reject) => {
+    const end = Date.now() + 8000;
+    (function poll() {
+      if (${condition}) return resolve(true);
+      if (Date.now() > end) return reject(new Error(${JSON.stringify(label)} + ': ' + location.href));
+      requestAnimationFrame(poll);
     })();
   })`);
-  // Carousel cards are plain anchors: following one must be a full document load (bounded wait), not a client route.
-  const pageLoad = () => new Promise((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error('no full page load after following the card')), 8000);
-    events.set(`${sessionId}:Page.loadEventFired`, () => { clearTimeout(timer); resolve(); });
-  });
-  const markHome = () => evaluate('(window.__fromHome = true)');
-  const verify = async (label, width, id, title) => {
-    const result = await landing(id);
-    result.fullLoad = await evaluate('window.__fromHome !== true');
-    console.log(`${label}_${width} ${JSON.stringify(result)} at ${Date.now() - started}ms`);
+  const dialogOpen = `!!document.querySelector('[role=dialog]')`;
+  // Opening must stay in the same document: a full load would drop this marker.
+  const markPage = () => evaluate('(window.__sameDocument = true)');
+  const state = () => evaluate(`(() => {
+    const dialog = document.querySelector('[role=dialog]');
+    return {
+      open: !!dialog, url: location.pathname + location.hash,
+      title: dialog ? document.getElementById(dialog.getAttribute('aria-labelledby'))?.textContent ?? null : null,
+      focused: !!dialog && dialog.contains(document.activeElement),
+      sameDocument: window.__sameDocument === true, scrollY: Math.round(scrollY),
+    };
+  })()`);
+  const capture = async (label, width) => {
     const screenshot = await send('Page.captureScreenshot', { format: 'png' }, sessionId);
     await writeFile(path.join(output, `${label}-${width}.png`), Buffer.from(screenshot.data, 'base64'));
+  };
+  // The project modal is open over /proyectos, named by the project title, with that project's URL fragment.
+  const verifyOpen = async (label, width, id, title, scrollBefore) => {
+    await until(dialogOpen, `${label}: no project dialog`);
+    const result = await state();
+    console.log(`${label}_${width} ${JSON.stringify(result)} at ${Date.now() - started}ms`);
+    await capture(label, width);
     assert.equal(result.url, `/proyectos#${id}`, `${label} url`);
-    assert.equal(result.title, title, `${label} card title`);
-    assert.ok(result.top >= result.header, `${label} card starts below the fixed header`);
-    // scroll-margin-top is 100px, so the card lands just under the header, never far below or past it.
-    assert.ok(result.top <= result.header + 40, `${label} card lands right under the header`);
-    assert.equal(result.fullLoad, true, `${label} is a native document navigation`);
-    assert.ok(result.top < result.viewport, `${label} card is in the viewport`);
-    assert.equal(result.modal, false, `${label} opens no modal`);
+    assert.equal(result.title, title, `${label} dialog is named by the project title`);
+    assert.equal(result.focused, true, `${label} focus moves into the dialog`);
+    if (scrollBefore !== undefined) {
+      assert.equal(result.sameDocument, true, `${label} opens in place, without a document load`);
+      assert.ok(Math.abs(result.scrollY - scrollBefore) <= 1, `${label} page scroll stays at ${scrollBefore} (got ${result.scrollY})`);
+    }
+  };
+  const verifyClosed = async (label, width, scrollBefore) => {
+    await until(`!${dialogOpen}`, `${label}: dialog still open`);
+    const result = await state();
+    console.log(`${label}_${width} ${JSON.stringify(result)}`);
+    assert.equal(result.url, '/proyectos', `${label} removes the project fragment`);
+    assert.equal(result.sameDocument, true, `${label} stays in the same document`);
+    if (scrollBefore !== undefined) assert.ok(Math.abs(result.scrollY - scrollBefore) <= 1, `${label} keeps the page scroll`);
+  };
+  const key = async (name, code, keyCode, text) => {
+    await send('Input.dispatchKeyEvent', { type: 'keyDown', key: name, code, windowsVirtualKeyCode: keyCode, ...(text ? { text } : {}) }, sessionId);
+    await send('Input.dispatchKeyEvent', { type: 'keyUp', key: name, code, windowsVirtualKeyCode: keyCode }, sessionId);
   };
   for (const width of widths) {
     await send('Emulation.setDeviceMetricsOverride', { width, height: 900, deviceScaleFactor: 1, mobile: width < 600 }, sessionId);
     // Reduced motion keeps the strip still, so the clicked card does not move under the pointer.
     await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] }, sessionId);
 
-    // Mouse click on a card that used to open its case study.
+    // Mouse click on a carousel card opens its modal in place; Escape closes it and drops the fragment.
     if (scenarios.includes('click')) {
-    await open(`${base}/`);
+    await open(`${base}/proyectos`);
     await hydrated();
     // Finds a fully clickable card for the title: the pointer must hit the card itself at its center.
     const locate = (titles, reach) => evaluate(`(() => {
@@ -146,46 +152,52 @@ try {
       }
       return {};
     })()`);
-    const aimed = await locate(['La Lupe', 'TengoYa'], true);
-    assert.ok(aimed.href, 'a former case-study card can be reached');
+    const aimed = await locate(['La Lupe', 'Ocho80'], true);
+    assert.ok(aimed.href, 'a published carousel card can be reached');
     // Hovering pauses the strip (existing behavior); wait for its spring to settle before measuring again.
     await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: aimed.x, y: aimed.y }, sessionId);
     await evaluate('new Promise(resolve => setTimeout(() => resolve(true), 1200))');
     const target = await locate([aimed.title], false);
     assert.ok(target.href, `${aimed.title} card is clickable`);
     console.log(`CLICK_TARGET_${width} ${JSON.stringify(target)}`);
-    await markHome();
-    const clickLoad = pageLoad();
+    await markPage();
+    const before = (await state()).scrollY;
     for (const type of ['mouseMoved', 'mousePressed', 'mouseReleased']) {
       await send('Input.dispatchMouseEvent', { type, x: target.x, y: target.y, button: 'left', clickCount: 1 }, sessionId);
     }
-    await clickLoad;
-    await verify('click', width, target.href.split('#')[1], target.title);
+    await verifyOpen('click', width, target.href.split('#')[1], target.title, before);
+    await key('Escape', 'Escape', 27);
+    await verifyClosed('click-escape', width, before);
     }
 
-    // Keyboard Enter on the real anchor of an ordinary project, right after the click (the sequence that once
-    // landed past the card), with normal motion so the catalog entry animation runs. Focus pauses the strip.
+    // Keyboard Enter on the real anchor of an ordinary project, with normal motion; browser Back closes the modal.
     if (scenarios.includes('enter')) {
     await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] }, sessionId);
-    await open(`${base}/`);
+    await open(`${base}/proyectos`);
     await hydrated();
     await evaluate(`(() => {
       const link = [...document.querySelectorAll('#carrusel [data-carousel-item]:not([tabindex="-1"])')].find(item => item.querySelector('strong').textContent === 'Ocho80');
       link.focus();
       return document.activeElement === link;
     })()`).then(focused => assert.ok(focused, 'Ocho80 card takes focus'));
-    await markHome();
-    const enterLoad = pageLoad();
-    await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13, text: '\r' }, sessionId);
-    await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 }, sessionId);
-    await enterLoad;
-    await verify('enter', width, 'equipo-ocho80', 'Ocho80');
+    await markPage();
+    const before = (await state()).scrollY;
+    await key('Enter', 'Enter', 13, '\r');
+    await verifyOpen('enter', width, 'equipo-ocho80', 'Ocho80', before);
+    await evaluate('history.back()');
+    await verifyClosed('enter-back', width);
     }
 
-    // Direct load of a catalog hash.
+    // Direct load of a catalog fragment (Home and service links) opens that project's modal; unpublished ids do not.
     if (scenarios.includes('direct')) {
+    await open(`${base}/proyectos#equipo-la-lupe`);
+    await verifyOpen('direct', width, 'equipo-la-lupe', 'La Lupe');
     await open(`${base}/proyectos#equipo-tengoya`);
-    await verify('direct', width, 'equipo-tengoya', 'TengoYa');
+    await hydrated();
+    await evaluate('new Promise(resolve => setTimeout(() => resolve(true), 800))');
+    const unpublished = await state();
+    console.log(`direct-unpublished_${width} ${JSON.stringify(unpublished)}`);
+    assert.equal(unpublished.open, false, 'an unpublished project fragment opens no dialog');
     }
   }
   console.log('BROWSER_CHECK_PASS');

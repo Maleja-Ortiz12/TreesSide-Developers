@@ -17,6 +17,7 @@ test('S18 project detail shows the complete flat image without a gradient or gla
   const exports = {};
   const jsx = (type, props) => ({type, props});
   vm.runInNewContext(code, {exports, require: name => {
+    if (name === 'react-dom') return { createPortal: node => node }; // modal portals to <body>; render in place for the harness
     if (name === 'react') return {useRef:()=>({current:null}),useId:()=> 'project-title',useEffect:()=>{}};
     if (name === '@/lib/projectEvidence') return {projectEvidenceLabel:()=> 'Proyecto personal del equipo'};
     if (name === 'react/jsx-runtime') return {jsx, jsxs: jsx};

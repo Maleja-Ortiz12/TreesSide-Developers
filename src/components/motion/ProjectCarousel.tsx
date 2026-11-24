@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { ProjectImage, useDisplayDensity } from '../ProjectImage';
 import { motion, useAnimationFrame, useInView, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react';
 import { Pause, Play } from 'lucide-react';
@@ -25,11 +25,23 @@ export function wrapOffset(x: number, width: number) {
   return (((x % width) - width) % width) || 0;
 }
 
+/** A plain left click (Enter included) opens the project's detail over /proyectos through its `#id` fragment, without
+ * leaving or scrolling the page; modifier and middle clicks, and other pages, keep the native link. */
+function openInPlace(event: MouseEvent<HTMLAnchorElement>, id: string) {
+  if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  if (window.location.pathname !== '/proyectos') return;
+  event.preventDefault();
+  const oldURL = window.location.href;
+  window.history.pushState(null, '', `#${id}`);
+  // pushState fires no hashchange; ProjectsSection listens for it to open the modal (Back closes it again).
+  window.dispatchEvent(new HashChangeEvent('hashchange', { oldURL, newURL: window.location.href }));
+}
+
 function Item({ project, copy }: { project: Project; copy?: boolean }) {
   return (
-    // Each card opens the catalog scrolled to that same project's card. A plain anchor (no viewport prefetch, no
-    // client routing) lets the browser scroll to the fragment after layout instead of mid card entry animation.
-    <a href={`/proyectos#${project.id}`} className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
+    // Each card opens that project's detail modal in place. Without JavaScript the plain anchor (no viewport
+    // prefetch, no client routing) still loads the catalog and the browser scrolls to the card's fragment.
+    <a href={`/proyectos#${project.id}`} onClick={event => openInPlace(event, project.id)} className={styles.item} data-carousel-item="" tabIndex={copy ? -1 : undefined} aria-hidden={copy || undefined}>
       <ProjectImage src={project.image} alt={copy ? '' : project.title} fill sizes="300px" className={styles.image}
         style={{ objectFit: 'contain' }} />
       <span className={styles.caption}><strong>{project.title}</strong><small>{project.owner}</small></span>

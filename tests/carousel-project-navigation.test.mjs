@@ -28,8 +28,9 @@ test('S11 projects mounts the retained strip before the catalog with project anc
   assert.ok(catalog.includes('Pausar carrusel'));
 });
 
-test('S1 the carousel lands with a native anchor load on a card that does not animate while targeted', async () => {
-  // Client-side Link scrolling measured the card mid entry animation and could land past it.
+test('S1 the carousel keeps a native anchor fallback to a card that does not animate while targeted', async () => {
+  // Client-side Link scrolling measured the card mid entry animation and could land past it. With JavaScript a plain
+  // click opens the project modal in place (tests/projects-modal.test.mjs); without it the anchor still lands here.
   const carousel = await readFile('src/components/motion/ProjectCarousel.tsx', 'utf8');
   assert.doesNotMatch(carousel, /from 'next\/link'|<Link\b/, 'carousel cards are plain anchors');
   assert.match(carousel, /<a href=\{`\/proyectos#\$\{project\.id\}`\}/);

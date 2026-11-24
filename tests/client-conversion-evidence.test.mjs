@@ -20,6 +20,7 @@ function harness(selected = null) {
     const code = ts.transpileModule(readFileSync(target, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText;
     vm.runInNewContext(code, { module, exports: module.exports, document, window: {}, URL, URLSearchParams,
       require: spec => {
+        if (spec === 'react-dom') return { createPortal: node => node }; // modal portals to <body>; render in place for the harness
         if (spec === 'react') return react;
         if (spec === '@/components/SitePage') return { SitePage: 'SitePage' };
         if (spec === '@/components/home/HomeClosing') return { HomeClosing: 'HomeClosing' };
