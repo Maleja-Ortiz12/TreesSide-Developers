@@ -30,7 +30,7 @@ test('S2 each case study tells context, challenge, solution, technologies and re
     assert.ok(html.includes(`%2Fimages%2Fprojects%2F${item.image}.webp`) || html.includes(`/images/projects/${item.image}.webp`), `${item.slug} image`);
     assert.ok(html.includes(`href="/contacto?proyecto=equipo-${item.slug}"`), `${item.slug} contextual call to action`);
     if (item.live) assert.ok(html.includes(`href="${item.live}"`), `${item.slug} live site`);
-    assert.match(html, new RegExp(`<link rel="canonical" href="https://treesside-developers.malejawork12.workers.dev/casos/${item.slug}"`), `${item.slug} canonical`);
+    assert.match(html, new RegExp(`<link rel="canonical" href="https://treesset.com/casos/${item.slug}"`), `${item.slug} canonical`);
   }
 });
 
@@ -50,7 +50,7 @@ test('S4 the case index and sitemap retain shared cases but exclude TengoYa', as
   const sitemap = await page('/sitemap.xml');
   assert.ok(!sitemap.includes('/casos/tengoya'));
   for (const path of ['/casos', ...CASES.map(item => `/casos/${item.slug}`)]) {
-    assert.ok(sitemap.includes(`<loc>https://treesside-developers.malejawork12.workers.dev${path}</loc>`), `sitemap ${path}`);
+    assert.ok(sitemap.includes(`<loc>https://treesset.com${path}</loc>`), `sitemap ${path}`);
   }
 });
 

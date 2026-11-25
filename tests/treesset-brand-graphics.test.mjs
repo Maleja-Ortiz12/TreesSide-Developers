@@ -98,5 +98,5 @@ test('existing logo and deployment references remain stable', async () => {
   const content = await readFile('src/data/content.ts', 'utf8');
   assert.match(logo, /treesside-logo\.webp/);
   assert.match(metadata, /\/images\/treesside-share\.png/);
-  assert.match(content, /https:\/\/treesside-developers\.malejawork12\.workers\.dev/);
+  assert.match(content, /export const SITE_URL = 'https:\/\/treesset\.com';/);
 });

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
-const site = 'https://treesside-developers.malejawork12.workers.dev';
+const site = 'https://treesset.com';
 const path = '/servicios/redes-sociales';
 // Rendered markup only: React Flight payloads in <script> tags repeat every string.
 const page = async () => {

@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import sharp from 'sharp';
 
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
-const SITE = 'https://treesside-developers.malejawork12.workers.dev';
+const SITE = 'https://treesset.com';
 const SHARE_IMAGE = '/images/treesside-share.png';
 async function get(path, headers = {}) {
   const response = await fetch(new URL(path, base), { headers, signal: AbortSignal.timeout(60000) });

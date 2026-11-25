@@ -271,8 +271,9 @@ export const PROCESS_STEPS: ProcessStep[] = [
   { step: 4, title: 'Lanzamiento', description: 'Publicación, entrega y capacitación según el alcance contratado.' },
 ];
 
-// Public address of the deployed site; canonical links, share previews, sitemap and robots are built from it.
-export const SITE_URL = 'https://treesside-developers.malejawork12.workers.dev';
+// Definitive production domain; canonical links, Open Graph, structured data, sitemap and robots are built from it.
+// The Cloudflare Worker keeps its internal name (treesside-developers); this is only the public address.
+export const SITE_URL = 'https://treesset.com';
 
 export const CONTACT_INFO = {
   email: 'treessetcorp@gmail.com',

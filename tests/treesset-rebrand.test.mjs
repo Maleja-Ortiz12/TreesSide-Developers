@@ -30,10 +30,10 @@ const nodes = tree => !tree || typeof tree !== 'object' ? [] : [tree, ...[tree.p
 const source = file => readFileSync(file, 'utf8');
 function files(dir) { return readdirSync(dir, { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? files(`${dir}/${entry.name}`) : [`${dir}/${entry.name}`]); }
 
-test('S1-S2 central contact uses requested email; actual domain and phone stay unchanged', () => {
+test('S1-S2 central contact uses requested email, the production domain and the unchanged phone', () => {
   const { CONTACT_INFO, SITE_URL } = load('src/data/content.ts');
   assert.equal(CONTACT_INFO.email, 'treessetcorp@gmail.com');
-  assert.equal(SITE_URL, 'https://treesside-developers.malejawork12.workers.dev');
+  assert.equal(SITE_URL, 'https://treesset.com');
   assert.equal(CONTACT_INFO.phone, '+57 305 717 3986');
   assert.equal(new URL(CONTACT_INFO.whatsappUrl).searchParams.get('text'), 'Hola TreesSet Developers, me gustaría cotizar un proyecto');
 });

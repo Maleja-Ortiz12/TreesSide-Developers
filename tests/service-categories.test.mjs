@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
-const site = 'https://treesside-developers.malejawork12.workers.dev';
+const site = 'https://treesset.com';
 const get = async path => {
   const response = await fetch(`${base}${path}`);
   return { status: response.status, html: await response.text() };
